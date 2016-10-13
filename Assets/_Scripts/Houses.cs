@@ -3,39 +3,64 @@ using System.Collections;
 
 public class Houses : MonoBehaviour
 {
-    private int size;                                                           //size of house: bigger house => bigger capacity
-    private int humans;                                                         //human counter
-    private float timer = 0f;                                                   //spawning timer
-    public GameObject human = GameObject.CreatePrimitive(PrimitiveType.Cube);   //obj human
-    private Vector3 position = Vector3.zero;                                    //positioning of house    
+   
+    public class House {
+        private int capacity;      //size of house: bigger house => bigger capacity
+        private int humans;        //human counter
+        private float timer;       //spawning timer
+        private Vector3 position;  //positioning of house    
 
-    // Use this for initialization
-    void Start()
-    {
-        //create a house when dropped
-        Instantiate(GameObject.CreatePrimitive(PrimitiveType.Cube), new Vector3(5,5,5), Quaternion.identity);
-    }
+        public GameObject human = GameObject.CreatePrimitive(PrimitiveType.Cube);   //obj human
 
-    // Update is called once per frame
-    void Update()
-    {
-        timer += Time.deltaTime;
-
-        //Spawn human 
-        if (timer >= 2)
+        public House(int capacity, Vector3 position)
         {
-            Instantiate(human, position, Quaternion.identity);
+            this.capacity = capacity;
+            this.position = position;
+            timer = 0f;
+            humans = 0;
+        }
 
-        } 
+        private void add_human()
+        {
+            if (humans <= capacity)
+            {
+                this.humans += 1;
+            }
+        }
+
+        public int get_humans()
+        {
+            return humans;
+        }
+
+        public int get_capacity()
+        {
+            return capacity;
+        }
+
     }
 
-    public int get_humans()
-    {
-        return humans;
-    }
+    //public House house;
 
-    public int get_size()
-    {
-        return size;
-    }
+    //// Use this for initialization
+    //void Start()
+    //{
+    //    house = House()
+
+    //    //create a house when dropped
+    //    Instantiate(GameObject.CreatePrimitive(PrimitiveType.Cube), new Vector3(0, 0, 5), Quaternion.identity);
+    //}
+
+    //// Update is called once per frame
+    //void Update()
+    //{
+    //    timer += Time.deltaTime;
+
+    //    //Spawn human 
+    //    if (timer >= 2)
+    //    {
+    //        Instantiate(human, position, Quaternion.identity);
+
+    //    } 
+    //}
 }
