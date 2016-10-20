@@ -8,27 +8,19 @@ public class House : MonoBehaviour
     private double happiness;     //overall happiness of the house: the more crowded => less happy // this is a percentage
     private float timer;       //spawning timer
     private float StartTime;
-    private Vector3 location;  //position of house    
-    public GameObject human;   //obj human
+    private Vector3 location;  //position of house 
     private bool full_house;   // flag of some sort 
 
     //Constructor of a House
     //capacity = number of humans a house can hold; location = location of a house
-    public House(int capacity, Vector3 location)
+    public void Awake()
     {
-        placeHouse(capacity, location);
-        this.capacity = capacity;
-        this.location = location;
+        capacity = 2;
+        location = transform.position;
         full_house = false;
         timer = 0f;
         humans = 0;
         StartTime = Time.time;
-    }
-
-    // Generate house
-    private void placeHouse(int capacity, Vector3 location)
-    {
-        Instantiate(GameObject.CreatePrimitive(PrimitiveType.Cube), location, Quaternion.identity);
     }
 
     // Adding human to the count
@@ -59,11 +51,10 @@ public class House : MonoBehaviour
     {
         return happiness;
     }
-
-    // Use this function for initialisation
+    
     void Start()
     {
-        House house = new House(2, new Vector3(0, 0, 0));
+        
     }
 
     //Update is called once per frame
@@ -73,7 +64,7 @@ public class House : MonoBehaviour
         timer   = Time.time - StartTime;
 
         //Spawn human every min 
-        if (timer >= 60)
+        if (timer >= 30)
         {
             spawn();
             StartTime = Time.time;
@@ -86,10 +77,8 @@ public class House : MonoBehaviour
         //should add a check to see if space to put human already taken 
         if (humans <= capacity)
         {
-            Vector3 location_human = new Vector3(location.x, location.y, (location.z + 5));
-            Debug.Log("location of house:" +  location);
-            Debug.Log(location_human.ToString("F4"));
-            Instantiate(GameObject.CreatePrimitive(PrimitiveType.Cube), location_human, Quaternion.identity); // createPrimitive will be replaced by a human
+            Vector3 location_human = new Vector3(location.x, location.y, (location.z + 1));
+            Instantiate(Resources.Load("Human"), location_human, Quaternion.identity);
             add_human();
             update_happiness();
         }
