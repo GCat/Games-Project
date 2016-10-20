@@ -1,21 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ResourceBuilding : MonoBehaviour {
+public abstract class ResourceBuilding : MonoBehaviour {
 
     float timer;
     float startTime;
     public float timeStep;
     ResourceCounter resourceCounter;
 
-    public void create_building()
-    {
-
-        this.timer = 0f;
-        this.startTime = Time.time;
-        timeStep = 1.0f;
-        resourceCounter = (ResourceCounter) GameObject.Find("Resource_tablet").GetComponent("ResourceCounter");
-    }
+    public abstract void create_building();
 
 	// Use this for initialization
 	void Start () {
@@ -32,24 +25,5 @@ public class ResourceBuilding : MonoBehaviour {
         }
 
     }
-    void incrementResource()
-    {
-        int res = Random.Range(0, 4);
-        if (res < 1)
-        {
-            resourceCounter.addFood();
-        }
-        else if (res < 2)
-        {
-            resourceCounter.addWood();
-        }
-        else if (res < 3)
-        {
-            resourceCounter.addStone();
-        }
-        else
-        {
-            resourceCounter.addIron();
-        }
-    }
+    public abstract void incrementResource();
 }
