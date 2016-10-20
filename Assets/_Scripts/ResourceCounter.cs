@@ -76,4 +76,20 @@ public class ResourceCounter : MonoBehaviour
     {
         return wood;
     }
+    public void addFood()
+    {
+        food++;
+    }
+    public void addWood()
+    {
+        wood++;
+    }
+    public void addStone()
+    {
+        stone++;
+    }
+    public void addIron()
+    {
+        iron++;
+    }
 }
