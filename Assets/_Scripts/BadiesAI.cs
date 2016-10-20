@@ -38,7 +38,7 @@ public class BadiesAI : MonoBehaviour {
 					agent.SetDestination(closestHuman.transform.position);
 					if (Vector3.Distance(closestHuman.transform.position,transform.position) <
 						GetComponent<Renderer>().bounds.size.x*1.5){
-						Agent damage = (AgentScript) closestHuman.GetComponent(typeof(Agent));
+						Agent damage = (Agent) closestHuman.GetComponent(typeof(Agent));
 						damage.decrementHealth(strength * Time.deltaTime);
 					}
 				}
