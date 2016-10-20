@@ -2,7 +2,7 @@
 using System.Collections;
 
 
-public class AgentScript : MonoBehaviour {
+public class Agent : MonoBehaviour {
 
 	public float radius; 
 	private Vector3 initialPosition;

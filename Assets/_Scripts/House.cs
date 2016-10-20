@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class House : MonoBehaviour
+public class House  : MonoBehaviour, Building
 {  
     private int capacity;      //size of house: bigger house => bigger capacity
     private int humans;        //human counter
@@ -21,6 +21,16 @@ public class House : MonoBehaviour
         timer = 0f;
         humans = 0;
         StartTime = Time.time;
+    }
+
+    public string getName()
+    {
+        return "house";
+    }
+
+    public Vector3 getLocation()
+    {
+        return this.gameObject.transform.position;
     }
 
     // Adding human to the count
@@ -64,7 +74,7 @@ public class House : MonoBehaviour
         timer   = Time.time - StartTime;
 
         //Spawn human every min 
-        if (timer >= 30)
+        if (timer >= 60)
         {
             spawn();
             StartTime = Time.time;
