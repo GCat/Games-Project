@@ -19,7 +19,7 @@ public class ResourceCounter : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
+        InvokeRepeating("defaultFaithGen", 2.0f, 2.0f);
     }
 
     // Update is called once per frame
@@ -38,6 +38,13 @@ public class ResourceCounter : MonoBehaviour
         resourceText += "Stone: " + stone + "\n";
         resourceText += "Iron: " + iron + "\n";
         textMesh.text = resourceText;
+    }
+
+
+    //background baseline faith generation
+    public void defaultFaithGen()
+    {
+        addFaith(1);
     }
 
     public void addFaith(int faith)
@@ -68,5 +75,21 @@ public class ResourceCounter : MonoBehaviour
     public int getWood()
     {
         return wood;
+    }
+    public void addFood()
+    {
+        food++;
+    }
+    public void addWood()
+    {
+        wood++;
+    }
+    public void addStone()
+    {
+        stone++;
+    }
+    public void addIron()
+    {
+        iron++;
     }
 }
