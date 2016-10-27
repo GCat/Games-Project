@@ -112,7 +112,7 @@ public class Agent : MonoBehaviour {
 		   Collider[] obstacles = Physics.OverlapSphere(coords, 0.0f);
 		   if (obstacles.Length != 0){
 				Debug.Log("HIT");
-				float xcoord= coords.x +(float)(obstacles[0].bounds.size.x) *1.2f;
+				float xcoord= coords.x +(float)(obstacles[0].bounds.size.x);
 				Vector3 newTarget = new Vector3 (xcoord, 0.5f, coords.z);
 				return checkPosition(newTarget);
 		   }
