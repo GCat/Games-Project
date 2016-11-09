@@ -17,7 +17,7 @@ public class ObjectDetector : MonoBehaviour {
     public GameObject imagePlane;
     public UnityEngine.Color target;
     private Hsv targetHsv;
-    private Hsv tolerance = new Hsv(10, 20, 20);
+    private Hsv tolerance = new Hsv(15, 50, 50);
     private Hsv lower;
     private Hsv upper;
 
@@ -62,14 +62,29 @@ public class ObjectDetector : MonoBehaviour {
             CvInvoke.CvtColor(input, input, ColorConversion.Bgr2Hsv);
             Image<Hsv, byte> img = input.ToImage<Hsv, byte>();
             Image<Gray, Byte> redimg = img.InRange(lower, upper);
+            Debug.Log("Value of red square: " + img.Data[123, 134, 0] + "," + img.Data[123, 134, 1] + "," + img.Data[123, 134, 2]);
+            Debug.Log("Value of target: " + targetHsv.Hue + "," + targetHsv.Satuation + "," + targetHsv.Value);
 
-            //MKeyPoint[] keyPoints = blobDetector.Detect(redimg);
-            //Features2DToolbox.DrawKeypoints(img, new VectorOfKeyPoint(keyPoints),img,new Bgr(System.Drawing.Color.Red), Features2DToolbox.KeypointDrawType.Default);
+            CvInvoke.Erode(redimg, redimg, CvInvoke.GetStructuringElement(ElementShape.Ellipse, new Size(5,5), new Point(-1,-1)), new Point(-1,-1),1, BorderType.Default, new MCvScalar(1));
+            CvInvoke.Dilate(redimg, redimg, CvInvoke.GetStructuringElement(ElementShape.Ellipse, new Size(5, 5), new Point(-1, -1)), new Point(-1, -1), 1, BorderType.Default, new MCvScalar(1));
+
+            CvInvoke.Erode(redimg, redimg, CvInvoke.GetStructuringElement(ElementShape.Ellipse, new Size(5, 5), new Point(-1, -1)), new Point(-1, -1), 1, BorderType.Default, new MCvScalar(1));
+            CvInvoke.Dilate(redimg, redimg, CvInvoke.GetStructuringElement(ElementShape.Ellipse, new Size(5, 5), new Point(-1, -1)), new Point(-1, -1), 1, BorderType.Default, new MCvScalar(1));
+
+            MKeyPoint[] keyPoints = blobDetector.Detect(redimg);
+            Features2DToolbox.DrawKeypoints(img, new VectorOfKeyPoint(keyPoints),img,new Bgr(System.Drawing.Color.Red), Features2DToolbox.KeypointDrawType.Default);
+            getObjectCenters(redimg.Mat, img.Mat);
 
             float end = Time.realtimeSinceStartup - start;
-            //Debug.Log("Detection time: " + end);
-            redimg.ToBitmap().Save("testHSV.png");
+            Debug.Log("Detection time: " + end);
+            redimg.ToBitmap().Save("testThresh.png");
+            CvInvoke.Imwrite("testHsv.jpg", input);
             img.ToBitmap().Save("testout.png");
+
+
+
+            tex.SetPixels32(toTexture(redimg));
+            tex.Apply(false);
         }
         else
         {
@@ -90,14 +105,21 @@ public class ObjectDetector : MonoBehaviour {
 
                 Image<Gray, Byte> redimg = img.InRange(lower, upper);
 
+                CvInvoke.Erode(redimg, redimg, CvInvoke.GetStructuringElement(ElementShape.Ellipse, new Size(5, 5), new Point(-1, -1)), new Point(-1, -1), 1, BorderType.Default, new MCvScalar(1));
+                CvInvoke.Dilate(redimg, redimg, CvInvoke.GetStructuringElement(ElementShape.Ellipse, new Size(5, 5), new Point(-1, -1)), new Point(-1, -1), 1, BorderType.Default, new MCvScalar(1));
+
+                CvInvoke.Erode(redimg, redimg, CvInvoke.GetStructuringElement(ElementShape.Ellipse, new Size(5, 5), new Point(-1, -1)), new Point(-1, -1), 1, BorderType.Default, new MCvScalar(1));
+                CvInvoke.Dilate(redimg, redimg, CvInvoke.GetStructuringElement(ElementShape.Ellipse, new Size(5, 5), new Point(-1, -1)), new Point(-1, -1), 1, BorderType.Default, new MCvScalar(1));
+
+
                 MKeyPoint[] keyPoints = blobDetector.Detect(redimg);
 
                 Features2DToolbox.DrawKeypoints(redimg, new VectorOfKeyPoint(keyPoints), redimg, new Bgr(System.Drawing.Color.Red), Features2DToolbox.KeypointDrawType.Default);
 
                 float end = Time.realtimeSinceStartup - start;
                 //Debug.Log("Detection time: " + end + "\n keyPoints: " + keyPoints.Length);
-                //MCvPoint2D64f[] centers = getObjectCenters(redimg.Mat, input.Mat);
-                tex.SetPixels32(toTexture(redimg));
+                getObjectCenters(redimg.Mat, input.Mat);
+                tex.SetPixels32(toTexture(input));
             tex.Apply(false);
                 //img.ToBitmap().Save("test.png");
             }
@@ -169,26 +191,17 @@ public class ObjectDetector : MonoBehaviour {
         return dst;
     }
 
-    private MCvPoint2D64f[] getObjectCenters(Mat image, Mat display)
+    private MCvMoments getObjectCenters(Mat image, Mat display)
     {
-        VectorOfVectorOfPoint contours = new VectorOfVectorOfPoint();
-        Mat edge = new Mat();
-        CvInvoke.Canny(image, edge, 0, 100, 3);
-        Mat hierarchy = new Mat();
-        CvInvoke.FindContours(edge, contours, hierarchy, RetrType.Tree, ChainApproxMethod.ChainApproxNone, new Point());
+        MCvMoments moments = CvInvoke.Moments(image);
 
-        MCvPoint2D64f[] centers = new MCvPoint2D64f[contours.Size];
-        for (int i = 0; i < contours.Size; i++)
+        if(moments.M00 > 100)
         {
-            MCvMoments moments = CvInvoke.Moments(contours[i], false);
-            centers[i] = new MCvPoint2D64f(moments.M10 / moments.M00, moments.M01 / moments.M00);
-            double area = CvInvoke.ContourArea(contours[i]);
-            if (area > 10)
-            {
-                CvInvoke.Circle(display, new Point((int)centers[i].X, (int)centers[i].Y), (int)area, new MCvScalar(255, 0, 0), 3, LineType.EightConnected);
-            }
+            int x = (int) (moments.M10 / moments.M00);
+            int y = (int) (moments.M01 / moments.M00);
+            CvInvoke.Circle(display, new Point(x, y),2, new MCvScalar(255, 0, 0));
         }
-        return centers;
+        return moments;
     }
 
     private Hsv unityColorToHsv(UnityEngine.Color color)
@@ -197,6 +210,6 @@ public class ObjectDetector : MonoBehaviour {
         float s = 0;
         float v = 0;
         UnityEngine.Color.RGBToHSV(color, out h, out s, out v);
-        return new Hsv(h, s, v);
+        return new Hsv(h*360, s*255, v*255);
     }
 }
