@@ -6,8 +6,10 @@ public class Scaffold : MonoBehaviour {
 
 
     public TextMesh[] textMeshes;
+    string curType;
+    public GameObject res;
     public BuildingType type;
-    public GameObject building;
+    public Vector3 location;
     private bool placeable = false;
     private int faithCost = 0;
     private Renderer thisRenderer;
@@ -15,11 +17,13 @@ public class Scaffold : MonoBehaviour {
     private ResourceCounter resourceCounter;
     //currently just create the building after a period of time
     private float placeTime = 10.0f;
-    private float placeTimeLeft = 10.0f;
+    public float placeTimeLeft = 10.0f;
 	// Use this for initialization
 	void Start () {
         thisRenderer = GetComponent<Renderer>();
         normalColor = thisRenderer.material.color;
+        location = this.transform.position;
+        curType = type.ToString();
         setResourceText();
         resourceCounter = GameObject.Find("Resource_tablet").GetComponent<ResourceCounter>();
 	}
@@ -31,9 +35,15 @@ public class Scaffold : MonoBehaviour {
 
     void FixedUpdate()
     {
+        location.x = this.transform.position.x;
+        location.z = this.transform.position.z;
         placeable = isPlaceable();
-
-
+        setResourceText();
+        if (!(type.ToString().Equals(curType)))
+        {
+            placeTimeLeft = placeTime;
+            curType = type.ToString();
+        }
         if (placeable)
         {
             thisRenderer.material.color = normalColor;
@@ -43,7 +53,6 @@ public class Scaffold : MonoBehaviour {
             thisRenderer.material.color = Color.red;
             placeTimeLeft = placeTime;
         }
-
         if(placeTimeLeft <= 0)
         {
             build();
@@ -80,7 +89,7 @@ public class Scaffold : MonoBehaviour {
     //converts this scaffold into a finished building
     void build()
     {
-        Instantiate(building, this.transform.position, this.transform.rotation);
+        GameObject.Instantiate(res, location, Quaternion.identity);
         Destroy(this.gameObject);
 
     }
@@ -95,12 +104,28 @@ public class Scaffold : MonoBehaviour {
                 break;
             case BuildingType.HOUSE:
                 faithCost = 20;
+                res = Resources.Load("House") as GameObject;
+                location.y = 2;
                 break;
             case BuildingType.LUMBERYARD:
                 faithCost = 30;
+                res = Resources.Load("LumberYard") as GameObject;
+                location.y = 2;
                 break;
-            case BuildingType.MINE:
+            case BuildingType.IRONMINE:
                 faithCost = 30;
+                res = Resources.Load("IronMine") as GameObject;
+                location.y = 1.5f;
+                break;
+            case BuildingType.FARM:
+                faithCost = 10;
+                res = Resources.Load("Farm") as GameObject;
+                location.y = 1.5f;
+                break;
+            case BuildingType.QUARRY:
+                faithCost = 20;
+                res = Resources.Load("StoneQuarry") as GameObject;
+                location.y = 4;
                 break;
             case BuildingType.WALL:
                 faithCost = 20;

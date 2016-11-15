@@ -7,7 +7,7 @@ public class ResourceCounter : MonoBehaviour
     public GameObject textDisplay;
     //The text displayed on the tablet
     private TextMesh textMesh; 
-    private int faith = 0;
+    public int faith = 0;
     private int iron = 0;
     private int stone = 0;
     private int food = 0;
@@ -19,7 +19,6 @@ public class ResourceCounter : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        InvokeRepeating("defaultFaithGen", 2.0f, 2.0f);
     }
 
     // Update is called once per frame
@@ -91,5 +90,9 @@ public class ResourceCounter : MonoBehaviour
     public void addIron()
     {
         iron++;
+    }
+    public void addFaith()
+    {
+        faith++;
     }
 }
