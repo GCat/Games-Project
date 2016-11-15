@@ -5,19 +5,22 @@ using System.Collections;
 public class DisplayDepth : MonoBehaviour {
 	
 	public DepthWrapper dw;
-	
+    public short[] mappedDepth;
+
 	private Texture2D tex;
 	// Use this for initialization
 	void Start () {
-		tex = new Texture2D(320,240,TextureFormat.ARGB32,false);
+		tex = new Texture2D(640,480,TextureFormat.ARGB32,false);
 		GetComponent<Renderer>().material.mainTexture = tex;
-	}
-	
-	// Update is called once per frame
-	void Update () {
+        mappedDepth = new short[640 * 480];
+
+    }
+
+    // Update is called once per frame
+    void Update () {
 		if (dw.pollDepth())
 		{
-			tex.SetPixels32(convertDepthToColor(dw.depthImg));
+			tex.SetPixels32(convertDepthToColor(dw.mappedDepth));
 			//tex.SetPixels32(convertPlayersToCutout(dw.segmentations));
 			tex.Apply(false);
 		}
