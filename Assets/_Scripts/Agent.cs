@@ -1,83 +1,129 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 using System.Collections;
-
+using System.Threading;
 
 public class Agent : MonoBehaviour {
-
-	public float radius; 
+ 
 	public bool fightMode;
+	public float radius;
+
+	private Thread t1;
+	private bool threadRunning = false;
+
+	List<int> waypoints;
+
 	public float health;
 	public float strenght;
+	public float speed;
+	public float gravity = 9.81F;
 	public float weapon_strength;
+
 	private Vector3 initialPosition;
-	private NavMeshAgent agent;
+	private PathFinding pathFinder;
+	private Vector3 nextNode;
+	private int targetCell;
+	private CharacterController controller;
+	private Vector3 cracyVector = new Vector3 (0.0f,-50.0f,0.0f);
+
 	private GameObject closestBadie;
 	private bool noMoreEnemies;
+	private int maxCell;
+
+	private Rigidbody rb;
 
 	void Start () {
-
-		initialPosition = transform.position;
-		agent = GetComponent<NavMeshAgent>();
-		Vector3 target = checkPosition(calculateNewTarget());
-		agent.SetDestination(target);
-		closestBadie = null;
+		radius = 50;
 		strenght = 10;
 		health = 100;
+		nextNode =  new Vector3 (0.0f,-50.0f,0.0f);
+		waypoints = new List<int>();
 		noMoreEnemies = false;
+		initialPosition = transform.position;
+		controller = GetComponent<CharacterController>();
+		rb = GetComponent<Rigidbody>();
+		pathFinder =(PathFinding) GameObject.FindGameObjectWithTag("PathFinder").GetComponent(typeof(PathFinding));
+		maxCell =pathFinder.getMaxCell();
+		closestBadie = null;
 
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		if (fightMode && (!noMoreEnemies)){
-			attackNav();
+	void FixedUpdate () {
+		wanderNav();
+	}
+	void OnMouseDown(){
+		Debug.Log("clicekd");
+		if(!threadRunning){
+			Debug.Log("Here");
+			Vector3 target = new Vector3(0.0f,0.05f,-20.0f);
+			int srcCell = coord2cellID(transform.position);
+			int targetCell = coord2cellID(target);
+			threadRunning = true;
+			t1 = new Thread(()=>astar(srcCell,targetCell));
+			t1.Start();
 		}
-		else{
-			wanderNav();
-		}
+	}
+
+	void  astar(int srcCell, int targetCell){
+		Debug.Log("Entered");
+		waypoints = new List<int>(pathFinder.Astar(srcCell,targetCell));
+		Debug.Log("Done");
+		threadRunning = false;
 	}
 
 	private void wanderNav(){
-		// Check if we've reached the destination
-		if( Vector3.Distance(agent.destination,transform.position) < 0.5){
-			Vector3 target = checkPosition(calculateNewTarget());
-			agent.SetDestination(target);
-		}
-		else if (!agent.pathPending){
-			if (agent.remainingDistance <= agent.stoppingDistance){
-				if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f){
-					Vector3 target = checkPosition(calculateNewTarget());
-					agent.SetDestination(target); 
+		if(nextNode.y  == -50f){
+			if (waypoints.Count > 0){
+				int n = waypoints[0];
+				waypoints.Remove(n);
+				Vector3 p = pathFinder.getCellPosition(n);
+				p.y = 0.5f;
+				nextNode = p;
+			}
+			else{
+				//GetComponent<Rigidbody>().velocity = Vector3.zero;
+				//GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+				int srcCell = coord2cellID(transform.position);
+				int targetCell = calculateNewTarget();
+				if(!threadRunning){
+					threadRunning = true;
+					t1 = new Thread(()=>astar(srcCell,targetCell));
+					t1.Start();
 				}
 			}
 		}
-		else if (agent.pathStatus == NavMeshPathStatus.PathPartial){
-			Vector3 target = checkPosition(calculateNewTarget());
-			agent.SetDestination(target);
-		}
-
-	}
-
-	private void attackNav(){
-		Debug.Log(noMoreEnemies);
-		if ((closestBadie == null) || (closestBadie.Equals(null))){
-			closestBadie = findClosestEnemy();
-			if((closestBadie == null) || (closestBadie.Equals(null))){
-				noMoreEnemies = true;
+		else if (Vector3.Distance(transform.position,nextNode) < 0.3f){
+			if(waypoints.Count < 1){
+				rb.velocity /= 10;
+				nextNode.y = -50f ;
 			}
-			// what to do if all badies are dead?
-
+			else{
+				int n = waypoints[0];
+				waypoints.Remove(n);
+				Vector3 p = pathFinder.getCellPosition(n);
+				p.y = 0.5f;
+				nextNode = p;
+			}
 		}
 		else{
-			agent.SetDestination(closestBadie.transform.position);
-			if (Vector3.Distance(closestBadie.transform.position,transform.position) <
-				GetComponent<Renderer>().bounds.size.x *2){
-				BadiesAI damage = (BadiesAI) closestBadie.GetComponent(typeof(BadiesAI));
-				damage.decrementHealth(strenght * Time.deltaTime);
-			}
+			rb.velocity =((nextNode -transform.position) * speed);
 		}
 	}
 
+	// lazy function cuz i can not be bothered to find the correct mathematical approach tonight
+	private int coord2cellID(Vector3 coords){
+		int layerMask = 1 << 8;
+		Vector3 target = new Vector3(coords.x,0.05f,coords.z);
+		
+		Collider[] obstacles = Physics.OverlapSphere(target, 0.05f, layerMask);
+		if (obstacles.Length != 0){
+			return obstacles[0].gameObject.GetComponent<Cell>().id;
+		}
+		return -1;
+	}
+
+	
 	private GameObject findClosestEnemy(){
 		GameObject[] badies;
 		GameObject closest = null;
@@ -95,30 +141,7 @@ public class Agent : MonoBehaviour {
 		// if you win and all badies are dead what you do?
 		return closest;
 	}
-
-
-	Vector3 calculateNewTarget(){
-		/// x ^2 * y^2 <+ r^2
-		/// get random x in range +- radius ^2
-		/// then find y in range 
-		float sqrRadius = radius * radius;
-		float x = Random.Range(-radius, radius);
-		float maxz = Mathf.Sqrt(sqrRadius - x*x);
-		float z = Random.Range(-maxz, maxz);
-		return new Vector3(x + initialPosition.x, 0.5f, z + initialPosition.z);
-	}
-
-	Vector3 checkPosition(Vector3 coords){
-		   Collider[] obstacles = Physics.OverlapSphere(coords, 0.0f);
-		   if (obstacles.Length != 0){
-				Debug.Log("HIT");
-				float xcoord= coords.x +(float)(obstacles[0].bounds.size.x) *1.2f;
-				Vector3 newTarget = new Vector3 (xcoord, 0.5f, coords.z);
-				return checkPosition(newTarget);
-		   }
-		   return coords;
-	}
-
+	
 	public void decrementHealth(float damage){
 		health -= damage;
 		if (health <= 0){
@@ -126,4 +149,14 @@ public class Agent : MonoBehaviour {
 		}
 	}
 
+	int calculateNewTarget(){
+		int target = (int) Random.Range(0.0f,pathFinder.getMaxCell());
+		string status = pathFinder.checkCell(target);
+		while (status != "empty"){
+			target = (int) Random.Range(0.0f,maxCell);
+			status= pathFinder.checkCell(target);
+			Debug.Log("Hit");
+		}
+		return target;
+	}
 }

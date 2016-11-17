@@ -2,50 +2,38 @@
 using System.Collections;
 
 public class BadiesAI : MonoBehaviour {
-	private bool templeAttack;
+
+	/* 0 -> Temple
+	** 1 -> closest Human
+	*/
+	private int humanOrTemple;
+
+	// for testing purposes only
 	public bool attackMode;
+
+
+	// badies propeties
 	public float health;
 	public float strength;
+
+	// Navigation 
 	private NavMeshAgent agent;
-	private float temple_or_human;
-	private GameObject closestHuman;
+	private GameObject targetObject;
+	private GameObject obstacleObject;
 
 	// Use this for initialization
 	void Start () {
-		closestHuman = null;
+		targetObject = null;
 		health = 100;
-		strength = 10;
-		templeAttack = true;
-		temple_or_human = Random.value;
-		if (temple_or_human > 0.7) templeAttack = false;
+		strength = 20;
+		humanOrTemple = 0;
+		if (Random.value > 0.7) humanOrTemple = 1;
 		agent = GetComponent<NavMeshAgent>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (attackMode){
-			if (templeAttack) {
-				Vector3 temple_position = GameObject.FindWithTag("Temple").transform.position;
-				Vector3 temple_pos = new Vector3 (temple_position.x, 0.5f, temple_position.z);
-				agent.SetDestination(temple_pos);	
-			}
-			else{
-				closestHuman = findClosestEnemy();
-				if (closestHuman == null){
-					//do something
-				}
-				else{
-					agent.SetDestination(closestHuman.transform.position);
-					if (Vector3.Distance(closestHuman.transform.position,transform.position) <
-						GetComponent<Renderer>().bounds.size.x*1.5){
-						Agent damage = (Agent) closestHuman.GetComponent(typeof(Agent));
-						damage.decrementHealth(strength * Time.deltaTime);
-					}
-				}
-			
 		
-			}
-		}
 	}
 
 	private GameObject findClosestEnemy(){
@@ -71,6 +59,5 @@ public class BadiesAI : MonoBehaviour {
 		if (health <= 0){
 			Destroy(gameObject);
 		}
-	}
-	
+	}	
 }
