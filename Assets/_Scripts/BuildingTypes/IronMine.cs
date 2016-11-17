@@ -1,19 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class IronMine : MonoBehaviour
+public class IronMine : ResourceBuilding
 {
-
-    float timer;
-    float startTime;
-    public float timeStep;
-    ResourceCounter resourceCounter;
-
-    public void create_building()
+    public override void create_building()
     {
         this.timer = 0f;
         this.startTime = Time.time;
         timeStep = 5.0f;
+        buildingName = "IRONMINE";
         resourceCounter = (ResourceCounter)GameObject.Find("Resource_tablet").GetComponent("ResourceCounter");
     }
 
@@ -34,7 +29,7 @@ public class IronMine : MonoBehaviour
         }
 
     }
-    void incrementResource()
+    public override void incrementResource()
     {
         resourceCounter.addIron();
     }
