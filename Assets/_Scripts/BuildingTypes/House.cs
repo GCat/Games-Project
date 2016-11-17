@@ -74,7 +74,7 @@ public class House  : MonoBehaviour, Building
         timer   = Time.time - StartTime;
 
         //Spawn human every min 
-        if (timer >= 60)
+        if (timer >= 10)
         {
             spawn();
             StartTime = Time.time;
