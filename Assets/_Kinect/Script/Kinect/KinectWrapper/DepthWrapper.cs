@@ -29,12 +29,15 @@ public class DepthWrapper: MonoBehaviour {
 	private bool newSeqmentation = false;
 	
 	private Queue frameQueue;
-	
+
 	/// <summary>
 	/// Depth image for the latest frame
 	/// </summary>
 	[HideInInspector]
 	public short[] depthImg;
+
+    [HideInInspector]
+    public short[] mappedDepth;
 	/// <summary>
 	/// players[i] true iff i has been detected in the frame
 	/// </summary>
@@ -65,6 +68,7 @@ public class DepthWrapper: MonoBehaviour {
 			frame.bounds = new int[Kinect.Constants.NuiSkeletonCount,4];
 			frameQueue.Enqueue(frame);
 		}
+        mappedDepth = new short[640 * 480];
 	}
 	
 	// Update is called once per frame
@@ -101,8 +105,10 @@ public class DepthWrapper: MonoBehaviour {
 				bounds = frame.bounds;
 				frameQueue.Enqueue(frame);
 				processDepth();
-			}
-		}
+                mappedDepth = kinect.getMappedDepth();
+
+            }
+        }
 		return newSeqmentation;
 	}
 	

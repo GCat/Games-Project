@@ -102,8 +102,16 @@ public class KinectEmulator : MonoBehaviour, KinectInterface {
 		}
 		return newSkeleton;
 	}
-	
-	NuiSkeletonFrame KinectInterface.getSkeleton() {
+    short[] KinectInterface.getMappedDepth()
+    {
+        long[] pMappedBits = new long[320 * 240 * 2];
+        //NuiLockedRect lockedRectPtr = new NuiLockedRect();
+        //Kinect.NativeMethods.NuiImageGetColorPixelCoordinateFrameFromDepthPixelFrameAtResolution(NuiImageResolution.resolution320x240, NuiImageResolution.resolution640x480, 320 * 240, lockedRectPtr.pBits, (640 * 480) * 2, pMappedBits);
+        //Debug.Log(pMappedBits);
+        return new short[1];
+    }
+
+    NuiSkeletonFrame KinectInterface.getSkeleton() {
 		return skeletonFrame[curFrame % skeletonFrame.Length];
 	}
 	/*
@@ -116,11 +124,14 @@ public class KinectEmulator : MonoBehaviour, KinectInterface {
 		NativeMethods.NuiSkeletonCalculateBoneOrientations(ref skeletonData, boneOrientations);
 		return boneOrientations;
 	}
-	
-	bool KinectInterface.pollColor() {
+
+
+
+    bool KinectInterface.pollColor() {
 		return false;
 	}
 	
+
 	Color32[] KinectInterface.getColor() {
 		return null;
 	}

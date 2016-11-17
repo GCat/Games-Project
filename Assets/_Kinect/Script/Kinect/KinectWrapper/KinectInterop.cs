@@ -31,7 +31,8 @@ namespace Kinect {
 		Color32[] getColor();
 		bool pollDepth();
 		short[] getDepth();
-	}
+        short[] getMappedDepth();
+    }
 	
 	public static class Constants
 	{
@@ -157,7 +158,7 @@ namespace Kinect {
 		public float fJitterRadius;
 		public float fMaxDeviationRadius;
 	}
-	
+
 	// flag for skeleton tracking mode
 	// kinect Sdk 1.7.0, June 2013, Jason Added
 	public enum NuiSkeletonFlags
@@ -429,6 +430,7 @@ namespace Kinect {
 		uint width;
 		uint height;
 	}
+
 	
 	// to marshal the data from NuiImageFrame to this struct
 	// reference: http://msdn.microsoft.com/en-us/library/nuisensor.inuiframetexture.aspx
@@ -453,8 +455,9 @@ namespace Kinect {
 		[PreserveSig]
 		int UnlockRect(uint Level);
 	}
-	
-	public class NativeMethods
+
+
+    public class NativeMethods
 	{
 		[DllImportAttribute(@"C:\Windows\System32\Kinect10.dll", EntryPoint = "NuiSetDeviceStatusCallback")]
 	    public static extern void NuiSetDeviceStatusCallback(NuiStatusProc callback, IntPtr pUserData);
@@ -467,12 +470,14 @@ namespace Kinect {
 		
 		[DllImportAttribute(@"C:\Windows\System32\Kinect10.dll", EntryPoint = "NuiCameraElevationSetAngle")]
 		public static extern int NuiCameraSetAngle(long angle);
-		
-		/*
+
+        [DllImportAttribute(@"C:\Windows\System32\Kinect10.dll", EntryPoint = "NuiImageGetColorPixelCoordinatesFromDepthPixelAtResolution")]
+        public static extern int NuiImageGetColorPixelCoordinatesFromDepthPixelAtResolution(NuiImageResolution eColorResolution, NuiImageResolution eDepthResolution, [Optional]ref NuiImageViewArea pcViewArea, long lDepthX, long lDepthY, ushort usDepthValue, ref long plColorX, ref long plColorY);
+        /*
 		 * kinect skeleton functions
 		 */
-		
-		[DllImportAttribute(@"C:\Windows\System32\Kinect10.dll", EntryPoint = "NuiSkeletonTrackingEnable")]
+
+        [DllImportAttribute(@"C:\Windows\System32\Kinect10.dll", EntryPoint = "NuiSkeletonTrackingEnable")]
 	    public static extern int NuiSkeletonTrackingEnable(IntPtr hNextFrameEvent, NuiSkeletonFlags dwFlags);
 		
 	    [DllImportAttribute(@"C:\Windows\System32\Kinect10.dll", EntryPoint = "NuiSkeletonGetNextFrame")]

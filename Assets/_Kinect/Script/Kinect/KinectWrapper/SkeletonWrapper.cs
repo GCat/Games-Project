@@ -196,7 +196,7 @@ public class SkeletonWrapper : MonoBehaviour {
 				for (int bone = 0; bone < (int)Kinect.NuiSkeletonPositionIndex.Count; bone++)
 				{
 					Vector3 oldpos = bonePos[player,bone];
-					
+
 					bonePos[player,bone] = kinectToWorld.MultiplyPoint3x4(kinect.getSkeleton().SkeletonData[trackedPlayers[player]].SkeletonPositions[bone]);
 					//bonePos[player,bone] = kinectToWorld.MultiplyPoint3x4(bonePos[player, bone]);
 					rawBonePos[player, bone] = kinect.getSkeleton().SkeletonData[trackedPlayers[player]].SkeletonPositions[bone];
