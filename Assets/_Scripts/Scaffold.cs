@@ -69,7 +69,9 @@ public class Scaffold : MonoBehaviour {
         }
 
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, Vector3.down, out hit, 1.0f))
+        Vector3 curLocation = transform.position;
+        curLocation.y -= 2.5f;
+        if (Physics.Raycast(curLocation, Vector3.down, out hit, 1.0f))
         {
             if (hit.transform.tag == "Ground")
             {
@@ -115,7 +117,7 @@ public class Scaffold : MonoBehaviour {
             case BuildingType.IRONMINE:
                 faithCost = 30;
                 res = Resources.Load("IronMine") as GameObject;
-                location.y = 1.5f;
+                location.y = 2.5f;
                 break;
             case BuildingType.FARM:
                 faithCost = 10;
