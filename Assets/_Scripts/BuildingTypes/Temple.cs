@@ -1,14 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class IronMine : ResourceBuilding
-{
+public class Temple : ResourceBuilding {
+
+
     public override void create_building()
     {
         this.timer = 0f;
         this.startTime = Time.time;
-        timeStep = 5.0f;
-        buildingName = "IRONMINE";
+        timeStep = 0.5f;
+        buildingName = "TEMPLE";
         resourceCounter = (ResourceCounter)GameObject.Find("Resource_tablet").GetComponent("ResourceCounter");
     }
 
@@ -31,6 +32,6 @@ public class IronMine : ResourceBuilding
     }
     public override void incrementResource()
     {
-        resourceCounter.addIron();
+        resourceCounter.addFaith();
     }
 }

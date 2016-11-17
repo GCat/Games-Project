@@ -1,19 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LumberMill : MonoBehaviour
+public class LumberYard : ResourceBuilding
 {
-
-    float timer;
-    float startTime;
-    public float timeStep;
-    ResourceCounter resourceCounter;
-
-    public void create_building()
+    public override void create_building()
     {
         this.timer = 0f;
         this.startTime = Time.time;
         timeStep = 2.0f;
+        buildingName = "LUMBERYARD";
         resourceCounter = (ResourceCounter)GameObject.Find("Resource_tablet").GetComponent("ResourceCounter");
     }
 
@@ -34,7 +29,7 @@ public class LumberMill : MonoBehaviour
         }
 
     }
-    void incrementResource()
+    public override void incrementResource()
     {
         resourceCounter.addWood();
     }

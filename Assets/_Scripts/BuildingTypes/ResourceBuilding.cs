@@ -1,55 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ResourceBuilding : MonoBehaviour {
-
-    float timer;
-    float startTime;
+public abstract class ResourceBuilding : MonoBehaviour, Building
+{
+    public string buildingName;
+    public Vector3 location;
+    public float timer;
+    public float startTime;
     public float timeStep;
-    ResourceCounter resourceCounter;
+    public ResourceCounter resourceCounter;
 
-    public void create_building()
+    public abstract void create_building();
+    public abstract void incrementResource();
+    string Building.getName()
     {
-
-        this.timer = 0f;
-        this.startTime = Time.time;
-        timeStep = 1.0f;
-        resourceCounter = (ResourceCounter) GameObject.Find("Resource_tablet").GetComponent("ResourceCounter");
+        return buildingName;
     }
-
-	// Use this for initialization
-	void Start () {
-        create_building();
-	}
-	
-	// Update is called once per frame
-	void FixedUpdate () {
-        timer = Time.time - startTime;
-        if (timer > timeStep)
-        {
-            incrementResource();
-            startTime = Time.time;
-        }
-
-    }
-    void incrementResource()
+    Vector3 Building.getLocation()
     {
-        int res = Random.Range(0, 4);
-        if (res < 1)
-        {
-            resourceCounter.addFood();
-        }
-        else if (res < 2)
-        {
-            resourceCounter.addWood();
-        }
-        else if (res < 3)
-        {
-            resourceCounter.addStone();
-        }
-        else
-        {
-            resourceCounter.addIron();
-        }
+        return this.gameObject.transform.position;
     }
 }

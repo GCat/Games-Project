@@ -1,19 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
-public class StoneQuarry : MonoBehaviour
+public class StoneQuarry : ResourceBuilding
 {
-
-    float timer;
-    float startTime;
-    public float timeStep;
-    ResourceCounter resourceCounter;
-
-    public void create_building()
+    public override void create_building()
     {
         this.timer = 0f;
         this.startTime = Time.time;
         timeStep = 4.0f;
+        buildingName = "QUARRY";
         resourceCounter = (ResourceCounter)GameObject.Find("Resource_tablet").GetComponent("ResourceCounter");
     }
 
@@ -34,7 +30,7 @@ public class StoneQuarry : MonoBehaviour
         }
 
     }
-    void incrementResource()
+    public override void incrementResource()
     {
         resourceCounter.addStone();
     }
