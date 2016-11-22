@@ -39,6 +39,7 @@ public class Scaffold : MonoBehaviour {
         location.z = this.transform.position.z;
         placeable = isPlaceable();
         setResourceText();
+        //location.y += 1;
         if (!(type.ToString().Equals(curType)))
         {
             placeTimeLeft = placeTime;
@@ -70,7 +71,7 @@ public class Scaffold : MonoBehaviour {
 
         RaycastHit hit;
         Vector3 curLocation = transform.position;
-        curLocation.y -= 2.5f;
+        curLocation.y -= 4.95f;
         if (Physics.Raycast(curLocation, Vector3.down, out hit, 1.0f))
         {
             if (hit.transform.tag == "Ground")
@@ -91,8 +92,9 @@ public class Scaffold : MonoBehaviour {
     //converts this scaffold into a finished building
     void build()
     {
-        GameObject.Instantiate(res, location, Quaternion.identity);
         Destroy(this.gameObject);
+        GameObject.Instantiate(res, location, Quaternion.identity);
+        
 
     }
     //determines the type and sets the displayed text

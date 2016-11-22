@@ -4,7 +4,6 @@ using System.Collections;
 public abstract class ResourceBuilding : MonoBehaviour, Building
 {
     public string buildingName;
-    public Vector3 location;
     public float timer;
     public float startTime;
     public float timeStep;
