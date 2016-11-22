@@ -39,7 +39,7 @@ public class Scaffold : MonoBehaviour {
         location.z = this.transform.position.z;
         placeable = isPlaceable();
         setResourceText();
-        location.y += 1;
+        //location.y += 1;
         if (!(type.ToString().Equals(curType)))
         {
             placeTimeLeft = placeTime;
@@ -71,7 +71,7 @@ public class Scaffold : MonoBehaviour {
 
         RaycastHit hit;
         Vector3 curLocation = transform.position;
-        curLocation.y -= 2.95f;
+        curLocation.y -= 4.95f;
         if (Physics.Raycast(curLocation, Vector3.down, out hit, 1.0f))
         {
             if (hit.transform.tag == "Ground")
