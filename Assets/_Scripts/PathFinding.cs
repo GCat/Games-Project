@@ -34,8 +34,8 @@ public class PathFinding : MonoBehaviour {
 	}
 	
 	public List<int> Astar(int src, int dst){
-		Debug.Log("Start Pathfinding");
-		Debug.Log(world.getEdgesCount());
+		//Debug.Log("Start Pathfinding");
+		//Debug.Log(world.getEdgesCount());
 
 		List<Node> open = new List<Node>();
 		List<Node> closed= new List<Node>();
@@ -79,7 +79,7 @@ public class PathFinding : MonoBehaviour {
 	}
 
 	private List<int> reconstructpath (Node q){
-		Debug.Log(q.id);
+		//Debug.Log(q.id);
 		List<int> waypoints = new List<int>();
 		Node n = q;
 		while (n.parent != null){

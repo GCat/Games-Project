@@ -19,7 +19,7 @@ public class Agent : MonoBehaviour {
 	public float gravity = 9.81F;
 	public float weapon_strength;
 	
-	private Vector3 [] lastPositions = new Vector3[3];
+	private Vector3 [] previousLocations = new Vector3[3];
 	private float noMovement = 0.01f;
 
 	private Vector3 initialPosition;
@@ -45,7 +45,7 @@ public class Agent : MonoBehaviour {
 		waypoints = new List<int>();
 		noMoreEnemies = false;
 		initialPosition = transform.position;
-		lastPositions[0] = initialPosition;
+		previousLocations[0] = initialPosition;
 		controller = GetComponent<CharacterController>();
 		rb = GetComponent<Rigidbody>();
 		pathFinder =(PathFinding) GameObject.FindGameObjectWithTag("PathFinder").GetComponent(typeof(PathFinding));
@@ -79,23 +79,11 @@ public class Agent : MonoBehaviour {
 		}
 
 	}
-	void OnMouseDown(){
-		Debug.Log("clicekd");
-		if(!threadRunning){
-			Debug.Log("Here");
-			Vector3 target = new Vector3(0.0f,0.05f,-20.0f);
-			int srcCell = coord2cellID(transform.position);
-			int targetCell = coord2cellID(target);
-			threadRunning = true;
-			t1 = new Thread(()=>astar(srcCell,targetCell));
-			t1.Start();
-		}
-	}
 
 	void  astar(int srcCell, int targetCell){
-		Debug.Log("Entered");
+		//Debug.Log("Entered");
 		waypoints = new List<int>(pathFinder.Astar(srcCell,targetCell));
-		Debug.Log("Done");
+		//Debug.Log("Done");
 		threadRunning = false;
 	}
 
