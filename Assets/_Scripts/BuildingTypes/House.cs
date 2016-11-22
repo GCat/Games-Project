@@ -90,10 +90,31 @@ public class House  : MonoBehaviour, Building
         {
 
             Vector3 location_human = new Vector3(location.x, 0.5f, (location.z + 4));
-            Instantiate(Resources.Load("Human"), location_human, Quaternion.identity);
+            int layerMask = 1 << 8;
+            Vector3 target = new Vector3(location_human.x, 0.05f, location_human.z);
+            Collider[] obstacles = Physics.OverlapSphere(target, 0.05f, layerMask);
+            if (obstacles.Length != 0)
+            {
+                string check = obstacles[0].gameObject.GetComponent<Cell>().getStatus();
+                if (check == "empty") Instantiate(Resources.Load("Human"), location_human, Quaternion.identity);
+                else Debug.Log("Oops");
+            }
             add_human();
             update_happiness();
         }
         else full_house = true;
+    }
+
+    private int coord2cellID(Vector3 coords)
+    {
+        int layerMask = 1 << 8;
+        Vector3 target = new Vector3(coords.x, 0.05f, coords.z);
+
+        Collider[] obstacles = Physics.OverlapSphere(target, 0.05f, layerMask);
+        if (obstacles.Length != 0)
+        {
+            return obstacles[0].gameObject.GetComponent<Cell>().id;
+        }
+        return -1;
     }
 }
