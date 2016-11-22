@@ -24,8 +24,10 @@ public class Agent : MonoBehaviour {
 
 	private Vector3 initialPosition;
 	private PathFinding pathFinder;
+
 	private Vector3 nextNode;
 	private int targetCell;
+
 	private CharacterController controller;
 	private Vector3 cracyVector = new Vector3 (0.0f,-50.0f,0.0f);
 
@@ -88,55 +90,46 @@ public class Agent : MonoBehaviour {
 	}
 
 	private void wanderNav(){
+
 		if(nextNode.y  == -50f){
-			if (waypoints.Count > 0){
-				int n = waypoints[0];
-				waypoints.Remove(n);
-				Vector3 p = pathFinder.getCellPosition(n);
-				p.y = 0.5f;
-				nextNode = p;
-			}
-			else{
-				//GetComponent<Rigidbody>().velocity = Vector3.zero;
-				//GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
-				int srcCell = coord2cellID(transform.position);
-				int targetCell = calculateNewTarget();
-				if(!threadRunning){
-					threadRunning = true;
-					t1 = new Thread(()=>astar(srcCell,targetCell));
-					t1.Start();
-				}
-			}
-		}
-		else if (Vector3.Distance(transform.position,nextNode) < 0.3f){
-			if(waypoints.Count < 1){
-				rb.velocity /= 10;
-				nextNode.y = -50f ;
-			}
-			else{
-				int n = waypoints[0];
-				waypoints.Remove(n);
-				Vector3 p = pathFinder.getCellPosition(n);
-				p.y = 0.5f;
-				nextNode = p;
-				if (pathFinder.checkCell(n) != "empty"){
-					nextNode.y = -50.0f;
-					waypoints = new List<int>();
-				}
-			}
-		}
-		else if(!isMoving){
-			nextNode.y = -50.0f;
-			waypoints = new List<int>();
+			getNextNode();
 		}
 		else{
-			Vector3 tempn = new Vector3(nextNode.x,0.05f,nextNode.z);
-			int n = coord2cellID(tempn);
-			if (pathFinder.checkCell(n) != "empty"){
-				nextNode.y = -50.0f;
+			if(pathFinder.checkCell(targetCell) == "empty"){
+				Vector3 moveDirection = nextNode -transform.position;
+				if(moveDirection.magnitude < 0.01f){
+					transform.position = nextNode;
+					nextNode.y = -50.0f;
+				}
+				else{
+					transform.LookAt(nextNode);
+					controller.Move(moveDirection.normalized *speed *Time.deltaTime);
+				}
+			}
+			else{
+				nextNode.y =-50.0f;
 				waypoints = new List<int>();
 			}
-			else rb.velocity =((nextNode -transform.position) * speed);
+	
+		}
+	}
+	private void getNextNode(){
+		if (waypoints.Count > 0){
+			targetCell = waypoints[0];
+			waypoints.Remove(targetCell);
+			Vector3 p = pathFinder.getCellPosition(targetCell);
+			p.y = 0.5f;
+			nextNode = p;
+
+		}
+		else{
+			int srcCell = coord2cellID(transform.position);
+			targetCell = calculateNewTarget();
+			if(!threadRunning){
+				threadRunning = true;
+				t1 = new Thread(()=>astar(srcCell,targetCell));
+				t1.Start();
+			}
 		}
 	}
 
