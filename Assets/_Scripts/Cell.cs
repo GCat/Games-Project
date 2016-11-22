@@ -30,16 +30,16 @@ public class Cell : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other) {
 		if((other.tag != "Human") && (other.tag != "Badie")){
-			//string s = string.Format("Cell ({0},{1}) blocked id: {2}!",transform.position.x,transform.position.z,id);
-			//Debug.Log(s);
+			string s = string.Format("Cell ({0},{1}) blocked id: {2}!",transform.position.x,transform.position.z,id);
+			Debug.Log(s);
 			pathfinding.SendMessage("buildingAdded",id);
 		}
     }
 
 	void OnTriggerExit(Collider other) {
 		if((other.tag != "Human") && (other.tag != "Badie")){
-			//string s = string.Format("Cell ({0},{1}) blocked id: {2}!",transform.position.x,transform.position.z,id);
-			//Debug.Log(s);
+			string s = string.Format("Cell ({0},{1}) unblocked id: {2}!",transform.position.x,transform.position.z,id);
+			Debug.Log(s);
 			pathfinding.SendMessage("buildingRemoved",id);
 		}
 		
