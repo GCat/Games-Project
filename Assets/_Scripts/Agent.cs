@@ -104,10 +104,23 @@ public class Agent : MonoBehaviour {
 				Vector3 p = pathFinder.getCellPosition(n);
 				p.y = 0.5f;
 				nextNode = p;
+                if (pathFinder.checkCell(n) != "empty")
+                {
+                    nextNode.y = -50.0f;
+                    waypoints = new List<int>();
+                }
 			}
 		}
 		else{
-			rb.velocity =((nextNode -transform.position) * speed);
+            Vector3 tempn = new Vector3(nextNode.x, 0.05f, nextNode.z);
+            int n = coord2cellID(tempn);
+            if (pathFinder.checkCell(n) != "empty")
+            {
+                nextNode.y = -50.0f;
+                waypoints = new List<int>();
+            }
+            rb.velocity =((nextNode -transform.position) * speed);
+
 		}
 	}
 

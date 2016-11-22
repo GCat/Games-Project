@@ -39,6 +39,7 @@ public class Scaffold : MonoBehaviour {
         location.z = this.transform.position.z;
         placeable = isPlaceable();
         setResourceText();
+        location.y += 1;
         if (!(type.ToString().Equals(curType)))
         {
             placeTimeLeft = placeTime;
