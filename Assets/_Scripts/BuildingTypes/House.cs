@@ -8,7 +8,7 @@ public class House  : MonoBehaviour, Building
     private double happiness;     //overall happiness of the house: the more crowded => less happy // this is a percentage
     public float timer;       //spawning timer
     private float StartTime;
-    private Vector3 location;  //position of house 
+    public Vector3 location;  //position of house 
     private bool full_house;   // flag of some sort 
 
     //Constructor of a House
@@ -64,12 +64,13 @@ public class House  : MonoBehaviour, Building
     
     void Start()
     {
-        
+        location = this.transform.position;
     }
 
     //Update is called once per frame
     void FixedUpdate()
     {
+        location = this.transform.position;
         //Calculate time
         timer   = Time.time - StartTime;
 
@@ -87,7 +88,8 @@ public class House  : MonoBehaviour, Building
         //should add a check to see if space to put human already taken 
         if (humans <= capacity)
         {
-            Vector3 location_human = new Vector3(location.x, location.y, (location.z + 5));
+
+            Vector3 location_human = new Vector3(location.x, 0.5f, (location.z + 4));
             Instantiate(Resources.Load("Human"), location_human, Quaternion.identity);
             add_human();
             update_happiness();

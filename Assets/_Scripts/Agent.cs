@@ -18,6 +18,9 @@ public class Agent : MonoBehaviour {
 	public float speed;
 	public float gravity = 9.81F;
 	public float weapon_strength;
+	
+	private Vector3 [] previousLocations = new Vector3[3];
+	private float noMovement = 0.01f;
 
 	private Vector3 initialPosition;
 	private PathFinding pathFinder;
@@ -26,6 +29,8 @@ public class Agent : MonoBehaviour {
 	private CharacterController controller;
 	private Vector3 cracyVector = new Vector3 (0.0f,-50.0f,0.0f);
 
+
+	private bool isMoving = false;
 	private GameObject closestBadie;
 	private bool noMoreEnemies;
 	private int maxCell;
@@ -40,6 +45,7 @@ public class Agent : MonoBehaviour {
 		waypoints = new List<int>();
 		noMoreEnemies = false;
 		initialPosition = transform.position;
+        previousLocations[0] = initialPosition;
 		controller = GetComponent<CharacterController>();
 		rb = GetComponent<Rigidbody>();
 		pathFinder =(PathFinding) GameObject.FindGameObjectWithTag("PathFinder").GetComponent(typeof(PathFinding));
@@ -51,6 +57,27 @@ public class Agent : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 		wanderNav();
+		
+	    for(int i = 0; i < previousLocations.Length - 1; i++)
+		{
+		    previousLocations[i] = previousLocations[i+1];
+		}
+		previousLocations[previousLocations.Length - 1] = transform.position;
+
+		for(int i = 0; i < previousLocations.Length - 1; i++)
+		{
+			if(Vector3.Distance(previousLocations[i], previousLocations[i + 1]) >= 0.001f)
+			{
+				//The minimum movement has been detected between frames
+				isMoving = true;
+				break;
+			}
+			else
+			{
+				isMoving = false;
+			}
+		}
+
 	}
 	void OnMouseDown(){
 		Debug.Log("clicekd");
@@ -104,23 +131,25 @@ public class Agent : MonoBehaviour {
 				Vector3 p = pathFinder.getCellPosition(n);
 				p.y = 0.5f;
 				nextNode = p;
-                if (pathFinder.checkCell(n) != "empty")
-                {
-                    nextNode.y = -50.0f;
-                    waypoints = new List<int>();
-                }
+				if (pathFinder.checkCell(n) != "empty"){
+					nextNode.y = -50.0f;
+					waypoints = new List<int>();
+				}
+
 			}
 		}
+		else if(!isMoving){
+			nextNode.y = -50.0f;
+			waypoints = new List<int>();
+		}
 		else{
-            Vector3 tempn = new Vector3(nextNode.x, 0.05f, nextNode.z);
-            int n = coord2cellID(tempn);
-            if (pathFinder.checkCell(n) != "empty")
-            {
-                nextNode.y = -50.0f;
-                waypoints = new List<int>();
-            }
-            rb.velocity =((nextNode -transform.position) * speed);
-
+			Vector3 tempn = new Vector3(nextNode.x,0.05f,nextNode.z);
+			int n = coord2cellID(tempn);
+			if (pathFinder.checkCell(n) != "empty"){
+				nextNode.y = -50.0f;
+				waypoints = new List<int>();
+			}
+			else rb.velocity =((nextNode -transform.position) * speed);
 		}
 	}
 
