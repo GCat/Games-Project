@@ -15,7 +15,7 @@ public class Agent : MonoBehaviour {
 
 	public float health;
 	public float strenght;
-	public float speed;
+	public float speed = 1;
 	public float gravity = 9.81F;
 	public float weapon_strength;
 	
@@ -96,8 +96,12 @@ public class Agent : MonoBehaviour {
 		}
 		else{
 			if(pathFinder.checkCell(targetCell) == "empty"){
+				if (!isMoving){
+					nextNode.y = -50.0f;
+					waypoints = new List<int>();
+				}
 				Vector3 moveDirection = nextNode -transform.position;
-				if(moveDirection.magnitude < 0.01f){
+				if(moveDirection.magnitude < 0.001f){
 					transform.position = nextNode;
 					nextNode.y = -50.0f;
 				}
@@ -107,7 +111,7 @@ public class Agent : MonoBehaviour {
 				}
 			}
 			else{
-				nextNode.y =-50.0f;
+				nextNode.y =- 50.0f;
 				waypoints = new List<int>();
 			}
 	
