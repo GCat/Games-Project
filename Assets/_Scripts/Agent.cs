@@ -15,7 +15,7 @@ public class Agent : MonoBehaviour {
 
 	public float health;
 	public float strenght;
-	public float speed = 1;
+	public float speed;
 	public float gravity = 9.81F;
 	public float weapon_strength;
 	
@@ -25,31 +25,31 @@ public class Agent : MonoBehaviour {
 	private Vector3 initialPosition;
 	private PathFinding pathFinder;
 
-	private Vector3 nextNode;
-	private int targetCell;
+	public Vector3 nextNode;
+	public int targetCell;
 
-	private CharacterController controller;
-	private Vector3 cracyVector = new Vector3 (0.0f,-50.0f,0.0f);
+	private Rigidbody rb;
 
 
-	private bool isMoving = false;
+	public bool isMoving = false;
 	private GameObject closestBadie;
 	private bool noMoreEnemies;
 	private int maxCell;
-
-	private Rigidbody rb;
 
 	void Start () {
 		radius = 50;
 		strenght = 10;
 		health = 100;
+		speed = 2.0f;
 		nextNode =  new Vector3 (0.0f,-50.0f,0.0f);
 		waypoints = new List<int>();
 		noMoreEnemies = false;
 		initialPosition = transform.position;
-        previousLocations[0] = initialPosition;
-		controller = GetComponent<CharacterController>();
+    previousLocations[0] = initialPosition;
+
 		rb = GetComponent<Rigidbody>();
+		rb.interpolation = RigidbodyInterpolation.Extrapolate;
+
 		pathFinder =(PathFinding) GameObject.FindGameObjectWithTag("PathFinder").GetComponent(typeof(PathFinding));
 		maxCell =pathFinder.getMaxCell();
 		closestBadie = null;
@@ -57,7 +57,7 @@ public class Agent : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void FixedUpdate () {
+	void Update () {
 		wanderNav();
 		
 	    for(int i = 0; i < previousLocations.Length - 1; i++)
@@ -102,31 +102,18 @@ public class Agent : MonoBehaviour {
 	}
 
 	private void wanderNav(){
-
-		if(nextNode.y  == -50f){
-			getNextNode();
-		}
+		// for this to work 2*tolerance >= speed/framerate  so tolerance is 0.1f therefore speed/frame < 0.2f
+		if(nextNode.y  == -50f) getNextNode();
 		else{
 			if(pathFinder.checkCell(targetCell) == "empty"){
-				if (!isMoving){
-					nextNode.y = -50.0f;
-					waypoints = new List<int>();
+				Vector3 offset = nextNode -transform.position;
+				if(offset.magnitude > 0.1f){
+					Vector3 finalVal =offset.normalized *speed;
+					rb.MovePosition(transform.position + finalVal * Time.deltaTime);
 				}
-				Vector3 moveDirection = nextNode -transform.position;
-				if(moveDirection.magnitude < 0.001f){
-					transform.position = nextNode;
-					nextNode.y = -50.0f;
-				}
-				else{
-					transform.LookAt(nextNode);
-					controller.Move(moveDirection.normalized *speed *Time.deltaTime);
-				}
+				else getNextNode();
 			}
-			else{
-				nextNode.y =- 50.0f;
-				waypoints = new List<int>();
-			}
-	
+			else getNextNode();
 		}
 	}
 	private void getNextNode(){
