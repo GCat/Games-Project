@@ -11,6 +11,7 @@ public class ObjectDetector : MonoBehaviour {
     public bool useTracking = true;
     public int trackedObjects = 0;
     private Vector3 velocity = Vector3.zero;
+    public GameObject hand;
     // Use this for initialization
     void Start () {
         if (useTracking)
@@ -32,20 +33,43 @@ public class ObjectDetector : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if (KinectTrackingLib.KinectTrackingLib.poll_tracker() == 0)
+        float x = 0;
+        float y = 0;
+        float z = 0;
+        int hr = KinectTrackingLib.KinectTrackingLib.poll_tracker();
+        switch (hr)
         {
-            showColor();
-            trackedObjects = KinectTrackingLib.KinectTrackingLib.get_tracked_objects_count();
-            Vector3 testPoint = new Vector3(0, 0, 0);
-            if (trackedObjects > 0)
-            {
-                KinectTrackingLib.KinectTrackingLib.get_tracked_object_location(0, ref testPoint.x, ref testPoint.y, ref testPoint.z);
-                if (testPoint.magnitude > 1)
-                {
-                    testObject.transform.position = Vector3.SmoothDamp(testObject.transform.position, transform.position + testPoint / 50, ref velocity, 0.3f);
-                }
-            }
+            case 1:
+                //no data from kinect
+                break;
+            case 2:
+                //depth data
 
+                int count = KinectTrackingLib.KinectTrackingLib.get_tracked_objects_count();
+                //Console.WriteLine("Tracked objects:" + count);
+                if (count > 0)
+                {
+                    KinectTrackingLib.KinectTrackingLib.get_tracked_object_location(0, ref x, ref y, ref z);
+                    //Console.WriteLine(x + "," + y + "," + z);
+                }
+
+                //Console.WriteLine(x + "," + y + "," + z);
+                break;
+            case 3:
+                //color data
+                x = 0;
+                y = 0;
+                z = 0;
+                KinectTrackingLib.KinectTrackingLib.track_hands();
+                KinectTrackingLib.KinectTrackingLib.get_hand_location(ref x, ref y, ref z);
+                Vector3 handLoc = new Vector3(x, y, z);
+                hand.transform.position = Vector3.SmoothDamp(hand.transform.position, transform.position + handLoc,ref velocity, 0.3f);
+                KinectTrackingLib.KinectTrackingLib.show_color_stream();
+                break;
+            default:
+                break;
         }
+
+
     }
 }
