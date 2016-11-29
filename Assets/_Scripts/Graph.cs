@@ -128,8 +128,10 @@ public class Graph {
 	}
 
 	public string checkCell (int cellID){
-
-		return ((Cell)nodes[cellID].GetComponent(typeof(Cell))).getStatus();
+		if(cellID > 0 && cellID <nodes.Count){
+			return ((Cell)nodes[cellID].GetComponent(typeof(Cell))).getStatus();
+		}
+		return "Invalid Cell";
 	}
 
 	private void initialize(){

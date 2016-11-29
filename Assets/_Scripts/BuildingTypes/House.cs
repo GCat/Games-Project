@@ -96,8 +96,12 @@ public class House  : MonoBehaviour, Building
             if (obstacles.Length != 0)
             {
                 string check = obstacles[0].gameObject.GetComponent<Cell>().getStatus();
-                if (check == "empty") Instantiate(Resources.Load("Human"), location_human, Quaternion.identity);
-                else Debug.Log("Oops");
+								layerMask = ~layerMask;
+								obstacles = Physics.OverlapSphere(location_human, 1.0f, layerMask);
+								if (obstacles.Length != 0){
+									if (check == "empty") Instantiate(Resources.Load("Human"), location_human, Quaternion.identity);
+									else Debug.Log("Oops");
+								}
             }
             add_human();
             update_happiness();
