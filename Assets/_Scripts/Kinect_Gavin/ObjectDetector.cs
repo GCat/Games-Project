@@ -12,7 +12,10 @@ public class ObjectDetector : MonoBehaviour {
     public int trackedObjects = 0;
     private Vector3 velocity = Vector3.zero;
     public GameObject hand;
+    public Vector3 playArea;
     // Use this for initialization
+    bool calibrated = false;
+    private Vector3 calib;
     void Start () {
         if (useTracking)
         {
@@ -62,8 +65,18 @@ public class ObjectDetector : MonoBehaviour {
                 z = 0;
                 KinectTrackingLib.KinectTrackingLib.track_hands();
                 KinectTrackingLib.KinectTrackingLib.get_hand_location(ref x, ref y, ref z);
+
                 Vector3 handLoc = new Vector3(x, y, z);
-                hand.transform.position = Vector3.SmoothDamp(hand.transform.position, transform.position + handLoc,ref velocity, 0.3f);
+                
+                if(handLoc != Vector3.zero && !calibrated)
+                {
+                    Vector3 inv = new Vector3(1 / x, 1 / y, 1 / z);
+                    calib =Vector3.Scale(playArea, inv);
+                    calibrated = true;
+                    Debug.Log("calibrated to" + handLoc);
+                }
+                handLoc = Vector3.Scale(handLoc, calib);
+                hand.transform.position = Vector3.SmoothDamp(hand.transform.position,handLoc,ref velocity, 0.3f);
                 KinectTrackingLib.KinectTrackingLib.show_color_stream();
                 break;
             default:
