@@ -11,6 +11,7 @@ public class House  : MonoBehaviour, Building
     public Vector3 location;  //position of house 
     private bool full_house;   // flag of some sort
     public ResourceCounter resourceCounter;
+    private int foodCost = 10;
 
     //Constructor of a House
     //capacity = number of humans a house can hold; location = location of a house
@@ -80,7 +81,10 @@ public class House  : MonoBehaviour, Building
         //Spawn human every min 
         if (timer >= 10)
         {
-            spawn();
+            if (resourceCounter.getFood() > foodCost)
+            {
+                spawn();
+            }
             StartTime = Time.time;
         }
     }
@@ -108,6 +112,7 @@ public class House  : MonoBehaviour, Building
             }
             add_human();
             update_happiness();
+            resourceCounter.removeFood(foodCost);
         }
         else full_house = true;
     }
