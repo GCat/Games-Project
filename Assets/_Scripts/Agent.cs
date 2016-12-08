@@ -7,8 +7,9 @@ public class Agent : MonoBehaviour {
  
 	public bool fightMode;
 	public float radius;
+    public AudioClip sacrificeClip;
 
-	private Thread t1;
+    private Thread t1;
 	private bool threadRunning = false;
 
 	List<int> waypoints;
@@ -36,16 +37,21 @@ public class Agent : MonoBehaviour {
 	private bool noMoreEnemies;
 	private int maxCell;
 
-	void Start () {
+    private bool stopMoving;
+    private Vector3 screenPoint;
+    private Vector3 Mouse_offset;
+    private bool sacrificeEntered = false;
+
+    void Start () {
 		radius = 50;
 		strenght = 10;
 		health = 100;
 		speed = 2.0f;
+        stopMoving = false;
 		nextNode =  new Vector3 (0.0f,-50.0f,0.0f);
 		waypoints = new List<int>();
 		noMoreEnemies = false;
 		initialPosition = transform.position;
-    previousLocations[0] = initialPosition;
 
 		rb = GetComponent<Rigidbody>();
 		rb.interpolation = RigidbodyInterpolation.Extrapolate;
@@ -58,21 +64,50 @@ public class Agent : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		wanderNav();
+		if (fightMode && !stopMoving)
+			fightNav ();
+		else if(!stopMoving)
+			wanderNav();
 	}
 
-	void OnMouseDown(){
-		if(!threadRunning){
-			Vector3 target = new Vector3(0.0f,0.05f,-20.0f);
-			int srcCell = coord2cellID(transform.position);
-			int targetCell = coord2cellID(target);
-			threadRunning = true;
-			t1 = new Thread(()=>astar(srcCell,targetCell));
-			t1.Start();
-		}
-	}
+    void sacrifice()
+    {
+        sacrificeEntered = true;
+        GameObject resourceTab = GameObject.Find("Resource_tablet");
+        resourceTab.SendMessage("addFaith",100);
+        AudioSource source = GetComponent<AudioSource>();
+        source.PlayOneShot(sacrificeClip, 0.5f);
+        StartCoroutine(WaitToDestroy(3.0f));
+        
+    }
 
-	void  astar(int srcCell, int targetCell){
+    IEnumerator WaitToDestroy(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        GameObject.Destroy(gameObject);
+    }
+
+
+    void OnMouseDown()
+    {
+        Debug.Log("MOUSE DOWN");
+        screenPoint = Camera.main.WorldToScreenPoint(transform.position);
+        Mouse_offset = transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
+    }
+
+    void OnMouseDrag()
+    {
+        stopMoving = true;
+        Debug.Log("Here");
+        Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
+        Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) + Mouse_offset;
+        transform.position = curPosition;
+        if (Mathf.Abs(transform.position.x) > 50f || Mathf.Abs(transform.position.z) > 100f) {
+            if(!sacrificeEntered)sacrifice();
+        }
+    }
+
+    void  astar(int srcCell, int targetCell){
 		waypoints = new List<int>(pathFinder.Astar(srcCell,targetCell));
 		threadRunning = false;
 	}
@@ -95,6 +130,19 @@ public class Agent : MonoBehaviour {
 			}
 		}
 	}
+
+
+	private void fightNav(){
+		if (closestBadie == null){
+			closestBadie = findClosestEnemy ();
+			if (closestBadie == null) {
+				waypoints = new List<int> ();
+				nextNode.y = -50f;
+				fightMode = false;
+			}
+		}
+	}
+
 	private void getNextNode(){
 		if (waypoints.Count > 0){
 			targetCell = waypoints[0];
@@ -126,8 +174,7 @@ public class Agent : MonoBehaviour {
 		}
 		return -1;
 	}
-
-	
+		
 	private GameObject findClosestEnemy(){
 		GameObject[] badies;
 		GameObject closest = null;
