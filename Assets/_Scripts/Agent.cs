@@ -90,7 +90,7 @@ public class Agent : MonoBehaviour {
 					getNextNode ();
 			} else {
 				waypoints = new List<int> ();
-				nextNode.y == -50f;
+				nextNode.y = -50f;
 				getNextNode ();
 			}
 		}
