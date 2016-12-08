@@ -9,7 +9,8 @@ public class House  : MonoBehaviour, Building
     public float timer;       //spawning timer
     private float StartTime;
     public Vector3 location;  //position of house 
-    private bool full_house;   // flag of some sort 
+    private bool full_house;   // flag of some sort
+    public ResourceCounter resourceCounter;
 
     //Constructor of a House
     //capacity = number of humans a house can hold; location = location of a house
@@ -36,7 +37,8 @@ public class House  : MonoBehaviour, Building
     // Adding human to the count
     private void add_human()
     {
-            humans += 1;
+        humans += 1;
+        resourceCounter.addPop();
     }
 
     private void update_happiness()
@@ -65,6 +67,7 @@ public class House  : MonoBehaviour, Building
     void Start()
     {
         location = this.transform.position;
+        resourceCounter = (ResourceCounter)GameObject.Find("Resource_tablet").GetComponent("ResourceCounter");
     }
 
     //Update is called once per frame

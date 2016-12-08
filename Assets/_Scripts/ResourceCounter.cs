@@ -8,6 +8,7 @@ public class ResourceCounter : MonoBehaviour
     //The text displayed on the tablet
     private TextMesh textMesh; 
     public int faith = 0;
+    private int population = 0;
     private int iron = 0;
     private int stone = 0;
     private int food = 0;
@@ -93,6 +94,10 @@ public class ResourceCounter : MonoBehaviour
     }
     public void addFaith()
     {
-        faith++;
+        faith += (population*1)+1;
+    }
+    public void addPop()
+    {
+        population++;
     }
 }

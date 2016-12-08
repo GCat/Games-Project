@@ -1,36 +1,17 @@
 fileFormatVersion: 2
-guid: d6fb1f50da7a97943a147c010b9471a4
-timeCreated: 1480607055
+guid: 07dfafcefc076804da7b73df7066ae94
+timeCreated: 1481207638
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: //RootNode
-    100002: left_hand
-    100004: left_hand 1
-    100006: man_hands
-    100008: right_hand
-    100010: right_hand 1
-    100012: woman_hands
+    100002: right_hand
     400000: //RootNode
-    400002: left_hand
-    400004: left_hand 1
-    400006: man_hands
-    400008: right_hand
-    400010: right_hand 1
-    400012: woman_hands
-    2300000: left_hand
-    2300002: left_hand 1
-    2300004: right_hand
-    2300006: right_hand 1
-    3300000: left_hand
-    3300002: left_hand 1
-    3300004: right_hand
-    3300006: right_hand 1
+    400002: right_hand
+    2300000: right_hand
+    3300000: right_hand
     4300000: right_hand
-    4300002: left_hand
-    4300004: right_hand
-    4300006: left_hand
     9500000: //RootNode
   materials:
     importMaterials: 1
