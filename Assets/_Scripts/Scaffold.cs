@@ -56,6 +56,7 @@ public class Scaffold : MonoBehaviour {
         }
         if(placeTimeLeft <= 0)
         {
+            location.y += 0.2f;
             build();
         }
     }
