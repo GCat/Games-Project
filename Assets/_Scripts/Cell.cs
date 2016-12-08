@@ -33,6 +33,7 @@ public class Cell : MonoBehaviour {
 			string s = string.Format("Cell ({0},{1}) blocked id: {2}!",transform.position.x,transform.position.z,id);
 			Debug.Log(s);
 			pathfinding.SendMessage("buildingAdded",id);
+			details="blocked";
 		}
     }
 
@@ -41,10 +42,8 @@ public class Cell : MonoBehaviour {
 			string s = string.Format("Cell ({0},{1}) unblocked id: {2}!",transform.position.x,transform.position.z,id);
 			Debug.Log(s);
 			pathfinding.SendMessage("buildingRemoved",id);
+			details = "empty";
 		}
 		
     }
-	void OnMouseDown(){
-		Debug.Log("FUCK");
-	}
 }

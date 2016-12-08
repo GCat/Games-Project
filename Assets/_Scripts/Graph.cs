@@ -110,21 +110,21 @@ public class Graph {
 		bool not_firstinrow = cellID% ncellsinrow != 0;
 		bool not_lastinrow = (cellID+1)%ncellsinrow != 0;
 		//WEST
-		if (not_firstinrow) edges.Add(new Edge(gridx,cellID,offsets[4]));
+		if (not_firstinrow && checkCell(offsets[4]) == "empty") edges.Add(new Edge(gridx,cellID,offsets[4]));
 		//NORTH WEST
-		if (not_firstinrow && not_last_row) edges.Add(new Edge(squareRootOfHalf,cellID,offsets[0]));
+		if (not_firstinrow && not_last_row && checkCell(offsets[0]) == "empty") edges.Add(new Edge(squareRootOfHalf,cellID,offsets[0]));
 		//NORTH
-		if (not_last_row) edges.Add(new Edge(gridz,cellID,offsets[6]));
+		if (not_last_row && checkCell(offsets[6]) == "empty") edges.Add(new Edge(gridz,cellID,offsets[6]));
 		//NORTH EAST
-		if (not_lastinrow && not_last_row) edges.Add(new Edge(squareRootOfHalf,cellID,offsets[1]));
+		if (not_lastinrow && not_last_row && checkCell(offsets[1]) == "empty") edges.Add(new Edge(squareRootOfHalf,cellID,offsets[1]));
 		//EAST
-		if (not_lastinrow) edges.Add(new Edge(gridx,cellID,offsets[5]));
+		if (not_lastinrow && checkCell(offsets[5]) == "empty") edges.Add(new Edge(gridx,cellID,offsets[5]));
 		//SOUTH EAST
-		if (not_first_row && not_lastinrow) edges.Add(new Edge(squareRootOfHalf,cellID,offsets[3]));
+		if (not_first_row && not_lastinrow && checkCell(offsets[3]) == "empty") edges.Add(new Edge(squareRootOfHalf,cellID,offsets[3]));
 		//SOUTH
-		if (not_first_row) edges.Add(new Edge(squareRootOfHalf,cellID,offsets[7]));
+		if (not_first_row && checkCell(offsets[7]) == "empty") edges.Add(new Edge(squareRootOfHalf,cellID,offsets[7]));
 		// SOUTH WEST
-		if (not_first_row && not_firstinrow) edges.Add(new Edge(squareRootOfHalf,cellID,offsets[2]));
+		if (not_first_row && not_firstinrow && checkCell(offsets[2]) == "empty") edges.Add(new Edge(squareRootOfHalf,cellID,offsets[2]));
 	}
 
 	public string checkCell (int cellID){
