@@ -66,17 +66,23 @@ public class ObjectDetector : MonoBehaviour {
                 KinectTrackingLib.KinectTrackingLib.track_hands();
                 KinectTrackingLib.KinectTrackingLib.get_hand_location(ref x, ref y, ref z);
 
-                Vector3 handLoc = new Vector3(x, y, z);
-                
-                if(handLoc != Vector3.zero && !calibrated)
+                if (x > -400 && x < 600 & z > 1000 && z < 2000)
                 {
-                    Vector3 inv = new Vector3(1 / x, 1 / y, 1 / z);
-                    calib =Vector3.Scale(playArea, inv);
-                    calibrated = true;
-                    Debug.Log("calibrated to" + handLoc);
+                    x = x + 400;
+                    x = (x / 1000) * 200;
+                    x -= 100;
+                    z = z - 1000;
+                    z = (z / 1000) * 100;
+                    z -= 50;
+                    y += 300;
+                    y /= 100;
+                    Vector3 handLoc = new Vector3(z, y, x);
+
+                    hand.transform.position = handLoc;
                 }
-                handLoc = Vector3.Scale(handLoc, calib);
-                hand.transform.position = Vector3.SmoothDamp(hand.transform.position,handLoc,ref velocity, 0.3f);
+
+
+
                 KinectTrackingLib.KinectTrackingLib.show_color_stream();
                 break;
             default:
