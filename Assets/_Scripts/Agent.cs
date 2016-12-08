@@ -59,32 +59,10 @@ public class Agent : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		wanderNav();
-		
-	    for(int i = 0; i < previousLocations.Length - 1; i++)
-		{
-		    previousLocations[i] = previousLocations[i+1];
-		}
-		previousLocations[previousLocations.Length - 1] = transform.position;
-
-		for(int i = 0; i < previousLocations.Length - 1; i++)
-		{
-			if(Vector3.Distance(previousLocations[i], previousLocations[i + 1]) >= 0.001f)
-			{
-				//The minimum movement has been detected between frames
-				isMoving = true;
-				break;
-			}
-			else
-			{
-				isMoving = false;
-			}
-		}
-
 	}
+
 	void OnMouseDown(){
-		Debug.Log("clicekd");
 		if(!threadRunning){
-			Debug.Log("Here");
 			Vector3 target = new Vector3(0.0f,0.05f,-20.0f);
 			int srcCell = coord2cellID(transform.position);
 			int targetCell = coord2cellID(target);
@@ -95,9 +73,7 @@ public class Agent : MonoBehaviour {
 	}
 
 	void  astar(int srcCell, int targetCell){
-		Debug.Log("Entered");
 		waypoints = new List<int>(pathFinder.Astar(srcCell,targetCell));
-		Debug.Log("Done");
 		threadRunning = false;
 	}
 
@@ -105,15 +81,18 @@ public class Agent : MonoBehaviour {
 		// for this to work 2*tolerance >= speed/framerate  so tolerance is 0.1f therefore speed/frame < 0.2f
 		if(nextNode.y  == -50f) getNextNode();
 		else{
-			if(pathFinder.checkCell(targetCell) == "empty"){
-				Vector3 offset = nextNode -transform.position;
-				if(offset.magnitude > 0.1f){
-					Vector3 finalVal =offset.normalized *speed;
-					rb.MovePosition(transform.position + finalVal * Time.deltaTime);
-				}
-				else getNextNode();
+			if (pathFinder.checkCell (targetCell) == "empty") {
+				Vector3 offset = nextNode - transform.position;
+				if (offset.magnitude > 0.1f) {
+					Vector3 finalVal = offset.normalized * speed;
+					rb.MovePosition (transform.position + finalVal * Time.deltaTime);
+				} else
+					getNextNode ();
+			} else {
+				waypoints = new List<int> ();
+				nextNode.y == -50f;
+				getNextNode ();
 			}
-			else getNextNode();
 		}
 	}
 	private void getNextNode(){
