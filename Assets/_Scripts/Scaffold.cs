@@ -12,6 +12,8 @@ public class Scaffold : MonoBehaviour {
     public Vector3 location;
     private bool placeable = false;
     private int faithCost = 0;
+    private int stoneCost = 0;
+    private int woodCost = 0;
     private Renderer thisRenderer;
     private Color normalColor;
     private ResourceCounter resourceCounter;
@@ -49,7 +51,8 @@ public class Scaffold : MonoBehaviour {
         {
             thisRenderer.material.color = normalColor;
             placeTimeLeft -= Time.fixedDeltaTime;
-        }else
+        }
+        else
         {
             thisRenderer.material.color = Color.red;
             placeTimeLeft = placeTime;
@@ -57,6 +60,9 @@ public class Scaffold : MonoBehaviour {
         if(placeTimeLeft <= 0)
         {
             location.y += 0.2f;
+            resourceCounter.removeFaith(faithCost);
+            resourceCounter.removeWood(woodCost);
+            resourceCounter.removeStone(stoneCost);
             build();
         }
     }
@@ -79,11 +85,14 @@ public class Scaffold : MonoBehaviour {
 
     bool isPlaceable()
     {
-
-        if(faithCost > resourceCounter.getFaith())
+        if (type == BuildingType.HOUSE)
         {
-            return false;
+            if (woodCost > resourceCounter.getWood() || stoneCost > resourceCounter.getStone())
+            {
+                return false;
+            }
         }
+        else if (faithCost > resourceCounter.getFaith()) return false;
 
         RaycastHit hit;
         Vector3 curLocation = transform.position;
@@ -121,31 +130,43 @@ public class Scaffold : MonoBehaviour {
         {
             case BuildingType.TEMPLE:
                 faithCost = 0;
+                woodCost = 0;
+                stoneCost = 0;
                 res = Resources.Load("Temple") as GameObject;
                 location.y = 5;
                 break;
             case BuildingType.HOUSE:
-                faithCost = 20;
+                faithCost = 0;
+                woodCost = 50;
+                stoneCost = 50;
                 res = Resources.Load("House") as GameObject;
                 location.y = 2;
                 break;
             case BuildingType.LUMBERYARD:
                 faithCost = 30;
+                woodCost = 0;
+                stoneCost = 0;
                 res = Resources.Load("LumberYard") as GameObject;
                 location.y = 2;
                 break;
             case BuildingType.IRONMINE:
                 faithCost = 30;
+                woodCost = 0;
+                stoneCost = 0;
                 res = Resources.Load("IronMine") as GameObject;
                 location.y = 2.5f;
                 break;
             case BuildingType.FARM:
                 faithCost = 10;
+                woodCost = 0;
+                stoneCost = 0;
                 res = Resources.Load("Farm") as GameObject;
                 location.y = 1.5f;
                 break;
             case BuildingType.QUARRY:
                 faithCost = 20;
+                woodCost = 0;
+                stoneCost = 0;
                 res = Resources.Load("StoneQuarry") as GameObject;
                 location.y = 4;
                 break;

@@ -14,7 +14,9 @@ public class ResourceCounter : MonoBehaviour
     private int food = 0;
     private int wood = 0;
     private int swords = 0;
-    private int bows = 0;
+    private int armour = 0;
+    private int swordMult = 1;
+    private int armourMult = 1;
 
 
     // Use this for initialization
@@ -25,6 +27,18 @@ public class ResourceCounter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (iron > 10*swordMult)
+        {
+            swords++;
+            iron -= 10*swordMult;
+            swordMult *= 2;
+        }
+        if (iron > 20*armourMult)
+        {
+            armour++;
+            iron -= 20*armourMult;
+            armourMult *= 2;
+        }
         textMesh = textDisplay.GetComponent(typeof(TextMesh)) as TextMesh;
         setResourceText();
     }
@@ -37,6 +51,8 @@ public class ResourceCounter : MonoBehaviour
         resourceText += "Wood: " + wood + "\n";
         resourceText += "Stone: " + stone + "\n";
         resourceText += "Iron: " + iron + "\n";
+        resourceText += "Sword Level: " + swords + "\n";
+        resourceText += "Armour Level: " + armour + "\n";
         textMesh.text = resourceText;
     }
 
@@ -76,6 +92,10 @@ public class ResourceCounter : MonoBehaviour
     {
         return wood;
     }
+    public int getSwords()
+    {
+        return swords;
+    }
     public void addFood()
     {
         food++;
@@ -96,8 +116,52 @@ public class ResourceCounter : MonoBehaviour
     {
         faith += (population*1)+1;
     }
+    public void addSwords()
+    {
+        swords++;
+    }
     public void addPop()
     {
         population++;
+    }
+    public void removeFaith(int amount)
+    {
+        if (faith > amount) faith -= amount;
+        else
+        {
+            faith = 0;
+        }
+    }
+    public void removeWood(int amount)
+    {
+        if (wood > amount) wood -= amount;
+        else
+        {
+            wood = 0;
+        }
+    }
+    public void removeStone(int amount)
+    {
+        if (stone > amount) stone -= amount;
+        else
+        {
+            stone = 0;
+        }
+    }
+    public void removeFood(int amount)
+    {
+        if (food > amount) food -= amount;
+        else
+        {
+            food = 0;
+        }
+    }
+    public void removeIron(int amount)
+    {
+        if (iron > amount) iron -= amount;
+        else
+        {
+            iron = 0;
+        }
     }
 }
