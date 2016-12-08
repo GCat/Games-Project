@@ -61,6 +61,21 @@ public class Scaffold : MonoBehaviour {
     }
 
     //Tests resource cost and location to determine if scaffold is placeable
+    public void setTypeFromColour(Vector3 color)
+    {
+        //green = farm
+        //yellow = temple
+        //l.blue = house
+        //red = lumbermill
+        float H = color[0];
+        float S = color[1];
+        float V = color[2];
+        if ((H > 120.0f && H < 130.0f) && (S > 55.0f) && (V > 50.0f && V < 80.0f)) type = BuildingType.FARM;
+        else if ((H > 50.0f && H < 60.0f) && (S > 65.0f) && (V > 70.0f)) type = BuildingType.TEMPLE;
+        else if ((H > 0.0f && H < 5.0f) && (S > 75.0f) && (V > 75.0f)) type = BuildingType.LUMBERYARD;
+        else if ((H > 180.0f && H < 190.0f) && (S > 65.0f) && (V > 70.0f)) type = BuildingType.HOUSE;
+    }
+
     bool isPlaceable()
     {
 
@@ -103,8 +118,10 @@ public class Scaffold : MonoBehaviour {
         string text = type.ToString();
         switch (type)
         {
-            case BuildingType.CASTLE:
-                faithCost = 50;
+            case BuildingType.TEMPLE:
+                faithCost = 0;
+                res = Resources.Load("Temple") as GameObject;
+                location.y = 5;
                 break;
             case BuildingType.HOUSE:
                 faithCost = 20;
