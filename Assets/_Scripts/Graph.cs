@@ -4,7 +4,7 @@ using System;
 
 /*
 * This is only for humans. As humans can not destroy buildings the graph will have edges
-*  with weight 1 between empty edges and no edges between empty cells and cells occupied by a building.
+*  with weight equal to the eucledian distance between the two points between empty edges and no edges between empty cells and cells occupied by a building.
 *
 * Badies on the other hand will have edges between occupied and free cells those edges will have a higher
 * cost as it will take more time to destroy the obstacles. So paths with no obstacles will be prefered but
@@ -203,6 +203,15 @@ public class Edge : IEquatable<Edge>{
 		this.w = w;
 		this.src = src;
 		this.dst = dst;
+	}
+
+	public int otherEdge(int eId){
+		if (eId == src) {
+			return dst;
+		} else if (eId == dst) {
+			return src;
+		} else
+			return -1;
 	}
 
 	public override int GetHashCode()
