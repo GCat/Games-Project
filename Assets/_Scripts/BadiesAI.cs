@@ -17,7 +17,7 @@ public class BadiesAI : MonoBehaviour {
 	public float strength;
 
 	// Navigation 
-	private NavMeshAgent agent;
+	private UnityEngine.AI.NavMeshAgent agent;
 	private GameObject targetObject;
 	private GameObject obstacleObject;
 
@@ -28,7 +28,7 @@ public class BadiesAI : MonoBehaviour {
 		strength = 20;
 		humanOrTemple = 0;
 		if (Random.value > 0.7) humanOrTemple = 1;
-		agent = GetComponent<NavMeshAgent>();
+		agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
 	}
 	
 	// Update is called once per frame

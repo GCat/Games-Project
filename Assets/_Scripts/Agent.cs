@@ -4,6 +4,7 @@ using System.Collections;
 using System.Threading;
 using System;
 using UnityEngine.EventSystems;
+using UnityEngine.Networking.Match;
 
 public class Agent : MonoBehaviour {
  
@@ -20,7 +21,7 @@ public class Agent : MonoBehaviour {
 	public float health = 100.0f;
 	public float strenght = 10.0f;
 	public float speed = 2.0f;
-	public float rotationspeed = 1.0f;
+	public float rotationspeed = 2.0f;
 	public float gravity = 9.81F;
 	public float weapon_strength;
 	
@@ -75,67 +76,7 @@ public class Agent : MonoBehaviour {
 		else if(!stopMoving)
 			wanderNav();
 	}
-
-	void avoidHuman (GameObject other){
-		/* First check that the humans could intersect
-		*  do this by  checking if the next node are equal 
-		*  this assures they are at least 2 appart hence they can not collide as radius is 1*/
-
-		/* Not safe as not cheking that there is a next node will do in next version*/
-
-		Agent otherScript = (Agent)other.GetComponent (typeof(Agent));
-		int  othernextNode = coord2cellID(otherScript.nextNode );
-		int myNextNode = coord2cellID (nextNode);
-
-
-		if (myNextNode == othernextNode) {
-			/*They could intersect so the one with the lowwest priority will try and avoid collision
-			* Whilst the one with highest priority will continue its path*/
-			float otherp = otherScript.priority;
-			/* not safe as  no procedures for equality in place yet */
-			if( otherp > priority){
-				int myNode =coord2cellID (transform.position);
-				HashSet<Edge> neighbours = pathFinder.getEdgesFrom (myNode);
-				int otherposition = coord2cellID (other.transform.position);
-				List<int> moves = new List<int> ();
-				foreach (Edge e in neighbours){
-					int dst = e.otherEdge (myNode);
-					if (dst != myNode && dst != otherposition) {
-						moves.Add (dst);
-					}
-				}
-
-			}
-		}
 		
-	}
-
-	private int getGridMovement(int next, int current){
-		int diff = next - current;
-
-		switch (diff)
-		{
-		case 50:
-			return 1;
-		case 51:
-			return 2 ;
-		case 1:
-			return 3;
-		case -49:
-			return 4;
-		case -50:
-			return 5;
-		case -51:
-			return 6;
-		case -1:
-			return 7;
-		case 49:
-			return 8;
-		default:
-			Debug.Log ("Error avoiding collision");
-			return 0;
-		}
-	}
 
     void sacrifice()
     {
@@ -198,10 +139,10 @@ public class Agent : MonoBehaviour {
 				if (offset.magnitude > 0.1f) {
 					Vector3 finalVal = offset.normalized * speed;
 					rb.MovePosition (transform.position + finalVal * Time.deltaTime);
-					/*transform.rotation = Quaternion.Slerp(
+					transform.rotation = Quaternion.Slerp(
 						transform.rotation,
 						Quaternion.LookRotation(offset),
-						Time.deltaTime * rotationspeed);*/
+						Time.deltaTime * rotationspeed);
 					anim.Play ("walk");
 				} else
 					getNextNode ();
@@ -288,9 +229,46 @@ public class Agent : MonoBehaviour {
 		while (status != "empty"){
 			target = (int) UnityEngine.Random.Range(0.0f,maxCell);
 			status= pathFinder.checkCell(target);
-			Debug.Log("Hit");
 		}
 		return target;
 	}
-		
+
+	void OnTriggerEnter(Collider other){
+		if(other.tag == "Human"){
+            Debug.Log("Humans close to each other!");
+			Agent nearHuman = (Agent)(other.gameObject).GetComponent (typeof(Agent));
+			Vector3 mypos = new Vector3 (transform.position.x, 0.0f, transform.position.y);
+			Vector3 hispos = new Vector3 (other.transform.position.x, 0.0f, other.transform.position.y);
+			Vector3 lnn = nextNode;
+			Vector3 hlnn = nearHuman.nextNode;
+			float mym = (lnn.z - mypos.z) / (lnn.x - mypos.x);
+			float hism = (hlnn.z - hispos.z) / (hlnn.x - mypos.x);
+			if(mym == hism){
+				Debug.Log ("Parrallel");
+			}
+			else{
+				float myc = lnn.z - mym * lnn.x;
+				float hisc = hlnn.z - hism * hlnn.x;
+				float x = (hisc - myc) / (mym - hism);
+				float z = mym * x + myc;
+
+				if ((z > Mathf.Min (lnn.z,mypos.z)) && (z < Mathf.Max(lnn.z,mypos.z)) && (x > Mathf.Min (lnn.x,mypos.x)) && (x < Mathf.Max(lnn.x,mypos.x))){
+					if ((z > Mathf.Min (hlnn.z,hispos.z)) && (z < Mathf.Max(hlnn.z,hispos.z)) && (x > Mathf.Min (hlnn.x,hispos.x)) && (x < Mathf.Max(hlnn.x,hispos.x))){
+						Debug.Log ("Paths cross");
+					}
+				}
+				//m1x +c1 = m2x+c2
+				// m1x-m2c = c2-c1
+				//x(m-m2) = c2-c1
+				//x = (c2-c1) / (m1-m2)
+			}
+
+		}
+	}
+    public void changeMoving(Boolean move)
+    {
+        stopMoving = move;
+ 
+    }
 }
+	
