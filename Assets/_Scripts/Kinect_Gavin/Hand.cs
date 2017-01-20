@@ -52,6 +52,10 @@ public class Hand : MonoBehaviour {
             {
                 heldScaffoldScript.type = BuildingType.QUARRY;
             }
+            if (Input.GetKeyDown(KeyCode.Alpha6))
+            {
+                heldScaffoldScript.type = BuildingType.TOWER;
+            }
         }
     }
 }
