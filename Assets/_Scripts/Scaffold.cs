@@ -148,6 +148,7 @@ public class Scaffold : MonoBehaviour {
                 stoneCost = 0;
                 res = Resources.Load("LumberYard") as GameObject;
                 location.y = 2;
+                text = "LUMBER\nYARD";
                 break;
             case BuildingType.IRONMINE:
                 faithCost = 30;
@@ -155,6 +156,7 @@ public class Scaffold : MonoBehaviour {
                 stoneCost = 0;
                 res = Resources.Load("IronMine") as GameObject;
                 location.y = 2.5f;
+                text = "IRON\nMINE";
                 break;
             case BuildingType.FARM:
                 faithCost = 10;
@@ -169,16 +171,33 @@ public class Scaffold : MonoBehaviour {
                 stoneCost = 0;
                 res = Resources.Load("StoneQuarry") as GameObject;
                 location.y = 4;
+                text = "STONE\nQUARRY";
                 break;
             case BuildingType.WALL:
                 faithCost = 20;
+                break;
+            case BuildingType.TOWER:
+                faithCost = 100;
+                woodCost = 0;
+                stoneCost = 0;
+                res = Resources.Load("Tower") as GameObject;
+                location.y = 6;
+                text = "TOWER";
                 break;
         }
         for(int i=0; i< textMeshes.Length; i++)
         {
             if (i % 2 == 0)
             {
-                textMeshes[i].text = "Faith \n" + faithCost;
+                if (type != BuildingType.HOUSE)
+                {
+                    textMeshes[i].text = "Faith\n" + faithCost;
+                }
+                else
+                {
+                    if (i == 0) textMeshes[i].text = "STONE\n" + stoneCost;
+                    else textMeshes[i].text = "WOOD\n" + woodCost;
+                }
             }
             else
             {
