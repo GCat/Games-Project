@@ -99,7 +99,6 @@ public class BadiesAI : MonoBehaviour {
             if (nextNode.y == -50.0f) getnextWaypoint();
             else if (pathFinder.checkCell(targetCell) == "empty")
             {
-                Debug.Log("About to Move");
                 Vector3 offset = nextNode - transform.position;
                 if (offset.magnitude > 0.2f)
                 {
@@ -115,7 +114,6 @@ public class BadiesAI : MonoBehaviour {
             }
             else
             {
-                Debug.Log("Here Somehow");
                 int layermask = 1 << 10;
                 List<Collider> hitColliders = new List<Collider>(Physics.OverlapSphere(nextNode, 1.0f, layermask));
                 if(hitColliders.Count > 0)
@@ -137,7 +135,6 @@ public class BadiesAI : MonoBehaviour {
         threadRunning = false;
         pathToTempleFound = true;
         moving = true;
-        Debug.Log(waypoints.Count);
     }
 
     private void getnextWaypoint()
@@ -146,7 +143,6 @@ public class BadiesAI : MonoBehaviour {
         {
             if (!pathToTempleFound && !threadRunning)
             {
-                Debug.Log("Finding Path");
                 moving = false;
                 threadRunning = true;
                 int srcCell = coord2cellID(transform.position);
@@ -200,9 +196,15 @@ public class BadiesAI : MonoBehaviour {
         health -= damage;
         if (health <= 0)
         {
-            Destroy(gameObject);
+            anim.Play("die");
+            StartCoroutine(WaitToDestroy(0.7f));
         }
     }
 
+    IEnumerator WaitToDestroy(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        GameObject.Destroy(gameObject);
+    }
 
 }

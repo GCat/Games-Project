@@ -51,4 +51,6 @@ public class WatchTower : MonoBehaviour, Building
             other.gameObject.SendMessage("decrementHealth", 5 * Time.deltaTime);
         }
     }
+
+
 }
