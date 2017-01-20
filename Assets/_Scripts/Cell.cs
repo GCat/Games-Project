@@ -7,11 +7,15 @@ public class Cell : MonoBehaviour {
 	string details;
 	public int id;
 	private GameObject pathfinding;
-	
-	// Use this for initialization
-	void Start () {
-		pathfinding = GameObject.FindGameObjectWithTag("PathFinder");
-		details = "empty";
+
+    // Use this for initialization
+    private void Awake()
+    {
+        pathfinding = GameObject.FindGameObjectWithTag("PathFinder");
+        details = "empty";
+    }
+    void Start () {
+		
 	}
 	
 	// Update is called once per frame
