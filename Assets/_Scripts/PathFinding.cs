@@ -32,6 +32,10 @@ public class PathFinding : MonoBehaviour {
 	void buildingRemoved(int id){
 		world.edgeAdd(id);
 	}
+
+	public HashSet<Edge> getEdgesFrom (int e){
+		return world.getEdges (e);
+	}
 	
 	public List<int> Astar(int src, int dst){
 		//Debug.Log("Start Pathfinding");

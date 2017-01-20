@@ -2,21 +2,26 @@
 using System.Collections.Generic;
 using System.Collections;
 using System.Threading;
+using System;
+using UnityEngine.EventSystems;
+using UnityEngine.Networking.Match;
 
 public class Agent : MonoBehaviour {
  
 	public bool fightMode;
-	public float radius;
     public AudioClip sacrificeClip;
+	public float priority =  0;
 
     private Thread t1;
 	private bool threadRunning = false;
+	bool beingMoved = false;
 
 	List<int> waypoints;
 
-	public float health;
-	public float strenght;
-	public float speed;
+	public float health = 100.0f;
+	public float strenght = 10.0f;
+	public float speed = 2.0f;
+	public float rotationspeed = 2.0f;
 	public float gravity = 9.81F;
 	public float weapon_strength;
 	
@@ -30,6 +35,7 @@ public class Agent : MonoBehaviour {
 	public int targetCell;
 
 	private Rigidbody rb;
+	public Animation anim;
 
 
 	public bool isMoving = false;
@@ -43,7 +49,6 @@ public class Agent : MonoBehaviour {
     private bool sacrificeEntered = false;
 
     void Start () {
-		radius = 50;
 		strenght = 10;
 		health = 100;
 		speed = 2.0f;
@@ -52,12 +57,14 @@ public class Agent : MonoBehaviour {
 		waypoints = new List<int>();
 		noMoreEnemies = false;
 		initialPosition = transform.position;
+		priority = UnityEngine.Random.Range (0.0f, 20.0f);
 
+		anim = GetComponent<Animation> ();
 		rb = GetComponent<Rigidbody>();
 		rb.interpolation = RigidbodyInterpolation.Extrapolate;
 
 		pathFinder =(PathFinding) GameObject.FindGameObjectWithTag("PathFinder").GetComponent(typeof(PathFinding));
-		maxCell =pathFinder.getMaxCell();
+		maxCell = 5000;
 		closestBadie = null;
 
 	}
@@ -69,6 +76,7 @@ public class Agent : MonoBehaviour {
 		else if(!stopMoving)
 			wanderNav();
 	}
+		
 
     void sacrifice()
     {
@@ -90,15 +98,16 @@ public class Agent : MonoBehaviour {
 
     void OnMouseDown()
     {
-        Debug.Log("MOUSE DOWN");
         screenPoint = Camera.main.WorldToScreenPoint(transform.position);
         Mouse_offset = transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
     }
 
     void OnMouseDrag()
     {
+		beingMoved = true;
         stopMoving = true;
-        Debug.Log("Here");
+		nextNode.y = -50f;
+		waypoints = new List<int> ();
         Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
         Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) + Mouse_offset;
         transform.position = curPosition;
@@ -107,7 +116,16 @@ public class Agent : MonoBehaviour {
         }
     }
 
-    void  astar(int srcCell, int targetCell){
+	void OnMouseUp(){
+		if (beingMoved) {
+			beingMoved = false;
+			if (!(Mathf.Abs (transform.position.x) > 50f || Mathf.Abs (transform.position.z) > 100f)) {
+				stopMoving = false;
+			}
+		}
+	}
+
+    void astar(int srcCell, int targetCell){
 		waypoints = new List<int>(pathFinder.Astar(srcCell,targetCell));
 		threadRunning = false;
 	}
@@ -121,6 +139,11 @@ public class Agent : MonoBehaviour {
 				if (offset.magnitude > 0.1f) {
 					Vector3 finalVal = offset.normalized * speed;
 					rb.MovePosition (transform.position + finalVal * Time.deltaTime);
+					transform.rotation = Quaternion.Slerp(
+						transform.rotation,
+						Quaternion.LookRotation(offset),
+						Time.deltaTime * rotationspeed);
+					anim.Play ("walk");
 				} else
 					getNextNode ();
 			} else {
@@ -201,13 +224,51 @@ public class Agent : MonoBehaviour {
 	}
 
 	int calculateNewTarget(){
-		int target = (int) Random.Range(0.0f,pathFinder.getMaxCell());
+		int target = (int) UnityEngine.Random.Range(0.0f,maxCell);
 		string status = pathFinder.checkCell(target);
 		while (status != "empty"){
-			target = (int) Random.Range(0.0f,maxCell);
+			target = (int) UnityEngine.Random.Range(0.0f,maxCell);
 			status= pathFinder.checkCell(target);
-			Debug.Log("Hit");
 		}
 		return target;
 	}
+
+	void OnTriggerEnter(Collider other){
+		if(other.tag == "Human"){
+            Debug.Log("Humans close to each other!");
+			Agent nearHuman = (Agent)(other.gameObject).GetComponent (typeof(Agent));
+			Vector3 mypos = new Vector3 (transform.position.x, 0.0f, transform.position.y);
+			Vector3 hispos = new Vector3 (other.transform.position.x, 0.0f, other.transform.position.y);
+			Vector3 lnn = nextNode;
+			Vector3 hlnn = nearHuman.nextNode;
+			float mym = (lnn.z - mypos.z) / (lnn.x - mypos.x);
+			float hism = (hlnn.z - hispos.z) / (hlnn.x - mypos.x);
+			if(mym == hism){
+				Debug.Log ("Parrallel");
+			}
+			else{
+				float myc = lnn.z - mym * lnn.x;
+				float hisc = hlnn.z - hism * hlnn.x;
+				float x = (hisc - myc) / (mym - hism);
+				float z = mym * x + myc;
+
+				if ((z > Mathf.Min (lnn.z,mypos.z)) && (z < Mathf.Max(lnn.z,mypos.z)) && (x > Mathf.Min (lnn.x,mypos.x)) && (x < Mathf.Max(lnn.x,mypos.x))){
+					if ((z > Mathf.Min (hlnn.z,hispos.z)) && (z < Mathf.Max(hlnn.z,hispos.z)) && (x > Mathf.Min (hlnn.x,hispos.x)) && (x < Mathf.Max(hlnn.x,hispos.x))){
+						Debug.Log ("Paths cross");
+					}
+				}
+				//m1x +c1 = m2x+c2
+				// m1x-m2c = c2-c1
+				//x(m-m2) = c2-c1
+				//x = (c2-c1) / (m1-m2)
+			}
+
+		}
+	}
+    public void changeMoving(Boolean move)
+    {
+        stopMoving = move;
+ 
+    }
 }
+	

@@ -12,6 +12,7 @@ public class House  : MonoBehaviour, Building
     private bool full_house;   // flag of some sort
     public ResourceCounter resourceCounter;
     private int foodCost = 10;
+    public float health = 100.0f;
 
     //Constructor of a House
     //capacity = number of humans a house can hold; location = location of a house
@@ -34,7 +35,18 @@ public class House  : MonoBehaviour, Building
     {
         return this.gameObject.transform.position;
     }
-
+    float getHealth()
+    {
+        return health;
+    }
+    public void decrementHealth(float damage)
+    {
+        health -= damage;
+        if (health <= 0)
+        {
+            Destroy(gameObject);
+        }
+    }
     // Adding human to the count
     private void add_human()
     {
