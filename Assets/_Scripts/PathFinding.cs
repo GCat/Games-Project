@@ -37,6 +37,7 @@ public class PathFinding : MonoBehaviour
     {
 
         world.edgeRemove(id);
+        bWorld.edgeChangeWeight(id, 20.0f);
     }
     void buildingRemoved(int id)
     {

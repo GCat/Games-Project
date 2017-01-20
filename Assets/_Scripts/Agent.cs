@@ -88,6 +88,7 @@ public class Agent : MonoBehaviour
         resourceTab.SendMessage("addFaith", 100);
         AudioSource source = GetComponent<AudioSource>();
         source.PlayOneShot(sacrificeClip, 0.5f);
+        anim.Play("diehard");
         StartCoroutine(WaitToDestroy(3.0f));
 
     }
