@@ -18,18 +18,6 @@ public class Temple : ResourceBuilding {
     {
         create_building();
     }
-
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        timer = Time.time - startTime;
-        if (timer > timeStep)
-        {
-            incrementResource();
-            startTime = Time.time;
-        }
-
-    }
     public override void incrementResource()
     {
         resourceCounter.addFaith();

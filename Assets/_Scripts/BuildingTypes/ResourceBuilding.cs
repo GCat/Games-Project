@@ -8,6 +8,7 @@ public abstract class ResourceBuilding : MonoBehaviour, Building
     public float startTime;
     public float timeStep;
     public ResourceCounter resourceCounter;
+    public float health = 100.0f;
 
     public abstract void create_building();
     public abstract void incrementResource();
@@ -18,5 +19,27 @@ public abstract class ResourceBuilding : MonoBehaviour, Building
     Vector3 Building.getLocation()
     {
         return this.gameObject.transform.position;
+    }
+    float getHealth()
+    {
+        return health;
+    }
+    public void decrementHealth(float damage)
+    {
+        health -= damage;
+        if (health <= 0)
+        {
+            Destroy(gameObject);
+        }
+    }
+    void FixedUpdate()
+    {
+        timer = Time.time - startTime;
+        if (timer > timeStep)
+        {
+            incrementResource();
+            startTime = Time.time;
+        }
+
     }
 }
