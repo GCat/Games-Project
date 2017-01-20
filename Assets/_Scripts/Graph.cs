@@ -14,8 +14,8 @@ using System;
 
 public class Graph
 {
-    List<GameObject> nodes;
-    HashSet<Edge> edges;
+    public List<GameObject> nodes;
+    public HashSet<Edge> edges;
     public float squareRootOfHalf = Mathf.Sqrt(8.0f);
     int minx;
     int minz;
