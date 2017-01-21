@@ -137,8 +137,8 @@ public class PathFinding : MonoBehaviour
 
     private float costEstimate(int src, int dst)
     {
-        float displacementX = (Math.Abs(src - dst) % world.ncellsinrow) * world.gridx;
-        float displacementY = (Math.Abs(src - dst) / world.ncellsinrow) * world.gridz;
+        float displacementX = (Math.Abs(src % world.ncellsinrow - dst % world.ncellsinrow)) * world.gridx;
+        float displacementY = (float)(Math.Abs((dst- dst % world.ncellsinrow) -src -src % world.ncellsinrow) *(world.gridz/world.ncellsinrow));
         float distance = (float)Math.Sqrt(displacementX * displacementX + displacementY * displacementY);
         return distance;
     }

@@ -29,7 +29,7 @@ public class BadiesAI : MonoBehaviour {
 
     //Pathfinding
     private PathFinding pathFinder;
-    List<int> waypoints;
+    public List<int> waypoints;
     public Vector3 nextNode;
     public int targetCell;
     private bool threadRunning = false;
@@ -46,7 +46,7 @@ public class BadiesAI : MonoBehaviour {
 
     // Rusher
     private GameObject temple;
-    private bool templeInRange = false;
+    public bool templeInRange = false;
     private bool pathToTempleFound = false;
 
 
@@ -115,7 +115,7 @@ public class BadiesAI : MonoBehaviour {
             else
             {
                 int layermask = 1 << 10;
-                List<Collider> hitColliders = new List<Collider>(Physics.OverlapSphere(nextNode, 1.0f, layermask));
+                List<Collider> hitColliders = new List<Collider>(Physics.OverlapSphere(nextNode, 2.0f, layermask));
                 if(hitColliders.Count > 0)
                 {
                     if (hitColliders.Exists(x => x.tag == "Temple")) {
@@ -146,7 +146,7 @@ public class BadiesAI : MonoBehaviour {
                 moving = false;
                 threadRunning = true;
                 int srcCell = coord2cellID(transform.position);
-                targetCell = coord2cellID(temple.transform.position);
+                targetCell = coord2cellID(temple.GetComponent<Collider>().ClosestPointOnBounds(transform.position));
                 t1 = new Thread(() => astar(srcCell, targetCell));
                 t1.Start();
             }
@@ -162,7 +162,11 @@ public class BadiesAI : MonoBehaviour {
                 }
                 else
                 {
-                    Debug.Log("Shit");
+                    if (Vector3.Distance(temple.GetComponent<Collider>().ClosestPointOnBounds(transform.position), transform.position) > 2.0f)
+                    {
+                        Debug.Log("problem in Path finding");
+                    }
+                    else templeInRange = true;
                 }
             }
         }
