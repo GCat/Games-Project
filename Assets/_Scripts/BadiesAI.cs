@@ -3,6 +3,30 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 
+/* AI LOGIC EXPLANATION
+ * 
+ * --Rushers Completed
+ * Search fastest path to temple using A*
+ * When found move a node at a time
+ * If buildings in the way destroy building
+ * When temple in range attack 
+ * 
+ * --Defenders
+ * Go towards temple same way as rushers
+ * Once on temple range 
+ * If humans or watch towers nears attack them to protect rusher
+ * If nothing near attack temple
+ * 
+ * 
+ * --Killers
+ * Search for nearest human 
+ * Go to its position (not sure how this will be done yet)
+ * Attack it
+ * When dead look for next human
+ * If no humans remain either go for watch towers or go for temple 
+ * 
+ */
+
 public class BadiesAI : MonoBehaviour {
 
     /* Three type of badies will exist
@@ -25,7 +49,7 @@ public class BadiesAI : MonoBehaviour {
     public Animation anim;
 
     // Movement
-    public bool moving= true;
+    private bool moving= true;
 
     //Pathfinding
     private PathFinding pathFinder;
@@ -41,18 +65,25 @@ public class BadiesAI : MonoBehaviour {
 
     // Fighting
     enum Fighter {  Rusher, Defender, Killer };
-    int fighterType;
+    public int fighterType;
     private bool attacking = false;
 
     // Rusher
     private GameObject temple;
     public bool templeInRange = false;
-    private bool pathToTempleFound = false;
+    public bool pathToTempleFound = false;
 
 
     // Killer
     private GameObject closestEnemy;
     private bool noMoreEnemies;
+
+    //Defender
+    public float radius = 10.0f;
+    private float dis2Temple;
+    public bool enemyInrange = false;
+    public bool defending = false;
+    public bool path2Enemy = false;
 
     void Start()
     {
@@ -70,9 +101,9 @@ public class BadiesAI : MonoBehaviour {
         maxCell = 5000;
         closestEnemy = null;
         /* For now always rusher*/
-        fighterType = (int)Fighter.Rusher;
+        fighterType = (int)Fighter.Defender;
 
-        if (fighterType == (int)Fighter.Rusher)
+        if (fighterType == (int)Fighter.Rusher || fighterType ==(int) Fighter.Defender)
         {
             temple = GameObject.FindGameObjectWithTag("Temple");
         }
@@ -84,11 +115,91 @@ public class BadiesAI : MonoBehaviour {
         {
             anim.Play("idle");
         }
-        else if ( fighterType == (int)Fighter.Rusher )
+        else if (fighterType == (int)Fighter.Rusher)
         {
             rusherNav();
         }
+        else if (fighterType == (int)Fighter.Defender) defenderNav();
 
+    }
+
+
+    private void defenderNav()
+    {
+        if (templeInRange && !defending)
+        {
+            Debug.Log("Here1");
+            // Check surroundings First towers next humans
+            List<Collider> hitColliders = new List<Collider>(Physics.OverlapSphere(transform.position, radius));
+            Collider tower = hitColliders.Find(x => x.tag == "Tower");
+            if (tower != null)
+            {
+                Debug.Log("Here");
+                closestEnemy = tower.gameObject;
+                if (!threadRunning)
+                {
+                    moving = false;
+                    threadRunning = true;
+                    defending = true;
+                    path2Enemy = false;
+                    int srcCell = coord2cellID(transform.position);
+                    targetCell = coord2cellID(tower.ClosestPointOnBounds(transform.position));
+                    t1 = new Thread(() => astarD(srcCell, targetCell));
+                    t1.Start();
+                }
+            }
+            else
+            {
+                attack(temple);
+            }
+        }
+        else if (defending)
+        {
+            if (path2Enemy)
+            {
+                if (enemyInrange)
+                {
+                    if (!attack(closestEnemy))
+                    {
+                        defending = false;
+                        enemyInrange = false;
+                        closestEnemy = null;
+                        pathToTempleFound = false;
+                        templeInRange = false;
+                    }
+                }
+                else if (nextNode.y == -50.0f) getnextWaypoint();
+                else if (pathFinder.checkCell(targetCell) == "empty")
+                {
+                    Vector3 offset = nextNode - transform.position;
+                    if (offset.magnitude > 0.2f)
+                    {
+                        Vector3 finalVal = offset.normalized * speed;
+                        rb.MovePosition(transform.position + finalVal * Time.deltaTime);
+                        transform.rotation = Quaternion.Slerp(
+                            transform.rotation,
+                            Quaternion.LookRotation(offset),
+                            Time.deltaTime * rotationSpeed);
+                        anim.Play("walk");
+                    }
+                    else getnextWaypoint();
+                }
+                else
+                {
+                    int layermask = 1 << 10;
+                    List<Collider> hitColliders = new List<Collider>(Physics.OverlapSphere(nextNode, 2.0f, layermask));
+                    if (hitColliders.Count > 0)
+                    {
+                        if ( hitColliders.Exists(x => x.Equals(closestEnemy.GetComponent<Collider>()))) {
+                            enemyInrange = true;
+                        }
+                        attack(hitColliders[0].gameObject);
+                    }
+                }
+
+            }
+        }
+        else rusherNav();
     }
 
     private void rusherNav()
@@ -129,7 +240,7 @@ public class BadiesAI : MonoBehaviour {
 
     }
 
-    void astar(int srcCell, int targetCell)
+    void astarR(int srcCell, int targetCell)
     {
         waypoints = new List<int>(pathFinder.AstarB(srcCell, targetCell));
         threadRunning = false;
@@ -137,9 +248,17 @@ public class BadiesAI : MonoBehaviour {
         moving = true;
     }
 
+    void astarD(int srcCell, int targetCell)
+    {
+        waypoints = new List<int>(pathFinder.AstarB(srcCell, targetCell));
+        threadRunning = false;
+        path2Enemy = true;
+        moving = true;
+    }
+
     private void getnextWaypoint()
     {
-        if (fighterType == (int)Fighter.Rusher)
+        if (fighterType == (int)Fighter.Rusher || fighterType == (int)Fighter.Defender)
         {
             if (!pathToTempleFound && !threadRunning)
             {
@@ -147,12 +266,12 @@ public class BadiesAI : MonoBehaviour {
                 threadRunning = true;
                 int srcCell = coord2cellID(transform.position);
                 targetCell = coord2cellID(temple.GetComponent<Collider>().ClosestPointOnBounds(transform.position));
-                t1 = new Thread(() => astar(srcCell, targetCell));
+                t1 = new Thread(() => astarR(srcCell, targetCell));
                 t1.Start();
             }
             else if (pathToTempleFound)
             {
-                if( waypoints.Count > 0)
+                if (waypoints.Count > 0)
                 {
                     targetCell = waypoints[0];
                     waypoints.Remove(targetCell);
@@ -162,24 +281,36 @@ public class BadiesAI : MonoBehaviour {
                 }
                 else
                 {
-                    if (Vector3.Distance(temple.GetComponent<Collider>().ClosestPointOnBounds(transform.position), transform.position) > 2.0f)
+                    if (defending == false)
                     {
-                        Debug.Log("problem in Path finding");
+                        if (Vector3.Distance(temple.GetComponent<Collider>().ClosestPointOnBounds(transform.position), transform.position) > 1.5f)
+                        {
+                            Debug.Log("problem in Path finding");
+                        }
+                        else templeInRange = true;
                     }
-                    else templeInRange = true;
-                }
+                    else
+                    {
+                        if (Vector3.Distance(closestEnemy.GetComponent<Collider>().ClosestPointOnBounds(transform.position), transform.position) > 2.0f)
+                        {
+                            Debug.Log("problem in Path finding");
+                        }
+                        else enemyInrange = true;
+                    }
+                }                
             }
         }
-
     }
 
-    void attack(GameObject victim)
+    bool attack(GameObject victim)
     {
         if (victim != null)
         {
             anim.Play("hit");
             victim.SendMessage("decrementHealth", strenght * Time.deltaTime);
+            return true;
         }
+        return false;
     }
 
     private int coord2cellID(Vector3 coords)

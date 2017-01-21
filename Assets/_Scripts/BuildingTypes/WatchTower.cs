@@ -7,6 +7,9 @@ public class WatchTower : MonoBehaviour, Building
 
     public string buildingName;
     public float health = 100.0f;
+    public List<GameObject> targets;
+    public float damage = 5.0f;
+    public float radius = 15.0f;
 
     string Building.getName()
     {
@@ -32,6 +35,7 @@ public class WatchTower : MonoBehaviour, Building
     public void create_building()
     {
         buildingName = "TOWER";
+        targets = new List<GameObject>();
     }
 
     void Start () {
@@ -40,17 +44,45 @@ public class WatchTower : MonoBehaviour, Building
 
     void Update()
     {
-
-    }
-
-    void OnTriggerStay(Collider other)
-    {
-        if (other.tag == "Badies")
+        if (targets.Count > 0)
         {
-            Debug.Log("Attack!");
-            other.gameObject.SendMessage("decrementHealth", 5 * Time.deltaTime);
+            foreach(GameObject target in targets)
+            {
+                if(Vector3.Distance(transform.position, target.transform.position) <= 15.0f)
+                {
+                    if (!attack(target)) targets.Remove(target);
+                }
+            }
+        }
+        if(targets.Count < 3)
+        {
+            int layerMask = 1 << 11;
+            List<Collider> hitColliders = new List<Collider>(Physics.OverlapSphere(transform.position, radius, layerMask));
+            foreach(Collider c in hitColliders)
+            {
+                if (!targets.Contains(c.gameObject))
+                {
+                    if (targets.Count >= 3) break;
+                    else
+                    {
+                        targets.Add(c.gameObject);
+                        attack(c.gameObject);
+                    }
+                }
+            }
         }
     }
+
+    bool attack(GameObject victim)
+    {
+        if (victim != null)
+        {
+            victim.SendMessage("decrementHealth", damage * Time.deltaTime);
+            return true;
+        }
+        return false;
+    }
+
 
 
 }
