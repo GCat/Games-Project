@@ -11,11 +11,11 @@ public class Agent : MonoBehaviour
     // Human characteristics
     public float health = 100.0f;
     public float strenght = 10.0f;
-    public float speed = 150f;
+    public float speed = 4.0f;
     public float rotationspeed = 5.0f;
     public float gravity = 9.81F;
     public float weapon_strength;
-
+    private GameObject temple;
     // Components
     public AudioClip sacrificeClip;
     private Rigidbody rb;
@@ -48,6 +48,7 @@ public class Agent : MonoBehaviour
     private GameObject closestEnemy;
     private bool noMoreEnemies;
     private int maxCell;
+    private float dis2Enemy =0;
 
 
 
@@ -67,7 +68,7 @@ public class Agent : MonoBehaviour
         anim = GetComponent<Animation>();
         rb = GetComponent<Rigidbody>();
         rb.interpolation = RigidbodyInterpolation.Extrapolate;
-
+        temple = GameObject.FindGameObjectWithTag("Temple");
         pathFinder = (PathFinding)GameObject.FindGameObjectWithTag("PathFinder").GetComponent(typeof(PathFinding));
         maxCell = 5000;
         closestEnemy = null;
@@ -78,7 +79,12 @@ public class Agent : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (fightMode && !stopMoving)
+        if( temple == null)
+        {
+            anim.Play("diehard");
+            StartCoroutine(WaitToDestroy(3.0f));
+        }
+        else if (fightMode && !stopMoving)
             fightNav();
         else if (!stopMoving)
             wanderNav();
@@ -211,11 +217,41 @@ public class Agent : MonoBehaviour
     {
         if (waypoints.Count > 0)
         {
-            targetCell = waypoints[0];
-            waypoints.Remove(targetCell);
-            Vector3 p = pathFinder.getCellPosition(targetCell);
-            p.y = 0.0f;
-            nextNode = p;
+            if (!fightMode)
+            {
+                targetCell = waypoints[0];
+                waypoints.Remove(targetCell);
+                Vector3 p = pathFinder.getCellPosition(targetCell);
+                p.y = 0.0f;
+                nextNode = p;
+            }
+            else
+            {
+                if(closestEnemy != null)
+                {
+                    if (dis2Enemy - 0.2f > Vector3.Distance(transform.position, closestEnemy.transform.position))
+                    {
+                        int srcCell = coord2cellID(transform.position);
+                        targetCell = coord2cellID(closestEnemy.transform.position);
+                        dis2Enemy = Vector3.Distance(transform.position, closestEnemy.transform.position);
+                        if (!threadRunning)
+                        {
+                            threadRunning = true;
+                            t1 = new Thread(() => astar(srcCell, targetCell));
+                            t1.Start();
+                        }
+                    }
+                    else
+                    {
+                        targetCell = waypoints[0];
+                        waypoints.Remove(targetCell);
+                        Vector3 p = pathFinder.getCellPosition(targetCell);
+                        p.y = 0.0f;
+                        nextNode = p;
+                    }
+                }
+                
+            }
 
         }
         else
@@ -236,6 +272,7 @@ public class Agent : MonoBehaviour
                 {
                     int srcCell = coord2cellID(transform.position);
                     targetCell = coord2cellID(closestEnemy.transform.position);
+                    dis2Enemy = Vector3.Distance(transform.position, closestEnemy.transform.position);
                     if (!threadRunning)
                     {
                         threadRunning = true;
