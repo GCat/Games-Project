@@ -9,7 +9,7 @@ public class WatchTower : MonoBehaviour, Building
     public float health = 100.0f;
     public List<GameObject> targets;
     public float damage = 5.0f;
-    public float radius = 15.0f;
+    private float radius = 25.0f;
 
     string Building.getName()
     {
@@ -17,7 +17,7 @@ public class WatchTower : MonoBehaviour, Building
     }
     Vector3 Building.getLocation()
     {
-        return this.gameObject.transform.position;
+        return transform.position;
     }
     float getHealth()
     {
@@ -28,7 +28,7 @@ public class WatchTower : MonoBehaviour, Building
         health -= damage;
         if (health <= 0)
         {
-            Destroy(transform.parent.gameObject);
+            Destroy(gameObject);
         }
     }
 
@@ -42,8 +42,15 @@ public class WatchTower : MonoBehaviour, Building
         create_building();
 	}
 
+    void OnDrawGizmosSelected()
+    {
+       // Gizmos.color = Color.red;
+       // Gizmos.DrawSphere(transform.position, radius);
+    }
+
     void Update()
     {
+
         if (targets.Count > 0)
         {
             targets.RemoveAll(x => x == null);

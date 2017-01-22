@@ -58,7 +58,8 @@ public class PathFinding : MonoBehaviour
     }
 
     public string checkCell(int cellId)
-    {
+    {   
+        if (world == null) return "ERROR";
         return world.checkCell(cellId);
     }
     void buildingAdded(int id)

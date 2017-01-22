@@ -41,8 +41,8 @@ public class BadiesAI : MonoBehaviour {
 
     public float strenght = 20.0f;
     public float health = 100.0f;
-    public float speed = 2.0f;
-    public float rotationSpeed = 4.0f;
+    public float speed = 4.0f;
+    public float rotationSpeed = 6.0f;
 
     // Components
     private Rigidbody rb;
@@ -79,12 +79,11 @@ public class BadiesAI : MonoBehaviour {
     private bool noMoreEnemies;
 
     //Defender
-    public float radius = 20.0f;
+    private float radius = 25.0f;
     private float dis2Temple;
     public bool enemyInrange = false;
     public bool defending = false;
     public bool path2Enemy = false;
-    public List<Collider> hitColliders;
 
     void Start()
     {
@@ -131,15 +130,14 @@ public class BadiesAI : MonoBehaviour {
         {
             // Check surroundings First towers next humans
             int layerMask = 1 << 10;
-            hitColliders = new List<Collider>(Physics.OverlapSphere(transform.position, radius, layerMask));
-            Debug.Log(hitColliders.Count);
+            List<Collider> hitColliders; hitColliders = new List<Collider>(Physics.OverlapSphere(transform.position, radius, layerMask));
             Collider tower = hitColliders.Find(x => x.tag == "Tower");
             if (tower != null)
             {
-                Debug.Log("Here");
                 closestEnemy = tower.gameObject;
                 if (!threadRunning)
                 {
+                    nextNode.y = -50.0f;
                     moving = false;
                     threadRunning = true;
                     defending = true;
@@ -159,6 +157,7 @@ public class BadiesAI : MonoBehaviour {
         {
             if (path2Enemy)
             {
+
                 if (enemyInrange)
                 {
                     if (!attack(closestEnemy))
@@ -168,6 +167,7 @@ public class BadiesAI : MonoBehaviour {
                         closestEnemy = null;
                         pathToTempleFound = false;
                         templeInRange = false;
+                        path2Enemy = false;
                     }
                 }
                 else if (nextNode.y == -50.0f) getnextWaypoint();
@@ -266,6 +266,7 @@ public class BadiesAI : MonoBehaviour {
             {
                 moving = false;
                 threadRunning = true;
+                Debug.Log("Searching for path to temple");
                 int srcCell = coord2cellID(transform.position);
                 targetCell = coord2cellID(temple.GetComponent<Collider>().ClosestPointOnBounds(transform.position));
                 t1 = new Thread(() => astarR(srcCell, targetCell));
