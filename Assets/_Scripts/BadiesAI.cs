@@ -43,6 +43,7 @@ public class BadiesAI : MonoBehaviour {
     public float health = 100.0f;
     public float speed = 4.0f;
     public float rotationSpeed = 6.0f;
+    private bool alive = true;
 
     // Components
     private Rigidbody rb;
@@ -114,16 +115,18 @@ public class BadiesAI : MonoBehaviour {
     }
 
     private void Update()
-    {
-        if (!moving)
+    {   if (alive)
         {
-            anim.Play("idle");
+            if (!moving)
+            {
+                anim.Play("idle");
+            }
+            else if (fighterType == (int)Fighter.Rusher)
+            {
+                rusherNav();
+            }
+            else if (fighterType == (int)Fighter.Defender) defenderNav();
         }
-        else if (fighterType == (int)Fighter.Rusher)
-        {
-            rusherNav();
-        }
-        else if (fighterType == (int)Fighter.Defender) defenderNav();
 
     }
 
@@ -346,6 +349,7 @@ public class BadiesAI : MonoBehaviour {
         health -= damage;
         if (health <= 0)
         {
+            alive = false;
             anim.Play("die");
             StartCoroutine(WaitToDestroy(0.7f));
         }
