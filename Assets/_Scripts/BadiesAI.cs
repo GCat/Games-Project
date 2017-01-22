@@ -75,15 +75,16 @@ public class BadiesAI : MonoBehaviour {
 
 
     // Killer
-    private GameObject closestEnemy;
+    public GameObject closestEnemy;
     private bool noMoreEnemies;
 
     //Defender
-    public float radius = 10.0f;
+    public float radius = 20.0f;
     private float dis2Temple;
     public bool enemyInrange = false;
     public bool defending = false;
     public bool path2Enemy = false;
+    public List<Collider> hitColliders;
 
     void Start()
     {
@@ -128,9 +129,10 @@ public class BadiesAI : MonoBehaviour {
     {
         if (templeInRange && !defending)
         {
-            Debug.Log("Here1");
             // Check surroundings First towers next humans
-            List<Collider> hitColliders = new List<Collider>(Physics.OverlapSphere(transform.position, radius));
+            int layerMask = 1 << 10;
+            hitColliders = new List<Collider>(Physics.OverlapSphere(transform.position, radius, layerMask));
+            Debug.Log(hitColliders.Count);
             Collider tower = hitColliders.Find(x => x.tag == "Tower");
             if (tower != null)
             {
