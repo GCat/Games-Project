@@ -66,7 +66,6 @@ public class BadiesAI : MonoBehaviour {
     // Fighting
     enum Fighter {  Rusher, Defender, Killer };
     public int fighterType;
-    private bool attacking = false;
 
     // Rusher
     private GameObject temple;
@@ -101,7 +100,12 @@ public class BadiesAI : MonoBehaviour {
         maxCell = 5000;
         closestEnemy = null;
         /* For now always rusher*/
-        fighterType = (int)Fighter.Defender;
+
+        if (UnityEngine.Random.Range(0.0f, 10.0f) >= 5) fighterType = (int)Fighter.Defender;
+        else
+        {
+            fighterType = (int)Fighter.Rusher;
+        }
 
         if (fighterType == (int)Fighter.Rusher || fighterType ==(int) Fighter.Defender)
         {
