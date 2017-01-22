@@ -311,10 +311,8 @@ public class BadiesAI : MonoBehaviour {
         if (victim != null)
         {
             anim.Play("hit");
-            transform.rotation = Quaternion.Slerp(
-           transform.rotation,
-           Quaternion.LookRotation(victim.transform.position),
-           Time.deltaTime * rotationSpeed);
+            transform.rotation = Quaternion.LookRotation(victim.transform.position- transform.position);
+    
             victim.SendMessage("decrementHealth", strenght * Time.deltaTime);
             return true;
         }

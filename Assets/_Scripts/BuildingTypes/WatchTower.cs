@@ -44,8 +44,8 @@ public class WatchTower : MonoBehaviour, Building
 
     void OnDrawGizmosSelected()
     {
-       // Gizmos.color = Color.red;
-       // Gizmos.DrawSphere(transform.position, radius);
+       Gizmos.color = Color.red;
+       Gizmos.DrawSphere(transform.position, radius);
     }
 
     void Update()
