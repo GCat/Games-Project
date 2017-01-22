@@ -269,13 +269,18 @@ public class BadiesAI : MonoBehaviour {
         {
             if (!pathToTempleFound && !threadRunning)
             {
-                moving = false;
-                threadRunning = true;
-                Debug.Log("Searching for path to temple");
-                int srcCell = coord2cellID(transform.position);
-                targetCell = coord2cellID(temple.GetComponent<Collider>().ClosestPointOnBounds(transform.position));
-                t1 = new Thread(() => astarR(srcCell, targetCell));
-                t1.Start();
+                if(temple != null)
+                {
+                    moving = false;
+                    threadRunning = true;
+                    Debug.Log("Searching for path to temple");
+                    int srcCell = coord2cellID(transform.position);
+                    targetCell = coord2cellID(temple.GetComponent<Collider>().ClosestPointOnBounds(transform.position));
+                    t1 = new Thread(() => astarR(srcCell, targetCell));
+                    t1.Start();
+
+                }
+               
             }
             else if (pathToTempleFound)
             {
