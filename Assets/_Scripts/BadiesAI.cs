@@ -168,6 +168,7 @@ public class BadiesAI : MonoBehaviour {
                         pathToTempleFound = false;
                         templeInRange = false;
                         path2Enemy = false;
+                        nextNode.y = -50.0f;
                     }
                 }
                 else if (nextNode.y == -50.0f) getnextWaypoint();
@@ -310,6 +311,10 @@ public class BadiesAI : MonoBehaviour {
         if (victim != null)
         {
             anim.Play("hit");
+            transform.rotation = Quaternion.Slerp(
+           transform.rotation,
+           Quaternion.LookRotation(victim.transform.position),
+           Time.deltaTime * rotationSpeed);
             victim.SendMessage("decrementHealth", strenght * Time.deltaTime);
             return true;
         }
