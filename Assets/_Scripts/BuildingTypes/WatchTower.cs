@@ -46,11 +46,12 @@ public class WatchTower : MonoBehaviour, Building
     {
         if (targets.Count > 0)
         {
-            foreach(GameObject target in targets)
+            targets.RemoveAll(x => x == null);
+            foreach (GameObject target in targets)
             {
                 if(Vector3.Distance(transform.position, target.transform.position) <= radius)
                 {
-                    if (!attack(target)) targets.Remove(target);
+                    attack(target);
                 }
             }
         }
