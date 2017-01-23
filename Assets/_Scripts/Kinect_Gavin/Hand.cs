@@ -94,18 +94,21 @@ public class Hand : MonoBehaviour {
                 }
                 if (closest != -1)
                 {
-                    heldScaffold = inRange[closest].gameObject;
-                    heldCollider = heldScaffold.GetComponent<BoxCollider>();
-                    heldCollider.enabled = false;
-                    if (heldScaffold.GetComponent<Scaffold>() != null)
+                    if (!(inRange[closest].tag == "Temple"))
                     {
-                        held = 1;
-                        heldScaffoldScript = heldScaffold.GetComponent<Scaffold>();
-                        buildingType = UnityEditor.ArrayUtility.IndexOf(buildings, heldScaffoldScript.type);
-                    }
-                    else
-                    {
-                        held = 2;
+                        heldScaffold = inRange[closest].gameObject;
+                        heldCollider = heldScaffold.GetComponent<BoxCollider>();
+                        heldCollider.enabled = false;
+                        if (heldScaffold.GetComponent<Scaffold>() != null)
+                        {
+                            held = 1;
+                            heldScaffoldScript = heldScaffold.GetComponent<Scaffold>();
+                            buildingType = UnityEditor.ArrayUtility.IndexOf(buildings, heldScaffoldScript.type);
+                        }
+                        else
+                        {
+                            held = 2;
+                        }
                     }
                 }
             }

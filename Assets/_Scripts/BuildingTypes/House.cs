@@ -90,8 +90,7 @@ public class House  : MonoBehaviour, Building
         //Calculate time
         timer   = Time.time - StartTime;
 
-        //Spawn human every min 
-        if (timer >= 10)
+        if (timer >= 3)
         {
             if (resourceCounter.getFood() > foodCost)
             {

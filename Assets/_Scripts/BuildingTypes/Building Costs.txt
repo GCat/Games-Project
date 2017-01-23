@@ -1,0 +1,8 @@
+Temple : Free
+House : 50 Stone, 50 Wood
+	-- 10 Food per Human
+LumberYard : 30 Faith
+IronMine : 30 Faith
+Farm : 10 Faith
+Quarry : 20 Faith
+Tower : 100 Faith
