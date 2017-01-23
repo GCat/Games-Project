@@ -5,13 +5,13 @@ using System.Threading;
 
 /* AI LOGIC EXPLANATION
  * 
- * --Rushers Completed
+ * --Rushers COMPLETED
  * Search fastest path to temple using A*
  * When found move a node at a time
  * If buildings in the way destroy building
  * When temple in range attack 
  * 
- * --Defenders
+ * --Defenders COMPLETED
  * Go towards temple same way as rushers
  * Once on temple range 
  * If humans or watch towers nears attack them to protect rusher
@@ -41,7 +41,7 @@ public class BadiesAI : MonoBehaviour {
 
     public float strenght = 20.0f;
     public float health = 100.0f;
-    public float speed = 4.0f;
+    private float speed = 7.0f;
     public float rotationSpeed = 6.0f;
     private bool alive = true;
 
@@ -51,6 +51,10 @@ public class BadiesAI : MonoBehaviour {
 
     // Movement
     private bool moving= true;
+    public Vector3 startMarker;
+    public Vector3 endMarker;
+    private float startTime;
+    private float journeyLength;
 
     //Pathfinding
     private PathFinding pathFinder;
@@ -95,7 +99,7 @@ public class BadiesAI : MonoBehaviour {
 
         anim = GetComponent<Animation>();
         rb = GetComponent<Rigidbody>();
-        rb.interpolation = RigidbodyInterpolation.Extrapolate;
+        rb.interpolation = RigidbodyInterpolation.Interpolate;
 
         pathFinder = (PathFinding)GameObject.FindGameObjectWithTag("PathFinder").GetComponent(typeof(PathFinding));
         maxCell = 5000;
@@ -108,16 +112,19 @@ public class BadiesAI : MonoBehaviour {
             fighterType = (int)Fighter.Rusher;
         }
 
-        if (fighterType == (int)Fighter.Rusher || fighterType ==(int) Fighter.Defender)
-        {
-            temple = GameObject.FindGameObjectWithTag("Temple");
-        }
+       
+        temple = GameObject.FindGameObjectWithTag("Temple");
+        
     }
 
     private void Update()
     {   if (alive)
         {
-            if (!moving)
+            if (temple == null)
+            {
+                anim.Play("rage");
+            }
+            else if (!moving)
             {
                 anim.Play("idle");
             }
@@ -184,8 +191,10 @@ public class BadiesAI : MonoBehaviour {
                     Vector3 offset = nextNode - transform.position;
                     if (offset.magnitude > 0.2f)
                     {
-                        Vector3 finalVal = offset.normalized * speed;
-                        rb.MovePosition(transform.position + finalVal * Time.deltaTime);
+                        Vector3 finalVal = offset * speed;
+                        float distCovered = (Time.time - startTime) * speed;
+                        float fracJourney = distCovered / journeyLength;
+                        transform.position = Vector3.Lerp(startMarker, endMarker, fracJourney);
                         transform.rotation = Quaternion.Slerp(
                             transform.rotation,
                             Quaternion.LookRotation(offset),
@@ -223,8 +232,10 @@ public class BadiesAI : MonoBehaviour {
                 Vector3 offset = nextNode - transform.position;
                 if (offset.magnitude > 0.2f)
                 {
-                    Vector3 finalVal = offset.normalized * speed;
-                    rb.MovePosition(transform.position + finalVal * Time.deltaTime);
+                    Vector3 finalVal = offset * speed;
+                    float distCovered = (Time.time - startTime) * speed;
+                    float fracJourney = distCovered / journeyLength;
+                    transform.position = Vector3.Lerp(startMarker, endMarker, fracJourney);
                     transform.rotation = Quaternion.Slerp(
                         transform.rotation,
                         Quaternion.LookRotation(offset),
@@ -249,6 +260,31 @@ public class BadiesAI : MonoBehaviour {
         }
 
     }
+    /*
+    private void killerNav()
+    {
+        if (noMoreEnemies)
+        {
+            fightMode = false;
+        }
+        else if (closestEnemy != null)
+        {
+            if (Vector3.Distance(transform.position, closestEnemy.transform.position) < 2.0f)
+            {
+                Debug.Log("Here!!");
+                if (!attack(closestEnemy)) closestEnemy = null;
+            }
+            else
+            {
+                wanderNav();
+            }
+        }
+        else
+        {
+            closestEnemy = findClosestEnemy();
+        }
+    }
+    */
 
     void astarR(int srcCell, int targetCell)
     {
@@ -294,6 +330,10 @@ public class BadiesAI : MonoBehaviour {
                     Vector3 p = pathFinder.getCellPosition(targetCell);
                     p.y = 0.0f;
                     nextNode = p;
+                    startTime = Time.time;
+                    startMarker = transform.position;
+                    endMarker = p;
+                    journeyLength = Vector3.Distance(startMarker, endMarker);
                 }
                 else
                 {

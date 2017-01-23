@@ -8,56 +8,115 @@ public class Hand : MonoBehaviour {
     GameObject closed_hand;
     GameObject right_hand;
     Scaffold heldScaffoldScript;
-    int held = 0;
+    BuildingType[] buildings = { BuildingType.FARM, BuildingType.HOUSE, BuildingType.IRONMINE, BuildingType.LUMBERYARD, BuildingType.QUARRY, BuildingType.TOWER };
+    int buildingType;
+    int held = 0; //0 = no building, 1 = scaffold , 2 = any other building
+    float rotationTimer;
+    float startTime;
+    Collider heldCollider;
     
 	// Use this for initialization
 	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    }
+
+    // Update is called once per frame
+    void Update () {
         Vector3 curLocation = transform.position;
-        curLocation.x -= 14;
-        curLocation.y -= 22;
         GameObject res = Resources.Load("Scaffold") as GameObject;
-        if (Input.GetKeyDown(KeyCode.C) && held == 0)
+        float h = Input.GetAxis("Mouse X");
+        float v = Input.GetAxis("Mouse Y");
+        float scroll = Input.GetAxis("Mouse ScrollWheel");
+        transform.position = new Vector3(curLocation.x-6*v,curLocation.y-20*scroll,curLocation.z+6*h);
+        curLocation.x -= 14;
+        curLocation.y -= 28;
+        if (Input.GetMouseButtonDown(1))
         {
-            heldScaffold = GameObject.Instantiate(res,curLocation, Quaternion.identity) as GameObject;
-            heldScaffoldScript = heldScaffold.GetComponent("Scaffold") as Scaffold;
-            held = 1;
-        }
-        if (Input.GetKeyDown(KeyCode.D) && held == 1)
-        {
-            held = 0;
+            if (held == 0)
+            {
+                heldScaffold = GameObject.Instantiate(res, curLocation, Quaternion.identity) as GameObject;
+                heldScaffoldScript = heldScaffold.GetComponent("Scaffold") as Scaffold;
+                heldCollider = heldScaffold.GetComponent<BoxCollider>();
+                heldCollider.enabled = false;
+                heldScaffoldScript.type = BuildingType.FARM;
+                buildingType = 0;
+                held = 1;
+                startTime = Time.time;
+                rotationTimer = 0f;
+            }
+            else if (held == 1)
+            {
+                buildingType = (buildingType + 1) % 6;
+                heldScaffoldScript.type = buildings[buildingType];
+            }
+            else
+            {
+                heldScaffold.transform.Rotate(new Vector3(0, 90, 0));
+            }
         }
         if (held == 1)
         {
             heldScaffold.transform.position = curLocation;
-            if (Input.GetKeyDown(KeyCode.Alpha1))
+            
+            rotationTimer = Time.time - startTime;
+            if (rotationTimer > 1)
             {
-                heldScaffoldScript.type = BuildingType.FARM;
+                heldScaffold.transform.Rotate(new Vector3(0, 90, 0));
+                startTime = Time.time;
             }
-            if (Input.GetKeyDown(KeyCode.Alpha2))
+            
+        }
+        if (held == 2)
+        {
+            heldScaffold.transform.position = curLocation;
+        }
+        
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (held == 0)
             {
-                heldScaffoldScript.type = BuildingType.HOUSE;
+                float curClosest = 0;
+                int closest = -1;
+                int layerMask = 1 << 10;
+                Collider[] inRange = Physics.OverlapSphere(curLocation, 10, layerMask);
+                for (int i = 0; i < inRange.Length; i++)
+                {
+                    float distance = Vector3.Distance(inRange[i].transform.position, curLocation);
+                    if (i == 0)
+                    {
+                        curClosest = distance;
+                        closest = 0;
+                    }
+                    else
+                    {
+                        if (distance < curClosest)
+                        {
+                            closest = i;
+                        }
+                    }
+                }
+                if (closest != -1)
+                {
+                    heldScaffold = inRange[closest].gameObject;
+                    heldCollider = heldScaffold.GetComponent<BoxCollider>();
+                    heldCollider.enabled = false;
+                    if (heldScaffold.GetComponent<Scaffold>() != null)
+                    {
+                        held = 1;
+                        heldScaffoldScript = heldScaffold.GetComponent<Scaffold>();
+                        buildingType = UnityEditor.ArrayUtility.IndexOf(buildings, heldScaffoldScript.type);
+                    }
+                    else
+                    {
+                        held = 2;
+                    }
+                }
             }
-            if (Input.GetKeyDown(KeyCode.Alpha3))
+            else
             {
-                heldScaffoldScript.type = BuildingType.IRONMINE;
+                held = 0;
+                heldCollider.enabled = true;
             }
-            if (Input.GetKeyDown(KeyCode.Alpha4))
-            {
-                heldScaffoldScript.type = BuildingType.LUMBERYARD;
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha5))
-            {
-                heldScaffoldScript.type = BuildingType.QUARRY;
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha6))
-            {
-                heldScaffoldScript.type = BuildingType.TOWER;
-            }
+
         }
         if(held == 1)
         {

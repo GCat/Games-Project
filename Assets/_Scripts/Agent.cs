@@ -3,16 +3,44 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Threading;
 using System;
-using UnityEngine.EventSystems;
-using UnityEngine.Networking.Match;
+
+
+/* AI LOGIC EXPLANATION
+ *  PHASE 1
+ *  -- Wander:
+ *  The  AI wanders arround moving randomly 
+ *  TODO: Smooth Rotation
+ *  TODO: Avoidance
+ *  
+ * PHASE 2 
+ * If at any moment temple detryed everyone dies
+ * 
+ * 
+ * 
+ * --Killers COMPLETED
+ * Search for nearest enemy 
+ * Go to its position
+ * Attack it
+ * When dead look for next enemy
+ * If no humans remain either go for watch towers or go for temple 
+ * 
+ * --Defender
+ * Go towards temple, if enemy near temple kill it
+ * 
+ * --Camper
+ * 
+ * 
+ */
+
+
 
 public class Agent : MonoBehaviour
 {
     // Human characteristics
     public float health = 100.0f;
     public float strenght = 10.0f;
-    public float speed = 4.0f;
-    public float rotationspeed = 5.0f;
+    private float speed = 2.0f;
+    private float rotationspeed = 5.0f;
     public float gravity = 9.81F;
     public float weapon_strength;
     private GameObject temple;
@@ -24,6 +52,10 @@ public class Agent : MonoBehaviour
     // movements
     private bool stopMoving;
     public float priority = 0;
+    public Vector3 startMarker;
+    public Vector3 endMarker;
+    private float startTime;
+    private float journeyLength;
 
     // Pathfinding
     private Thread t1;
@@ -54,9 +86,6 @@ public class Agent : MonoBehaviour
 
     void Start()
     {
-        strenght = 10;
-        health = 100;
-        speed = 2.0f;
         stopMoving = false;
         nextNode = new Vector3(0.0f, -50.0f, 0.0f);
         waypoints = new List<int>();
@@ -67,7 +96,7 @@ public class Agent : MonoBehaviour
 
         anim = GetComponent<Animation>();
         rb = GetComponent<Rigidbody>();
-        rb.interpolation = RigidbodyInterpolation.Extrapolate;
+        rb.interpolation = RigidbodyInterpolation.Interpolate;
         temple = GameObject.FindGameObjectWithTag("Temple");
         pathFinder = (PathFinding)GameObject.FindGameObjectWithTag("PathFinder").GetComponent(typeof(PathFinding));
         maxCell = 5000;
@@ -158,10 +187,13 @@ public class Agent : MonoBehaviour
             if (pathFinder.checkCell(targetCell) == "empty")
             {
                 Vector3 offset = nextNode - transform.position;
-                if (offset.magnitude > 0.1f)
+                if (offset.magnitude > 0.5f)
                 {
-                    Vector3 finalVal = offset.normalized * speed;
-                    rb.MovePosition(transform.position + finalVal * Time.deltaTime);
+                    Vector3 finalVal = offset *100;
+                    // rb.MovePosition(transform.position + finalVal * Time.deltaTime);
+                    float distCovered = (Time.time - startTime) * speed;
+                    float fracJourney = distCovered / journeyLength;
+                    transform.position = Vector3.Lerp(startMarker, endMarker, fracJourney);
                     transform.rotation = Quaternion.Slerp(
                         transform.rotation,
                         Quaternion.LookRotation(offset),
@@ -224,6 +256,10 @@ public class Agent : MonoBehaviour
                 Vector3 p = pathFinder.getCellPosition(targetCell);
                 p.y = 0.0f;
                 nextNode = p;
+                startTime = Time.time;
+                startMarker = transform.position;
+                endMarker = p;
+                journeyLength = Vector3.Distance(startMarker, endMarker);
             }
             else
             {
@@ -248,6 +284,10 @@ public class Agent : MonoBehaviour
                         Vector3 p = pathFinder.getCellPosition(targetCell);
                         p.y = 0.0f;
                         nextNode = p;
+                        startTime = Time.time;
+                        startMarker = transform.position;
+                        endMarker = p;
+                        journeyLength = Vector3.Distance(startMarker, endMarker);
                     }
                 }
                 
@@ -332,7 +372,7 @@ public class Agent : MonoBehaviour
         if (health <= 0)
         {
             anim.Play("diehard");
-            StartCoroutine(WaitToDestroy(3.0f));
+            StartCoroutine(WaitToDestroy(2.0f));
         }
     }
 

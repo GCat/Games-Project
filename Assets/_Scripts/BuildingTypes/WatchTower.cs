@@ -143,11 +143,14 @@ public class WatchTower : MonoBehaviour, Building
 
     void throwArrow (GameObject victim)
     {
-        Vector3 pos = transform.TransformPoint(GetComponent<BoxCollider>().center);
-        pos.y += 1.5f;
-        GameObject pre = Resources.Load("Arrow_Regular") as GameObject;
-        GameObject c = GameObject.Instantiate(pre,pos, Quaternion.LookRotation(victim.transform.position)) as GameObject;
-        ((Arrow)(c.GetComponent(typeof(Arrow)))).attack(victim);
+        if (victim != null)
+        {
+            Vector3 pos = transform.TransformPoint(GetComponent<BoxCollider>().center);
+            pos.y += 1.5f;
+            GameObject pre = Resources.Load("Arrow_Regular") as GameObject;
+            GameObject c = GameObject.Instantiate(pre, pos, Quaternion.LookRotation(victim.transform.position)) as GameObject;
+            ((Arrow)(c.GetComponent(typeof(Arrow)))).attack(victim);
+        }
     }
 
 
