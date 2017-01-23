@@ -117,10 +117,14 @@ public class Hand : MonoBehaviour {
             }
             else
             {
-                held = 0;
-                heldCollider.enabled = true;
+                int layerMask = 1 << 10;
+                Vector3 size = heldScaffold.transform.localScale;
+                if ((Physics.OverlapBox(curLocation, new Vector3(size.x/2,500,size.y/2),Quaternion.identity,layerMask)).Length == 0)
+                {
+                    held = 0;
+                    heldCollider.enabled = true;
+                }
             }
-
         }
         if (held == 1 || held == 2)
         {
