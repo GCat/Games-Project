@@ -8,46 +8,49 @@ using UnityEngine.Networking.Match;
 
 public class Agent : MonoBehaviour
 {
-
-    public bool fightMode;
-    public AudioClip sacrificeClip;
-    public float priority = 0;
-
-    private Thread t1;
-    private bool threadRunning = false;
-    bool beingMoved = false;
-
-    List<int> waypoints;
-
+    // Human characteristics
     public float health = 100.0f;
     public float strenght = 10.0f;
-    public float speed = 150f;
+    public float speed = 4.0f;
     public float rotationspeed = 5.0f;
     public float gravity = 9.81F;
     public float weapon_strength;
-
-    private Vector3[] previousLocations = new Vector3[3];
-    private float noMovement = 0.01f;
-
-    private Vector3 initialPosition;
-    private PathFinding pathFinder;
-
-    public Vector3 nextNode;
-    public int targetCell;
-
+    private GameObject temple;
+    // Components
+    public AudioClip sacrificeClip;
     private Rigidbody rb;
     public Animation anim;
 
-
-    public bool isMoving = false;
-    private GameObject closestBadie;
-    private bool noMoreEnemies;
-    private int maxCell;
-
+    // movements
     private bool stopMoving;
+    public float priority = 0;
+
+    // Pathfinding
+    private Thread t1;
+    private bool threadRunning = false;
+    List<int> waypoints;
+    private PathFinding pathFinder;
+    public Vector3 nextNode;
+    public int targetCell;
+
+    // Sacrifice
+    bool beingMoved = false;
     private Vector3 screenPoint;
     private Vector3 Mouse_offset;
     private bool sacrificeEntered = false;
+
+    // Fighting
+    enum Fighter { Killer, Defender, Camper };
+    public int fighterType;
+    public bool fightMode = true;
+
+    //Killer
+    private GameObject closestEnemy;
+    private bool noMoreEnemies;
+    private int maxCell;
+    private float dis2Enemy =0;
+
+
 
     void Start()
     {
@@ -58,23 +61,30 @@ public class Agent : MonoBehaviour
         nextNode = new Vector3(0.0f, -50.0f, 0.0f);
         waypoints = new List<int>();
         noMoreEnemies = false;
-        initialPosition = transform.position;
+        fightMode = true;
+
         priority = UnityEngine.Random.Range(0.0f, 20.0f);
 
         anim = GetComponent<Animation>();
         rb = GetComponent<Rigidbody>();
         rb.interpolation = RigidbodyInterpolation.Extrapolate;
-
+        temple = GameObject.FindGameObjectWithTag("Temple");
         pathFinder = (PathFinding)GameObject.FindGameObjectWithTag("PathFinder").GetComponent(typeof(PathFinding));
         maxCell = 5000;
-        closestBadie = null;
+        closestEnemy = null;
+        fighterType = (int)Fighter.Killer;
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (fightMode && !stopMoving)
+        if( temple == null)
+        {
+            anim.Play("diehard");
+            StartCoroutine(WaitToDestroy(3.0f));
+        }
+        else if (fightMode && !stopMoving)
             fightNav();
         else if (!stopMoving)
             wanderNav();
@@ -173,15 +183,33 @@ public class Agent : MonoBehaviour
 
     private void fightNav()
     {
-        if (closestBadie == null)
+       if (fighterType == (int)Fighter.Killer)
         {
-            closestBadie = findClosestEnemy();
-            if (closestBadie == null)
+            killerNav();
+        }
+    }
+
+    private void killerNav()
+    {
+        if (noMoreEnemies)
+        {
+            fightMode = false;
+        }
+        else if (closestEnemy != null)
+        {
+            if (Vector3.Distance(transform.position, closestEnemy.transform.position) < 2.0f)
             {
-                waypoints = new List<int>();
-                nextNode.y = -50f;
-                fightMode = false;
+                Debug.Log("Here!!");
+                if (!attack(closestEnemy)) closestEnemy = null;
             }
+            else
+            {
+                wanderNav();
+            }
+        }
+        else
+        {
+            closestEnemy = findClosestEnemy();
         }
     }
 
@@ -189,22 +217,70 @@ public class Agent : MonoBehaviour
     {
         if (waypoints.Count > 0)
         {
-            targetCell = waypoints[0];
-            waypoints.Remove(targetCell);
-            Vector3 p = pathFinder.getCellPosition(targetCell);
-            p.y = 0.0f;
-            nextNode = p;
+            if (!fightMode)
+            {
+                targetCell = waypoints[0];
+                waypoints.Remove(targetCell);
+                Vector3 p = pathFinder.getCellPosition(targetCell);
+                p.y = 0.0f;
+                nextNode = p;
+            }
+            else
+            {
+                if(closestEnemy != null)
+                {
+                    if (dis2Enemy - 0.2f > Vector3.Distance(transform.position, closestEnemy.transform.position))
+                    {
+                        int srcCell = coord2cellID(transform.position);
+                        targetCell = coord2cellID(closestEnemy.transform.position);
+                        dis2Enemy = Vector3.Distance(transform.position, closestEnemy.transform.position);
+                        if (!threadRunning)
+                        {
+                            threadRunning = true;
+                            t1 = new Thread(() => astar(srcCell, targetCell));
+                            t1.Start();
+                        }
+                    }
+                    else
+                    {
+                        targetCell = waypoints[0];
+                        waypoints.Remove(targetCell);
+                        Vector3 p = pathFinder.getCellPosition(targetCell);
+                        p.y = 0.0f;
+                        nextNode = p;
+                    }
+                }
+                
+            }
 
         }
         else
-        {
-            int srcCell = coord2cellID(transform.position);
-            targetCell = calculateNewTarget();
-            if (!threadRunning)
+        {   if (!fightMode)
             {
-                threadRunning = true;
-                t1 = new Thread(() => astar(srcCell, targetCell));
-                t1.Start();
+                int srcCell = coord2cellID(transform.position);
+                targetCell = calculateNewTarget();
+                if (!threadRunning)
+                {
+                    threadRunning = true;
+                    t1 = new Thread(() => astar(srcCell, targetCell));
+                    t1.Start();
+                }
+            }
+            else
+            {
+                if (closestEnemy != null)
+                {
+                    int srcCell = coord2cellID(transform.position);
+                    targetCell = coord2cellID(closestEnemy.transform.position);
+                    dis2Enemy = Vector3.Distance(transform.position, closestEnemy.transform.position);
+                    if (!threadRunning)
+                    {
+                        threadRunning = true;
+                        t1 = new Thread(() => astar(srcCell, targetCell));
+                        t1.Start();
+                    }
+                }
+                
             }
         }
     }
@@ -230,17 +306,23 @@ public class Agent : MonoBehaviour
         badies = GameObject.FindGameObjectsWithTag("Badies");
         float distance = Mathf.Infinity;
         Vector3 position = transform.position;
-        foreach (GameObject badie in badies)
+        if( badies.Length> 0)
         {
-            Vector3 diff = badie.transform.position - position;
-            float current_distance = diff.sqrMagnitude;
-            if (current_distance < distance)
+            foreach (GameObject badie in badies)
             {
-                distance = current_distance;
-                closest = badie;
-            }
+                Vector3 diff = badie.transform.position - position;
+                float current_distance = diff.sqrMagnitude;
+                if (current_distance < distance)
+                {
+                    distance = current_distance;
+                    closest = badie;
+                }
+            }  
         }
-        // if you win and all badies are dead what you do?
+        else
+        {
+            noMoreEnemies = true;
+        }
         return closest;
     }
 
@@ -249,7 +331,8 @@ public class Agent : MonoBehaviour
         health -= damage;
         if (health <= 0)
         {
-            Destroy(gameObject);
+            anim.Play("diehard");
+            StartCoroutine(WaitToDestroy(3.0f));
         }
     }
 
@@ -307,5 +390,17 @@ public class Agent : MonoBehaviour
     {
         stopMoving = move;
 
+    }
+
+    bool attack(GameObject victim)
+    {
+        if (victim != null)
+        {
+            anim.Play("attack");
+            transform.rotation = Quaternion.LookRotation(victim.transform.position - transform.position);
+            victim.SendMessage("decrementHealth", strenght * Time.deltaTime);
+            return true;
+        }
+        return false;
     }
 }

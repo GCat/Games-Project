@@ -3,6 +3,34 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 
+
+/* Human AI  Explanation
+ * 
+ * Phase 1
+ * Once spawn wander around finding a random position using calculatenewtarget()
+ * once found target find fastest path using A*
+ * Reapeat until battle phase.
+ * 
+ * If the human grabbed stop moving
+ * If dragged outside the plane DIE
+ * 
+ * Phase 2
+ * Have three type of humans
+ * ---Attackers:
+ * (Maybe sincronized as badies are way stronger)
+ * Search for nearest badie and attack
+ * 
+ * For sincronisation give each human a rank  make humans comunicate with each other with target
+ * If target match both attack
+ * If target does not match go for target of human with highest rank
+ * 
+ * --- Campers:
+ * Stay near watch towers and engage nearby enemies
+ * 
+ * --- Defenders:
+ * Defend temple
+ *  
+ */ 
 public class PathFinding : MonoBehaviour
 {
 
@@ -30,14 +58,15 @@ public class PathFinding : MonoBehaviour
     }
 
     public string checkCell(int cellId)
-    {
+    {   
+        if (world == null) return "ERROR";
         return world.checkCell(cellId);
     }
     void buildingAdded(int id)
     {
 
         world.edgeRemove(id);
-        bWorld.edgeChangeWeight(id, 20.0f);
+        bWorld.edgeChangeWeight(id, 50.0f);
     }
     void buildingRemoved(int id)
     {
@@ -137,8 +166,8 @@ public class PathFinding : MonoBehaviour
 
     private float costEstimate(int src, int dst)
     {
-        float displacementX = (Math.Abs(src - dst) % world.ncellsinrow) * world.gridx;
-        float displacementY = (Math.Abs(src - dst) / world.ncellsinrow) * world.gridz;
+        float displacementX = (Math.Abs(src % world.ncellsinrow - dst % world.ncellsinrow)) * world.gridx;
+        float displacementY = (float)(Math.Abs((dst- dst % world.ncellsinrow) -src -src % world.ncellsinrow) *(world.gridz/world.ncellsinrow));
         float distance = (float)Math.Sqrt(displacementX * displacementX + displacementY * displacementY);
         return distance;
     }

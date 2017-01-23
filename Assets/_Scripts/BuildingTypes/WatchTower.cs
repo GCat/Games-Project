@@ -7,6 +7,16 @@ public class WatchTower : MonoBehaviour, Building
 
     public string buildingName;
     public float health = 100.0f;
+    public List<GameObject> targets;
+    public float damage = 5.0f;
+    private float radius = 25.0f;
+    public float timer1;
+    public float timer2;
+    public float timer3;
+    private float StartTime1;
+    private float StartTime2;
+    private float StartTime3;
+
 
     string Building.getName()
     {
@@ -14,7 +24,7 @@ public class WatchTower : MonoBehaviour, Building
     }
     Vector3 Building.getLocation()
     {
-        return this.gameObject.transform.position;
+        return transform.position;
     }
     float getHealth()
     {
@@ -25,31 +35,119 @@ public class WatchTower : MonoBehaviour, Building
         health -= damage;
         if (health <= 0)
         {
-            Destroy(transform.parent.gameObject);
+            Destroy(gameObject);
         }
     }
 
     public void create_building()
     {
         buildingName = "TOWER";
+        targets = new List<GameObject>();
+        timer1 = 0f;
+        StartTime1 = Time.time;
+        timer2 = 0f;
+        StartTime2 = Time.time;
+        timer3 = 0f;
+        StartTime3 = Time.time;
     }
 
     void Start () {
         create_building();
 	}
 
+    void OnDrawGizmosSelected()
+    {
+       //Gizmos.color = Color.red;
+       //Gizmos.DrawSphere(transform.position, radius);
+    }
+
     void Update()
     {
 
+        if (targets.Count > 0)
+        {
+            targets.RemoveAll(x => x == null);
+            int i = 0;
+            List<int> pop = new List<int>();
+            foreach (GameObject target in targets)
+            {
+                if (Vector3.Distance(transform.position, target.transform.position) <= radius)
+                {
+
+                    attack(target, i);
+                }
+                else pop.Add(i);
+                i++;
+            }
+            foreach (int j in pop)
+            {
+                if( j < targets.Count) targets.RemoveAt(j);
+            }
+        }
+        if(targets.Count < 3)
+        {
+            int layerMask = 1 << 11;
+            List<Collider> hitColliders = new List<Collider>(Physics.OverlapSphere(transform.position, radius, layerMask));
+            foreach(Collider c in hitColliders)
+            {
+                if (!targets.Contains(c.gameObject))
+                {
+                    if (targets.Count >= 3) break;
+                    else
+                    {
+                        targets.Add(c.gameObject);
+                        attack(c.gameObject,targets.Count-1);
+                    }
+                }
+            }
+        }
     }
 
-    void OnTriggerStay(Collider other)
+    bool attack(GameObject victim,int id)
     {
-        if (other.tag == "Badies")
+        if (victim != null)
         {
-            Debug.Log("Attack!");
-            other.gameObject.SendMessage("decrementHealth", 5 * Time.deltaTime);
+            switch (id)
+            {
+                case 0:
+                    timer1 = Time.time - StartTime1;
+                    if (timer1 >= 3)
+                    {
+                        throwArrow(victim);
+                        StartTime1 = Time.time;
+                    }
+                    break;
+                case 1:
+                    timer2 = Time.time - StartTime2;
+                    if (timer2 >= 3)
+                    {
+                        throwArrow(victim);
+                        StartTime2 = Time.time;
+                    }
+                    break;
+                case 2:
+                    timer3 = Time.time - StartTime3;
+                    if (timer3 >= 3)
+                    {
+                        throwArrow(victim);
+                        StartTime3 = Time.time;
+                    }
+                    break;
+            }
+            
+            return true;
         }
+        return false;
+    }
+
+
+    void throwArrow (GameObject victim)
+    {
+        Vector3 pos = transform.TransformPoint(GetComponent<BoxCollider>().center);
+        pos.y += 1.5f;
+        GameObject pre = Resources.Load("Arrow_Regular") as GameObject;
+        GameObject c = GameObject.Instantiate(pre,pos, Quaternion.LookRotation(victim.transform.position)) as GameObject;
+        ((Arrow)(c.GetComponent(typeof(Arrow)))).attack(victim);
     }
 
 
