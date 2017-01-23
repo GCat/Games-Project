@@ -5,6 +5,8 @@ public class Hand : MonoBehaviour {
 
     public Vector3[] fingers = new Vector3[5];
     GameObject heldScaffold;
+    GameObject closed_hand;
+    GameObject right_hand;
     Scaffold heldScaffoldScript;
     int held = 0;
     
@@ -56,6 +58,18 @@ public class Hand : MonoBehaviour {
             {
                 heldScaffoldScript.type = BuildingType.TOWER;
             }
+        }
+        if(held == 1)
+        {
+            closed_hand.GetComponent<Renderer>().enabled = true;
+            right_hand.GetComponent<Renderer>().enabled = false;
+
+        }
+        else
+        {
+            closed_hand.GetComponent<Renderer>().enabled = false;
+            right_hand.GetComponent<Renderer>().enabled = true;
+
         }
     }
 }
