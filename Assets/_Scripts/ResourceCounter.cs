@@ -45,12 +45,13 @@ public class ResourceCounter : MonoBehaviour
 
     public void setResourceText()
     {
-        string resourceText = "Resources \n";
+        string resourceText = "RESOURCES \n";
         resourceText += "Faith: " + faith + "\n";
         resourceText += "Food: " + food + "\n";
         resourceText += "Wood: " + wood + "\n";
         resourceText += "Stone: " + stone + "\n";
         resourceText += "Iron: " + iron + "\n";
+        resourceText += "Population: " + population + "\n";
         resourceText += "Sword Level: " + swords + "\n";
         resourceText += "Armour Level: " + armour + "\n";
         textMesh.text = resourceText;
