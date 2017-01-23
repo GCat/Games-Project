@@ -5,9 +5,9 @@ public class Hand : MonoBehaviour {
 
     public Vector3[] fingers = new Vector3[5];
     GameObject heldScaffold;
-    GameObject closed_hand;
-    GameObject right_hand;
     Scaffold heldScaffoldScript;
+    public GameObject close_hand;
+    public GameObject open_hand;
     BuildingType[] buildings = { BuildingType.FARM, BuildingType.HOUSE, BuildingType.IRONMINE, BuildingType.LUMBERYARD, BuildingType.QUARRY, BuildingType.TOWER };
     int buildingType;
     int held = 0; //0 = no building, 1 = scaffold , 2 = any other building
@@ -29,6 +29,7 @@ public class Hand : MonoBehaviour {
         transform.position = new Vector3(curLocation.x-6*v,curLocation.y-20*scroll,curLocation.z+6*h);
         curLocation.x -= 14;
         curLocation.y -= 28;
+        
         if (Input.GetMouseButtonDown(1))
         {
             if (held == 0)
@@ -118,17 +119,15 @@ public class Hand : MonoBehaviour {
             }
 
         }
-        if(held == 1)
+        if (held == 1 || held == 2)
         {
-            closed_hand.GetComponent<Renderer>().enabled = true;
-            right_hand.GetComponent<Renderer>().enabled = false;
-
+            close_hand.SetActive(true);
+            open_hand.SetActive(false);
         }
-        else
+        else if (held == 0)
         {
-            closed_hand.GetComponent<Renderer>().enabled = false;
-            right_hand.GetComponent<Renderer>().enabled = true;
-
+            open_hand.SetActive(true);
+            close_hand.SetActive(false);
         }
     }
 }
