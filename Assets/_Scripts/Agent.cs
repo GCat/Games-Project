@@ -231,7 +231,6 @@ public class Agent : MonoBehaviour
         {
             if (Vector3.Distance(transform.position, closestEnemy.transform.position) < 2.0f)
             {
-                Debug.Log("Here!!");
                 if (!attack(closestEnemy)) closestEnemy = null;
             }
             else

@@ -80,7 +80,8 @@ public class BadiesAI : MonoBehaviour {
 
     // Killer
     public GameObject closestEnemy;
-    private bool noMoreEnemies;
+    private bool noMoreEnemies = false;
+    private float dis2Enemy = 0;
 
     //Defender
     private float radius = 25.0f;
@@ -105,8 +106,9 @@ public class BadiesAI : MonoBehaviour {
         maxCell = 5000;
         closestEnemy = null;
         /* For now always rusher*/
-
-        if (UnityEngine.Random.Range(0.0f, 10.0f) >= 5) fighterType = (int)Fighter.Defender;
+        float rand = UnityEngine.Random.Range(0.0f, 10.0f);
+        if (rand < 0.33) fighterType = (int)Fighter.Killer;
+        else if (rand < 0.667) fighterType = (int)Fighter.Defender;
         else
         {
             fighterType = (int)Fighter.Rusher;
@@ -133,6 +135,7 @@ public class BadiesAI : MonoBehaviour {
                 rusherNav();
             }
             else if (fighterType == (int)Fighter.Defender) defenderNav();
+            else if (fighterType == (int)Fighter.Killer) killerNav();
         }
 
     }
@@ -140,6 +143,7 @@ public class BadiesAI : MonoBehaviour {
 
     private void defenderNav()
     {
+        Debug.Log("THIS");
         if (templeInRange && !defending)
         {
             // Check surroundings First towers next humans
@@ -260,23 +264,55 @@ public class BadiesAI : MonoBehaviour {
         }
 
     }
-    /*
+    
     private void killerNav()
     {
         if (noMoreEnemies)
         {
-            fightMode = false;
+            fighterType = (int)Fighter.Rusher;
+            pathToTempleFound = false;
+            nextNode.y = -50.0f;
+
+
         }
         else if (closestEnemy != null)
         {
             if (Vector3.Distance(transform.position, closestEnemy.transform.position) < 2.0f)
             {
-                Debug.Log("Here!!");
                 if (!attack(closestEnemy)) closestEnemy = null;
             }
             else
             {
-                wanderNav();
+                if (nextNode.y == -50.0f)
+                {
+                    killerNextWaypoint();
+                }
+                else if (pathFinder.checkCell(targetCell) == "empty")
+                {
+                    Vector3 offset = nextNode - transform.position;
+                    if (offset.magnitude > 0.2f)
+                    {
+                        Vector3 finalVal = offset * speed;
+                        float distCovered = (Time.time - startTime) * speed;
+                        float fracJourney = distCovered / journeyLength;
+                        transform.position = Vector3.Lerp(startMarker, endMarker, fracJourney);
+                        transform.rotation = Quaternion.Slerp(
+                            transform.rotation,
+                            Quaternion.LookRotation(offset),
+                            Time.deltaTime * rotationSpeed);
+                        anim.Play("walk");
+                    }
+                    else killerNextWaypoint();
+                }
+                else
+                {
+                    int layermask = 1 << 10;
+                    List<Collider> hitColliders = new List<Collider>(Physics.OverlapSphere(nextNode, 2.0f, layermask));
+                    if (hitColliders.Count > 0)
+                    {
+                        attack(hitColliders[0].gameObject);
+                    }
+                }
             }
         }
         else
@@ -284,7 +320,6 @@ public class BadiesAI : MonoBehaviour {
             closestEnemy = findClosestEnemy();
         }
     }
-    */
 
     void astarR(int srcCell, int targetCell)
     {
@@ -300,6 +335,52 @@ public class BadiesAI : MonoBehaviour {
         threadRunning = false;
         path2Enemy = true;
         moving = true;
+    }
+
+    private void killerNextWaypoint()
+    {
+        if (waypoints.Count > 0)
+        {
+            if (dis2Enemy - 0.2f > Vector3.Distance(transform.position, closestEnemy.transform.position))
+            {
+                int srcCell = coord2cellID(transform.position);
+                targetCell = coord2cellID(closestEnemy.transform.position);
+                dis2Enemy = Vector3.Distance(transform.position, closestEnemy.transform.position);
+                if (!threadRunning)
+                {
+                    moving = false;
+                    threadRunning = true;
+                    t1 = new Thread(() => astarD(srcCell, targetCell));
+                    t1.Start();
+                }
+            }
+            else
+            {
+                targetCell = waypoints[0];
+                waypoints.Remove(targetCell);
+                Vector3 p = pathFinder.getCellPosition(targetCell);
+                p.y = 0.0f;
+                nextNode = p;
+                startTime = Time.time;
+                startMarker = transform.position;
+                endMarker = p;
+                journeyLength = Vector3.Distance(startMarker, endMarker);
+            }
+        }
+        else
+        {
+            if (!threadRunning)
+            {
+                nextNode.y = -50.0f;
+                moving = false;
+                dis2Enemy = Vector3.Distance(transform.position, closestEnemy.transform.position);
+                int srcCell = coord2cellID(transform.position);
+                targetCell = coord2cellID(closestEnemy.transform.position);
+                t1 = new Thread(() => astarD(srcCell, targetCell));
+                t1.Start();
+            }
+        }
+
     }
 
     private void getnextWaypoint()
@@ -364,7 +445,6 @@ public class BadiesAI : MonoBehaviour {
         {
             anim.Play("hit");
             transform.rotation = Quaternion.LookRotation(victim.transform.position- transform.position);
-    
             victim.SendMessage("decrementHealth", strenght * Time.deltaTime);
             return true;
         }
@@ -393,6 +473,32 @@ public class BadiesAI : MonoBehaviour {
             anim.Play("die");
             StartCoroutine(WaitToDestroy(0.7f));
         }
+    }
+    private GameObject findClosestEnemy()
+    {
+        GameObject[] humans;
+        GameObject closest = null;
+        humans = GameObject.FindGameObjectsWithTag("Human");
+        float distance = Mathf.Infinity;
+        Vector3 position = transform.position;
+        if (humans.Length > 0)
+        {
+            foreach (GameObject badie in humans)
+            {
+                Vector3 diff = badie.transform.position - position;
+                float current_distance = diff.sqrMagnitude;
+                if (current_distance < distance)
+                {
+                    distance = current_distance;
+                    closest = badie;
+                }
+            }
+        }
+        else
+        {
+            noMoreEnemies = true;
+        }
+        return closest;
     }
 
     IEnumerator WaitToDestroy(float waitTime)
