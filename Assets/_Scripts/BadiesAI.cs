@@ -93,7 +93,7 @@ public class BadiesAI : MonoBehaviour {
     void Start()
     {
      
-        moving  = true;
+        moving  = false;
         nextNode = new Vector3(0.0f, -50.0f, 0.0f);
         waypoints = new List<int>();
         noMoreEnemies = false;
@@ -499,6 +499,10 @@ public class BadiesAI : MonoBehaviour {
             noMoreEnemies = true;
         }
         return closest;
+    }
+    public void changeMoving(bool val)
+    {
+        moving = val;
     }
 
     IEnumerator WaitToDestroy(float waitTime)

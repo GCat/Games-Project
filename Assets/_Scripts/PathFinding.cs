@@ -47,6 +47,22 @@ public class PathFinding : MonoBehaviour
         done = true;
     }
 
+    private void Update()
+    {
+        if(Input.GetKey(KeyCode.KeypadEnter)|| Input.GetKey("enter")){
+            GameObject[] badies = GameObject.FindGameObjectsWithTag("Badies");
+            foreach (GameObject b in badies)
+            {
+                b.SendMessage("changeMoving", true);
+            }
+            GameObject[] humans = GameObject.FindGameObjectsWithTag("Human");
+            foreach (GameObject h in humans)
+            {
+                h.SendMessage("changeMode", true);
+            }
+
+        }
+    }
     public int getMaxCell()
     {
         return world.getListSize();
