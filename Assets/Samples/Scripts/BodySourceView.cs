@@ -11,6 +11,7 @@ public class BodySourceView : MonoBehaviour
     public GameObject headCamera;
     public GameObject right_hand;
     public GameObject left_hand;
+    public GameObject player_body;
 
     public bool rightHandClosed = false;
     public bool leftHandClosed = false;
@@ -140,11 +141,13 @@ public class BodySourceView : MonoBehaviour
             Vector3 r_handUp = Vector3.Cross(r_handRotation, r_handVector);
             Vector3 l_handUp = Vector3.Cross(l_handVector, l_handRotation);
 
+        Debug.Log((r_handVector.sqrMagnitude + r_handRotation.sqrMagnitude));
 
-        if ((r_handVector.sqrMagnitude + r_handRotation.sqrMagnitude) < 55)
+        player_body.transform.position = player_objects[Kinect.JointType.SpineMid].transform.position;
+        if ((r_handVector.sqrMagnitude + r_handRotation.sqrMagnitude) < 65)
         {
             r_hand_closed_frames++;
-            if (r_hand_closed_frames > 4)
+            if (r_hand_closed_frames > 6)
             {
                 rightHandClosed = true;
                 r_hand_open_frames = 0;
@@ -153,7 +156,7 @@ public class BodySourceView : MonoBehaviour
         else
         {
             r_hand_open_frames++;
-            if (r_hand_open_frames > 4)
+            if (r_hand_open_frames > 6)
             {
                 rightHandClosed = false;
                 r_hand_closed_frames = 0;
@@ -164,7 +167,7 @@ public class BodySourceView : MonoBehaviour
         }
 
 
-        if ((l_handVector.sqrMagnitude + l_handRotation.sqrMagnitude) < 55)
+        if ((l_handVector.sqrMagnitude + l_handRotation.sqrMagnitude) < 65)
         {
             l_hand_closed_frames++;
             if (l_hand_closed_frames > 4)
