@@ -3,14 +3,29 @@ using System.Collections;
 
 public class Hand : MonoBehaviour {
 
+    public enum HandStatus {Open, Close};
+    HandStatus hand = HandStatus.Open;
+    public bool holding = false;
     public Vector3[] fingers = new Vector3[5];
+
+    private bool change = false;
+
+
+    GameObject heldObject;
+
     GameObject heldScaffold;
     Scaffold heldScaffoldScript;
+
+    public Collider[] things;
+
     public GameObject close_hand;
     public GameObject open_hand;
+
+
     BuildingType[] buildings = { BuildingType.FARM, BuildingType.HOUSE, BuildingType.IRONMINE, BuildingType.LUMBERYARD, BuildingType.QUARRY, BuildingType.TOWER };
     int buildingType;
-    int held = 0; //0 = no building, 1 = scaffold , 2 = any other building
+
+
     float rotationTimer;
     float startTime;
     Collider heldCollider;
@@ -19,122 +34,148 @@ public class Hand : MonoBehaviour {
 	void Start () {
     }
 
+
+
     // Update is called once per frame
     void Update () {
+
+
+        // MOUSE TESTING
         Vector3 curLocation = transform.position;
-        GameObject res = Resources.Load("Scaffold") as GameObject;
         float h = Input.GetAxis("Mouse X");
         float v = Input.GetAxis("Mouse Y");
         float scroll = Input.GetAxis("Mouse ScrollWheel");
-        transform.position = new Vector3(curLocation.x-6*v,curLocation.y-20*scroll,curLocation.z+6*h);
+        transform.position = new Vector3(curLocation.x - 6 * v, curLocation.y - 20 * scroll, curLocation.z + 6 * h);
         curLocation.x -= 14;
-        curLocation.y -= 28;
-        
-        if (Input.GetMouseButtonDown(1))
-        {
-            if (held == 0)
-            {
-                heldScaffold = GameObject.Instantiate(res, curLocation, Quaternion.identity) as GameObject;
-                heldScaffoldScript = heldScaffold.GetComponent("Scaffold") as Scaffold;
-                heldCollider = heldScaffold.GetComponent<BoxCollider>();
-                heldCollider.enabled = false;
-                heldScaffoldScript.type = BuildingType.FARM;
-                buildingType = 0;
-                held = 1;
-                startTime = Time.time;
-                rotationTimer = 0f;
-            }
-            else if (held == 1)
-            {
-                buildingType = (buildingType + 1) % 6;
-                heldScaffoldScript.type = buildings[buildingType];
-            }
-            else
-            {
-                heldScaffold.transform.Rotate(new Vector3(0, 90, 0));
-            }
-        }
-        if (held == 1)
-        {
-            heldScaffold.transform.position = curLocation;
-            
-            rotationTimer = Time.time - startTime;
-            if (rotationTimer > 1)
-            {
-                heldScaffold.transform.Rotate(new Vector3(0, 90, 0));
-                startTime = Time.time;
-            }
-            
-        }
-        if (held == 2)
-        {
-            heldScaffold.transform.position = curLocation;
-        }
-        
+        curLocation.y -= 10;
+
         if (Input.GetMouseButtonDown(0))
         {
-            if (held == 0)
+            openHand();
+        }
+        if (Input.GetMouseButtonDown(1))
+        {
+            closeHand();
+        }
+
+        if (change)
+        {
+            if (hand == HandStatus.Open)
             {
-                float curClosest = 0;
-                int closest = -1;
-                int layerMask = 1 << 10;
-                Collider[] inRange = Physics.OverlapSphere(curLocation, 10, layerMask);
-                for (int i = 0; i < inRange.Length; i++)
-                {
-                    float distance = Vector3.Distance(inRange[i].transform.position, curLocation);
-                    if (i == 0)
-                    {
-                        curClosest = distance;
-                        closest = 0;
-                    }
-                    else
-                    {
-                        if (distance < curClosest)
-                        {
-                            closest = i;
-                        }
-                    }
-                }
-                if (closest != -1)
-                {
-                    if (!(inRange[closest].tag == "Temple"))
-                    {
-                        heldScaffold = inRange[closest].gameObject;
-                        heldCollider = heldScaffold.GetComponent<BoxCollider>();
-                        heldCollider.enabled = false;
-                        if (heldScaffold.GetComponent<Scaffold>() != null)
-                        {
-                            held = 1;
-                            heldScaffoldScript = heldScaffold.GetComponent<Scaffold>();
-                            buildingType = UnityEditor.ArrayUtility.IndexOf(buildings, heldScaffoldScript.type);
-                        }
-                        else
-                        {
-                            held = 2;
-                        }
-                    }
-                }
+                releaseObject(curLocation);
             }
             else
             {
-                int layerMask = 1 << 10;
-                Vector3 size = heldScaffold.transform.localScale;
-                if ((Physics.OverlapBox(curLocation, new Vector3(size.x/2,500,size.y/2),Quaternion.identity,layerMask)).Length == 0)
+                grabObject();
+            }
+            change = false;
+        }
+
+        if (holding)
+        {
+            Vector3 p = new Vector3(transform.position.x - 14, transform.position.y - 18, transform.position.z);
+            heldObject.transform.position = p;
+        }
+
+               
+    }
+
+    public void openHand()
+    {
+
+        open_hand.SetActive(true);
+        close_hand.SetActive(false);
+        if (hand == HandStatus.Close)
+        {
+            hand = HandStatus.Open;
+            change = true;
+        }
+        
+        
+    }
+
+    public void closeHand()
+    {
+        open_hand.SetActive(false);
+        close_hand.SetActive(true);
+        if (hand == HandStatus.Open)
+        {
+            hand = HandStatus.Close;
+            change = true;
+        }
+
+    }
+
+    private void grabObject()
+    {
+        if (!holding)
+        {
+            GameObject closest = null;
+            int layerMask = (1 << 9) | ( 1 << 10);
+            Vector3 p = new Vector3(transform.position.x - 14, transform.position.y - 18, transform.position.z);
+            things = Physics.OverlapSphere(p, 5.0f, layerMask);
+
+            float distance = Mathf.Infinity;
+            if (things.Length > 0)
+            {
+                foreach (Collider thing in things)
                 {
-                    held = 0;
-                    heldCollider.enabled = true;
+                    Vector3 diff = thing.ClosestPointOnBounds(p) - p;
+                    float current_distance = diff.sqrMagnitude;
+                    if (current_distance < distance)
+                    {
+                        distance = current_distance;
+                        closest = thing.gameObject;
+                    }
                 }
             }
+            heldObject = closest;
+            if (heldObject != null)
+            {
+                Debug.Log("GRABBED");
+                holding = true;
+                heldObject.GetComponent<Collider>().enabled = false;
+                if (heldObject.tag == "Human") heldObject.SendMessage("grabbed");
+            }
+            else
+            {
+                Debug.Log("NOTHING TO GRAB!");
+            }
         }
-        if (held == 1 || held == 2)
+        else
         {
-            close_hand.SetActive(true);
-            open_hand.SetActive(false);
+            Debug.Log("Can't grab whilst holding something");
         }
-        else if (held == 0)
+
+    }
+
+
+    void OnDrawGizmosSelected()
+    {
+        Vector3 p = new Vector3(transform.position.x - 14, transform.position.y - 18, transform.position.z);
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(p, 5.0f);
+    }
+
+    private void releaseObject (Vector3 p)
+    {
+        if (holding)
         {
-            open_hand.SetActive(true);
-            close_hand.SetActive(false);
+            if( heldObject.tag == "Human")
+            {
+                heldObject.SendMessage("letGo");
+            }
+           
+           
+            heldObject.GetComponent<Collider>().enabled = true;
+            holding = false;
+            heldObject = null;
+     
         }
+        else
+        {
+            Debug.Log("Nothing to realease");
+        }
+
     }
 }

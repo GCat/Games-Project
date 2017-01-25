@@ -105,16 +105,12 @@ public class BadiesAI : MonoBehaviour {
         pathFinder = (PathFinding)GameObject.FindGameObjectWithTag("PathFinder").GetComponent(typeof(PathFinding));
         maxCell = 5000;
         closestEnemy = null;
-        /* For now always rusher*/
+        
         float rand = UnityEngine.Random.Range(0.0f, 10.0f);
         if (rand < 0.33) fighterType = (int)Fighter.Killer;
         else if (rand < 0.667) fighterType = (int)Fighter.Defender;
-        else
-        {
-            fighterType = (int)Fighter.Rusher;
-        }
-
-       
+        else fighterType = (int)Fighter.Rusher;
+        
         temple = GameObject.FindGameObjectWithTag("Temple");
         
     }
@@ -122,28 +118,17 @@ public class BadiesAI : MonoBehaviour {
     private void Update()
     {   if (alive)
         {
-            if (temple == null)
-            {
-                anim.Play("rage");
-            }
-            else if (!moving)
-            {
-                anim.Play("idle");
-            }
-            else if (fighterType == (int)Fighter.Rusher)
-            {
-                rusherNav();
-            }
+            if (temple == null)  anim.Play("rage");
+            else if (!moving) anim.Play("idle");
+            else if (fighterType == (int)Fighter.Rusher) rusherNav();
             else if (fighterType == (int)Fighter.Defender) defenderNav();
             else if (fighterType == (int)Fighter.Killer) killerNav();
         }
-
     }
 
 
     private void defenderNav()
     {
-        Debug.Log("THIS");
         if (templeInRange && !defending)
         {
             // Check surroundings First towers next humans

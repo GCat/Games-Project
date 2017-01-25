@@ -44,6 +44,7 @@ public class Agent : MonoBehaviour
     public float gravity = 9.81F;
     public float weapon_strength;
     private GameObject temple;
+
     // Components
     public AudioClip sacrificeClip;
     private Rigidbody rb;
@@ -70,6 +71,8 @@ public class Agent : MonoBehaviour
     private Vector3 screenPoint;
     private Vector3 Mouse_offset;
     private bool sacrificeEntered = false;
+    private bool beingGrabbed = false;
+    private bool realeased = false;
 
     // Fighting
     enum Fighter { Killer, Defender, Camper };
@@ -111,7 +114,13 @@ public class Agent : MonoBehaviour
         if( temple == null)
         {
             anim.Play("diehard");
-            StartCoroutine(WaitToDestroy(3.0f));
+            StartCoroutine(WaitToDestroy(2.1f));
+        }
+        else if (beingGrabbed)
+        {
+            waypoints = new List<int>();
+            nextNode.y = -50.0f;
+            sacrifice();
         }
         else if (fightMode && !stopMoving)
             fightNav();
@@ -122,14 +131,30 @@ public class Agent : MonoBehaviour
 
     void sacrifice()
     {
-        sacrificeEntered = true;
-        GameObject resourceTab = GameObject.Find("Resource_tablet");
-        resourceTab.SendMessage("addFaith", 100);
-        AudioSource source = GetComponent<AudioSource>();
-        source.PlayOneShot(sacrificeClip, 0.5f);
-        anim.Play("diehard");
-        StartCoroutine(WaitToDestroy(3.0f));
 
+        if (realeased)
+        {
+            if (Mathf.Abs(transform.position.x) > 50f || Mathf.Abs(transform.position.z) > 100f)
+            {
+                if (!sacrificeEntered)
+                {
+                    sacrificeEntered = true;
+                    rb.isKinematic = false;
+                    rb.useGravity = true;
+                    GameObject resourceTab = GameObject.Find("Resource_tablet");
+                    resourceTab.SendMessage("addFaith", 100);
+                    AudioSource source = GetComponent<AudioSource>();
+                    source.PlayOneShot(sacrificeClip, 0.5f);
+                    anim.Play("diehard");
+                    Destroy(gameObject, 2.1f);
+                }
+            }
+            else
+            {
+                realeased = false;
+                beingGrabbed = false;
+            }
+        }
     }
 
     IEnumerator WaitToDestroy(float waitTime)
@@ -139,38 +164,7 @@ public class Agent : MonoBehaviour
     }
 
 
-    void OnMouseDown()
-    {
-        screenPoint = Camera.main.WorldToScreenPoint(transform.position);
-        Mouse_offset = transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
-    }
 
-    void OnMouseDrag()
-    {
-        beingMoved = true;
-        stopMoving = true;
-        nextNode.y = -50f;
-        waypoints = new List<int>();
-        Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
-        Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) + Mouse_offset;
-        transform.position = curPosition;
-        if (Mathf.Abs(transform.position.x) > 50f || Mathf.Abs(transform.position.z) > 100f)
-        {
-            if (!sacrificeEntered) sacrifice();
-        }
-    }
-
-    void OnMouseUp()
-    {
-        if (beingMoved)
-        {
-            beingMoved = false;
-            if (!(Mathf.Abs(transform.position.x) > 50f || Mathf.Abs(transform.position.z) > 100f))
-            {
-                stopMoving = false;
-            }
-        }
-    }
 
     void astar(int srcCell, int targetCell)
     {
@@ -431,6 +425,16 @@ public class Agent : MonoBehaviour
 
     }
 
+    public void grabbed ()
+    {
+        beingGrabbed = true;
+        realeased = false;
+    }
+
+    public void letGo()
+    {
+        realeased = true;
+    }
     public void changeMode (bool val)
     {
         fightMode = val;
