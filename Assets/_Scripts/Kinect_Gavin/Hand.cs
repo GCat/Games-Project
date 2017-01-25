@@ -20,7 +20,10 @@ public class Hand : MonoBehaviour {
 
     public GameObject close_hand;
     public GameObject open_hand;
-
+    public GameObject grab_position;
+    public BodySourceView kinect_view;
+    public bool useMouse = false;
+    public bool right_hand;
 
     BuildingType[] buildings = { BuildingType.FARM, BuildingType.HOUSE, BuildingType.IRONMINE, BuildingType.LUMBERYARD, BuildingType.QUARRY, BuildingType.TOWER };
     int buildingType;
@@ -32,6 +35,7 @@ public class Hand : MonoBehaviour {
     
 	// Use this for initialization
 	void Start () {
+
     }
 
 
@@ -41,28 +45,57 @@ public class Hand : MonoBehaviour {
 
 
         // MOUSE TESTING
-        Vector3 curLocation = transform.position;
-        float h = Input.GetAxis("Mouse X");
-        float v = Input.GetAxis("Mouse Y");
-        float scroll = Input.GetAxis("Mouse ScrollWheel");
-        transform.position = new Vector3(curLocation.x - 6 * v, curLocation.y - 20 * scroll, curLocation.z + 6 * h);
-        curLocation.x -= 14;
-        curLocation.y -= 10;
-
-        if (Input.GetMouseButtonDown(0))
+        if (useMouse)
         {
-            openHand();
-        }
-        if (Input.GetMouseButtonDown(1))
-        {
-            closeHand();
-        }
+            Vector3 curLocation = transform.position;
+            float h = Input.GetAxis("Mouse X");
+            float v = Input.GetAxis("Mouse Y");
+            float scroll = Input.GetAxis("Mouse ScrollWheel");
+            transform.position = new Vector3(curLocation.x - 6 * v, curLocation.y - 20 * scroll, curLocation.z + 6 * h);
+            curLocation.x -= 14;
+            curLocation.y -= 10;
 
+            if (Input.GetMouseButtonDown(0))
+            {
+                openHand();
+            }
+            if (Input.GetMouseButtonDown(1))
+            {
+                closeHand();
+            }
+        }
+        else
+        {
+            if (right_hand)
+            {
+                if (kinect_view.rightHandClosed)
+                {
+                    closeHand();
+                }
+                else
+                {
+                    openHand();
+                }
+            }
+            else
+            {
+                if (kinect_view.leftHandClosed)
+                {
+                    closeHand();
+                }
+                else
+                {
+                    openHand();
+                }
+            }
+
+
+        }
         if (change)
         {
             if (hand == HandStatus.Open)
             {
-                releaseObject(curLocation);
+                releaseObject();
             }
             else
             {
@@ -73,7 +106,7 @@ public class Hand : MonoBehaviour {
 
         if (holding)
         {
-            Vector3 p = new Vector3(transform.position.x - 14, transform.position.y - 18, transform.position.z);
+            Vector3 p = grab_position.transform.position;//new Vector3(transform.position.x - 14, transform.position.y - 18, transform.position.z);
             heldObject.transform.position = p;
         }
 
@@ -112,7 +145,7 @@ public class Hand : MonoBehaviour {
         {
             GameObject closest = null;
             int layerMask = (1 << 9) | ( 1 << 10);
-            Vector3 p = new Vector3(transform.position.x - 14, transform.position.y - 18, transform.position.z);
+            Vector3 p = grab_position.transform.position;//new Vector3(transform.position.x - 14, transform.position.y - 18, transform.position.z);
             things = Physics.OverlapSphere(p, 5.0f, layerMask);
 
             float distance = Mathf.Infinity;
@@ -152,12 +185,12 @@ public class Hand : MonoBehaviour {
 
     void OnDrawGizmosSelected()
     {
-        Vector3 p = new Vector3(transform.position.x - 14, transform.position.y - 18, transform.position.z);
+        Vector3 p = grab_position.transform.position;//new Vector3(transform.position.x - 14, transform.position.y - 18, transform.position.z);
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(p, 5.0f);
     }
 
-    private void releaseObject (Vector3 p)
+    private void releaseObject ()
     {
         if (holding)
         {

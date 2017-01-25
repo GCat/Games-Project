@@ -135,26 +135,27 @@ public class BodySourceView : MonoBehaviour
             Vector3 r_handUp = Vector3.Cross(r_handRotation, r_handVector);
             Vector3 l_handUp = Vector3.Cross(l_handVector, l_handRotation);
 
-            right_hand.transform.rotation = Quaternion.LookRotation(r_handVector, r_handUp);
-            left_hand.transform.rotation = Quaternion.LookRotation(l_handVector, l_handUp);
 
-        if ((r_handVector.sqrMagnitude + r_handRotation.sqrMagnitude) < 50)
+        if ((r_handVector.sqrMagnitude + r_handRotation.sqrMagnitude) < 55)
         {
             rightHandClosed = true;
         }
         else
         {
             rightHandClosed = false;
+            right_hand.transform.rotation = Quaternion.LookRotation(r_handVector, r_handUp);
+
         }
 
 
-        if ((l_handVector.sqrMagnitude + l_handRotation.sqrMagnitude) < 50)
+        if ((l_handVector.sqrMagnitude + l_handRotation.sqrMagnitude) < 55)
         {
             leftHandClosed = true;
         }
         else
         {
             leftHandClosed = false;
+            left_hand.transform.rotation = Quaternion.LookRotation(l_handVector, l_handUp);
         }
 
 
