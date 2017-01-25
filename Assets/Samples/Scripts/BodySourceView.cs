@@ -10,6 +10,13 @@ public class BodySourceView : MonoBehaviour
     public GameObject startBody;
     public GameObject headCamera;
     public GameObject right_hand;
+    public GameObject left_hand;
+
+    public bool rightHandClosed = false;
+    public bool leftHandClosed = false;
+
+    //holds all the hand joint objects - palm, wrist, thumb, tip
+    public Dictionary<Kinect.JointType, GameObject> player_objects = new Dictionary<Kinect.JointType, GameObject>();
 
     private Dictionary<ulong, GameObject> _Bodies = new Dictionary<ulong, GameObject>();
     private BodySourceManager _BodyManager;
@@ -107,16 +114,68 @@ public class BodySourceView : MonoBehaviour
                 }
                 
                 RefreshBodyObject(body, _Bodies[body.TrackingId]);
+                adjustBodyParts(body, _Bodies[body.TrackingId]);
             }
         }
     }
-    
+
+
+    private void adjustBodyParts(Kinect.Body body, GameObject bodyObject)
+    {
+
+            headCamera.transform.position = player_objects[Kinect.JointType.Head].transform.position;
+            right_hand.transform.position = player_objects[Kinect.JointType.HandRight].transform.position;
+            left_hand.transform.position = player_objects[Kinect.JointType.HandLeft].transform.position;
+            Vector3 r_handVector = player_objects[Kinect.JointType.HandTipRight].transform.position - player_objects[Kinect.JointType.HandRight].transform.position;
+            Vector3 l_handVector = player_objects[Kinect.JointType.HandTipLeft].transform.position - player_objects[Kinect.JointType.HandLeft].transform.position;
+
+            Vector3 r_handRotation = player_objects[Kinect.JointType.ThumbRight].transform.position - player_objects[Kinect.JointType.HandRight].transform.position;
+            Vector3 l_handRotation = player_objects[Kinect.JointType.ThumbLeft].transform.position - player_objects[Kinect.JointType.HandLeft].transform.position;
+
+            Vector3 r_handUp = Vector3.Cross(r_handRotation, r_handVector);
+            Vector3 l_handUp = Vector3.Cross(l_handVector, l_handRotation);
+
+            right_hand.transform.rotation = Quaternion.LookRotation(r_handVector, r_handUp);
+            left_hand.transform.rotation = Quaternion.LookRotation(l_handVector, l_handUp);
+
+        if ((r_handVector.sqrMagnitude + r_handRotation.sqrMagnitude) < 50)
+        {
+            rightHandClosed = true;
+        }
+        else
+        {
+            rightHandClosed = false;
+        }
+
+
+        if ((l_handVector.sqrMagnitude + l_handRotation.sqrMagnitude) < 50)
+        {
+            leftHandClosed = true;
+        }
+        else
+        {
+            leftHandClosed = false;
+        }
+
+
+        //Debug.Log("Right hand spread: " + (r_handVector.sqrMagnitude + r_handRotation.sqrMagnitude));
+    }
+
+    public void nDrawGizmos()
+    {
+        Vector3 r_handVector = player_objects[Kinect.JointType.HandTipRight].transform.position - player_objects[Kinect.JointType.HandRight].transform.position;
+        Vector3 l_handVector = player_objects[Kinect.JointType.HandTipLeft].transform.position - player_objects[Kinect.JointType.HandLeft].transform.position;
+        Gizmos.DrawLine(player_objects[Kinect.JointType.HandRight].transform.position, player_objects[Kinect.JointType.HandTipRight].transform.position);
+    }
     private GameObject CreateBodyObject(ulong id)
     {
         GameObject body = startBody;
         for (Kinect.JointType jt = Kinect.JointType.SpineBase; jt <= Kinect.JointType.ThumbRight; jt++)
         {
             GameObject jointObj = new GameObject();
+            //jointObj.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+            SphereCollider collider = jointObj.GetComponent<SphereCollider>();
+            Destroy(collider);
             LineRenderer lr = jointObj.AddComponent<LineRenderer>();
             lr.SetVertexCount(2);
             lr.material = BoneMaterial;
@@ -125,15 +184,8 @@ public class BodySourceView : MonoBehaviour
             jointObj.transform.localScale = new Vector3(5f, 5f, 5f);
             jointObj.name = jt.ToString();
             jointObj.transform.parent = body.transform;
-            if (jt == Kinect.JointType.Head)
-            {
-                headCamera.transform.position = jointObj.transform.position;
-            }
-            if (jt == Kinect.JointType.HandRight)
-            {
-                right_hand.transform.position = jointObj.transform.position;
 
-            }
+            player_objects.Add(jt, jointObj);
         }
         
         return body;
@@ -165,15 +217,6 @@ public class BodySourceView : MonoBehaviour
             {
                 lr.enabled = false;
             }
-            if (jt == Kinect.JointType.Head)
-            {
-                headCamera.transform.position = jointObj.transform.position;
-            }
-            if (jt == Kinect.JointType.HandRight)
-            {
-                right_hand.transform.position = jointObj.transform.position;
-
-            }
         }
     }
     
@@ -194,6 +237,6 @@ public class BodySourceView : MonoBehaviour
     
     private static Vector3 GetVector3FromJoint(Kinect.Joint joint)
     {
-        return new Vector3(joint.Position.X * 10, joint.Position.Y * 10, joint.Position.Z * 10);
+        return new Vector3(-joint.Position.X * 10, joint.Position.Y * 10, joint.Position.Z * 10);
     }
 }
