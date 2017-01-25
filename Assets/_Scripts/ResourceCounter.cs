@@ -39,6 +39,7 @@ public class ResourceCounter : MonoBehaviour
             iron -= 20*armourMult;
             armourMult *= 2;
         }
+        population = FindObjectsOfType<Agent>().Length;
         textMesh = textDisplay.GetComponent(typeof(TextMesh)) as TextMesh;
         setResourceText();
     }
