@@ -159,7 +159,7 @@ public class BodySourceView : MonoBehaviour
                 r_hand_closed_frames = 0;
             }
             Quaternion target = Quaternion.LookRotation(r_handVector, r_handUp);
-            right_hand.transform.rotation = Quaternion.Slerp(right_hand.transform.rotation, target, Time.deltaTime * 10.0f);
+            right_hand.transform.rotation = Quaternion.Slerp(right_hand.transform.rotation, target, Time.deltaTime * 15.0f);
 
         }
 
@@ -182,7 +182,7 @@ public class BodySourceView : MonoBehaviour
                 l_hand_closed_frames = 0;
             }
             Quaternion target = Quaternion.LookRotation(l_handVector, l_handUp);
-            left_hand.transform.rotation = Quaternion.Slerp(left_hand.transform.rotation, target, Time.deltaTime * 10.0f);
+            left_hand.transform.rotation = Quaternion.Slerp(left_hand.transform.rotation, target, Time.deltaTime * 15.0f);
         }
 
 
