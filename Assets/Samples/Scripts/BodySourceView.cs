@@ -14,6 +14,11 @@ public class BodySourceView : MonoBehaviour
 
     public bool rightHandClosed = false;
     public bool leftHandClosed = false;
+    private int r_hand_closed_frames = 0;
+    private int r_hand_open_frames = 0;
+    private int l_hand_closed_frames = 0;
+    private int l_hand_open_frames = 0;
+
 
     //holds all the hand joint objects - palm, wrist, thumb, tip
     public Dictionary<Kinect.JointType, GameObject> player_objects = new Dictionary<Kinect.JointType, GameObject>();
@@ -138,24 +143,46 @@ public class BodySourceView : MonoBehaviour
 
         if ((r_handVector.sqrMagnitude + r_handRotation.sqrMagnitude) < 55)
         {
-            rightHandClosed = true;
+            r_hand_closed_frames++;
+            if (r_hand_closed_frames > 4)
+            {
+                rightHandClosed = true;
+                r_hand_open_frames = 0;
+            }
         }
         else
         {
-            rightHandClosed = false;
-            right_hand.transform.rotation = Quaternion.LookRotation(r_handVector, r_handUp);
+            r_hand_open_frames++;
+            if (r_hand_open_frames > 4)
+            {
+                rightHandClosed = false;
+                r_hand_closed_frames = 0;
+            }
+            Quaternion target = Quaternion.LookRotation(r_handVector, r_handUp);
+            right_hand.transform.rotation = Quaternion.Slerp(right_hand.transform.rotation, target, Time.deltaTime * 10.0f);
 
         }
 
 
         if ((l_handVector.sqrMagnitude + l_handRotation.sqrMagnitude) < 55)
         {
-            leftHandClosed = true;
+            l_hand_closed_frames++;
+            if (l_hand_closed_frames > 4)
+            {
+                leftHandClosed = true;
+                l_hand_open_frames = 0;
+            }
         }
         else
         {
-            leftHandClosed = false;
-            left_hand.transform.rotation = Quaternion.LookRotation(l_handVector, l_handUp);
+            l_hand_open_frames++;
+            if (l_hand_open_frames > 4)
+            {
+                leftHandClosed = false;
+                l_hand_closed_frames = 0;
+            }
+            Quaternion target = Quaternion.LookRotation(l_handVector, l_handUp);
+            left_hand.transform.rotation = Quaternion.Slerp(left_hand.transform.rotation, target, Time.deltaTime * 10.0f);
         }
 
 
