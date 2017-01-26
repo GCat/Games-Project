@@ -8,7 +8,7 @@ public class Temple : ResourceBuilding {
     {
         this.timer = 0f;
         this.startTime = Time.time;
-        this.health = 500.0f;
+        this.health = 5000.0f;
         timeStep = 0.5f;
         buildingName = "TEMPLE";
         resourceCounter = (ResourceCounter)GameObject.Find("Resource_tablet").GetComponent("ResourceCounter");

@@ -23,11 +23,18 @@ public class Hand : MonoBehaviour {
     public GameObject grab_position;
     public BodySourceView kinect_view;
 
-    public bool useMouse = false;
+    public bool useMouse = true;
     public bool right_hand;
 
     public bool wasKinematic = false;
     public bool usedGravity = false;
+
+
+    // velocity caluclation
+    public float timer;
+    private float StartTime;
+    private Vector3 oldPos;
+    private Vector3 vel;
 
     BuildingType[] buildings = { BuildingType.FARM, BuildingType.HOUSE, BuildingType.IRONMINE, BuildingType.LUMBERYARD, BuildingType.QUARRY, BuildingType.TOWER };
     int buildingType;
@@ -47,11 +54,19 @@ public class Hand : MonoBehaviour {
         held_object_positions[2] = Vector3.zero;
         held_object_positions[3] = Vector3.zero;
         held_object_positions[4] = Vector3.zero;
-
+        if (kinect_view == null) useMouse = true;
+        StartTime = Time.time;
+        timer = 0.0f;
+        oldPos = transform.position;
+        vel = Vector3.zero;
     }
 
     // Update is called once per frame
     void Update () {
+        timer = Time.time - StartTime;
+        vel = (oldPos - transform.position) / timer;
+        oldPos = transform.position;
+        startTime = Time.time;
 
 
         // MOUSE TESTING
@@ -213,10 +228,7 @@ public class Hand : MonoBehaviour {
     {
         if (holding)
         {
-            if( heldObject.tag == "Human")
-            {
-                heldObject.SendMessage("letGo");
-            }
+         
 
 
             heldObject.GetComponent<Rigidbody>().useGravity = usedGravity;
@@ -227,8 +239,15 @@ public class Hand : MonoBehaviour {
             heldObject.GetComponent<Rigidbody>().velocity = velocity;
             holding = false;
             heldObject.transform.parent = null;
+            
+
+            if (heldObject.tag == "Human")
+            {
+                heldObject.SendMessage("letGo",vel);
+            }
+
             heldObject = null;
-     
+
         }
         else
         {
