@@ -31,19 +31,24 @@ public class Hand : MonoBehaviour {
 
     BuildingType[] buildings = { BuildingType.FARM, BuildingType.HOUSE, BuildingType.IRONMINE, BuildingType.LUMBERYARD, BuildingType.QUARRY, BuildingType.TOWER };
     int buildingType;
-    private Vector3 held_object_position;
+    private Vector3[] held_object_positions;
 
 
     float rotationTimer;
     float startTime;
     Collider heldCollider;
+
     
 	// Use this for initialization
 	void Start () {
+        held_object_positions = new Vector3[5];
+        held_object_positions[0] = Vector3.zero;
+        held_object_positions[1] = Vector3.zero;
+        held_object_positions[2] = Vector3.zero;
+        held_object_positions[3] = Vector3.zero;
+        held_object_positions[4] = Vector3.zero;
 
     }
-
-
 
     // Update is called once per frame
     void Update () {
@@ -111,6 +116,10 @@ public class Hand : MonoBehaviour {
 
         if (holding)
         {
+            for (int i = 4; i >0; i--) {
+                held_object_positions[i] = held_object_positions[i - 1];
+            }
+            held_object_positions[0] = heldObject.transform.position;
             //Vector3 p = grab_position.transform.position;//new Vector3(transform.position.x - 14, transform.position.y - 18, transform.position.z);
             //heldObject.transform.position = p;
         }
@@ -151,7 +160,7 @@ public class Hand : MonoBehaviour {
             GameObject closest = null;
             int layerMask = (1 << 9) | ( 1 << 10);
             Vector3 p = grab_position.transform.position;//new Vector3(transform.position.x - 14, transform.position.y - 18, transform.position.z);
-            things = Physics.OverlapSphere(p, 5.0f, layerMask);
+            things = Physics.OverlapSphere(p, 4.0f, layerMask);
 
             float distance = Mathf.Infinity;
             if (things.Length > 0)
@@ -213,9 +222,9 @@ public class Hand : MonoBehaviour {
             heldObject.GetComponent<Rigidbody>().useGravity = usedGravity;
             heldObject.GetComponent<Rigidbody>().isKinematic = wasKinematic;
 
-            Vector3 velocity = heldObject.transform.position - held_object_position / Time.deltaTime;
-            heldObject.GetComponent<Rigidbody>().AddForce(velocity, ForceMode.Impulse);
-
+            Vector3 velocity = (heldObject.transform.position - held_object_positions[4]) / (Time.deltaTime*5);
+            //heldObject.GetComponent<Rigidbody>().AddForce(velocity, ForceMode.VelocityChange);
+            heldObject.GetComponent<Rigidbody>().velocity = velocity;
             holding = false;
             heldObject.transform.parent = null;
             heldObject = null;

@@ -1,0 +1,42 @@
+Initialize engine version: 5.5.0f3 (38b4efef76f0)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: AMD Radeon R9 200 Series (ID=0x6810)
+    Vendor:   ATI
+    VRAM:     2029 MB
+    Driver:   21.19.407.0
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Users\gavin\workspace\Games-Project\test_build_1_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\gavin\workspace\Games-Project\test_build_1_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\gavin\workspace\Games-Project\test_build_1_Data\Managed\Assembly-CSharp-firstpass.dll (this message is harmless)
+Loading C:\Users\gavin\workspace\Games-Project\test_build_1_Data\Managed\Assembly-CSharp-firstpass.dll into Unity Child Domain
+Platform assembly: C:\Users\gavin\workspace\Games-Project\test_build_1_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\gavin\workspace\Games-Project\test_build_1_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\gavin\workspace\Games-Project\test_build_1_Data\Managed\Assembly-UnityScript.dll (this message is harmless)
+Loading C:\Users\gavin\workspace\Games-Project\test_build_1_Data\Managed\Assembly-UnityScript.dll into Unity Child Domain
+Platform assembly: C:\Users\gavin\workspace\Games-Project\test_build_1_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Users\gavin\workspace\Games-Project\test_build_1_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: C:\Users\gavin\workspace\Games-Project\test_build_1_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading C:\Users\gavin\workspace\Games-Project\test_build_1_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+Platform assembly: C:\Users\gavin\workspace\Games-Project\test_build_1_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll (this message is harmless)
+Loading C:\Users\gavin\workspace\Games-Project\test_build_1_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll into Unity Child Domain
+Platform assembly: C:\Users\gavin\workspace\Games-Project\test_build_1_Data\Managed\UnityEngine.Analytics.dll (this message is harmless)
+Loading C:\Users\gavin\workspace\Games-Project\test_build_1_Data\Managed\UnityEngine.Analytics.dll into Unity Child Domain
+Platform assembly: C:\Users\gavin\workspace\Games-Project\test_build_1_Data\Managed\UnityEngine.VR.dll (this message is harmless)
+Loading C:\Users\gavin\workspace\Games-Project\test_build_1_Data\Managed\UnityEngine.VR.dll into Unity Child Domain
+Platform assembly: C:\Users\gavin\workspace\Games-Project\test_build_1_Data\Managed\KinectTrackingLib.dll (this message is harmless)
+Loading C:\Users\gavin\workspace\Games-Project\test_build_1_Data\Managed\KinectTrackingLib.dll into Unity Child Domain
+- Completed reload, in  0.036 seconds
+Platform assembly: C:\Users\gavin\workspace\Games-Project\test_build_1_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: C:\Users\gavin\workspace\Games-Project\test_build_1_Data\Managed\System.dll (this message is harmless)
+OnLevelWasLoaded was found on OVRScreenFade
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+ 
+(Filename:  Line: 382)
+
+desktop: 1920x1080 59Hz; virtual: 1920x1080 at 0,0
+<RI> Initializing input.
+XInput1_3.dll not found. Trying XInput9_1_0.dll instead...
+<RI> Input initialized.
