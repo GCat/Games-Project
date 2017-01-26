@@ -106,8 +106,8 @@ public class Hand : MonoBehaviour {
 
         if (holding)
         {
-            Vector3 p = grab_position.transform.position;//new Vector3(transform.position.x - 14, transform.position.y - 18, transform.position.z);
-            heldObject.transform.position = p;
+            //Vector3 p = grab_position.transform.position;//new Vector3(transform.position.x - 14, transform.position.y - 18, transform.position.z);
+            //heldObject.transform.position = p;
         }
 
                
@@ -167,8 +167,9 @@ public class Hand : MonoBehaviour {
             {
                 Debug.Log("GRABBED");
                 holding = true;
-                heldObject.GetComponent<Collider>().enabled = false;
+                heldObject.GetComponent<Rigidbody>().useGravity = false;
                 if (heldObject.tag == "Human") heldObject.SendMessage("grabbed");
+                heldObject.transform.parent = transform;
             }
             else
             {
@@ -198,10 +199,11 @@ public class Hand : MonoBehaviour {
             {
                 heldObject.SendMessage("letGo");
             }
-           
-           
-            heldObject.GetComponent<Collider>().enabled = true;
+
+
+            heldObject.GetComponent<Rigidbody>().useGravity = true;
             holding = false;
+            heldObject.transform.parent = null;
             heldObject = null;
      
         }

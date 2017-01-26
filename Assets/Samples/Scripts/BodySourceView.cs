@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Kinect = Windows.Kinect;
+using System.IO;
 
 public class BodySourceView : MonoBehaviour 
 {
@@ -12,14 +13,13 @@ public class BodySourceView : MonoBehaviour
     public GameObject right_hand;
     public GameObject left_hand;
     public GameObject player_body;
-
+    public GameObject kinectLocation;
     public bool rightHandClosed = false;
     public bool leftHandClosed = false;
     private int r_hand_closed_frames = 0;
     private int r_hand_open_frames = 0;
     private int l_hand_closed_frames = 0;
     private int l_hand_open_frames = 0;
-
 
     //holds all the hand joint objects - palm, wrist, thumb, tip
     public Dictionary<Kinect.JointType, GameObject> player_objects = new Dictionary<Kinect.JointType, GameObject>();
@@ -126,25 +126,35 @@ public class BodySourceView : MonoBehaviour
     }
 
 
+
     private void adjustBodyParts(Kinect.Body body, GameObject bodyObject)
     {
 
-            headCamera.transform.position = player_objects[Kinect.JointType.Head].transform.position;
-            right_hand.transform.position = player_objects[Kinect.JointType.HandRight].transform.position;
-            left_hand.transform.position = player_objects[Kinect.JointType.HandLeft].transform.position;
-            Vector3 r_handVector = player_objects[Kinect.JointType.HandTipRight].transform.position - player_objects[Kinect.JointType.HandRight].transform.position;
-            Vector3 l_handVector = player_objects[Kinect.JointType.HandTipLeft].transform.position - player_objects[Kinect.JointType.HandLeft].transform.position;
+        headCamera.transform.position = player_objects[Kinect.JointType.Head].transform.position;
+        right_hand.transform.position = player_objects[Kinect.JointType.HandRight].transform.position;
+        left_hand.transform.position = player_objects[Kinect.JointType.HandLeft].transform.position;
+        Vector3 r_handVector = player_objects[Kinect.JointType.HandTipRight].transform.position - player_objects[Kinect.JointType.HandRight].transform.position;
+        Vector3 l_handVector = player_objects[Kinect.JointType.HandTipLeft].transform.position - player_objects[Kinect.JointType.HandLeft].transform.position;
+        Vector3 r_wristVector = player_objects[Kinect.JointType.HandTipRight].transform.position - player_objects[Kinect.JointType.WristRight].transform.position;
+        Vector3 l_wristVector = player_objects[Kinect.JointType.HandTipLeft].transform.position - player_objects[Kinect.JointType.WristLeft].transform.position;
 
-            Vector3 r_handRotation = player_objects[Kinect.JointType.ThumbRight].transform.position - player_objects[Kinect.JointType.HandRight].transform.position;
-            Vector3 l_handRotation = player_objects[Kinect.JointType.ThumbLeft].transform.position - player_objects[Kinect.JointType.HandLeft].transform.position;
+        Vector3 r_handRotation = player_objects[Kinect.JointType.ThumbRight].transform.position - player_objects[Kinect.JointType.HandRight].transform.position;
+        Vector3 l_handRotation = player_objects[Kinect.JointType.ThumbLeft].transform.position - player_objects[Kinect.JointType.HandLeft].transform.position;
 
-            Vector3 r_handUp = Vector3.Cross(r_handRotation, r_handVector);
-            Vector3 l_handUp = Vector3.Cross(l_handVector, l_handRotation);
+        Vector3 r_handUp = Vector3.Cross(r_handRotation, r_handVector);
+        Vector3 l_handUp = Vector3.Cross(l_handVector, l_handRotation);
 
-        Debug.Log((r_handVector.sqrMagnitude + r_handRotation.sqrMagnitude));
+        Vector3 r_handDist = player_objects[Kinect.JointType.HandRight].transform.position - kinectLocation.transform.position;
+        Vector3 l_handDist = player_objects[Kinect.JointType.HandLeft].transform.position - kinectLocation.transform.position;
+
+        //Debug.Log((r_handVector.sqrMagnitude + r_handRotation.sqrMagnitude));
 
         player_body.transform.position = player_objects[Kinect.JointType.SpineMid].transform.position;
-        if ((r_handVector.sqrMagnitude + r_handRotation.sqrMagnitude) < 65)
+
+
+        //120 -> 60 at about 1.5m
+
+        if (body.HandRightState == Windows.Kinect.HandState.Closed)
         {
             r_hand_closed_frames++;
             if (r_hand_closed_frames > 6)
@@ -166,11 +176,10 @@ public class BodySourceView : MonoBehaviour
 
         }
 
-
-        if ((l_handVector.sqrMagnitude + l_handRotation.sqrMagnitude) < 65)
+        if (body.HandLeftState == Windows.Kinect.HandState.Closed)
         {
             l_hand_closed_frames++;
-            if (l_hand_closed_frames > 4)
+            if (l_hand_closed_frames > 3)
             {
                 leftHandClosed = true;
                 l_hand_open_frames = 0;
@@ -179,7 +188,7 @@ public class BodySourceView : MonoBehaviour
         else
         {
             l_hand_open_frames++;
-            if (l_hand_open_frames > 4)
+            if (l_hand_open_frames > 3)
             {
                 leftHandClosed = false;
                 l_hand_closed_frames = 0;
@@ -218,7 +227,9 @@ public class BodySourceView : MonoBehaviour
 
             player_objects.Add(jt, jointObj);
         }
-        
+
+
+ 
         return body;
     }
     
