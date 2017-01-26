@@ -30,11 +30,6 @@ public class Hand : MonoBehaviour {
     public bool usedGravity = false;
 
 
-    // velocity caluclation
-    public float timer;
-    private float StartTime;
-    private Vector3 oldPos;
-    private Vector3 vel;
 
     BuildingType[] buildings = { BuildingType.FARM, BuildingType.HOUSE, BuildingType.IRONMINE, BuildingType.LUMBERYARD, BuildingType.QUARRY, BuildingType.TOWER };
     int buildingType;
@@ -55,19 +50,11 @@ public class Hand : MonoBehaviour {
         held_object_positions[3] = Vector3.zero;
         held_object_positions[4] = Vector3.zero;
         if (kinect_view == null) useMouse = true;
-        StartTime = Time.time;
-        timer = 0.0f;
-        oldPos = transform.position;
-        vel = Vector3.zero;
     }
 
     // Update is called once per frame
     void Update () {
-        timer = Time.time - StartTime;
-        vel = (oldPos - transform.position) / timer;
-        oldPos = transform.position;
-        startTime = Time.time;
-
+   
 
         // MOUSE TESTING
         if (useMouse)
@@ -200,6 +187,7 @@ public class Hand : MonoBehaviour {
                 wasKinematic = heldObject.GetComponent<Rigidbody>().isKinematic;
                 heldObject.GetComponent<Rigidbody>().useGravity = false;
                 heldObject.GetComponent<Rigidbody>().isKinematic = true;
+                heldObject.GetComponent<Collider>().enabled = false;
 
                 if (heldObject.tag == "Human") heldObject.SendMessage("grabbed");
                 heldObject.transform.parent = transform;
@@ -233,8 +221,9 @@ public class Hand : MonoBehaviour {
 
             heldObject.GetComponent<Rigidbody>().useGravity = usedGravity;
             heldObject.GetComponent<Rigidbody>().isKinematic = wasKinematic;
+            heldObject.GetComponent<Collider>().enabled = true;
 
-            Vector3 velocity = (heldObject.transform.position - held_object_positions[4]) / (Time.deltaTime*5);
+            Vector3 velocity = (heldObject.transform.position - held_object_positions[4]) / (Time.deltaTime*50);
             //heldObject.GetComponent<Rigidbody>().AddForce(velocity, ForceMode.VelocityChange);
             heldObject.GetComponent<Rigidbody>().velocity = velocity;
             holding = false;
@@ -243,7 +232,7 @@ public class Hand : MonoBehaviour {
 
             if (heldObject.tag == "Human")
             {
-                heldObject.SendMessage("letGo",vel);
+                heldObject.SendMessage("letGo",velocity);
             }
 
             heldObject = null;
