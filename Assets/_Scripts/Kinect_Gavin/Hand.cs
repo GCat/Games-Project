@@ -25,6 +25,9 @@ public class Hand : MonoBehaviour {
     public bool useMouse = false;
     public bool right_hand;
 
+    public bool wasKinematic = false;
+    public bool usedGravity = false;
+
     BuildingType[] buildings = { BuildingType.FARM, BuildingType.HOUSE, BuildingType.IRONMINE, BuildingType.LUMBERYARD, BuildingType.QUARRY, BuildingType.TOWER };
     int buildingType;
 
@@ -167,7 +170,11 @@ public class Hand : MonoBehaviour {
             {
                 Debug.Log("GRABBED");
                 holding = true;
+                usedGravity = heldObject.GetComponent<Rigidbody>().useGravity;
+                wasKinematic = heldObject.GetComponent<Rigidbody>().isKinematic;
                 heldObject.GetComponent<Rigidbody>().useGravity = false;
+                heldObject.GetComponent<Rigidbody>().isKinematic = true;
+
                 if (heldObject.tag == "Human") heldObject.SendMessage("grabbed");
                 heldObject.transform.parent = transform;
             }
@@ -201,7 +208,9 @@ public class Hand : MonoBehaviour {
             }
 
 
-            heldObject.GetComponent<Rigidbody>().useGravity = true;
+            heldObject.GetComponent<Rigidbody>().useGravity = usedGravity;
+            heldObject.GetComponent<Rigidbody>().isKinematic = wasKinematic;
+
             holding = false;
             heldObject.transform.parent = null;
             heldObject = null;

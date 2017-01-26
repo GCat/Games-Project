@@ -90,6 +90,7 @@ public class BodySourceView : MonoBehaviour
             if(body.IsTracked)
             {
                 trackedIds.Add (body.TrackingId);
+                break;
             }
         }
         
