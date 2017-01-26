@@ -22,6 +22,7 @@ public class Hand : MonoBehaviour {
     public GameObject open_hand;
     public GameObject grab_position;
     public BodySourceView kinect_view;
+
     public bool useMouse = false;
     public bool right_hand;
 
@@ -30,6 +31,7 @@ public class Hand : MonoBehaviour {
 
     BuildingType[] buildings = { BuildingType.FARM, BuildingType.HOUSE, BuildingType.IRONMINE, BuildingType.LUMBERYARD, BuildingType.QUARRY, BuildingType.TOWER };
     int buildingType;
+    private Vector3 held_object_position;
 
 
     float rotationTimer;
@@ -210,6 +212,9 @@ public class Hand : MonoBehaviour {
 
             heldObject.GetComponent<Rigidbody>().useGravity = usedGravity;
             heldObject.GetComponent<Rigidbody>().isKinematic = wasKinematic;
+
+            Vector3 velocity = heldObject.transform.position - held_object_position / Time.deltaTime;
+            heldObject.GetComponent<Rigidbody>().AddForce(velocity, ForceMode.Impulse);
 
             holding = false;
             heldObject.transform.parent = null;

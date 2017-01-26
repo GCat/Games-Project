@@ -122,6 +122,7 @@ public class BodySourceView : MonoBehaviour
                 
                 RefreshBodyObject(body, _Bodies[body.TrackingId]);
                 adjustBodyParts(body, _Bodies[body.TrackingId]);
+                break;
             }
         }
     }
