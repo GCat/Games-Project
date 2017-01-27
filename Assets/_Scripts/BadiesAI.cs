@@ -106,7 +106,7 @@ public class BadiesAI : MonoBehaviour {
         maxCell = 5000;
         closestEnemy = null;
         
-        float rand = UnityEngine.Random.Range(0.0f, 10.0f);
+        float rand = UnityEngine.Random.Range(0.0f, 1.0f);
         if (rand < 0.33) fighterType = (int)Fighter.Killer;
         else if (rand < 0.667) fighterType = (int)Fighter.Defender;
         else fighterType = (int)Fighter.Rusher;
@@ -405,7 +405,7 @@ public class BadiesAI : MonoBehaviour {
                 {
                     if (defending == false)
                     {
-                        if (Vector3.Distance(temple.GetComponent<Collider>().ClosestPointOnBounds(transform.position), transform.position) > 1.5f)
+                        if (Vector3.Distance(temple.GetComponent<Collider>().ClosestPointOnBounds(transform.position), transform.position) > 2.0f)
                         {
                             Debug.Log("problem in Path finding");
                         }

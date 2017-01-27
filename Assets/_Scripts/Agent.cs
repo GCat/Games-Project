@@ -66,13 +66,13 @@ public class Agent : MonoBehaviour
     public Vector3 nextNode;
     public int targetCell;
 
-    // Sacrifice
+    // God interactions
     bool beingMoved = false;
-    private Vector3 screenPoint;
-    private Vector3 Mouse_offset;
     private bool sacrificeEntered = false;
     private bool beingGrabbed = false;
     private bool realeased = false;
+    private bool falling = false;
+
 
     // Fighting
     enum Fighter { Killer, Defender, Camper };
@@ -84,6 +84,9 @@ public class Agent : MonoBehaviour
     private bool noMoreEnemies;
     private int maxCell;
     private float dis2Enemy =0;
+
+    
+
 
 
 
@@ -121,6 +124,16 @@ public class Agent : MonoBehaviour
             waypoints = new List<int>();
             nextNode.y = -50.0f;
             sacrifice();
+        }
+        else if(falling)
+        {
+            Debug.Log(rb.velocity);
+            if(transform.position.y < 1.0f)
+            {
+                rb.isKinematic = true;
+                rb.useGravity = false;
+                falling = false;
+            }
         }
         else if (fightMode && !stopMoving)
             fightNav();
@@ -431,9 +444,17 @@ public class Agent : MonoBehaviour
         realeased = false;
     }
 
-    public void letGo()
+    public void letGo(Vector3 vel)
     {
         realeased = true;
+        if (transform.position.y > 1.0f)
+        {
+            rb.isKinematic = false;
+            rb.useGravity = true;
+            falling = true;
+            rb.velocity = vel;
+            Debug.Log("FALLING!");
+        }
     }
     public void changeMode (bool val)
     {
