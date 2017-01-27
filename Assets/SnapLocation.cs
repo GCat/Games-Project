@@ -18,9 +18,10 @@ public class SnapLocation : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("Snapping location");
+
         if (other.tag == "Hand")
         {
-            Debug.Log("Snapping location");
             if (snap_right)
             {
                 movementManager.snapRight();
