@@ -21,4 +21,5 @@ public class IronMine : ResourceBuilding
     {
         resourceCounter.addIron();
     }
+
 }
