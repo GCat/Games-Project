@@ -26,7 +26,7 @@ public class GameStartButton : MonoBehaviour {
             button.transform.localPosition = button.transform.localPosition + Vector3.down * 0.1f;
             resource_tablet.active = true;
             startGame();
-
+            Destroy(this.gameObject);
         }
     }
 
