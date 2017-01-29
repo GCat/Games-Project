@@ -198,7 +198,7 @@ public class Hand : MonoBehaviour {
             }
             else
             {
-                Debug.Log("NOTHING TO GRAB!");
+                //Debug.Log("NOTHING TO GRAB!");
             }
         }
         else
@@ -251,7 +251,7 @@ public class Hand : MonoBehaviour {
         }
         else
         {
-            Debug.Log("Nothing to realease");
+            //Debug.Log("Nothing to realease");
         }
 
     }

@@ -1,0 +1,262 @@
+fileFormatVersion: 2
+guid: f0b2c0e45a6a32747bfe6a6cd18bff44
+timeCreated: 1485530501
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: chimney
+    100002: Door
+    100004: House
+    100006: //RootNode
+    100008: leaves
+    100010: leaves 1
+    100012: leaves_2
+    100014: leaves_3
+    100016: nurbsToPoly1
+    100018: nurbsToPoly2
+    100020: nurbsToPoly2 1
+    100022: nurbsToPoly3
+    100024: nurbsToPoly4
+    100026: nurbsToPoly5
+    100028: nurbsToPoly5 1
+    100030: nurbsToPoly6
+    100032: olive_tree
+    100034: pCube1
+    100036: pCube1 1
+    100038: pCube10
+    100040: pCube10 1
+    100042: pCube11
+    100044: pCube12
+    100046: pCube2
+    100048: pCube3
+    100050: pCube4
+    100052: pCube5
+    100054: pCube6
+    100056: pCube7
+    100058: pCube8
+    100060: pCube9
+    100062: plants
+    100064: plants1
+    100066: polySurface1
+    100068: polySurface2
+    100070: polySurface3
+    100072: polySurface4
+    100074: pot
+    100076: pPlane1
+    100078: pSphere1
+    100080: Shed
+    100082: stairs
+    100084: transform1
+    100086: transform10
+    100088: transform11
+    100090: transform12
+    100092: transform13
+    100094: transform14
+    100096: transform15
+    100098: transform16
+    100100: transform2
+    100102: transform3
+    100104: transform4
+    100106: transform5
+    100108: transform6
+    100110: transform7
+    100112: transform8
+    100114: transform9
+    100116: trunk
+    100118: Windows
+    100120: Windows1
+    100122: Windows2
+    100124: Windows3
+    400000: chimney
+    400002: Door
+    400004: House
+    400006: //RootNode
+    400008: leaves
+    400010: leaves 1
+    400012: leaves_2
+    400014: leaves_3
+    400016: nurbsToPoly1
+    400018: nurbsToPoly2
+    400020: nurbsToPoly2 1
+    400022: nurbsToPoly3
+    400024: nurbsToPoly4
+    400026: nurbsToPoly5
+    400028: nurbsToPoly5 1
+    400030: nurbsToPoly6
+    400032: olive_tree
+    400034: pCube1
+    400036: pCube1 1
+    400038: pCube10
+    400040: pCube10 1
+    400042: pCube11
+    400044: pCube12
+    400046: pCube2
+    400048: pCube3
+    400050: pCube4
+    400052: pCube5
+    400054: pCube6
+    400056: pCube7
+    400058: pCube8
+    400060: pCube9
+    400062: plants
+    400064: plants1
+    400066: polySurface1
+    400068: polySurface2
+    400070: polySurface3
+    400072: polySurface4
+    400074: pot
+    400076: pPlane1
+    400078: pSphere1
+    400080: Shed
+    400082: stairs
+    400084: transform1
+    400086: transform10
+    400088: transform11
+    400090: transform12
+    400092: transform13
+    400094: transform14
+    400096: transform15
+    400098: transform16
+    400100: transform2
+    400102: transform3
+    400104: transform4
+    400106: transform5
+    400108: transform6
+    400110: transform7
+    400112: transform8
+    400114: transform9
+    400116: trunk
+    400118: Windows
+    400120: Windows1
+    400122: Windows2
+    400124: Windows3
+    2300000: chimney
+    2300002: leaves
+    2300004: nurbsToPoly2
+    2300006: nurbsToPoly3
+    2300008: nurbsToPoly4
+    2300010: nurbsToPoly5
+    2300012: pCube10
+    2300014: pCube12
+    2300016: pCube2
+    2300018: pCube3
+    2300020: pCube4
+    2300022: pCube5
+    2300024: plants
+    2300026: plants1
+    2300028: polySurface2
+    2300030: polySurface3
+    2300032: polySurface4
+    2300034: pPlane1
+    2300036: pSphere1
+    2300038: trunk
+    3300000: chimney
+    3300002: leaves
+    3300004: nurbsToPoly2
+    3300006: nurbsToPoly3
+    3300008: nurbsToPoly4
+    3300010: nurbsToPoly5
+    3300012: pCube10
+    3300014: pCube12
+    3300016: pCube2
+    3300018: pCube3
+    3300020: pCube4
+    3300022: pCube5
+    3300024: plants
+    3300026: plants1
+    3300028: polySurface2
+    3300030: polySurface3
+    3300032: polySurface4
+    3300034: pPlane1
+    3300036: pSphere1
+    3300038: trunk
+    4300000: pSphere1
+    4300002: chimney
+    4300004: pCube2
+    4300006: pPlane1
+    4300008: pCube3
+    4300010: pCube4
+    4300012: pCube5
+    4300014: pCube12
+    4300016: plants
+    4300018: plants1
+    4300020: polySurface3
+    4300022: polySurface4
+    4300024: polySurface2
+    4300026: trunk
+    4300028: nurbsToPoly3
+    4300030: nurbsToPoly4
+    4300032: leaves
+    4300034: pCube10
+    4300036: nurbsToPoly2
+    4300038: nurbsToPoly5
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

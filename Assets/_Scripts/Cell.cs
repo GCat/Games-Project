@@ -33,11 +33,12 @@ public class Cell : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider other) {
-		if((other.tag != "Human") && (other.tag != "Badies")){
+		if((other.tag != "Human") && (other.tag != "Badies") && (other.tag != "Hand")){
 			//string s = string.Format("Cell ({0},{1}) blocked id: {2}!",transform.position.x,transform.position.z,id);
 			//Debug.Log(s);
 			pathfinding.SendMessage("buildingAdded",id);
 			details="blocked";
+            other.gameObject.SendMessage("activate");
 		}
     }
 

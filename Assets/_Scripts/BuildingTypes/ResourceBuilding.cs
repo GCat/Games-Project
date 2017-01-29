@@ -9,6 +9,7 @@ public abstract class ResourceBuilding : MonoBehaviour, Building
     public float timeStep;
     public ResourceCounter resourceCounter;
     public float health = 100.0f;
+    public bool on_game_board = false;
 
     public abstract void create_building();
     public abstract void incrementResource();
@@ -34,12 +35,21 @@ public abstract class ResourceBuilding : MonoBehaviour, Building
     }
     void FixedUpdate()
     {
-        timer = Time.time - startTime;
-        if (timer > timeStep)
+        if (on_game_board)
         {
-            incrementResource();
-            startTime = Time.time;
+            timer = Time.time - startTime;
+            if (timer > timeStep)
+            {
+                incrementResource();
+                startTime = Time.time;
+            }
         }
+    }
 
+    void activate()
+    {
+        startTime = Time.time;
+        on_game_board = true;
+        Debug.Log("Building placed");
     }
 }
