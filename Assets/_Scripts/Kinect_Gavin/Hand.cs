@@ -34,7 +34,7 @@ public class Hand : MonoBehaviour {
     BuildingType[] buildings = { BuildingType.FARM, BuildingType.HOUSE, BuildingType.IRONMINE, BuildingType.LUMBERYARD, BuildingType.QUARRY, BuildingType.TOWER };
     int buildingType;
     private Vector3[] held_object_positions;
-
+    private Vector3 original_position;
 
     float rotationTimer;
     float startTime;
@@ -163,7 +163,6 @@ public class Hand : MonoBehaviour {
             int layerMask = (1 << 9) | ( 1 << 10);
             Vector3 p = grab_position.transform.position;//new Vector3(transform.position.x - 14, transform.position.y - 18, transform.position.z);
             things = Physics.OverlapSphere(p, 4.0f, layerMask);
-
             float distance = Mathf.Infinity;
             if (things.Length > 0)
             {
@@ -182,6 +181,11 @@ public class Hand : MonoBehaviour {
             if (heldObject != null)
             {
                 Debug.Log("GRABBED");
+                if (heldObject.tag == "Shelf Object")
+                {
+                    original_position = heldObject.transform.position;
+                }
+
                 holding = true;
                 usedGravity = heldObject.GetComponent<Rigidbody>().useGravity;
                 wasKinematic = heldObject.GetComponent<Rigidbody>().isKinematic;
@@ -190,7 +194,7 @@ public class Hand : MonoBehaviour {
                 heldObject.GetComponent<Collider>().enabled = false;
 
                 if (heldObject.tag == "Human") heldObject.SendMessage("grabbed");
-                heldObject.transform.parent = transform;
+                heldObject.transform.parent = transform;                
             }
             else
             {
@@ -216,8 +220,6 @@ public class Hand : MonoBehaviour {
     {
         if (holding)
         {
-         
-
 
             heldObject.GetComponent<Rigidbody>().useGravity = usedGravity;
             heldObject.GetComponent<Rigidbody>().isKinematic = wasKinematic;
@@ -233,6 +235,15 @@ public class Hand : MonoBehaviour {
             if (heldObject.tag == "Human")
             {
                 heldObject.SendMessage("letGo",velocity);
+            }
+            
+            if (heldObject.tag == "Shelf Object")
+            {
+                heldObject.tag = "Building";
+                GameObject clone = Instantiate(heldObject, original_position, Quaternion.identity) as GameObject;
+                clone.transform.localScale = heldObject.transform.localScale;
+                clone.tag = "Shelf Object";
+                
             }
 
             heldObject = null;
