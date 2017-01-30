@@ -13,6 +13,7 @@ public class WatchTower : MonoBehaviour, Building
 
 
     bool active = false;
+    public bool held = false;
 
     public float timer1;
     public float timer2;
@@ -20,6 +21,8 @@ public class WatchTower : MonoBehaviour, Building
     private float StartTime1;
     private float StartTime2;
     private float StartTime3;
+
+    GameObject highlight = null;
 
 
     string Building.getName()
@@ -69,6 +72,21 @@ public class WatchTower : MonoBehaviour, Building
 
     void Update()
     {
+        if (held)
+        {
+            if (highlight != null)
+            {
+                if (transform.position.y > 0.0 && Mathf.Abs(transform.position.x) <= 50 && Mathf.Abs(transform.position.z) <= 100)
+                {
+                    highlight.GetComponent<Renderer>().enabled = true;
+                    highlight.transform.position = new Vector3(transform.position.x, 0.1f, transform.position.z);
+                }
+                else
+                {
+                    highlight.GetComponent<Renderer>().enabled = false;
+                }
+            }
+        }
         if (active)
         {
             if (temple != null)
@@ -167,10 +185,22 @@ public class WatchTower : MonoBehaviour, Building
     void activate()
     {
         active = true;
+        if (highlight != null) Destroy(highlight);
+        highlight = null;
+        held = false;
     }
     void deactivate()
     {
         active = false;
+    }
+
+    void grabbed()
+    {
+        held = true;
+        highlight = GameObject.CreatePrimitive(PrimitiveType.Plane);
+        highlight.transform.position = new Vector3(transform.position.x, 0.1f, transform.position.z);
+        highlight.GetComponent<Collider>().enabled = false;
+        highlight.GetComponent<Renderer>().enabled = false;
     }
 
 }

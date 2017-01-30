@@ -23,6 +23,6 @@ public class Temple : ResourceBuilding {
     }
     public override void incrementResource()
     {
-        resourceCounter.addFaith();
+        if (resourceCounter != null) resourceCounter.addFaith();
     }
 }

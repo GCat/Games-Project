@@ -38,7 +38,7 @@ public class Cell : MonoBehaviour {
 			//Debug.Log(s);
 			pathfinding.SendMessage("buildingAdded",id);
 			details="blocked";
-            if (other.tag == "Building") other.gameObject.SendMessage("activate");
+            if (other.tag != "Tablet" && other.gameObject.layer == 10) other.gameObject.SendMessage("activate");
 		}
     }
 
@@ -49,7 +49,7 @@ public class Cell : MonoBehaviour {
 			//Debug.Log(s);
 			pathfinding.SendMessage("buildingRemoved",id);
 			details = "empty";
-            if (other.tag == "Building") other.gameObject.SendMessage("deactivate");
+            if (other.tag != "Tablet" &&  other.gameObject.layer == 10) other.gameObject.SendMessage("deactivate");
         }
 		
     }
