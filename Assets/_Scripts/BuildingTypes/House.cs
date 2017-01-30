@@ -179,8 +179,10 @@ public class House  : MonoBehaviour, Building
     void grabbed()
     {
         held = true;
-
-        highlight = GameObject.CreatePrimitive(PrimitiveType.Plane);
+        Material mat = Resources.Load("Materials/highlight.mat") as Material;
+        highlight = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        highlight.GetComponent<Renderer>().material = mat;
+        highlight.transform.localScale = new Vector3(GetComponent<BoxCollider>().bounds.size.x, 0.1f, GetComponent<BoxCollider>().bounds.size.z);
         highlight.transform.position = new Vector3(transform.position.x, 0.1f, transform.position.z);
         highlight.GetComponent<Collider>().enabled = false;
         highlight.GetComponent<Renderer>().enabled = false;
