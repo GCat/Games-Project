@@ -14,6 +14,8 @@ public class House  : MonoBehaviour, Building
     private int foodCost = 10;
     public float health = 100.0f;
 
+    public bool active = false;
+
     //Constructor of a House
     //capacity = number of humans a house can hold; location = location of a house
     public void Awake()
@@ -80,23 +82,27 @@ public class House  : MonoBehaviour, Building
     void Start()
     {
         location = this.transform.position;
-        resourceCounter = (ResourceCounter)GameObject.Find("Resource_tablet").GetComponent("ResourceCounter");
+        GameObject tablet = GameObject.Find("Resource_tablet");
+        if (tablet != null) resourceCounter = (ResourceCounter) tablet.GetComponent<ResourceCounter>();
     }
 
     //Update is called once per frame
     void FixedUpdate()
     {
-        location = this.transform.position;
-        //Calculate time
-        timer   = Time.time - StartTime;
-
-        if (timer >= 3)
+        if (active)
         {
-            if (resourceCounter.getFood() > foodCost)
+            location = this.transform.position;
+            //Calculate time
+            timer = Time.time - StartTime;
+
+            if (timer >= 3)
             {
-                spawn();
+                if (resourceCounter.getFood() > foodCost)
+                {
+                    spawn();
+                }
+                
             }
-            StartTime = Time.time;
         }
     }
 
@@ -139,5 +145,15 @@ public class House  : MonoBehaviour, Building
             return obstacles[0].gameObject.GetComponent<Cell>().id;
         }
         return -1;
+    }
+
+    public void activate()
+    {
+        active = true;
+        StartTime = Time.time;
+    }
+    public void deactivate()
+    {
+        active = false;
     }
 }

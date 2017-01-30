@@ -9,7 +9,9 @@ public class IronMine : ResourceBuilding
         this.startTime = Time.time;
         timeStep = 5.0f;
         buildingName = "IRONMINE";
-        resourceCounter = (ResourceCounter)GameObject.Find("Resource_tablet").GetComponent("ResourceCounter");
+        GameObject tablet = GameObject.Find("Resource_tablet");
+        if (tablet != null) resourceCounter = (ResourceCounter)tablet.GetComponent<ResourceCounter>();
+        else Debug.Log("Tablet not found");
     }
 
     // Use this for initialization

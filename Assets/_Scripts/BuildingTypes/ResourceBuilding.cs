@@ -10,6 +10,7 @@ public abstract class ResourceBuilding : MonoBehaviour, Building
     public ResourceCounter resourceCounter;
     public float health = 100.0f;
     public bool on_game_board = false;
+    public bool held = false;
 
     public abstract void create_building();
     public abstract void incrementResource();
@@ -46,10 +47,33 @@ public abstract class ResourceBuilding : MonoBehaviour, Building
         }
     }
 
+    void OnDrawGizmos()
+    {
+        if (held)
+        {
+            Debug.Log("HERE");
+            Gizmos.color = new Color(1, 0, 0, 0.5F);
+            Vector3 p = new Vector3(transform.position.x, 0.0f, transform.position.z);
+            Vector3 objectSize = new Vector3(10f,2f,10f);
+            Gizmos.DrawCube(p, objectSize);
+
+        }
+        
+    }
     void activate()
     {
         startTime = Time.time;
         on_game_board = true;
+        held = false;
         Debug.Log("Building placed");
+    }
+    void deactivate()
+    {
+        on_game_board = false;   
+    }
+
+    void grabbed()
+    {
+        held = true;
     }
 }

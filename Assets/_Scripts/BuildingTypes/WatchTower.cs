@@ -9,8 +9,11 @@ public class WatchTower : MonoBehaviour, Building
     private GameObject temple;
     public float health = 100.0f;
     public List<GameObject> targets;
-    public float damage = 5.0f;
     private float radius = 25.0f;
+
+
+    bool active = false;
+
     public float timer1;
     public float timer2;
     public float timer3;
@@ -66,41 +69,44 @@ public class WatchTower : MonoBehaviour, Building
 
     void Update()
     {
-        if (temple != null)
+        if (active)
         {
-            if (targets.Count > 0)
+            if (temple != null)
             {
-                targets.RemoveAll(x => x == null);
-                int i = 0;
-                List<int> pop = new List<int>();
-                foreach (GameObject target in targets)
+                if (targets.Count > 0)
                 {
-                    if (Vector3.Distance(transform.position, target.transform.position) <= radius)
+                    targets.RemoveAll(x => x == null);
+                    int i = 0;
+                    List<int> pop = new List<int>();
+                    foreach (GameObject target in targets)
                     {
-
-                        attack(target, i);
-                    }
-                    else pop.Add(i);
-                    i++;
-                }
-                foreach (int j in pop)
-                {
-                    if (j < targets.Count) targets.RemoveAt(j);
-                }
-            }
-            if (targets.Count < 3)
-            {
-                int layerMask = 1 << 11;
-                List<Collider> hitColliders = new List<Collider>(Physics.OverlapSphere(transform.position, radius, layerMask));
-                foreach (Collider c in hitColliders)
-                {
-                    if (!targets.Contains(c.gameObject))
-                    {
-                        if (targets.Count >= 3) break;
-                        else
+                        if (Vector3.Distance(transform.position, target.transform.position) <= radius)
                         {
-                            targets.Add(c.gameObject);
-                            attack(c.gameObject, targets.Count - 1);
+
+                            attack(target, i);
+                        }
+                        else pop.Add(i);
+                        i++;
+                    }
+                    foreach (int j in pop)
+                    {
+                        if (j < targets.Count) targets.RemoveAt(j);
+                    }
+                }
+                if (targets.Count < 3)
+                {
+                    int layerMask = 1 << 11;
+                    List<Collider> hitColliders = new List<Collider>(Physics.OverlapSphere(transform.position, radius, layerMask));
+                    foreach (Collider c in hitColliders)
+                    {
+                        if (!targets.Contains(c.gameObject))
+                        {
+                            if (targets.Count >= 3) break;
+                            else
+                            {
+                                targets.Add(c.gameObject);
+                                attack(c.gameObject, targets.Count - 1);
+                            }
                         }
                     }
                 }
@@ -158,5 +164,13 @@ public class WatchTower : MonoBehaviour, Building
         }
     }
 
+    void activate()
+    {
+        active = true;
+    }
+    void deactivate()
+    {
+        active = false;
+    }
 
 }

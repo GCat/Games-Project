@@ -185,6 +185,7 @@ public class Hand : MonoBehaviour {
                 {
                     original_position = heldObject.transform.position;
                 }
+                if (heldObject.layer == 10) heldObject.SendMessage("grabbed");
 
                 holding = true;
                 usedGravity = heldObject.GetComponent<Rigidbody>().useGravity;
