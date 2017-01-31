@@ -200,7 +200,6 @@ public class WatchTower : MonoBehaviour, Building
         // Deactivate  collider and gravity
         if (highlight != null)
         {
-            highlight.GetComponent<Renderer>().enabled = false;
             DestroyImmediate(highlight);
         }
 
