@@ -85,9 +85,9 @@ public class Agent : MonoBehaviour
     private int maxCell;
     private float dis2Enemy =0;
 
-    
 
 
+    bool active = false;
 
 
     void Start()
@@ -114,31 +114,34 @@ public class Agent : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if( temple == null)
+        if (active)
         {
-            anim.Play("diehard");
-            StartCoroutine(WaitToDestroy(2.1f));
-        }
-        else if (beingGrabbed)
-        {
-            waypoints = new List<int>();
-            nextNode.y = -50.0f;
-            sacrifice();
-        }
-        else if(falling)
-        {
-            Debug.Log(rb.velocity);
-            if(transform.position.y < 1.0f)
+            if (temple == null)
             {
-                rb.isKinematic = true;
-                rb.useGravity = false;
-                falling = false;
+                anim.Play("diehard");
+                StartCoroutine(WaitToDestroy(2.1f));
             }
+            else if (beingGrabbed)
+            {
+                waypoints = new List<int>();
+                nextNode.y = -50.0f;
+                sacrifice();
+            }
+            else if (falling)
+            {
+                Debug.Log(rb.velocity);
+                if (transform.position.y < 1.0f)
+                {
+                    rb.isKinematic = true;
+                    rb.useGravity = false;
+                    falling = false;
+                }
+            }
+            else if (fightMode && !stopMoving)
+                fightNav();
+            else if (!stopMoving)
+                wanderNav();
         }
-        else if (fightMode && !stopMoving)
-            fightNav();
-        else if (!stopMoving)
-            wanderNav();
     }
 
 
@@ -471,5 +474,9 @@ public class Agent : MonoBehaviour
             return true;
         }
         return false;
+    }
+    public void activate()
+    {
+        active = true;
     }
 }

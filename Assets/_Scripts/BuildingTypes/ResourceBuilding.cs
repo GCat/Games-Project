@@ -10,6 +10,8 @@ public abstract class ResourceBuilding : MonoBehaviour, Building
     public ResourceCounter resourceCounter;
     public float health = 100.0f;
     public bool on_game_board = false;
+    public bool held = false;
+    GameObject highlight = null; 
 
     public abstract void create_building();
     public abstract void incrementResource();
@@ -44,12 +46,48 @@ public abstract class ResourceBuilding : MonoBehaviour, Building
                 startTime = Time.time;
             }
         }
+        if (held)
+        {
+            if (highlight != null)
+            {
+                if (transform.position.y > 0.0 && Mathf.Abs(transform.position.x) <= 50 && Mathf.Abs(transform.position.z) <= 100)
+                {
+                    highlight.GetComponent<Renderer>().enabled = true;
+                    highlight.transform.position = new Vector3(transform.position.x, 0.1f, transform.position.z);
+                }
+                else
+                {
+                    highlight.GetComponent<Renderer>().enabled = false;
+                }
+            }
+        }
     }
+
 
     void activate()
     {
         startTime = Time.time;
         on_game_board = true;
+        held = false;
+        if (highlight != null) Destroy(highlight);
+        highlight = null;
         Debug.Log("Building placed");
+    }
+    void deactivate()
+    {
+        on_game_board = false;   
+    }
+
+    void grabbed()
+    {
+        held = true;
+        Material mat = Resources.Load("Materials/highlight.mat") as Material;
+        highlight = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        highlight.GetComponent<Renderer>().material = mat;
+        highlight.transform.localScale = new Vector3(GetComponent<BoxCollider>().bounds.size.x, 0.1f, GetComponent<BoxCollider>().bounds.size.z); 
+        highlight.transform.position = new Vector3(transform.position.x, 0.1f, transform.position.z);
+        highlight.GetComponent<Collider>().enabled = false;
+        highlight.GetComponent<Renderer>().enabled = false;
+
     }
 }

@@ -11,7 +11,9 @@ public class Temple : ResourceBuilding {
         this.health = 5000.0f;
         timeStep = 0.5f;
         buildingName = "TEMPLE";
-        resourceCounter = (ResourceCounter)GameObject.Find("Resource_tablet").GetComponent("ResourceCounter");
+        GameObject tablet = GameObject.Find("Resource_tablet");
+        if (tablet != null) resourceCounter = (ResourceCounter)tablet.GetComponent<ResourceCounter>();
+        else Debug.Log("Tablet not found");
     }
 
     // Use this for initialization
@@ -21,6 +23,6 @@ public class Temple : ResourceBuilding {
     }
     public override void incrementResource()
     {
-        resourceCounter.addFaith();
+        if (resourceCounter != null) resourceCounter.addFaith();
     }
 }

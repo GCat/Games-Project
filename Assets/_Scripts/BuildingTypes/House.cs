@@ -14,6 +14,10 @@ public class House  : MonoBehaviour, Building
     private int foodCost = 10;
     public float health = 100.0f;
 
+    public bool active = false;
+    public bool held = false;
+    GameObject highlight = null;
+
     //Constructor of a House
     //capacity = number of humans a house can hold; location = location of a house
     public void Awake()
@@ -80,23 +84,42 @@ public class House  : MonoBehaviour, Building
     void Start()
     {
         location = this.transform.position;
-        resourceCounter = (ResourceCounter)GameObject.Find("Resource_tablet").GetComponent("ResourceCounter");
+        GameObject tablet = GameObject.Find("Resource_tablet");
+        if (tablet != null) resourceCounter = (ResourceCounter) tablet.GetComponent<ResourceCounter>();
     }
 
     //Update is called once per frame
     void FixedUpdate()
     {
-        location = this.transform.position;
-        //Calculate time
-        timer   = Time.time - StartTime;
-
-        if (timer >= 3)
+        if (held)
         {
-            if (resourceCounter.getFood() > foodCost)
+            if (highlight != null)
             {
-                spawn();
+                if (transform.position.y > 0.0 && Mathf.Abs(transform.position.x) <= 50 && Mathf.Abs(transform.position.z) <= 100)
+                {
+                    highlight.GetComponent<Renderer>().enabled = true;
+                    highlight.transform.position = new Vector3(transform.position.x, 0.1f, transform.position.z);
+                }
+                else
+                {
+                    highlight.GetComponent<Renderer>().enabled = false;
+                }
             }
-            StartTime = Time.time;
+        }
+        if (active)
+        {
+            location = this.transform.position;
+            //Calculate time
+            timer = Time.time - StartTime;
+
+            if (timer >= 3)
+            {
+                if (resourceCounter.getFood() > foodCost)
+                {
+                    spawn();
+                }
+                
+            }
         }
     }
 
@@ -139,5 +162,30 @@ public class House  : MonoBehaviour, Building
             return obstacles[0].gameObject.GetComponent<Cell>().id;
         }
         return -1;
+    }
+
+    public void activate()
+    {
+        active = true;
+        held = false;
+        if (highlight != null) Destroy(highlight);
+        highlight = null;
+        StartTime = Time.time;
+    }
+    public void deactivate()
+    {
+        active = false;
+    }
+    void grabbed()
+    {
+        held = true;
+        Material mat = Resources.Load("Materials/highlight.mat") as Material;
+        highlight = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        highlight.GetComponent<Renderer>().material = mat;
+        highlight.transform.localScale = new Vector3(GetComponent<BoxCollider>().bounds.size.x, 0.1f, GetComponent<BoxCollider>().bounds.size.z);
+        highlight.transform.position = new Vector3(transform.position.x, 0.1f, transform.position.z);
+        highlight.GetComponent<Collider>().enabled = false;
+        highlight.GetComponent<Renderer>().enabled = false;
+
     }
 }

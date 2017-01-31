@@ -9,14 +9,20 @@ public class WatchTower : MonoBehaviour, Building
     private GameObject temple;
     public float health = 100.0f;
     public List<GameObject> targets;
-    public float damage = 5.0f;
     private float radius = 25.0f;
+
+
+    bool active = false;
+    public bool held = false;
+
     public float timer1;
     public float timer2;
     public float timer3;
     private float StartTime1;
     private float StartTime2;
     private float StartTime3;
+
+    GameObject highlight = null;
 
 
     string Building.getName()
@@ -66,41 +72,59 @@ public class WatchTower : MonoBehaviour, Building
 
     void Update()
     {
-        if (temple != null)
+        if (held)
         {
-            if (targets.Count > 0)
+            if (highlight != null)
             {
-                targets.RemoveAll(x => x == null);
-                int i = 0;
-                List<int> pop = new List<int>();
-                foreach (GameObject target in targets)
+                if (transform.position.y > 0.0 && Mathf.Abs(transform.position.x) <= 50 && Mathf.Abs(transform.position.z) <= 100)
                 {
-                    if (Vector3.Distance(transform.position, target.transform.position) <= radius)
-                    {
-
-                        attack(target, i);
-                    }
-                    else pop.Add(i);
-                    i++;
+                    highlight.GetComponent<Renderer>().enabled = true;
+                    highlight.transform.position = new Vector3(transform.position.x, 0.1f, transform.position.z);
                 }
-                foreach (int j in pop)
+                else
                 {
-                    if (j < targets.Count) targets.RemoveAt(j);
+                    highlight.GetComponent<Renderer>().enabled = false;
                 }
             }
-            if (targets.Count < 3)
+        }
+        if (active)
+        {
+            if (temple != null)
             {
-                int layerMask = 1 << 11;
-                List<Collider> hitColliders = new List<Collider>(Physics.OverlapSphere(transform.position, radius, layerMask));
-                foreach (Collider c in hitColliders)
+                if (targets.Count > 0)
                 {
-                    if (!targets.Contains(c.gameObject))
+                    targets.RemoveAll(x => x == null);
+                    int i = 0;
+                    List<int> pop = new List<int>();
+                    foreach (GameObject target in targets)
                     {
-                        if (targets.Count >= 3) break;
-                        else
+                        if (Vector3.Distance(transform.position, target.transform.position) <= radius)
                         {
-                            targets.Add(c.gameObject);
-                            attack(c.gameObject, targets.Count - 1);
+
+                            attack(target, i);
+                        }
+                        else pop.Add(i);
+                        i++;
+                    }
+                    foreach (int j in pop)
+                    {
+                        if (j < targets.Count) targets.RemoveAt(j);
+                    }
+                }
+                if (targets.Count < 3)
+                {
+                    int layerMask = 1 << 11;
+                    List<Collider> hitColliders = new List<Collider>(Physics.OverlapSphere(transform.position, radius, layerMask));
+                    foreach (Collider c in hitColliders)
+                    {
+                        if (!targets.Contains(c.gameObject))
+                        {
+                            if (targets.Count >= 3) break;
+                            else
+                            {
+                                targets.Add(c.gameObject);
+                                attack(c.gameObject, targets.Count - 1);
+                            }
                         }
                     }
                 }
@@ -158,5 +182,28 @@ public class WatchTower : MonoBehaviour, Building
         }
     }
 
+    void activate()
+    {
+        active = true;
+        if (highlight != null) Destroy(highlight);
+        highlight = null;
+        held = false;
+    }
+    void deactivate()
+    {
+        active = false;
+    }
+
+    void grabbed()
+    {
+        held = true;
+        Material mat = Resources.Load("Materials/highlight.mat") as Material;
+        highlight = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        highlight.GetComponent<Renderer>().material = mat;
+        highlight.transform.localScale = new Vector3(GetComponent<BoxCollider>().bounds.size.x, 0.1f, GetComponent<BoxCollider>().bounds.size.z);
+        highlight.transform.position = new Vector3(transform.position.x, 0.1f, transform.position.z);
+        highlight.GetComponent<Collider>().enabled = false;
+        highlight.GetComponent<Renderer>().enabled = false;
+    }
 
 }
