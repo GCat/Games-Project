@@ -166,4 +166,20 @@ public class ResourceCounter : MonoBehaviour
             iron = 0;
         }
     }
+
+    void grabbed()
+    {
+      
+        // Deactivate  collider and gravity
+        GetComponent<Rigidbody>().useGravity = false;
+        GetComponent<Rigidbody>().isKinematic = true;
+        GetComponent<Collider>().enabled = false;
+    }
+    void release(Vector3 vel)
+    {
+        GetComponent<Rigidbody>().useGravity = true;
+        GetComponent<Rigidbody>().isKinematic = false;
+        GetComponent<Collider>().enabled = true;
+        GetComponent<Rigidbody>().velocity = vel;
+    }
 }

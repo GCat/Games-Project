@@ -185,16 +185,9 @@ public class Hand : MonoBehaviour {
                 {
                     original_position = heldObject.transform.position;
                 }
-                if (heldObject.layer == 10) heldObject.SendMessage("grabbed");
-
+                
                 holding = true;
-                usedGravity = heldObject.GetComponent<Rigidbody>().useGravity;
-                wasKinematic = heldObject.GetComponent<Rigidbody>().isKinematic;
-                heldObject.GetComponent<Rigidbody>().useGravity = false;
-                heldObject.GetComponent<Rigidbody>().isKinematic = true;
-                heldObject.GetComponent<Collider>().enabled = false;
-
-                if (heldObject.tag == "Human") heldObject.SendMessage("grabbed");
+                heldObject.SendMessage("grabbed");
                 heldObject.transform.parent = transform;                
             }
             else
@@ -221,25 +214,12 @@ public class Hand : MonoBehaviour {
     {
         if (holding)
         {
-
-
-            heldObject.GetComponent<Rigidbody>().useGravity = usedGravity;
-            heldObject.GetComponent<Rigidbody>().isKinematic = wasKinematic;
-            heldObject.GetComponent<Collider>().enabled = true;
-
             Vector3 velocity = (heldObject.transform.position - held_object_positions[4]) / (Time.deltaTime*50);
             //heldObject.GetComponent<Rigidbody>().AddForce(velocity, ForceMode.VelocityChange);
-            heldObject.GetComponent<Rigidbody>().velocity = velocity;
+            heldObject.SendMessage("release",velocity);
             holding = false;
             heldObject.transform.parent = null;
-            
-
-            if (heldObject.tag == "Human")
-            {
-                heldObject.SendMessage("letGo",velocity);
-            }
-
-            
+                        
             if (heldObject.tag == "Shelf Object")
             {
                 heldObject.tag = "Building";

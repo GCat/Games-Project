@@ -169,6 +169,9 @@ public class Agent : MonoBehaviour
             {
                 realeased = false;
                 beingGrabbed = false;
+                rb.isKinematic = true;
+                rb.useGravity = true;
+                GetComponent<Collider>().enabled = enabled;
             }
         }
     }
@@ -445,9 +448,12 @@ public class Agent : MonoBehaviour
     {
         beingGrabbed = true;
         realeased = false;
+        rb.isKinematic = true;
+        rb.useGravity = false;
+        GetComponent<Collider>().enabled = false;
     }
 
-    public void letGo(Vector3 vel)
+    public void released(Vector3 vel)
     {
         realeased = true;
         if (transform.position.y > 1.0f)
@@ -457,6 +463,12 @@ public class Agent : MonoBehaviour
             falling = true;
             rb.velocity = vel;
             Debug.Log("FALLING!");
+        }
+        else
+        {
+            rb.isKinematic = true;
+            rb.useGravity = true;
+            GetComponent<Collider>().enabled = enabled;
         }
     }
     public void changeMode (bool val)
