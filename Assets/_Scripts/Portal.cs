@@ -5,7 +5,7 @@ using UnityEngine;
 public class Portal : MonoBehaviour {
 
     bool active = false;
-    private int maxSpawns = 1;
+    private int maxSpawns = 5;
     public int spawns = 0;
     float[] distribution = new float[] { 0f, 0f, 0f, 0f };
     float frequency;

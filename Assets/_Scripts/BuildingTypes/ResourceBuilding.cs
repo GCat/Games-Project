@@ -3,6 +3,8 @@ using System.Collections;
 
 public abstract class ResourceBuilding : MonoBehaviour, Building
 {
+    public AudioClip build;
+    public AudioClip destroy;
     public string buildingName;
     public float timer;
     public float startTime;
@@ -32,6 +34,12 @@ public abstract class ResourceBuilding : MonoBehaviour, Building
         health -= damage;
         if (health <= 0)
         {
+           
+            AudioSource sc = gameObject.AddComponent(typeof(AudioSource)) as AudioSource;
+            //sc.volume = 0.3f;
+            //sc.PlayOneShot(destroy);
+           // Debug.Log("Aduio playing");
+            
             Destroy(gameObject);
         }
     }

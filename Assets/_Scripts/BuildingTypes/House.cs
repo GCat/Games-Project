@@ -2,7 +2,11 @@
 using System.Collections;
 
 public class House  : MonoBehaviour, Building
-{  
+{
+
+    public AudioClip build;
+    public AudioClip destroy;
+
     private int capacity;      //size of house: bigger house => bigger capacity
     private int humans;        //human counter
     private double happiness;     //overall happiness of the house: the more crowded => less happy // this is a percentage
@@ -48,6 +52,10 @@ public class House  : MonoBehaviour, Building
         health -= damage;
         if (health <= 0)
         {
+            AudioSource sc = gameObject.AddComponent(typeof(AudioSource)) as AudioSource;
+            sc.volume = 0.3f;
+            //sc.PlayOneShot(destroy);
+           // Debug.Log("Aduio playing");
             Destroy(gameObject);
         }
     }
