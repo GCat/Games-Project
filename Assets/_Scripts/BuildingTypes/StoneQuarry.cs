@@ -10,7 +10,8 @@ public class StoneQuarry : ResourceBuilding
         this.startTime = Time.time;
         timeStep = 4.0f;
         buildingName = "QUARRY";
-        resourceCounter = (ResourceCounter)GameObject.Find("Resource_tablet").GetComponent("ResourceCounter");
+        GameObject tablet = GameObject.Find("Resource_tablet");
+        if (tablet != null) resourceCounter = (ResourceCounter)tablet.GetComponent<ResourceCounter>();
     }
 
     // Use this for initialization
@@ -20,6 +21,6 @@ public class StoneQuarry : ResourceBuilding
     }
     public override void incrementResource()
     {
-        resourceCounter.addStone();
+        //resourceCounter.addStone();
     }
 }

@@ -3,6 +3,8 @@ using System.Collections;
 
 public abstract class ResourceBuilding : MonoBehaviour, Building
 {
+    public AudioClip build;
+    public AudioClip destroy;
     public string buildingName;
     public float timer;
     public float startTime;
@@ -32,6 +34,12 @@ public abstract class ResourceBuilding : MonoBehaviour, Building
         health -= damage;
         if (health <= 0)
         {
+           
+            AudioSource sc = gameObject.AddComponent(typeof(AudioSource)) as AudioSource;
+            //sc.volume = 0.3f;
+            //sc.PlayOneShot(destroy);
+           // Debug.Log("Aduio playing");
+            
             Destroy(gameObject);
         }
     }
@@ -53,7 +61,9 @@ public abstract class ResourceBuilding : MonoBehaviour, Building
                 if (transform.position.y > 0.0 && Mathf.Abs(transform.position.x) <= 50 && Mathf.Abs(transform.position.z) <= 100)
                 {
                     highlight.GetComponent<Renderer>().enabled = true;
-                    highlight.transform.position = new Vector3(transform.position.x, 0.1f, transform.position.z);
+                    highlight.transform.position = new Vector3(Mathf.Floor(transform.position.x), 0.1f, Mathf.Floor(transform.position.z));
+                    highlight.transform.rotation = Quaternion.LookRotation(Vector3.forward);
+
                 }
                 else
                 {
@@ -93,7 +103,9 @@ public abstract class ResourceBuilding : MonoBehaviour, Building
         highlight = GameObject.CreatePrimitive(PrimitiveType.Cube);
         highlight.GetComponent<Renderer>().material = mat;
         highlight.transform.localScale = new Vector3(GetComponent<BoxCollider>().bounds.size.x, 0.1f, GetComponent<BoxCollider>().bounds.size.z); 
-        highlight.transform.position = new Vector3(transform.position.x, 0.1f, transform.position.z);
+        highlight.transform.position = new Vector3(Mathf.Floor(transform.position.x), 0.1f, Mathf.Floor(transform.position.z));
+        highlight.transform.rotation = Quaternion.LookRotation(Vector3.forward);
+
         highlight.GetComponent<Collider>().enabled = false;
         highlight.GetComponent<Renderer>().enabled = false;
 
@@ -104,9 +116,26 @@ public abstract class ResourceBuilding : MonoBehaviour, Building
     }
     void release(Vector3 vel)
     {
-        GetComponent<Rigidbody>().useGravity = true;
-        GetComponent<Rigidbody>().isKinematic = false;
-        GetComponent<Collider>().enabled = true;
-        GetComponent<Rigidbody>().velocity = vel;
+
+        //Snap to grid
+        float y = transform.position.y;
+        float x = transform.position.x;
+        float z = transform.position.z;
+
+        //test within table bounds
+        if(GameBoard.withinBounds(transform.position)) {
+            transform.position = new Vector3(Mathf.Floor(x), 0, Mathf.Floor(z));
+            transform.rotation = Quaternion.LookRotation(Vector3.forward);
+            GetComponent<Rigidbody>().useGravity = false;
+            GetComponent<Rigidbody>().isKinematic = true;
+            GetComponent<Collider>().enabled = true;
+        }
+        else
+        {
+            GetComponent<Rigidbody>().useGravity = true;
+            GetComponent<Rigidbody>().isKinematic = false;
+            GetComponent<Collider>().enabled = true;
+            GetComponent<Rigidbody>().velocity = vel;
+        }
     }
 }
