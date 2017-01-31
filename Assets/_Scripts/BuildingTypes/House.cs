@@ -179,6 +179,13 @@ public class House  : MonoBehaviour, Building
     void grabbed()
     {
         held = true;
+        // Deactivate  collider and gravity
+        if (highlight != null)
+        {
+            DestroyImmediate(highlight);
+        }
+
+        // highlight where object wiould place if falling straight down
         Material mat = Resources.Load("Materials/highlight.mat") as Material;
         highlight = GameObject.CreatePrimitive(PrimitiveType.Cube);
         highlight.GetComponent<Renderer>().material = mat;
@@ -187,5 +194,16 @@ public class House  : MonoBehaviour, Building
         highlight.GetComponent<Collider>().enabled = false;
         highlight.GetComponent<Renderer>().enabled = false;
 
+        GetComponent<Rigidbody>().useGravity = false;
+        GetComponent<Rigidbody>().isKinematic = true;
+        GetComponent<Collider>().enabled = false;
+
+    }
+    void release(Vector3 vel)
+    {
+        GetComponent<Rigidbody>().useGravity = true;
+        GetComponent<Rigidbody>().isKinematic = false;
+        GetComponent<Collider>().enabled = true;
+        GetComponent<Rigidbody>().velocity = vel;
     }
 }
