@@ -43,7 +43,7 @@ public class BadiesAI : MonoBehaviour {
     public float health = 100.0f;
     private float speed = 7.0f;
     public float rotationSpeed = 6.0f;
-    private bool alive = true;
+    private bool alive = false;
 
     // Components
     private Rigidbody rb;
@@ -69,7 +69,7 @@ public class BadiesAI : MonoBehaviour {
 
 
     // Fighting
-    enum Fighter {  Rusher, Defender, Killer };
+    public enum Fighter {  Rusher, Defender, Killer, Training };
     public int fighterType;
 
     // Rusher
@@ -90,10 +90,24 @@ public class BadiesAI : MonoBehaviour {
     public bool defending = false;
     public bool path2Enemy = false;
 
+
+    // Training
+    private bool enemyFound;
+    private bool buildingsLeft = true;
+    public GameObject[] buildings;
+
+
     void Start()
     {
      
-        moving  = false;
+        
+        
+    }
+
+    public void spawn(int type)
+    {
+        
+        moving = true;
         nextNode = new Vector3(0.0f, -50.0f, 0.0f);
         waypoints = new List<int>();
         noMoreEnemies = false;
@@ -105,24 +119,24 @@ public class BadiesAI : MonoBehaviour {
         pathFinder = (PathFinding)GameObject.FindGameObjectWithTag("PathFinder").GetComponent(typeof(PathFinding));
         maxCell = 5000;
         closestEnemy = null;
-        
-        float rand = UnityEngine.Random.Range(0.0f, 1.0f);
-        if (rand < 0.33) fighterType = (int)Fighter.Killer;
-        else if (rand < 0.667) fighterType = (int)Fighter.Defender;
-        else fighterType = (int)Fighter.Rusher;
-        
+
+        fighterType = type;
+
         temple = GameObject.FindGameObjectWithTag("Temple");
-        
+        alive = true;
+        Debug.Log(string.Format("Spawn at: {0} with Type: {1}", transform.position, fighterType));
     }
 
     private void Update()
     {   if (alive)
         {
-            if (temple == null)  anim.Play("rage");
+
+            if (false/*temple == null*/)  anim.Play("rage");
             else if (!moving) anim.Play("idle");
             else if (fighterType == (int)Fighter.Rusher) rusherNav();
             else if (fighterType == (int)Fighter.Defender) defenderNav();
             else if (fighterType == (int)Fighter.Killer) killerNav();
+            else if (fighterType == (int)Fighter.Training) trainingNav();
         }
     }
 
@@ -249,7 +263,75 @@ public class BadiesAI : MonoBehaviour {
         }
 
     }
-    
+
+    private void trainingNav()
+    {
+        Debug.Log("Here!");
+        if (closestEnemy != null)
+        {
+            if(Vector3.Distance(closestEnemy.GetComponent<Collider>().ClosestPointOnBounds(transform.position), transform.position) < 2.0f)
+            {
+                attack(closestEnemy);
+            }
+            else
+            {
+              if( nextNode.y == -50.0f) getnextWaypoint();
+                else if (pathFinder.checkCell(targetCell) == "empty")
+                {
+                    Vector3 offset = nextNode - transform.position;
+                    if (offset.magnitude > 0.2f)
+                    {
+                        Vector3 finalVal = offset * speed;
+                        float distCovered = (Time.time - startTime) * speed;
+                        float fracJourney = distCovered / journeyLength;
+                        transform.position = Vector3.Lerp(startMarker, endMarker, fracJourney);
+                        transform.rotation = Quaternion.Slerp(
+                            transform.rotation,
+                            Quaternion.LookRotation(offset),
+                            Time.deltaTime * rotationSpeed);
+                        anim.Play("walk");
+                    }
+                    else getnextWaypoint();
+                }
+                else
+                {
+                    int layermask = 1 << 10;
+                    List<Collider> hitColliders = new List<Collider>(Physics.OverlapSphere(nextNode, 2.0f, layermask));
+                    if (hitColliders.Count > 0) attack(hitColliders[0].gameObject);
+                    
+                }
+            }
+        }
+        else
+        {
+            Debug.Log("FINDING BUILDING!");
+            findBuidling();
+            nextNode.y = -50.0f;
+            waypoints = new List<int>();
+        }
+        
+    }
+
+    private void findBuidling()
+    {
+        buildings = GameObject.FindGameObjectsWithTag("Building");
+        if( buildings.Length > 0)
+        {
+            
+            closestEnemy = null;
+            float distance = Mathf.Infinity;
+            foreach (GameObject b in buildings)
+            {
+                Vector3 diff = b.GetComponent<Collider>().ClosestPointOnBounds(transform.position) - transform.position;
+                float curDistance = diff.sqrMagnitude;
+                if (curDistance < distance && b.transform.position.y >= -1.0f)
+                {
+                    closestEnemy = b;
+                    distance = curDistance;
+                }
+            }
+        }
+    }
     private void killerNav()
     {
         if (noMoreEnemies)
@@ -365,7 +447,6 @@ public class BadiesAI : MonoBehaviour {
                 t1.Start();
             }
         }
-
     }
 
     private void getnextWaypoint()
@@ -374,7 +455,7 @@ public class BadiesAI : MonoBehaviour {
         {
             if (!pathToTempleFound && !threadRunning)
             {
-                if(temple != null)
+                if (temple != null)
                 {
                     moving = false;
                     threadRunning = true;
@@ -385,7 +466,7 @@ public class BadiesAI : MonoBehaviour {
                     t1.Start();
 
                 }
-               
+
             }
             else if (pathToTempleFound)
             {
@@ -419,7 +500,34 @@ public class BadiesAI : MonoBehaviour {
                         }
                         else enemyInrange = true;
                     }
-                }                
+                }
+            }
+        }
+        else if (fighterType == (int)Fighter.Training)
+        {
+            if (waypoints.Count > 0)
+            {
+                targetCell = waypoints[0];
+                waypoints.Remove(targetCell);
+                Vector3 p = pathFinder.getCellPosition(targetCell);
+                p.y = 0.0f;
+                nextNode = p;
+                startTime = Time.time;
+                startMarker = transform.position;
+                endMarker = p;
+                journeyLength = Vector3.Distance(startMarker, endMarker);
+            }
+            else
+            {
+                if (closestEnemy != null && !threadRunning)
+                {
+                    moving = false;
+                    threadRunning = true;
+                    int srcCell = coord2cellID(transform.position);
+                    targetCell = coord2cellID(closestEnemy.GetComponent<Collider>().ClosestPointOnBounds(transform.position));
+                    t1 = new Thread(() => astarD(srcCell, targetCell));
+                    t1.Start();
+                }
             }
         }
     }

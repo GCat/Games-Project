@@ -5,6 +5,10 @@ using UnityEngine;
 public class WatchTower : MonoBehaviour, Building
 {
 
+
+    public AudioClip build;
+    public AudioClip destroy;
+
     public string buildingName;
     private GameObject temple;
     public float health = 100.0f;

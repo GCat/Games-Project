@@ -4,7 +4,7 @@ using System.Collections;
 
 public class Cell : MonoBehaviour {
 
-	string details;
+	public string details;
 	public int id;
 	private GameObject pathfinding;
 
