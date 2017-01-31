@@ -216,8 +216,23 @@ public class Hand : MonoBehaviour {
     {
         if (holding)
         {
-         
 
+            //if releasing a building, snap to grid
+            if (heldObject.layer == 10)
+            {
+                float y = heldObject.transform.position.y;
+
+                if (y > 1 && y < 30)
+                {
+                    float x = heldObject.transform.position.x;
+                    float z = heldObject.transform.position.z;
+                    if (z >= -100 && z <= 100 && x >= -50 && x <= 50)
+                    {
+                        heldObject.transform.position = new Vector3(Mathf.Floor(x), 1, Mathf.Floor(z));
+                        heldObject.transform.rotation = Quaternion.LookRotation(Vector3.right);
+                    }
+                }
+            }
 
             heldObject.GetComponent<Rigidbody>().useGravity = usedGravity;
             heldObject.GetComponent<Rigidbody>().isKinematic = wasKinematic;
@@ -234,6 +249,7 @@ public class Hand : MonoBehaviour {
             {
                 heldObject.SendMessage("letGo",velocity);
             }
+   
 
             heldObject = null;
 
