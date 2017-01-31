@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour {
     public GameObject[] snap_locations;
     public GameObject kinect;
     public GameObject head;
+    public GameObject body;
     private int current_location_index = 0;
 
 
@@ -30,6 +31,8 @@ public class PlayerMovement : MonoBehaviour {
         kinect.transform.position = snap_location.transform.position;
         kinect.transform.rotation = snap_location.transform.rotation;
         head.transform.Rotate(Vector3.up, 90);
+        body.transform.Rotate(Vector3.up, 90);
+
     }
     public void snapLeft()
     {
@@ -40,7 +43,7 @@ public class PlayerMovement : MonoBehaviour {
         kinect.transform.position = snap_location.transform.position;
         kinect.transform.rotation = snap_location.transform.rotation;
         head.transform.Rotate(Vector3.up, -90);
-
+        body.transform.Rotate(Vector3.up, -90);
 
     }
 }

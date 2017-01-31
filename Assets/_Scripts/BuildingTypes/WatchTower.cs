@@ -219,10 +219,28 @@ public class WatchTower : MonoBehaviour, Building
     }
     void release(Vector3 vel)
     {
-        GetComponent<Rigidbody>().useGravity = true;
-        GetComponent<Rigidbody>().isKinematic = false;
-        GetComponent<Collider>().enabled = true;
-        GetComponent<Rigidbody>().velocity = vel;
+
+        //Snap to grid
+        float y = transform.position.y;
+        float x = transform.position.x;
+        float z = transform.position.z;
+
+        //test within table bounds
+        if (GameBoard.withinBounds(transform.position))
+        {
+            transform.position = new Vector3(Mathf.Floor(x), 0, Mathf.Floor(z));
+            transform.rotation = Quaternion.LookRotation(Vector3.forward);
+            GetComponent<Rigidbody>().useGravity = false;
+            GetComponent<Rigidbody>().isKinematic = true;
+            GetComponent<Collider>().enabled = true;
+        }
+        else
+        {
+            GetComponent<Rigidbody>().useGravity = true;
+            GetComponent<Rigidbody>().isKinematic = false;
+            GetComponent<Collider>().enabled = true;
+            GetComponent<Rigidbody>().velocity = vel;
+        }
     }
 
 }
