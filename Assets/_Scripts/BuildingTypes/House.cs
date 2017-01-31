@@ -182,7 +182,10 @@ public class House  : MonoBehaviour, Building
     {
         held = true;
         // Deactivate  collider and gravity
-        
+        if (highlight != null)
+        {
+            DestroyImmediate(highlight);
+        }
 
         // highlight where object wiould place if falling straight down
         Material mat = Resources.Load("Materials/highlight.mat") as Material;

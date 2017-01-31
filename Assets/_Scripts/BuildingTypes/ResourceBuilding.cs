@@ -88,6 +88,10 @@ public abstract class ResourceBuilding : MonoBehaviour, Building
 
         // highlight where object wiould place if falling straight down
         Material mat = Resources.Load("Materials/highlight.mat") as Material;
+        if (highlight != null)
+        {
+            DestroyImmediate(highlight);
+        }
         highlight = GameObject.CreatePrimitive(PrimitiveType.Cube);
         highlight.GetComponent<Renderer>().material = mat;
         highlight.transform.localScale = new Vector3(GetComponent<BoxCollider>().bounds.size.x, 0.1f, GetComponent<BoxCollider>().bounds.size.z); 
