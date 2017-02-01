@@ -38,7 +38,13 @@ public class Cell : MonoBehaviour {
 			//Debug.Log(s);
 			pathfinding.SendMessage("buildingAdded",id);
 			details="blocked";
-            if (other.tag != "Tablet" && other.gameObject.layer == 10) other.gameObject.SendMessage("activate");
+            if (other.gameObject.layer == 10)
+            {
+                if (other.GetComponent<Placeable>() != null) {
+                    other.GetComponent<Placeable>().activate();
+                }
+            }
+            //if (other.tag != "Tablet" && other.gameObject.layer == 10) other.gameObject.SendMessage("activate");
 		}
     }
 

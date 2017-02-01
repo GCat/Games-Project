@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class ResourceBuilding : MonoBehaviour, Building
+public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
 {
     public AudioClip build;
     public AudioClip destroy;
@@ -74,7 +74,7 @@ public abstract class ResourceBuilding : MonoBehaviour, Building
     }
 
 
-    void activate()
+    public void activate()
     {
         startTime = Time.time;
         on_game_board = true;

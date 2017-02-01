@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Grabbable : MonoBehaviour {
+public class Grabbable : MonoBehaviour, Placeable {
 
     private bool held = false;
     private GameObject highlight = null;
@@ -61,6 +61,11 @@ public class Grabbable : MonoBehaviour {
         GetComponent<Rigidbody>().useGravity = false;
         GetComponent<Rigidbody>().isKinematic = true;
         GetComponent<Collider>().enabled = false;
+
+    }
+
+    public void activate()
+    {
 
     }
 
