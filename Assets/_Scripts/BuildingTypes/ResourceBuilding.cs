@@ -81,7 +81,7 @@ public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
         held = false;
         if (highlight != null) Destroy(highlight);
         highlight = null;
-        Debug.Log("Building placed");
+        //Debug.Log("Building placed");
     }
     void deactivate()
     {
