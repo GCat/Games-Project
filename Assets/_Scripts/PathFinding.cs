@@ -78,13 +78,13 @@ public class PathFinding : MonoBehaviour
         if (world == null) return "ERROR";
         return world.checkCell(cellId);
     }
-    void buildingAdded(int id)
+    public void buildingAdded(int id)
     {
 
         world.edgeRemove(id);
         bWorld.edgeChangeWeight(id, 50.0f);
     }
-    void buildingRemoved(int id)
+    public void buildingRemoved(int id)
     {
         world.edgeAdd(id);
     }

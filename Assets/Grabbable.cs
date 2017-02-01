@@ -1,60 +1,24 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
-public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
-{
-    public AudioClip build;
-    public AudioClip destroy;
-    public string buildingName;
-    public float timer;
-    public float startTime;
-    public float timeStep;
-    public ResourceCounter resourceCounter;
-    public float health = 100.0f;
-    public bool on_game_board = false;
-    public bool held = false;
-    GameObject highlight = null; 
+public class Grabbable : MonoBehaviour, Placeable {
 
-    public abstract void create_building();
-    public abstract void incrementResource();
-    string Building.getName()
+    private bool held = false;
+    private GameObject highlight = null;
+    public bool placeable = true;
+    // Use this for initialization
+    void Start () {
+		
+	}
+	
+	// Update is called once per frame
+	void Update () {
+		
+	}
+    private void FixedUpdate()
     {
-        return buildingName;
-    }
-    Vector3 Building.getLocation()
-    {
-        return this.gameObject.transform.position;
-    }
-    float getHealth()
-    {
-        return health;
-    }
-    public void decrementHealth(float damage)
-    {
-        health -= damage;
-        if (health <= 0)
-        {
-           
-            AudioSource sc = gameObject.AddComponent(typeof(AudioSource)) as AudioSource;
-            //sc.volume = 0.3f;
-            //sc.PlayOneShot(destroy);
-           // Debug.Log("Aduio playing");
-            
-            Destroy(gameObject);
-        }
-    }
-    void FixedUpdate()
-    {
-        if (on_game_board)
-        {
-            timer = Time.time - startTime;
-            if (timer > timeStep)
-            {
-                incrementResource();
-                startTime = Time.time;
-            }
-        }
-        if (held)
+        if (held && placeable)
         {
             if (highlight != null)
             {
@@ -73,26 +37,11 @@ public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
         }
     }
 
-
-    public void activate()
-    {
-        startTime = Time.time;
-        on_game_board = true;
-        held = false;
-        if (highlight != null) Destroy(highlight);
-        highlight = null;
-        //Debug.Log("Building placed");
-    }
-    void deactivate()
-    {
-        on_game_board = false;   
-    }
-
     void grabbed()
     {
         held = true;
         // Deactivate  collider and gravity
-    
+
 
         // highlight where object wiould place if falling straight down
         Material mat = Resources.Load("Materials/highlight.mat") as Material;
@@ -102,7 +51,7 @@ public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
         }
         highlight = GameObject.CreatePrimitive(PrimitiveType.Cube);
         highlight.GetComponent<Renderer>().material = mat;
-        highlight.transform.localScale = new Vector3(GetComponent<BoxCollider>().bounds.size.x, 0.1f, GetComponent<BoxCollider>().bounds.size.z); 
+        highlight.transform.localScale = new Vector3(GetComponent<BoxCollider>().bounds.size.x, 0.1f, GetComponent<BoxCollider>().bounds.size.z);
         highlight.transform.position = new Vector3(Mathf.Floor(transform.position.x), 0.1f, Mathf.Floor(transform.position.z));
         highlight.transform.rotation = Quaternion.LookRotation(Vector3.forward);
 
@@ -114,6 +63,12 @@ public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
         GetComponent<Collider>().enabled = false;
 
     }
+
+    public void activate()
+    {
+
+    }
+
     void release(Vector3 vel)
     {
 
@@ -123,7 +78,8 @@ public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
         float z = transform.position.z;
 
         //test within table bounds
-        if(GameBoard.withinBounds(transform.position)) {
+        if (GameBoard.withinBounds(transform.position) && placeable)
+        {
             transform.position = new Vector3(Mathf.Floor(x), 0, Mathf.Floor(z));
             transform.rotation = Quaternion.LookRotation(Vector3.forward);
             GetComponent<Rigidbody>().useGravity = false;

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class House  : MonoBehaviour, Building
+public class House  : MonoBehaviour, Building, Placeable
 {
 
     public AudioClip build;
