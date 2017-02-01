@@ -40,8 +40,18 @@ public class BadiesGraph{
             {
                 cell_to_edges[e.src].Add(e);
             }
+            else
+            {
+                cell_to_edges.Add(e.src, new HashSet<Edge>());
+                cell_to_edges[e.src].Add(e);
+            }
             if (cell_to_edges.ContainsKey(e.dst))
             {
+                cell_to_edges[e.dst].Add(e);
+            }
+            else
+            {
+                cell_to_edges.Add(e.dst, new HashSet<Edge>());
                 cell_to_edges[e.dst].Add(e);
             }
         }
