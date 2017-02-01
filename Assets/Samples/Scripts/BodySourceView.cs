@@ -20,6 +20,7 @@ public class BodySourceView : MonoBehaviour
     private int r_hand_open_frames = 0;
     private int l_hand_closed_frames = 0;
     private int l_hand_open_frames = 0;
+    private ulong player_id = 99;
 
     //holds all the hand joint objects - palm, wrist, thumb, tip
     public Dictionary<Kinect.JointType, GameObject> player_objects = new Dictionary<Kinect.JointType, GameObject>();
@@ -117,11 +118,17 @@ public class BodySourceView : MonoBehaviour
             {
                 if(!_Bodies.ContainsKey(body.TrackingId))
                 {
-                    _Bodies[body.TrackingId] = CreateBodyObject(body.TrackingId);
+                    if (player_id == 99)
+                    {
+                        _Bodies[body.TrackingId] = CreateBodyObject(body.TrackingId);
+                        player_id = body.TrackingId;
+                    }
                 }
-                
-                RefreshBodyObject(body, _Bodies[body.TrackingId]);
-                adjustBodyParts(body, _Bodies[body.TrackingId]);
+                if (body.TrackingId == player_id)
+                {
+                    RefreshBodyObject(body, _Bodies[body.TrackingId]);
+                    adjustBodyParts(body, _Bodies[body.TrackingId]);
+                }
                 break;
             }
         }
