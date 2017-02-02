@@ -266,7 +266,7 @@ public class BadiesAI : MonoBehaviour {
 
     private void trainingNav()
     {
-        Debug.Log("Here!");
+        //Debug.Log("Here!");
         if (closestEnemy != null)
         {
             if(Vector3.Distance(closestEnemy.GetComponent<Collider>().ClosestPointOnBounds(transform.position), transform.position) < 2.0f)

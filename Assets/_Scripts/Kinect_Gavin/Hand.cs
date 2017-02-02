@@ -160,7 +160,7 @@ public class Hand : MonoBehaviour {
         if (!holding)
         {
             GameObject closest = null;
-            int layerMask = (1 << 9) | ( 1 << 10);
+            int layerMask = (1 << 9) | ( 1 << 10) | (1 << 14);
             Vector3 p = grab_position.transform.position;//new Vector3(transform.position.x - 14, transform.position.y - 18, transform.position.z);
             things = Physics.OverlapSphere(p, 4.0f, layerMask);
             float distance = Mathf.Infinity;

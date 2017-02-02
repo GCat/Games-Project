@@ -29,7 +29,7 @@ public class Portal : MonoBehaviour {
                 pos.y = 0.0f;
                 if(Mathf.Abs(pos.x) < 50 && Mathf.Abs(pos.z) < 100 )
                 {
-                    GameObject pre = Resources.Load("Badie") as GameObject;
+                    GameObject pre = Resources.Load("Characters/Badie") as GameObject;
                     GameObject b = GameObject.Instantiate(pre, pos ,Quaternion.identity);
                     float val = Random.Range(0.0f, 1.0f);
                     if(val < distribution[0]) ((BadiesAI)b.GetComponent(typeof(BadiesAI))).spawn(0);
