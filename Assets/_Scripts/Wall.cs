@@ -20,7 +20,7 @@ public class Wall : MonoBehaviour {
         Vector3 current_scale = wall_section.transform.localScale;
         current_scale.z = length;
         wall_section.transform.localScale = current_scale;
-        wall_section.transform.position = middle;
+        wall_section.transform.position = middle + Vector3.up*2;
         wall_section.transform.rotation = Quaternion.LookRotation(direction);
 	}
 
