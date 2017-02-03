@@ -129,6 +129,7 @@ public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
             GetComponent<Rigidbody>().useGravity = false;
             GetComponent<Rigidbody>().isKinematic = true;
             GetComponent<Collider>().enabled = true;
+            create_building();
         }
         else
         {

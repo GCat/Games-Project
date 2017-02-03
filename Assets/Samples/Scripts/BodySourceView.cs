@@ -187,7 +187,7 @@ public class BodySourceView : MonoBehaviour
 
         if (body.HandRightConfidence == Windows.Kinect.TrackingConfidence.Low)
         {
-            Debug.Log("low tracking confidence");
+            //Debug.Log("low tracking confidence");
         }
 
 

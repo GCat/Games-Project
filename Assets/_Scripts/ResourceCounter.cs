@@ -5,6 +5,7 @@ public class ResourceCounter : MonoBehaviour
 {
 
     public GameObject textDisplay;
+    public GameObject[] forests;
     //The text displayed on the tablet
     private TextMesh textMesh; 
     public int faith = 0;
@@ -22,6 +23,7 @@ public class ResourceCounter : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        forests = GameObject.FindGameObjectsWithTag("Forest");
     }
 
     // Update is called once per frame
