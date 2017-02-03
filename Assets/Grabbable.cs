@@ -69,7 +69,7 @@ public class Grabbable : MonoBehaviour, Placeable {
 
     }
 
-    void release(Vector3 vel)
+    void release()
     {
 
         //Snap to grid
@@ -91,7 +91,6 @@ public class Grabbable : MonoBehaviour, Placeable {
             GetComponent<Rigidbody>().useGravity = true;
             GetComponent<Rigidbody>().isKinematic = false;
             GetComponent<Collider>().enabled = true;
-            GetComponent<Rigidbody>().velocity = vel;
         }
     }
 }

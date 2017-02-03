@@ -8,7 +8,7 @@ public class ResourceNode : MonoBehaviour {
     public float range;
 	// Use this for initialization
 	void Start () {
-        Material mat = Resources.Load("Materials/Resource_Range") as Material;
+        Material mat = Resources.Load("Materials/highlight2") as Material;
         highlight = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         highlight.GetComponent<Renderer>().material = mat;
         highlight.transform.localScale = new Vector3(range, 0.1f, range);

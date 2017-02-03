@@ -34,6 +34,8 @@ public class Hand : MonoBehaviour {
     BuildingType[] buildings = { BuildingType.FARM, BuildingType.HOUSE, BuildingType.IRONMINE, BuildingType.LUMBERYARD, BuildingType.QUARRY, BuildingType.TOWER };
     int buildingType;
     private Vector3[] held_object_positions;
+    private float[] held_object_times;
+
     private Vector3 original_position;
 
     float rotationTimer;
@@ -43,6 +45,7 @@ public class Hand : MonoBehaviour {
     
 	// Use this for initialization
 	void Start () {
+        held_object_times = new float[5];
         held_object_positions = new Vector3[5];
         held_object_positions[0] = Vector3.zero;
         held_object_positions[1] = Vector3.zero;
@@ -120,8 +123,10 @@ public class Hand : MonoBehaviour {
         {
             for (int i = 4; i >0; i--) {
                 held_object_positions[i] = held_object_positions[i - 1];
+                held_object_times[i] = held_object_times[i - 1];
             }
-            held_object_positions[0] = heldObject.transform.position;
+            held_object_positions[0] = transform.position;
+            held_object_times[0] = Time.deltaTime;
             //Vector3 p = grab_position.transform.position;//new Vector3(transform.position.x - 14, transform.position.y - 18, transform.position.z);
             //heldObject.transform.position = p;
         }
@@ -214,9 +219,15 @@ public class Hand : MonoBehaviour {
     {
         if (holding)
         {
-            Vector3 velocity = (heldObject.transform.position - held_object_positions[4]) / (Time.deltaTime*50);
-            //heldObject.GetComponent<Rigidbody>().AddForce(velocity, ForceMode.VelocityChange);
-            heldObject.SendMessage("release",velocity);
+            float time = 0;
+            foreach (float t in held_object_times)
+            {
+                time += t;
+            }
+            Vector3 velocity = (transform.position - held_object_positions[4]) / (time);
+            //heldObject.GetComponent<Rigidbody>().velocity = velocity;
+
+            heldObject.SendMessage("release", velocity);
             holding = false;
             heldObject.transform.parent = null;
                         

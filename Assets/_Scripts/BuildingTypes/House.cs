@@ -196,7 +196,7 @@ public class House  : MonoBehaviour, Building, Placeable
         }
 
         // highlight where object wiould place if falling straight down
-        Material mat = Resources.Load("Materials/highlight.mat") as Material;
+        Material mat = Resources.Load("Materials/highlight") as Material;
         highlight = GameObject.CreatePrimitive(PrimitiveType.Cube);
         highlight.GetComponent<Renderer>().material = mat;
         highlight.transform.localScale = new Vector3(GetComponent<BoxCollider>().bounds.size.x, 0.1f, GetComponent<BoxCollider>().bounds.size.z);
@@ -233,7 +233,8 @@ public class House  : MonoBehaviour, Building, Placeable
             GetComponent<Rigidbody>().useGravity = true;
             GetComponent<Rigidbody>().isKinematic = false;
             GetComponent<Collider>().enabled = true;
-            GetComponent<Rigidbody>().velocity = vel;
+            Debug.Log("House vel:" + vel);
+            GetComponent<Rigidbody>().AddForce(vel, ForceMode.VelocityChange);
         }
     }
 }

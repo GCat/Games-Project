@@ -19,7 +19,7 @@ public class Temple : ResourceBuilding {
     // Use this for initialization
     void Start()
     {
-        create_building();
+        //create_building();
     }
     public override void incrementResource()
     {

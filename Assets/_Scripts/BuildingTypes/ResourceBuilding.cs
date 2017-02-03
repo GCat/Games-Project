@@ -135,6 +135,7 @@ public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
         }
 
     }
+
     void release(Vector3 vel)
     {
 
@@ -144,7 +145,9 @@ public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
         float z = transform.position.z;
 
         //test within table bounds
-        if(GameBoard.withinBounds(transform.position)) {
+        if (GameBoard.withinBounds(transform.position))
+        {
+            Debug.Log("within game board");
             transform.position = new Vector3(Mathf.Floor(x), 0, Mathf.Floor(z));
             transform.rotation = Quaternion.LookRotation(Vector3.forward);
             GetComponent<Rigidbody>().useGravity = false;
@@ -157,7 +160,8 @@ public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
             GetComponent<Rigidbody>().useGravity = true;
             GetComponent<Rigidbody>().isKinematic = false;
             GetComponent<Collider>().enabled = true;
-            GetComponent<Rigidbody>().velocity = vel;
+            Debug.Log("Resource Building vel:" + vel);
+            GetComponent<Rigidbody>().AddForce(vel, ForceMode.VelocityChange);
         }
 
         if (required_resource_tag != "None")
@@ -168,6 +172,7 @@ public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
             }
         }
     }
+
 
     public GameObject findNearestResourceNode()
     {
