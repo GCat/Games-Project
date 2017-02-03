@@ -9,7 +9,12 @@ public class BodySourceView : MonoBehaviour
     public Material BoneMaterial;
     public GameObject BodySourceManager;
     public GameObject startBody;
+    //headCamera is the parent of the oculus camera
     public GameObject headCamera;
+    //head model is the face model, moves independently of camera
+    public GameObject head_model;
+    //eyes is the actual position of the oculus
+    public GameObject eyes;
     public GameObject right_hand;
     public GameObject left_hand;
     public GameObject player_body;
@@ -142,6 +147,22 @@ public class BodySourceView : MonoBehaviour
         headCamera.transform.position = player_objects[Kinect.JointType.Head].transform.position;
         right_hand.transform.position = player_objects[Kinect.JointType.HandRight].transform.position;
         left_hand.transform.position = player_objects[Kinect.JointType.HandLeft].transform.position;
+
+
+        //Adjust body rotation
+        Vector3 spine = player_objects[Kinect.JointType.SpineShoulder].transform.position - player_objects[Kinect.JointType.SpineMid].transform.position;
+        Vector3 spine_rotation = player_objects[Kinect.JointType.ShoulderLeft].transform.position - player_objects[Kinect.JointType.ShoulderRight].transform.position;
+        Vector3 spine_forward = Vector3.Cross(spine_rotation, spine);
+
+        player_body.transform.position = player_objects[Kinect.JointType.SpineMid].transform.position;
+        player_body.transform.rotation = Quaternion.Slerp(player_body.transform.rotation, Quaternion.LookRotation(spine_forward, spine), Time.deltaTime * 10.0f);
+
+        //Adjust head rotation
+        Vector3 head_up = player_objects[Kinect.JointType.Head].transform.position - player_objects[Kinect.JointType.Neck].transform.position;
+        head_model.transform.position = player_objects[Kinect.JointType.Head].transform.position;
+        head_model.transform.rotation = Quaternion.Slerp(head_model.transform.rotation, eyes.transform.rotation, Time.deltaTime * 10.0f);
+
+
         Vector3 r_handVector = player_objects[Kinect.JointType.HandTipRight].transform.position - player_objects[Kinect.JointType.HandRight].transform.position;
         Vector3 l_handVector = player_objects[Kinect.JointType.HandTipLeft].transform.position - player_objects[Kinect.JointType.HandLeft].transform.position;
         Vector3 r_wristVector = player_objects[Kinect.JointType.HandTipRight].transform.position - player_objects[Kinect.JointType.WristRight].transform.position;
@@ -156,13 +177,12 @@ public class BodySourceView : MonoBehaviour
         Vector3 r_handDist = player_objects[Kinect.JointType.HandRight].transform.position - kinectLocation.transform.position;
         Vector3 l_handDist = player_objects[Kinect.JointType.HandLeft].transform.position - kinectLocation.transform.position;
 
-        //Debug.Log((r_handVector.sqrMagnitude + r_handRotation.sqrMagnitude));
-
-        player_body.transform.position = player_objects[Kinect.JointType.SpineMid].transform.position;
 
 
-        //120 -> 60 at about 1.5m
 
+
+
+        //Adjust hand rotations
         if (body.HandRightState == Windows.Kinect.HandState.Closed)
         {
             r_hand_closed_frames++;
