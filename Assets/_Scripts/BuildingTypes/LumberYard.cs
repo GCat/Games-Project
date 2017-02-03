@@ -25,9 +25,13 @@ public class LumberYard : ResourceBuilding
         {
             return;
         }
-        if (Vector3.Distance(transform.position, resource_node.transform.position) < 50)
+        if (Vector3.Distance(transform.position, resource_node.transform.position) < resource_node.GetComponent<ResourceNode>().range)
         {
             resourceCounter.addWood();
+        }
+        else
+        {
+            Debug.Log("Out of range: " + resource_node.GetComponent<ResourceNode>().range + "<" + Vector3.Distance(transform.position, resource_node.transform.position));
         }
     }
 }

@@ -31,6 +31,13 @@ public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
     {
         return health;
     }
+
+    private void Start()
+    {
+        GameObject tablet = GameObject.Find("Resource_tablet");
+        if (tablet != null) resourceCounter = (ResourceCounter)tablet.GetComponent<ResourceCounter>();
+        else Debug.Log("Tablet not found");
+    }
     public void decrementHealth(float damage)
     {
         health -= damage;
@@ -115,6 +122,18 @@ public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
         GetComponent<Rigidbody>().isKinematic = true;
         GetComponent<Collider>().enabled = false;
 
+        //show highlights for corresponding resources
+        if (required_resource_tag != "None")
+        {
+            foreach (GameObject n in resourceCounter.resource_nodes[required_resource_tag])
+            {
+                if (n.GetComponent<ResourceNode>() != null)
+                {
+                    n.GetComponent<ResourceNode>().showRange();
+                }
+            }
+        }
+
     }
     void release(Vector3 vel)
     {
@@ -140,6 +159,14 @@ public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
             GetComponent<Collider>().enabled = true;
             GetComponent<Rigidbody>().velocity = vel;
         }
+
+        if (required_resource_tag != "None")
+        {
+            foreach (GameObject n in resourceCounter.resource_nodes[required_resource_tag])
+            {
+                n.GetComponent<ResourceNode>().hideRange();
+            }
+        }
     }
 
     public GameObject findNearestResourceNode()
@@ -150,7 +177,8 @@ public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
         }
         float distance = float.MaxValue;
         GameObject chosenResource = null;
-        foreach (GameObject f in resourceCounter.forests)
+        Debug.Log(required_resource_tag);
+        foreach (GameObject f in resourceCounter.resource_nodes[required_resource_tag])
         {
             if (Vector3.Distance(gameObject.transform.position, f.transform.position) < distance)
             {

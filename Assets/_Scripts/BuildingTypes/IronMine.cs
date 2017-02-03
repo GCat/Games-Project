@@ -18,7 +18,7 @@ public class IronMine : ResourceBuilding
     // Use this for initialization
     void Start()
     {
-        create_building();
+        //create_building();
     }
     public override void incrementResource()
     {
@@ -26,7 +26,7 @@ public class IronMine : ResourceBuilding
         {
             return;
         }
-        if (Vector3.Distance(transform.position, resource_node.transform.position) < 50)
+        if (Vector3.Distance(transform.position, resource_node.transform.position) < resource_node.GetComponent<ResourceNode>().range)
         {
             resourceCounter.addIron();
         }

@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class ResourceCounter : MonoBehaviour
 {
 
     public GameObject textDisplay;
-    public GameObject[] forests;
+    public Dictionary<string, GameObject[]> resource_nodes;
     //The text displayed on the tablet
     private TextMesh textMesh; 
     public int faith = 0;
@@ -20,10 +21,19 @@ public class ResourceCounter : MonoBehaviour
     private int armourMult = 1;
 
 
+    private void Awake()
+    {
+        resource_nodes = new Dictionary<string, GameObject[]>();
+    }
+
     // Use this for initialization
     void Start()
     {
-        forests = GameObject.FindGameObjectsWithTag("Forest");
+        GameObject[] forests = GameObject.FindGameObjectsWithTag("Forest");
+        GameObject[] iron = GameObject.FindGameObjectsWithTag("Iron");
+        resource_nodes.Add("Forest", forests);
+        resource_nodes.Add("Iron", iron);
+
     }
 
     // Update is called once per frame
