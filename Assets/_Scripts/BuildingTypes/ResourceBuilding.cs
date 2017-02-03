@@ -104,7 +104,7 @@ public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
     
 
         // highlight where object wiould place if falling straight down
-        Material mat = Resources.Load("Materials/highlight.mat") as Material;
+        Material mat = Resources.Load("Materials/highlight") as Material;
         if (highlight != null)
         {
             DestroyImmediate(highlight);
