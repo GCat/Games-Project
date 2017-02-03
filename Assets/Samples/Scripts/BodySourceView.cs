@@ -26,6 +26,7 @@ public class BodySourceView : MonoBehaviour
     private int l_hand_closed_frames = 0;
     private int l_hand_open_frames = 0;
     private ulong player_id = 99;
+    private Renderer renderer;
 
     //holds all the hand joint objects - palm, wrist, thumb, tip
     public Dictionary<Kinect.JointType, GameObject> player_objects = new Dictionary<Kinect.JointType, GameObject>();
@@ -65,7 +66,12 @@ public class BodySourceView : MonoBehaviour
         { Kinect.JointType.SpineShoulder, Kinect.JointType.Neck },
         { Kinect.JointType.Neck, Kinect.JointType.Head },
     };
-    
+
+    private void Start()
+    {
+        renderer = GetComponent<Renderer>();
+    }
+
     void Update () 
     {
         if (BodySourceManager == null)
@@ -145,8 +151,8 @@ public class BodySourceView : MonoBehaviour
     {
 
         headCamera.transform.position = player_objects[Kinect.JointType.Head].transform.position;
-        right_hand.transform.position = player_objects[Kinect.JointType.HandRight].transform.position;
-        left_hand.transform.position = player_objects[Kinect.JointType.HandLeft].transform.position;
+        right_hand.transform.position = Vector3.Slerp(right_hand.transform.position, player_objects[Kinect.JointType.HandRight].transform.position, Time.deltaTime * 10.0f);
+        left_hand.transform.position = Vector3.Slerp(left_hand.transform.position, player_objects[Kinect.JointType.HandLeft].transform.position, Time.deltaTime * 10.0f);
 
 
         //Adjust body rotation
@@ -179,7 +185,10 @@ public class BodySourceView : MonoBehaviour
 
 
 
-
+        if (body.HandRightConfidence == Windows.Kinect.TrackingConfidence.Low)
+        {
+            Debug.Log("low tracking confidence");
+        }
 
 
         //Adjust hand rotations

@@ -304,7 +304,7 @@ public class BadiesAI : MonoBehaviour {
         }
         else
         {
-            Debug.Log("FINDING BUILDING!");
+            //Debug.Log("FINDING BUILDING!");
             findBuidling();
             nextNode.y = -50.0f;
             waypoints = new List<int>();
