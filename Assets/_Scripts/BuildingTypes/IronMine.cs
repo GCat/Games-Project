@@ -12,6 +12,7 @@ public class IronMine : ResourceBuilding
         GameObject tablet = GameObject.Find("Resource_tablet");
         if (tablet != null) resourceCounter = (ResourceCounter)tablet.GetComponent<ResourceCounter>();
         else Debug.Log("Tablet not found");
+        resource_node = findNearestResourceNode();
     }
 
     // Use this for initialization
@@ -21,7 +22,14 @@ public class IronMine : ResourceBuilding
     }
     public override void incrementResource()
     {
-        resourceCounter.addIron();
+        if (resource_node == null)
+        {
+            return;
+        }
+        if (Vector3.Distance(transform.position, resource_node.transform.position) < 50)
+        {
+            resourceCounter.addIron();
+        }
     }
 
 }

@@ -13,7 +13,9 @@ public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
     public float health = 100.0f;
     public bool on_game_board = false;
     public bool held = false;
-    GameObject highlight = null; 
+    GameObject highlight = null;
+    public string required_resource_tag = "None";
+    public  GameObject resource_node;
 
     public abstract void create_building();
     public abstract void incrementResource();
@@ -138,5 +140,31 @@ public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
             GetComponent<Collider>().enabled = true;
             GetComponent<Rigidbody>().velocity = vel;
         }
+    }
+
+    public GameObject findNearestResourceNode()
+    {
+        if (required_resource_tag == "None")
+        {
+            return null;
+        }
+        float distance = float.MaxValue;
+        GameObject chosenResource = null;
+        foreach (GameObject f in resourceCounter.forests)
+        {
+            if (Vector3.Distance(gameObject.transform.position, f.transform.position) < distance)
+            {
+                chosenResource = f;
+            }
+        }
+        if (chosenResource == null)
+        {
+            Debug.Log("No " + required_resource_tag + " found");
+        }
+        else
+        {
+            Debug.Log("Found a " + required_resource_tag);
+        }
+        return chosenResource;
     }
 }
