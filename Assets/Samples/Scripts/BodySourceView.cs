@@ -19,6 +19,8 @@ public class BodySourceView : MonoBehaviour
     public GameObject left_hand;
     public GameObject player_body;
     public GameObject kinectLocation;
+    public GameObject left_foot;
+    public GameObject right_foot;
     public int tracking_frames = 8;
     public bool rightHandClosed = false;
     public bool leftHandClosed = false;
@@ -137,7 +139,7 @@ public class BodySourceView : MonoBehaviour
                         _Bodies[body.TrackingId] = CreateBodyObject(body.TrackingId);
                         Vector3 foot = GetVector3FromJoint(body.Joints[Kinect.JointType.FootRight]);
                         float footHeight = foot.y;
-                        float floorHeight = -80;
+                        float floorHeight = -70;
                         float feetOffset = footHeight - floorHeight;
                         kinectLocation.transform.position += new Vector3(0,-feetOffset,0);
                         player_id = body.TrackingId;
@@ -162,6 +164,8 @@ public class BodySourceView : MonoBehaviour
         right_hand.transform.position = Vector3.Slerp(right_hand.transform.position, player_objects[Kinect.JointType.HandRight].transform.position, Time.deltaTime * 10.0f);
         left_hand.transform.position = Vector3.Slerp(left_hand.transform.position, player_objects[Kinect.JointType.HandLeft].transform.position, Time.deltaTime * 10.0f);
 
+        right_foot.transform.position = player_objects[Kinect.JointType.FootRight].transform.position;
+        left_foot.transform.position = player_objects[Kinect.JointType.FootLeft].transform.position;
 
         //Adjust body rotation
         Vector3 spine = player_objects[Kinect.JointType.SpineShoulder].transform.position - player_objects[Kinect.JointType.SpineMid].transform.position;

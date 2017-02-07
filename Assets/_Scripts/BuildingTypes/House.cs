@@ -7,6 +7,7 @@ public class House  : MonoBehaviour, Building, Placeable
     public AudioClip build;
     public AudioClip destroy;
 
+    public ParticleSystem smokeEffect;
     private int capacity;      //size of house: bigger house => bigger capacity
     private int humans;        //human counter
     private double happiness;     //overall happiness of the house: the more crowded => less happy // this is a percentage
@@ -32,6 +33,8 @@ public class House  : MonoBehaviour, Building, Placeable
         timer = 0f;
         humans = 0;
         StartTime = Time.time;
+        smokeEffect.Stop();
+
     }
 
     public string getName()
@@ -227,6 +230,8 @@ public class House  : MonoBehaviour, Building, Placeable
             GetComponent<Rigidbody>().useGravity = false;
             GetComponent<Rigidbody>().isKinematic = true;
             GetComponent<Collider>().enabled = true;
+            smokeEffect.Play();
+
         }
         else
         {
