@@ -124,10 +124,10 @@ public class House  : MonoBehaviour, Building, Placeable
 
             if (timer >= 3)
             {
-                //if (resourceCounter.getFood() > foodCost)
-               // {
-               //     spawn();
-               // }
+               if (resourceCounter.getFood() > foodCost)
+                {
+                    spawn();
+                }
                 
             }
         }

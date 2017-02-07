@@ -22,6 +22,10 @@ public class Hand : MonoBehaviour {
     public GameObject open_hand;
     public GameObject grab_position;
     public BodySourceView kinect_view;
+    public Renderer renderer_open;
+    public Renderer renderer_closed;
+
+    public Color defaultColor;
 
     public bool useMouse = true;
     public bool right_hand;
@@ -53,6 +57,7 @@ public class Hand : MonoBehaviour {
         held_object_positions[3] = Vector3.zero;
         held_object_positions[4] = Vector3.zero;
         if (kinect_view == null) useMouse = true;
+        defaultColor = renderer_open.material.GetColor("_Color");
     }
 
     // Update is called once per frame
@@ -83,6 +88,20 @@ public class Hand : MonoBehaviour {
         {
             if (right_hand)
             {
+
+                if (!kinect_view.rightHandTracked)
+                {
+                    renderer_open.material.SetColor("_Color", Color.red);
+                    renderer_closed.material.SetColor("_Color", Color.red);
+
+                }
+                else
+                {
+                    renderer_open.material.SetColor("_Color", defaultColor);
+                    renderer_closed.material.SetColor("_Color", defaultColor);
+
+                }
+
                 if (kinect_view.rightHandClosed)
                 {
                     closeHand();
@@ -94,6 +113,19 @@ public class Hand : MonoBehaviour {
             }
             else
             {
+                if (!kinect_view.leftHandTracked)
+                {   
+                    renderer_open.material.SetColor("_Color", Color.red);
+                    renderer_closed.material.SetColor("_Color", Color.red);
+
+                }
+                else
+                {
+                    renderer_open.material.SetColor("_Color", defaultColor);
+                    renderer_closed.material.SetColor("_Color", defaultColor);
+
+                }
+
                 if (kinect_view.leftHandClosed)
                 {
                     closeHand();

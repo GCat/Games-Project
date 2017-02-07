@@ -28,7 +28,9 @@ public class PlayerMovement : MonoBehaviour {
         Debug.Log("index: " + new_index);
         GameObject snap_location = snap_locations[new_index];
         current_location_index = new_index;
-        kinect.transform.position = snap_location.transform.position;
+        float kinect_height = kinect.transform.transform.position.y;
+        //kinect.transform.position = snap_location.transform.position;
+        kinect.transform.position = new Vector3(snap_location.transform.position.x, kinect_height, snap_location.transform.position.z);
         kinect.transform.rotation = snap_location.transform.rotation;
         head.transform.Rotate(Vector3.up, 90);
         body.transform.Rotate(Vector3.up, 90);
