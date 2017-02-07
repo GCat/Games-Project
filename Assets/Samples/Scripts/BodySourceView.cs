@@ -19,6 +19,7 @@ public class BodySourceView : MonoBehaviour
     public GameObject left_hand;
     public GameObject player_body;
     public GameObject kinectLocation;
+    public int tracking_frames = 8;
     public bool rightHandClosed = false;
     public bool leftHandClosed = false;
     public bool rightHandTracked = false;
@@ -215,7 +216,7 @@ public class BodySourceView : MonoBehaviour
         if (body.HandRightState == Windows.Kinect.HandState.Closed)
         {
             r_hand_closed_frames++;
-            if (r_hand_closed_frames > 6)
+            if (r_hand_closed_frames > tracking_frames || body.HandRightConfidence == Kinect.TrackingConfidence.High)
             {
                 rightHandClosed = true;
                 r_hand_open_frames = 0;
@@ -227,7 +228,7 @@ public class BodySourceView : MonoBehaviour
         else
         {
             r_hand_open_frames++;
-            if (r_hand_open_frames > 6)
+            if (r_hand_open_frames > tracking_frames || body.HandRightConfidence == Kinect.TrackingConfidence.High)
             {
                 rightHandClosed = false;
                 r_hand_closed_frames = 0;
@@ -240,7 +241,7 @@ public class BodySourceView : MonoBehaviour
         if (body.HandLeftState == Windows.Kinect.HandState.Closed)
         {
             l_hand_closed_frames++;
-            if (l_hand_closed_frames > 3)
+            if (l_hand_closed_frames > tracking_frames || body.HandLeftConfidence == Kinect.TrackingConfidence.High)
             {
                 leftHandClosed = true;
                 l_hand_open_frames = 0;
@@ -251,7 +252,7 @@ public class BodySourceView : MonoBehaviour
         else
         {
             l_hand_open_frames++;
-            if (l_hand_open_frames > 3)
+            if (l_hand_open_frames > tracking_frames || body.HandLeftConfidence == Kinect.TrackingConfidence.High)
             {
                 leftHandClosed = false;
                 l_hand_closed_frames = 0;
