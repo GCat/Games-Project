@@ -3,51 +3,65 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Portal : MonoBehaviour {
-
+    /*
+    * Distribution states probability of  spawingn any of the four clases, it shoud add up to one
+    * {Rushers, Defender, Killer, Training} 
+    */
     bool active = false;
-    private int maxSpawns = 5;
+    private int maxSpawns;
     public int spawns = 0;
     float[] distribution = new float[] { 0f, 0f, 0f, 0f };
     float frequency;
     float timer;
     float startTime;
+    float delayStart;
+    float delay = 60f;
+    GameObject temple;
     // Use this for initialization
     void Start () {
-
-        setup(10.0f, new float[] { 0f, 0f, 0f, 1f },1);
-		
-	}
+        temple = GameObject.FindGameObjectWithTag("Temple");
+    }
 	
 	// Update is called once per frame
 	void Update () {
         if (active && spawns < maxSpawns)
         {
-            timer = Time.time - startTime;
-            if(timer >= frequency)
+            if (Time.time - delayStart > delay)
             {
-                Vector3 pos = transform.GetChild(0).transform.position;
-                pos.y = 0.0f;
-                if(Mathf.Abs(pos.x) < 50 && Mathf.Abs(pos.z) < 100 )
+                timer = Time.time - startTime;
+                if (timer >= frequency)
                 {
-                    GameObject pre = Resources.Load("Characters/Badie") as GameObject;
-                    GameObject b = GameObject.Instantiate(pre, pos ,Quaternion.identity);
-                    float val = Random.Range(0.0f, 1.0f);
-                    if(val < distribution[0]) ((BadiesAI)b.GetComponent(typeof(BadiesAI))).spawn(0);
-                    else if (val < distribution[0]+ distribution[1]) ((BadiesAI)b.GetComponent(typeof(BadiesAI))).spawn(1);
-                    else if (val < distribution[0] + distribution[1] + distribution[2]) ((BadiesAI)b.GetComponent(typeof(BadiesAI))).spawn(2);
-                    else if (val < distribution[0] + distribution[1] + distribution[2] +distribution[3]) ((BadiesAI)b.GetComponent(typeof(BadiesAI))).spawn(3);
-                    startTime = Time.time;
-                    spawns++;
+                    Vector3 pos = transform.GetChild(0).transform.position;
+                    pos.y = 0.0f;
+                    if (Mathf.Abs(pos.x) < 50 && Mathf.Abs(pos.z) < 100)
+                    {
+                        GameObject pre = Resources.Load("Characters/Badie") as GameObject;
+                        GameObject b = GameObject.Instantiate(pre, pos, Quaternion.identity);
+                        float val = Random.Range(0.0f, 1.0f);
+                        if (val < distribution[0]) ((BadiesAI)b.GetComponent(typeof(BadiesAI))).spawn(0);
+                        else if (val < distribution[0] + distribution[1]) ((BadiesAI)b.GetComponent(typeof(BadiesAI))).spawn(1);
+                        else if (val < distribution[0] + distribution[1] + distribution[2]) ((BadiesAI)b.GetComponent(typeof(BadiesAI))).spawn(2);
+                        else if (val < distribution[0] + distribution[1] + distribution[2] + distribution[3]) ((BadiesAI)b.GetComponent(typeof(BadiesAI))).spawn(3);
+                        startTime = Time.time;
+                        spawns++;
 
+                    }
+                    else
+                    {
+                        Debug.Log("Could not spawn");
+                    }
                 }
-                else
-                {
-                    Debug.Log("Could not spawn");
-                }
-                
             }
         }
-		
+        else if (temple != null)
+        {
+            if (temple.GetComponent<Temple>().isPlaced())
+            {
+                Debug.Log("temple has been placed");
+                delayStart = Time.time;
+                setup(10.0f, new float[] { 1f, 0f, 0f, 0f }, 10);
+            }
+        }
 	}
 
     void setup(float frequency, int type, int maxSpawns)

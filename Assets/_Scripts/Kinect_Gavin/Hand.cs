@@ -265,9 +265,12 @@ public class Hand : MonoBehaviour {
                         
             if (heldObject.tag == "Shelf Object")
             {
-                heldObject.tag = "Building";
+                WatchTower script = heldObject.GetComponent<WatchTower>();
+                if (script != null) heldObject.tag = "Tower";
+                else heldObject.tag = "Building";
                 GameObject clone = Instantiate(heldObject, original_position, Quaternion.identity) as GameObject;
                 clone.transform.localScale = heldObject.transform.localScale;
+                clone.GetComponent<BoxCollider>().enabled = true;
                 clone.tag = "Shelf Object";
                 
             }
