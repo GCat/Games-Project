@@ -3,6 +3,7 @@ using System.Collections;
 
 public class Temple : ResourceBuilding {
 
+    private bool placed = false;
 
     public override void create_building()
     {
@@ -14,6 +15,13 @@ public class Temple : ResourceBuilding {
         GameObject tablet = GameObject.Find("Resource_tablet");
         if (tablet != null) resourceCounter = (ResourceCounter)tablet.GetComponent<ResourceCounter>();
         else Debug.Log("Tablet not found");
+        placed = true;
+
+    }
+
+    public bool isPlaced()
+    {
+        return placed;
     }
 
     // Use this for initialization
