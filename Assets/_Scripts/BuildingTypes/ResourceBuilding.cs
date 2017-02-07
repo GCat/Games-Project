@@ -82,7 +82,6 @@ public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
         }
     }
 
-
     public void activate()
     {
         startTime = Time.time;
