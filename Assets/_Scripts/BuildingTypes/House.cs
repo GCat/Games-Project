@@ -22,11 +22,19 @@ public class House  : MonoBehaviour, Building, Placeable
     public bool active = false;
     public bool held = false;
     GameObject highlight = null;
+    private bool badplacement = false;
+    private float placementTime;
+    private Vector3 boxSize;
+
+
+    Material matEmpty;
+    Material matInval;
 
     //Constructor of a House
     //capacity = number of humans a house can hold; location = location of a house
     public void Awake()
     {
+        badplacement = false;
         capacity = 2;
         location = transform.position;
         full_house = false;
@@ -97,6 +105,10 @@ public class House  : MonoBehaviour, Building, Placeable
         location = this.transform.position;
         GameObject tablet = GameObject.Find("Resource_tablet");
         if (tablet != null) resourceCounter = (ResourceCounter) tablet.GetComponent<ResourceCounter>();
+        matEmpty = Resources.Load("Materials/highlight2") as Material;
+        matInval = Resources.Load("Materials/highlight") as Material;
+        boxSize = GetComponent<BoxCollider>().bounds.size / 2;
+        boxSize.y = 0.01f;
     }
 
     //Update is called once per frame
@@ -106,20 +118,17 @@ public class House  : MonoBehaviour, Building, Placeable
         {
             if (highlight != null)
             {
-                if (transform.position.y > 0.0 && Mathf.Abs(transform.position.x) <= 50 && Mathf.Abs(transform.position.z) <= 100)
-                {
-                    highlight.GetComponent<Renderer>().enabled = true;
-                    highlight.transform.position = new Vector3(Mathf.Floor(transform.position.x), 0.1f, Mathf.Floor(transform.position.z));
-                    highlight.transform.rotation = Quaternion.LookRotation(Vector3.forward);
-
-                }
-                else
-                {
-                    highlight.GetComponent<Renderer>().enabled = false;
-                }
+                highlightCheck();
             }
         }
-        if (active)
+        else if (badplacement)
+        {
+            if (Time.time - placementTime > 5.0f)
+            {
+                DestroyObject(gameObject);
+            }
+        }
+        else if (active)
         {
             location = this.transform.position;
             //Calculate time
@@ -127,11 +136,7 @@ public class House  : MonoBehaviour, Building, Placeable
 
             if (timer >= 3)
             {
-               if (resourceCounter.getFood() > foodCost)
-                {
-                    spawn();
-                }
-                
+               if (resourceCounter.getFood() > foodCost) spawn();
             }
         }
     }
@@ -179,11 +184,13 @@ public class House  : MonoBehaviour, Building, Placeable
 
     public void activate()
     {
-        active = true;
-        held = false;
-        if (highlight != null) Destroy(highlight);
-        highlight = null;
-        StartTime = Time.time;
+        if (!badplacement)
+        {
+            active = true;
+            held = false;
+            highlightDestroy();
+            StartTime = Time.time;
+        }
     }
     public void deactivate()
     {
@@ -191,6 +198,7 @@ public class House  : MonoBehaviour, Building, Placeable
     }
     void grabbed()
     {
+        badplacement = false;
         held = true;
         // Deactivate  collider and gravity
         if (highlight != null)
@@ -199,15 +207,7 @@ public class House  : MonoBehaviour, Building, Placeable
         }
 
         // highlight where object wiould place if falling straight down
-        Material mat = Resources.Load("Materials/highlight") as Material;
-        highlight = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        highlight.GetComponent<Renderer>().material = mat;
-        highlight.transform.localScale = new Vector3(GetComponent<BoxCollider>().bounds.size.x, 0.1f, GetComponent<BoxCollider>().bounds.size.z);
-        highlight.transform.position = new Vector3(Mathf.Floor(transform.position.x), 0.1f, Mathf.Floor(transform.position.z));
-        highlight.transform.rotation = Quaternion.LookRotation(Vector3.forward);
-
-        highlight.GetComponent<Collider>().enabled = false;
-        highlight.GetComponent<Renderer>().enabled = false;
+        createHighlight();
 
         GetComponent<Rigidbody>().useGravity = false;
         GetComponent<Rigidbody>().isKinematic = true;
@@ -221,17 +221,25 @@ public class House  : MonoBehaviour, Building, Placeable
         float y = transform.position.y;
         float x = transform.position.x;
         float z = transform.position.z;
+        int layerMask = (1 << 10);
 
         //test within table bounds
         if (GameBoard.withinBounds(transform.position))
         {
+            GetComponent<Collider>().enabled = true;
+            if (Physics.CheckBox(new Vector3(Mathf.Floor(x), 0, Mathf.Floor(z)), boxSize, Quaternion.LookRotation(Vector3.forward), layerMask))
+            {
+                badplacement = true;
+                held = false;
+                placementTime = Time.time;
+                GetComponent<Collider>().enabled =false;
+                highlightDestroy();
+            }
             transform.position = new Vector3(Mathf.Floor(x), 0, Mathf.Floor(z));
             transform.rotation = Quaternion.LookRotation(Vector3.forward);
             GetComponent<Rigidbody>().useGravity = false;
-            GetComponent<Rigidbody>().isKinematic = true;
-            GetComponent<Collider>().enabled = true;
+            GetComponent<Rigidbody>().isKinematic = false;
             smokeEffect.Play();
-
         }
         else
         {
@@ -241,5 +249,42 @@ public class House  : MonoBehaviour, Building, Placeable
             Debug.Log("House vel:" + vel);
             GetComponent<Rigidbody>().AddForce(vel, ForceMode.VelocityChange);
         }
+    }
+
+    private void highlightDestroy()
+    {
+        if (highlight != null) Destroy(highlight);
+    }
+    private void highlightCheck()
+    {
+        if (transform.position.y > 0.0 && Mathf.Abs(transform.position.x) <= 50 && Mathf.Abs(transform.position.z) <= 100)
+        {
+            highlight.GetComponent<Renderer>().enabled = true;
+            highlight.transform.position = new Vector3(Mathf.Floor(transform.position.x), 0.1f, Mathf.Floor(transform.position.z));
+            highlight.transform.rotation = Quaternion.LookRotation(Vector3.forward);
+            int layerMask = 1 << 10;
+            if(Physics.CheckBox(new Vector3(Mathf.Floor(transform.position.x), 0, Mathf.Floor(transform.position.z)), boxSize, Quaternion.LookRotation(Vector3.forward), layerMask))
+                highlight.GetComponent<Renderer>().material = matInval;
+            else
+                highlight.GetComponent<Renderer>().material = matEmpty;
+  
+
+        }
+        else
+        {
+            highlight.GetComponent<Renderer>().enabled = false;
+        }
+    }
+
+    private void createHighlight()
+    {
+        highlight = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        highlight.GetComponent<Renderer>().material = matEmpty;
+        highlight.transform.localScale = new Vector3(GetComponent<BoxCollider>().bounds.size.x, 0.1f, GetComponent<BoxCollider>().bounds.size.z);
+        highlight.transform.position = new Vector3(Mathf.Floor(transform.position.x), 0.1f, Mathf.Floor(transform.position.z));
+        highlight.transform.rotation = Quaternion.LookRotation(Vector3.forward);
+
+        highlight.GetComponent<Collider>().isTrigger = true;
+        highlight.GetComponent<Renderer>().enabled = false;
     }
 }
