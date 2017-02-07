@@ -13,7 +13,7 @@ public class ResourceCounter : MonoBehaviour
     private int population = 0;
     private int iron = 0;
     private int stone = 0;
-    private int food = 0;
+    private int food = 50;
     private int wood = 0;
     private int swords = 0;
     private int armour = 0;

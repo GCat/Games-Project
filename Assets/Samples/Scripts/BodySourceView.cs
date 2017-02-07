@@ -19,8 +19,13 @@ public class BodySourceView : MonoBehaviour
     public GameObject left_hand;
     public GameObject player_body;
     public GameObject kinectLocation;
+    public GameObject left_foot;
+    public GameObject right_foot;
+    public int tracking_frames = 8;
     public bool rightHandClosed = false;
     public bool leftHandClosed = false;
+    public bool rightHandTracked = false;
+    public bool leftHandTracked = false;
     private int r_hand_closed_frames = 0;
     private int r_hand_open_frames = 0;
     private int l_hand_closed_frames = 0;
@@ -132,6 +137,11 @@ public class BodySourceView : MonoBehaviour
                     if (player_id == 99)
                     {
                         _Bodies[body.TrackingId] = CreateBodyObject(body.TrackingId);
+                        Vector3 foot = GetVector3FromJoint(body.Joints[Kinect.JointType.FootRight]);
+                        float footHeight = foot.y;
+                        float floorHeight = -70;
+                        float feetOffset = footHeight - floorHeight;
+                        kinectLocation.transform.position += new Vector3(0,-feetOffset,0);
                         player_id = body.TrackingId;
                     }
                 }
@@ -154,6 +164,8 @@ public class BodySourceView : MonoBehaviour
         right_hand.transform.position = Vector3.Slerp(right_hand.transform.position, player_objects[Kinect.JointType.HandRight].transform.position, Time.deltaTime * 10.0f);
         left_hand.transform.position = Vector3.Slerp(left_hand.transform.position, player_objects[Kinect.JointType.HandLeft].transform.position, Time.deltaTime * 10.0f);
 
+        right_foot.transform.position = player_objects[Kinect.JointType.FootRight].transform.position;
+        left_foot.transform.position = player_objects[Kinect.JointType.FootLeft].transform.position;
 
         //Adjust body rotation
         Vector3 spine = player_objects[Kinect.JointType.SpineShoulder].transform.position - player_objects[Kinect.JointType.SpineMid].transform.position;
@@ -187,7 +199,20 @@ public class BodySourceView : MonoBehaviour
 
         if (body.HandRightConfidence == Windows.Kinect.TrackingConfidence.Low)
         {
-            //Debug.Log("low tracking confidence");
+            rightHandTracked = false;
+        }
+        else
+        {
+            rightHandTracked = true;
+        }
+
+        if (body.HandLeftConfidence == Windows.Kinect.TrackingConfidence.Low)
+        {
+            leftHandTracked = false;
+        }
+        else
+        {
+            leftHandTracked = true;
         }
 
 
@@ -195,7 +220,7 @@ public class BodySourceView : MonoBehaviour
         if (body.HandRightState == Windows.Kinect.HandState.Closed)
         {
             r_hand_closed_frames++;
-            if (r_hand_closed_frames > 6)
+            if (r_hand_closed_frames > tracking_frames || body.HandRightConfidence == Kinect.TrackingConfidence.High)
             {
                 rightHandClosed = true;
                 r_hand_open_frames = 0;
@@ -207,7 +232,7 @@ public class BodySourceView : MonoBehaviour
         else
         {
             r_hand_open_frames++;
-            if (r_hand_open_frames > 6)
+            if (r_hand_open_frames > tracking_frames || body.HandRightConfidence == Kinect.TrackingConfidence.High)
             {
                 rightHandClosed = false;
                 r_hand_closed_frames = 0;
@@ -220,7 +245,7 @@ public class BodySourceView : MonoBehaviour
         if (body.HandLeftState == Windows.Kinect.HandState.Closed)
         {
             l_hand_closed_frames++;
-            if (l_hand_closed_frames > 3)
+            if (l_hand_closed_frames > tracking_frames || body.HandLeftConfidence == Kinect.TrackingConfidence.High)
             {
                 leftHandClosed = true;
                 l_hand_open_frames = 0;
@@ -231,7 +256,7 @@ public class BodySourceView : MonoBehaviour
         else
         {
             l_hand_open_frames++;
-            if (l_hand_open_frames > 3)
+            if (l_hand_open_frames > tracking_frames || body.HandLeftConfidence == Kinect.TrackingConfidence.High)
             {
                 leftHandClosed = false;
                 l_hand_closed_frames = 0;
@@ -257,8 +282,6 @@ public class BodySourceView : MonoBehaviour
         {
             GameObject jointObj = new GameObject();
             //jointObj.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
-            SphereCollider collider = jointObj.GetComponent<SphereCollider>();
-            Destroy(collider);
             LineRenderer lr = jointObj.AddComponent<LineRenderer>();
             lr.SetVertexCount(2);
             lr.material = BoneMaterial;
@@ -289,7 +312,7 @@ public class BodySourceView : MonoBehaviour
             }
             
             Transform jointObj = bodyObject.transform.FindChild(jt.ToString());
-            jointObj.localPosition = GetVector3FromJoint(sourceJoint)*10;
+            jointObj.localPosition = GetVector3FromJoint(sourceJoint);
 
             LineRenderer lr = jointObj.GetComponent<LineRenderer>();
             if(targetJoint.HasValue)
@@ -322,6 +345,6 @@ public class BodySourceView : MonoBehaviour
     
     private static Vector3 GetVector3FromJoint(Kinect.Joint joint)
     {
-        return new Vector3(-joint.Position.X * 12, joint.Position.Y * 12, joint.Position.Z * 12);
+        return new Vector3(-joint.Position.X * 70, joint.Position.Y * 70, joint.Position.Z * 70 + 70);
     }
 }
