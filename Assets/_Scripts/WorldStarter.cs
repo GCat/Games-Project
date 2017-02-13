@@ -4,6 +4,7 @@ using System.Collections;
 
 public class WorldStarter : MonoBehaviour {
     public GameObject resource_tablet;
+    Animator anim;
     /* This class should start the game and control the game flow
      * 
      * What should be in here:
@@ -37,5 +38,6 @@ public class WorldStarter : MonoBehaviour {
 
     public void stopGame(){
         Debug.Log("Game finished");
+        anim.SetTrigger("GameOver");
     }
 }

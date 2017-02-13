@@ -3,6 +3,7 @@ using System.Collections;
 
 public class Temple : ResourceBuilding {
     private WorldStarter world;
+    public bool placed = false;
 
     public override void create_building()
     {
@@ -14,12 +15,19 @@ public class Temple : ResourceBuilding {
         GameObject tablet = GameObject.Find("Resource_tablet");
         if (tablet != null) resourceCounter = (ResourceCounter)tablet.GetComponent<ResourceCounter>();
         else Debug.Log("Tablet not found");
+        placed = true;
 
     }
 
-    private void Update()
+    public bool isPlaced()
     {
-        if (IsDestroyed(this.gameObject))
+        return placed;
+    }
+
+    void Update()
+    {
+        //If destroyed 
+        if (this.gameObject == null)
         {
             world.stopGame();
         }
@@ -39,10 +47,5 @@ public class Temple : ResourceBuilding {
         if(other.tag == "Table"){
             world.startGame();
         }
-    }
-
-    public static bool IsDestroyed(this GameObject gameobject)
-    {
-        return gameobject == null && !ReferenceEquals(gameobject, null);
     }
 }
