@@ -225,8 +225,7 @@ public class BodySourceView : MonoBehaviour
                 rightHandClosed = true;
                 r_hand_open_frames = 0;
             }
-            Quaternion target = Quaternion.LookRotation(r_wristVector);
-            right_hand.transform.rotation = Quaternion.Slerp(right_hand.transform.rotation, target, Time.deltaTime * 10.0f);
+           
 
         }
         else
@@ -237,8 +236,7 @@ public class BodySourceView : MonoBehaviour
                 rightHandClosed = false;
                 r_hand_closed_frames = 0;
             }
-            Quaternion target = Quaternion.LookRotation(r_handVector, r_handUp);
-            right_hand.transform.rotation = Quaternion.Slerp(right_hand.transform.rotation, target, Time.deltaTime * 10.0f);
+         
 
         }
 
@@ -250,8 +248,7 @@ public class BodySourceView : MonoBehaviour
                 leftHandClosed = true;
                 l_hand_open_frames = 0;
             }
-            Quaternion target = Quaternion.LookRotation(l_wristVector);
-            left_hand.transform.rotation = Quaternion.Slerp(left_hand.transform.rotation, target, Time.deltaTime * 15.0f);
+          
         }
         else
         {
@@ -261,10 +258,30 @@ public class BodySourceView : MonoBehaviour
                 leftHandClosed = false;
                 l_hand_closed_frames = 0;
             }
-            Quaternion target = Quaternion.LookRotation(l_handVector, l_handUp);
-            left_hand.transform.rotation = Quaternion.Slerp(left_hand.transform.rotation, target, Time.deltaTime * 15.0f);
+
         }
 
+
+        if (rightHandClosed)
+        {
+            Quaternion target = Quaternion.LookRotation(r_wristVector);
+            right_hand.transform.rotation = Quaternion.Slerp(right_hand.transform.rotation, target, Time.deltaTime * 10.0f);
+        }
+        else
+        {
+            Quaternion target = Quaternion.LookRotation(r_handVector, r_handUp);
+            right_hand.transform.rotation = Quaternion.Slerp(right_hand.transform.rotation, target, Time.deltaTime * 10.0f);
+        }
+        if (leftHandClosed)
+        {
+            Quaternion target = Quaternion.LookRotation(l_wristVector);
+            left_hand.transform.rotation = Quaternion.Slerp(left_hand.transform.rotation, target, Time.deltaTime * 10.0f);
+        }
+        else
+        {
+            Quaternion target = Quaternion.LookRotation(l_handVector, l_handUp);
+            left_hand.transform.rotation = Quaternion.Slerp(left_hand.transform.rotation, target, Time.deltaTime * 10.0f);
+        }
 
         //Debug.Log("Right hand spread: " + (r_handVector.sqrMagnitude + r_handRotation.sqrMagnitude));
     }
@@ -345,6 +362,6 @@ public class BodySourceView : MonoBehaviour
     
     private static Vector3 GetVector3FromJoint(Kinect.Joint joint)
     {
-        return new Vector3(-joint.Position.X * 70, joint.Position.Y * 70, joint.Position.Z * 70 + 70);
+        return new Vector3(-joint.Position.X * 70, joint.Position.Y * 70, joint.Position.Z * 70 );
     }
 }

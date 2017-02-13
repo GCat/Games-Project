@@ -14,6 +14,7 @@ public class Temple : ResourceBuilding {
         GameObject tablet = GameObject.Find("Resource_tablet");
         if (tablet != null) resourceCounter = (ResourceCounter)tablet.GetComponent<ResourceCounter>();
         else Debug.Log("Tablet not found");
+
     }
 
     private void Update()
