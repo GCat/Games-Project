@@ -1,7 +1,13 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Standard Assets/ParticleSystems.meta
+guid: d7ea5a218770df14895b81e3602e420f
+folderAsset: yes
+timeCreated: 1486482198
+=======
 guid: a9a98d1add88e334791cf9ad5140a9e5
 folderAsset: yes
 timeCreated: 1486992416
+>>>>>>> 46e20d44576dc0ff5401cfcbd3cc5471d930ee8c:Assets/Standard Assets/ParticleSystems.meta
 licenseType: Free
 DefaultImporter:
   userData: 
