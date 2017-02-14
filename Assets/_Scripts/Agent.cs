@@ -88,7 +88,7 @@ public class Agent : MonoBehaviour
     private ResourceCounter resources;
 
 
-    public bool active = false;
+    public bool active = true;
 
 
     void Start()

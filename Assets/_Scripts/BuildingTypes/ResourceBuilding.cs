@@ -90,7 +90,7 @@ public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
         }
     }
 
-    public void activate()
+    public virtual void activate()
     {
 
         if (!badplacement)
@@ -101,7 +101,7 @@ public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
             highlightDestroy();
         }
         
-        //Debug.Log("Building placed");
+        Debug.Log("RESOURCE W+ONE");
     }
     void deactivate()
     {
@@ -140,7 +140,7 @@ public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
 
     }
 
-    void release(Vector3 vel)
+    public void release(Vector3 vel)
     {
 
         //Snap to grid
@@ -152,6 +152,7 @@ public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
         //test within table bounds
         if (GameBoard.withinBounds(transform.position))
         {
+            bool success = true;
             GetComponent<BoxCollider>().enabled = true;
             if (Physics.CheckBox(new Vector3(Mathf.Floor(x), 0, Mathf.Floor(z)),boxSize, Quaternion.LookRotation(Vector3.forward), layerMask))
             {
@@ -160,14 +161,17 @@ public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
                 placementTime = Time.time;
                 GetComponent<BoxCollider>().enabled = false;
                 highlightDestroy();
+                success = false;
             }
-            else
-            {
-                create_building();
-            }
+
             
             transform.position = new Vector3(Mathf.Floor(x), 0, Mathf.Floor(z));
             transform.rotation = Quaternion.LookRotation(Vector3.forward);
+            if (success)
+            {
+                create_building();
+            }
+
             GetComponent<Rigidbody>().useGravity = false;
             GetComponent<Rigidbody>().isKinematic = true;
             
@@ -218,11 +222,11 @@ public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
         return chosenResource;
     }
 
-    private void highlightDestroy()
+    public void highlightDestroy()
     {
         if (highlight != null) Destroy(highlight);
     }
-    private void highlightCheck()
+    public void highlightCheck()
     {
         if (transform.position.y > 0.0 && Mathf.Abs(transform.position.x) <= 50 && Mathf.Abs(transform.position.z) <= 100)
         {
@@ -243,7 +247,7 @@ public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
         }
     }
 
-    private void createHighlight()
+    public void createHighlight()
     {
         highlight = GameObject.CreatePrimitive(PrimitiveType.Cube);
         highlight.GetComponent<Renderer>().material = matEmpty;
@@ -253,5 +257,9 @@ public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
 
         highlight.GetComponent<Collider>().enabled = false;
         highlight.GetComponent<Renderer>().enabled = false;
+    }
+    public bool getbp()
+    {
+        return badplacement;
     }
 }
