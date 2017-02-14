@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WatchTower : MonoBehaviour, Building
+public class WatchTower : MonoBehaviour, Building, Placeable
 {
 
 
@@ -196,7 +196,7 @@ public class WatchTower : MonoBehaviour, Building
         }
     }
 
-    void activate()
+   public void activate()
     {
         if (!badplacement)
         {

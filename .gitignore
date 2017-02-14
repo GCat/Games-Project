@@ -33,3 +33,5 @@ Assets/Scene1.unity
 Assets/Materials/Lava/
 
 *.meta
+
+Assets/Lava_Flowing_Shader/Materials/mtl_lava_simple\.mat
