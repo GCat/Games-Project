@@ -29,3 +29,7 @@ sysinfo.txt
 *.apk
 *.unitypackage
 Assets/Scene1.unity
+
+Assets/Materials/Lava/
+
+*.meta

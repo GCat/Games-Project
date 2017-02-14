@@ -158,7 +158,7 @@ public class House  : MonoBehaviour, Building, Placeable
 				layerMask = ~layerMask;
 				obstacles = Physics.OverlapSphere(location_human, 1.0f, layerMask);
 				if (obstacles.Length != 0){
-					if (check == "empty") Instantiate(Resources.Load("Human"), location_human, Quaternion.identity);
+					if (check == "empty") Instantiate(Resources.Load("Characters/Human"), location_human, Quaternion.identity);
 					else Debug.Log("Oops");
 				}
             }
