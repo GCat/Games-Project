@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections;
 
 public class WorldStarter : MonoBehaviour {
-
+    Animator anim;
     /* This class should start the game and control the game flow
      * 
      * What should be in here:
@@ -21,17 +21,22 @@ public class WorldStarter : MonoBehaviour {
      * 
      * 
      */
-    GameObject Temple;
 	void Start () {
-        Temple = GameObject.FindGameObjectWithTag("Temple");
-	}
+        
+    }
 	
 	// Update is called once per frame
 	void Update () {
-	
+
 	}
 
-	void startTutorial(){
-		
-	}
+	public void startGame(GameObject resource_tablet){
+        Debug.Log("Game started");
+        resource_tablet.SetActive(true);
+    }
+
+    public void stopGame(){
+        Debug.Log("Game finished");
+        gameObject.GetComponent<Animator>().SetTrigger("GameOver");
+    }
 }

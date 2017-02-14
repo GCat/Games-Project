@@ -2,7 +2,6 @@
 using System.Collections;
 
 public class Main : MonoBehaviour {
-
 	// Use this for initialization
 	void Start () {
     }
@@ -11,4 +10,5 @@ public class Main : MonoBehaviour {
 	void Update () {
 	
 	}
+
 }
