@@ -25,13 +25,13 @@ public class LightningBolt : MonoBehaviour {
 
 
         // highlight where object wiould place if falling straight down
-        Material mat = Resources.Load("Materials/highlight.mat") as Material;
+        /*Material mat = Resources.Load("Materials/highlight.mat") as Material;
         highlight = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
         highlight.GetComponent<Renderer>().material = mat;
         highlight.transform.localScale = new Vector3(GetComponent<CapsuleCollider>().bounds.size.x, 0.1f, GetComponent<CapsuleCollider>().bounds.size.z);
         highlight.transform.position = new Vector3(transform.position.x, 0.1f, transform.position.z);
         highlight.GetComponent<Collider>().enabled = false;
-        highlight.GetComponent<Renderer>().enabled = false;
+        highlight.GetComponent<Renderer>().enabled = false; */
 
         GetComponent<Rigidbody>().useGravity = false;
         GetComponent<Rigidbody>().isKinematic = true;
@@ -55,7 +55,7 @@ public class LightningBolt : MonoBehaviour {
           
             GameObject resource = Resources.Load("Bolt flash") as GameObject;
             flash = GameObject.Instantiate(resource, hit.point, Quaternion.identity);
-            Destroy(flash.gameObject, 0.06f);
+            Destroy(flash.gameObject, 0.1f);
 
             int i = 0;
             while (i < damageZone.Length)
