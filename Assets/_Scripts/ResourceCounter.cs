@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class ResourceCounter : MonoBehaviour
 {
 
-    public GameObject textDisplay;
     public Dictionary<string, GameObject[]> resource_nodes;
     //The text displayed on the tablet
-    private TextMesh textMesh; 
+    public Text text; 
     public int faith = 0;
     private int population = 0;
     private int iron = 0;
@@ -52,7 +52,6 @@ public class ResourceCounter : MonoBehaviour
             armourMult *= 2;
         }
         population = FindObjectsOfType<Agent>().Length;
-        textMesh = textDisplay.GetComponent(typeof(TextMesh)) as TextMesh;
         setResourceText();
     }
 
@@ -67,7 +66,7 @@ public class ResourceCounter : MonoBehaviour
         resourceText += "Population: " + population + "\n";
         resourceText += "Sword Level: " + swords + "\n";
         resourceText += "Armour Level: " + armour + "\n";
-        textMesh.text = resourceText;
+        text.text = resourceText;
     }
 
 

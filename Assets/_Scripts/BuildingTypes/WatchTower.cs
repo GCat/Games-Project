@@ -27,6 +27,13 @@ public class WatchTower : MonoBehaviour, Building
     private float StartTime3;
 
     GameObject highlight = null;
+    private bool badplacement = false;
+    private float placementTime;
+    private Vector3 boxSize;
+
+
+    Material matEmpty;
+    Material matInval;
 
 
     string Building.getName()
@@ -65,6 +72,10 @@ public class WatchTower : MonoBehaviour, Building
     void Start () {
         create_building();
         temple = GameObject.FindGameObjectWithTag("Temple");
+        matEmpty = Resources.Load("Materials/highlight2") as Material;
+        matInval = Resources.Load("Materials/highlight") as Material;
+        boxSize = GetComponent<BoxCollider>().bounds.size / 2;
+        boxSize.y = 0.01f;
 
     }
 
@@ -80,18 +91,17 @@ public class WatchTower : MonoBehaviour, Building
         {
             if (highlight != null)
             {
-                if (transform.position.y > 0.0 && Mathf.Abs(transform.position.x) <= 50 && Mathf.Abs(transform.position.z) <= 100)
-                {
-                    highlight.GetComponent<Renderer>().enabled = true;
-                    highlight.transform.position = new Vector3(transform.position.x, 0.1f, transform.position.z);
-                }
-                else
-                {
-                    highlight.GetComponent<Renderer>().enabled = false;
-                }
+                highlightCheck();
             }
         }
-        if (active)
+        else if (badplacement)
+        {
+            if (Time.time - placementTime > 5.0f)
+            {
+                DestroyObject(gameObject);
+            }
+        }
+        else if (active)
         {
             if (temple != null)
             {
@@ -188,10 +198,14 @@ public class WatchTower : MonoBehaviour, Building
 
     void activate()
     {
-        active = true;
-        if (highlight != null) Destroy(highlight);
-        highlight = null;
-        held = false;
+        if (!badplacement)
+        {
+            active = true;
+            if (highlight != null) Destroy(highlight);
+            highlight = null;
+            held = false;
+        }
+
     }
     void deactivate()
     {
@@ -201,6 +215,7 @@ public class WatchTower : MonoBehaviour, Building
     void grabbed()
     {
         held = true;
+        badplacement = false;
         // Deactivate  collider and gravity
         if (highlight != null)
         {
@@ -208,13 +223,7 @@ public class WatchTower : MonoBehaviour, Building
         }
 
         // highlight where object wiould place if falling straight down
-        Material mat = Resources.Load("Materials/highlight.mat") as Material;
-        highlight = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        highlight.GetComponent<Renderer>().material = mat;
-        highlight.transform.localScale = new Vector3(GetComponent<BoxCollider>().bounds.size.x, 0.1f, GetComponent<BoxCollider>().bounds.size.z);
-        highlight.transform.position = new Vector3(transform.position.x, 0.1f, transform.position.z);
-        highlight.GetComponent<Collider>().enabled = false;
-        highlight.GetComponent<Renderer>().enabled = false;
+        createHighlight();
 
         GetComponent<Rigidbody>().useGravity = false;
         GetComponent<Rigidbody>().isKinematic = true;
@@ -228,23 +237,69 @@ public class WatchTower : MonoBehaviour, Building
         float y = transform.position.y;
         float x = transform.position.x;
         float z = transform.position.z;
+        int layerMask = (1 << 10);
 
         //test within table bounds
         if (GameBoard.withinBounds(transform.position))
         {
+            GetComponent<Collider>().enabled = true;
+            if (Physics.CheckBox(new Vector3(Mathf.Floor(x), 0, Mathf.Floor(z)), boxSize, Quaternion.LookRotation(Vector3.forward), layerMask))
+            {
+                badplacement = true;
+                held = false;
+                placementTime = Time.time;
+                GetComponent<Collider>().enabled = false;
+                highlightDestroy();
+            }
             transform.position = new Vector3(Mathf.Floor(x), 0, Mathf.Floor(z));
             transform.rotation = Quaternion.LookRotation(Vector3.forward);
             GetComponent<Rigidbody>().useGravity = false;
             GetComponent<Rigidbody>().isKinematic = true;
-            GetComponent<Collider>().enabled = true;
         }
         else
         {
             GetComponent<Rigidbody>().useGravity = true;
             GetComponent<Rigidbody>().isKinematic = false;
-            GetComponent<Collider>().enabled = true;
+            GetComponent<BoxCollider>().enabled = true;
             GetComponent<Rigidbody>().velocity = vel;
         }
+    }
+
+    private void highlightDestroy()
+    {
+        if (highlight != null) Destroy(highlight);
+    }
+    private void highlightCheck()
+    {
+        if (transform.position.y > 0.0 && Mathf.Abs(transform.position.x) <= 50 && Mathf.Abs(transform.position.z) <= 100)
+        {
+            highlight.GetComponent<Renderer>().enabled = true;
+            highlight.transform.position = new Vector3(Mathf.Floor(transform.position.x), 0.1f, Mathf.Floor(transform.position.z));
+            highlight.transform.rotation = Quaternion.LookRotation(Vector3.forward);
+            int layerMask = 1 << 10;
+            if (Physics.CheckBox(new Vector3(Mathf.Floor(transform.position.x), 0, Mathf.Floor(transform.position.z)), boxSize, Quaternion.LookRotation(Vector3.forward), layerMask))
+                highlight.GetComponent<Renderer>().material = matInval;
+            else
+                highlight.GetComponent<Renderer>().material = matEmpty;
+
+
+        }
+        else
+        {
+            highlight.GetComponent<Renderer>().enabled = false;
+        }
+    }
+
+    private void createHighlight()
+    {
+        highlight = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        highlight.GetComponent<Renderer>().material = matEmpty;
+        highlight.transform.localScale = new Vector3(GetComponent<BoxCollider>().bounds.size.x, 0.1f, GetComponent<BoxCollider>().bounds.size.z);
+        highlight.transform.position = new Vector3(Mathf.Floor(transform.position.x), 0.1f, Mathf.Floor(transform.position.z));
+        highlight.transform.rotation = Quaternion.LookRotation(Vector3.forward);
+
+        highlight.GetComponent<Collider>().isTrigger = true;
+        highlight.GetComponent<Renderer>().enabled = false;
     }
 
 }
