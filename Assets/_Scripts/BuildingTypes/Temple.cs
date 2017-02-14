@@ -12,14 +12,18 @@ public class Temple : ResourceBuilding
 
     public override void create_building()
     {
+        Debug.Log("Temple create building");
         this.timer = 0f;
         this.startTime = Time.time;
         this.health = 500.0f;
         timeStep = 0.5f;
         buildingName = "TEMPLE";
+        world.startGame(tablet);
+        placed = true;
         tablet = GameObject.Find("Resource_tablet");
         if (tablet != null) resourceCounter = (ResourceCounter)tablet.GetComponent<ResourceCounter>();
         else Debug.Log("Tablet not found");
+        spawnHumans();
     }
 
     public bool isPlaced()
@@ -71,15 +75,6 @@ public class Temple : ResourceBuilding
     }
 
 
-    public void OnTriggerEnter(Collider other)
-    {
-        if (other.tag == "Hand" && !placed)
-        {
-            create_building();
-            world.startGame(tablet);
-            placed = true;
-            spawnHumans();
-        }
-    }
+
 
 }

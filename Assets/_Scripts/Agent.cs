@@ -87,7 +87,7 @@ public class Agent : MonoBehaviour
 
 
 
-    public bool active = false;
+    public bool active = true;
 
 
     void Start()

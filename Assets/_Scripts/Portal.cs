@@ -64,7 +64,6 @@ public class Portal : MonoBehaviour {
         {
             if (temple.GetComponent<Temple>().isPlaced())
             {
-                Debug.Log("temple has been placed");
                 delayStart = Time.time;
                 setup(1, new float[] { 1f, 0f, 0f, 0f }, 21.0f);
             }

@@ -36,15 +36,18 @@ public class Cell : MonoBehaviour {
 	void OnTriggerEnter(Collider other) {
         if (covered) {
             return;
-            }
-
+        }
+        if(other.tag == "Temple")
+        {
+            Debug.Log("Temple placed");
+        }
 		if((other.tag != "Human") && (other.tag != "Badies") && (other.tag != "Hand")){
             //string s = string.Format("Cell ({0},{1}) blocked id: {2}!",transform.position.x,transform.position.z,id);
             //Debug.Log(s);
+            
             pathfinding.buildingAdded(id);
 			details="blocked";
-            if (other.gameObject.layer == 10)
-            {
+            if (other.gameObject.layer == 10) {
                 if (other.GetComponent<Placeable>() != null) {
                     other.GetComponent<Placeable>().activate();
                 }
