@@ -46,7 +46,6 @@ public class Temple : ResourceBuilding {
             create_building();
             world.startGame(tablet);
             placed = true;
-            this.gameObject.GetComponent<Rigidbody>().useGravity = true;
         }
     }
 }
