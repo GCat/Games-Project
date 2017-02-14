@@ -2,8 +2,8 @@
 using System.Collections;
 
 public class Temple : ResourceBuilding {
-
-    private bool placed = false;
+    private WorldStarter world;
+    public bool placed = false;
 
     public override void create_building()
     {
@@ -24,6 +24,15 @@ public class Temple : ResourceBuilding {
         return placed;
     }
 
+    void Update()
+    {
+        //If destroyed 
+        if (this.gameObject == null)
+        {
+            world.stopGame();
+        }
+
+    }
     // Use this for initialization
     void Start()
     {
@@ -32,5 +41,11 @@ public class Temple : ResourceBuilding {
     public override void incrementResource()
     {
         if (resourceCounter != null) resourceCounter.addFaith();
+    }
+
+    public void OnTriggerEnter(Collider other){
+        if(other.tag == "Table"){
+            world.startGame();
+        }
     }
 }
