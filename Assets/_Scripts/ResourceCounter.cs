@@ -30,9 +30,9 @@ public class ResourceCounter : MonoBehaviour
     void Start()
     {
         GameObject[] forests = GameObject.FindGameObjectsWithTag("Forest");
-        GameObject[] iron = GameObject.FindGameObjectsWithTag("Iron");
+        GameObject[] ironNode = GameObject.FindGameObjectsWithTag("Iron");
         resource_nodes.Add("Forest", forests);
-        resource_nodes.Add("Iron", iron);
+        resource_nodes.Add("Iron", ironNode);
 
     }
 
