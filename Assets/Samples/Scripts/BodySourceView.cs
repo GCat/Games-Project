@@ -156,7 +156,7 @@ public class BodySourceView : MonoBehaviour
     }
 
 
-
+    //I'm really sorry about this
     private void adjustBodyParts(Kinect.Body body, GameObject bodyObject)
     {
 
@@ -164,8 +164,16 @@ public class BodySourceView : MonoBehaviour
         right_hand.transform.position = Vector3.Slerp(right_hand.transform.position, player_objects[Kinect.JointType.HandRight].transform.position, Time.deltaTime * 10.0f);
         left_hand.transform.position = Vector3.Slerp(left_hand.transform.position, player_objects[Kinect.JointType.HandLeft].transform.position, Time.deltaTime * 10.0f);
 
-        right_foot.transform.position = player_objects[Kinect.JointType.FootRight].transform.position;
-        left_foot.transform.position = player_objects[Kinect.JointType.FootLeft].transform.position;
+
+
+
+        Vector3 right_foot_direction = player_objects[Kinect.JointType.FootRight].transform.position - player_objects[Kinect.JointType.AnkleRight].transform.position;
+        Vector3 left_foot_direction = player_objects[Kinect.JointType.FootLeft].transform.position - player_objects[Kinect.JointType.AnkleLeft].transform.position;
+
+        //right_foot.transform.rotation = Quaternion.Slerp(right_foot.transform.rotation, Quaternion.LookRotation(right_foot_direction), Time.deltaTime * 10.0f);
+        //left_foot.transform.rotation = Quaternion.Slerp(left_foot.transform.rotation, Quaternion.LookRotation(left_foot_direction), Time.deltaTime * 10.0f);
+        right_foot.transform.position = Vector3.Slerp(right_foot.transform.position, player_objects[Kinect.JointType.FootRight].transform.position, Time.deltaTime * 10.0f);
+        left_foot.transform.position = Vector3.Slerp(left_foot.transform.position, player_objects[Kinect.JointType.FootLeft].transform.position, Time.deltaTime * 10.0f);
 
         //Adjust body rotation
         Vector3 spine = player_objects[Kinect.JointType.SpineShoulder].transform.position - player_objects[Kinect.JointType.SpineMid].transform.position;
