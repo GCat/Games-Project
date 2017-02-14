@@ -31,3 +31,5 @@ sysinfo.txt
 Assets/Scene1.unity
 
 Assets/Materials/Lava/
+
+*.meta
