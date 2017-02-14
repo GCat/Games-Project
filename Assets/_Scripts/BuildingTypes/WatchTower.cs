@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WatchTower : MonoBehaviour, Building
+public class WatchTower : MonoBehaviour, Building, Placeable
 {
 
 
@@ -32,8 +32,8 @@ public class WatchTower : MonoBehaviour, Building
     private Vector3 boxSize;
 
 
-    Material matEmpty;
-    Material matInval;
+    public Material matEmpty;
+    public Material matInval;
 
 
     string Building.getName()
@@ -72,8 +72,6 @@ public class WatchTower : MonoBehaviour, Building
     void Start () {
         create_building();
         temple = GameObject.FindGameObjectWithTag("Temple");
-        matEmpty = Resources.Load("Materials/highlight2") as Material;
-        matInval = Resources.Load("Materials/highlight") as Material;
         boxSize = GetComponent<BoxCollider>().bounds.size / 2;
         boxSize.y = 0.01f;
 
@@ -196,7 +194,7 @@ public class WatchTower : MonoBehaviour, Building
         }
     }
 
-    void activate()
+    public void activate()
     {
         if (!badplacement)
         {
@@ -232,7 +230,6 @@ public class WatchTower : MonoBehaviour, Building
     }
     void release(Vector3 vel)
     {
-
         //Snap to grid
         float y = transform.position.y;
         float x = transform.position.x;

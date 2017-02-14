@@ -77,7 +77,7 @@ public class Agent : MonoBehaviour
     // Fighting
     enum Fighter { Killer, Defender, Camper };
     public int fighterType;
-    public bool fightMode = false;
+    public bool fightMode;
 
     //Killer
     private GameObject closestEnemy;
