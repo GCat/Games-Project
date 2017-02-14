@@ -51,7 +51,6 @@ public class ResourceCounter : MonoBehaviour
             iron -= 20*armourMult;
             armourMult *= 2;
         }
-        population = FindObjectsOfType<Agent>().Length;
         setResourceText();
     }
 
@@ -136,6 +135,10 @@ public class ResourceCounter : MonoBehaviour
     public void addPop()
     {
         population++;
+    }
+    public void removePop()
+    {
+        population--;
     }
     public void removeFaith(int amount)
     {

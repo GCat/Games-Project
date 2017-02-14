@@ -85,6 +85,7 @@ public class Agent : MonoBehaviour
     private int maxCell;
     private float dis2Enemy =0;
 
+    private ResourceCounter resources;
 
 
     public bool active = false;
@@ -108,7 +109,8 @@ public class Agent : MonoBehaviour
         maxCell = 5000;
         closestEnemy = null;
         fighterType = (int)Fighter.Killer;
-
+        resources = GameObject.FindGameObjectWithTag("Tablet").GetComponent<ResourceCounter>();
+        resources.addPop();
     }
 
     // Update is called once per frame
@@ -162,6 +164,7 @@ public class Agent : MonoBehaviour
                     AudioSource source = GetComponent<AudioSource>();
                     source.PlayOneShot(sacrificeClip, 0.5f);
                     anim.Play("diehard");
+                    resources.removePop();
                     Destroy(gameObject, 2.1f);
                 }
             }
