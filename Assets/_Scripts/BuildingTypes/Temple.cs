@@ -1,33 +1,54 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Temple : ResourceBuilding {
+public class Temple : ResourceBuilding
+{
 
     public bool spawnedGarrison = false;
+
+    public WorldStarter world;
+    public GameObject tablet;
+    public bool placed = false;
 
     public override void create_building()
     {
         this.timer = 0f;
         this.startTime = Time.time;
-        this.health = 5000.0f;
+        this.health = 500.0f;
         timeStep = 0.5f;
         buildingName = "TEMPLE";
-        GameObject tablet = GameObject.Find("Resource_tablet");
+        tablet = GameObject.Find("Resource_tablet");
         if (tablet != null) resourceCounter = (ResourceCounter)tablet.GetComponent<ResourceCounter>();
         else Debug.Log("Tablet not found");
     }
 
+    public bool isPlaced()
+    {
+        return placed;
+    }
+
+    private void Update()
+    {
+        if (this.health <= 10 && placed)
+        {
+            this.enabled = false;
+            world.stopGame();
+        }
+    }
     // Use this for initialization
     void Start()
     {
         //spawnHumans();
         //create_building();
+
     }
+
     public override void incrementResource()
     {
         if (!spawnedGarrison) spawnHumans();
         if (resourceCounter != null) resourceCounter.addFaith();
     }
+
     void spawnHumans()
     {
         Debug.Log("Spawning");
@@ -37,7 +58,7 @@ public class Temple : ResourceBuilding {
         for (int i = 0; i < 5; i++)
         {
             Instantiate(Resources.Load("Characters/Human"), humanLocation, Quaternion.identity);
-            humanLocation = rotateAroundPivot(humanLocation, myLocation, new Vector3(0, (360/5), 0));
+            humanLocation = rotateAroundPivot(humanLocation, myLocation, new Vector3(0, (360 / 5), 0));
         }
         spawnedGarrison = true;
     }
@@ -49,5 +70,16 @@ public class Temple : ResourceBuilding {
         return point;
     }
 
+
+    public void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Hand" && !placed)
+        {
+            create_building();
+            world.startGame(tablet);
+            placed = true;
+            spawnHumans();
+        }
+    }
 
 }
