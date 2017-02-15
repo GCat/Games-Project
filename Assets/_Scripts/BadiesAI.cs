@@ -105,7 +105,7 @@ public class BadiesAI : MonoBehaviour, Character {
 
 
     }
-
+    //can we make the spawn type an enum please xoxo
     public void spawn(int type)
     {
         

@@ -58,14 +58,14 @@ public class ResourceCounter : MonoBehaviour, Placeable
     public void setResourceText()
     {
         string resourceText = "RESOURCES \n";
-        resourceText += "Faith: " + faith + "\n";
-        resourceText += "Food: " + food + "\n";
-        resourceText += "Wood: " + wood + "\n";
-        resourceText += "Stone: " + stone + "\n";
-        resourceText += "Iron: " + iron + "\n";
-        resourceText += "Population: " + population + "\n";
-        resourceText += "Sword Level: " + swords + "\n";
-        resourceText += "Armour Level: " + armour + "\n";
+        resourceText += "Faith: " + faith.ToString() + "\n";
+        resourceText += "Food: " + food.ToString() + "\n";
+        resourceText += "Wood: " + wood.ToString() + "\n";
+        resourceText += "Stone: " + stone.ToString() + "\n";
+        resourceText += "Iron: " + iron.ToString() + "\n";
+        resourceText += "Population: " + population.ToString() + "\n";
+        resourceText += "Sword Level: " + swords.ToString() + "\n";
+        resourceText += "Armour Level: " + armour.ToString() + "\n";
         text.text = resourceText;
     }
 

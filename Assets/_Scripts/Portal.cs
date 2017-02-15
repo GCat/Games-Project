@@ -28,9 +28,11 @@ public class Portal : MonoBehaviour {
     float delayStart;
     float delay = 20f;
     GameObject temple;
+    GameObject pre;
 
     void Start () {
         temple = GameObject.FindGameObjectWithTag("Temple");
+        pre = Resources.Load("Characters/Badie") as GameObject;
     }
 	
 	void Update () {
@@ -61,7 +63,7 @@ public class Portal : MonoBehaviour {
             if (temple.GetComponent<Temple>().isPlaced())
             {
                 delayStart = Time.time;
-                setup(1, new float[] { 1f, 0f, 0f, 0f }, 21.0f);
+                setup(1, new float[] { 1f, 1f, 1f, 1f }, 21.0f);
             }
         }
 	}
@@ -72,13 +74,21 @@ public class Portal : MonoBehaviour {
         pos.y = 0.0f;
         if (Mathf.Abs(pos.x) < 50 && Mathf.Abs(pos.z) < 100)
         {
-            GameObject pre = Resources.Load("Characters/Badie") as GameObject;
             GameObject b = GameObject.Instantiate(pre, pos, Quaternion.identity);
             float val = Random.Range(0.0f, 1.0f);
-            if (val < distribution[0]) ((BadiesAI)b.GetComponent(typeof(BadiesAI))).spawn(0);
-            else if (val < distribution[0] + distribution[1]) ((BadiesAI)b.GetComponent(typeof(BadiesAI))).spawn(1);
-            else if (val < distribution[0] + distribution[1] + distribution[2]) ((BadiesAI)b.GetComponent(typeof(BadiesAI))).spawn(2);
-            else if (val < distribution[0] + distribution[1] + distribution[2] + distribution[3]) ((BadiesAI)b.GetComponent(typeof(BadiesAI))).spawn(3);
+
+            int spawnType = 0;
+            for (int i = 0; i < distribution.Length; i++)
+            {
+                if (val < distribution[i])
+                {
+                    spawnType = i;
+                }
+
+            }
+            //override spawnType for now
+            b.GetComponent<BadiesAI>().spawn(0);
+
             startTime = Time.time;
             spawns++;
             if (behaviour == 1)
@@ -86,8 +96,8 @@ public class Portal : MonoBehaviour {
                 string s = string.Format("Prev Freq {0}", frequency);
                 Debug.Log(s);
 
-                frequency = (frequency > 1f)? (21f - Mathf.Pow(1.5f, (((float)(spawns)) / coef))): 1;
-                s = string.Format("After Freq {0}, val {1}", frequency, Mathf.Pow(1.5f, ((float)(spawns)) / coef));
+                frequency = (frequency > 1f)? (21f - Mathf.Pow(1.5f, (((spawns)) / coef))): 1;
+                s = string.Format("After Freq {0}, val {1}", frequency, Mathf.Pow(1.5f, ((spawns)) / coef));
                 Debug.Log(s);
             }
         }
