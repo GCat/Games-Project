@@ -48,8 +48,12 @@ public class Cell : MonoBehaviour {
             pathfinding.buildingAdded(id);
 			details="blocked";
             if (other.gameObject.layer == 10) {
-                if (other.GetComponent<Placeable>() != null) {
-                    other.GetComponent<Placeable>().activate();
+                if (other.GetComponent<Building>() != null) {
+                    other.GetComponent<Building>().activate();
+                }
+                else
+                {
+                    Debug.Log("Trying to activate an object in the building layer, which is not a building", other.gameObject);
                 }
             }
             //if (other.tag != "Tablet" && other.gameObject.layer == 10) other.gameObject.SendMessage("activate");
@@ -58,13 +62,20 @@ public class Cell : MonoBehaviour {
     }
 
 	void OnTriggerExit(Collider other) {
-		if((other.tag != "Human") && (other.tag != "Badies") && (other.tag != "Hand"))
+
+
+        if (other.gameObject.layer == 10)
         {
-            //string s = string.Format("Cell ({0},{1}) unblocked id: {2}!",transform.position.x,transform.position.z,id);
-            //Debug.Log(s);
-            pathfinding.buildingRemoved(id);
-            details = "empty";
-            if (other.tag != "Tablet" &&  other.gameObject.layer == 10) other.gameObject.SendMessage("deactivate");
+            if (other.GetComponent<Building>() != null)
+            {
+                pathfinding.buildingRemoved(id);
+                details = "empty";
+                other.GetComponent<Building>().deactivate();
+            }
+            else
+            {
+                Debug.Log("Trying to deactivate an object in the building layer, which is not a building", other.gameObject);
+            }
         }
         covered = false;
     }

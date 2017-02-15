@@ -90,7 +90,7 @@ public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
         }
     }
 
-    public virtual void activate()
+    public void activate()
     {
 
         if (!badplacement)
@@ -103,7 +103,7 @@ public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
         
         Debug.Log("RESOURCE W+ONE");
     }
-    void deactivate()
+    public void deactivate()
     {
         on_game_board = false;   
     }

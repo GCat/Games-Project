@@ -205,7 +205,7 @@ public class WatchTower : MonoBehaviour, Building, Placeable
         }
 
     }
-    void deactivate()
+    public void deactivate()
     {
         active = false;
     }

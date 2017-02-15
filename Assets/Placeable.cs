@@ -4,7 +4,6 @@ using UnityEngine;
 
 public interface Placeable {
 
-    void activate();
 
     //function to be called when grabbed by hand
     void grab();
