@@ -268,7 +268,6 @@ public class Agent : MonoBehaviour, Character
            closestEnemy = findClosestEnemy();
         }
     }
-
     private void getNextNode()
     {
         if (waypoints.Count > 0)
