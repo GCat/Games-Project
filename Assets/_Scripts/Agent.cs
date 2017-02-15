@@ -34,7 +34,7 @@ using System;
 
 
 
-public class Agent : MonoBehaviour
+public class Agent : MonoBehaviour, Character
 {
     // Human characteristics
     public float health = 100.0f;
@@ -485,7 +485,15 @@ public class Agent : MonoBehaviour
         {
             anim.Play("attack");
             transform.rotation = Quaternion.LookRotation(victim.transform.position - transform.position);
-            victim.SendMessage("decrementHealth", strenght * Time.deltaTime);
+            HealthManager victimHealth = victim.GetComponent<HealthManager>();
+            if (victimHealth != null)
+            {
+                victimHealth.decrementHealth(strenght * Time.deltaTime);
+            }
+            else
+            {
+                Debug.LogError("Trying to attack something that doesn not have health");
+            }
             return true;
         }
         return false;

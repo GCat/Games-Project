@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public interface Building {
+public interface Building : HealthManager{
 
     string getName();
     Vector3 getLocation();

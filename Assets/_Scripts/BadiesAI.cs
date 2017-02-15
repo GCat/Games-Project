@@ -27,7 +27,7 @@ using System.Threading;
  * 
  */
 
-public class BadiesAI : MonoBehaviour {
+public class BadiesAI : MonoBehaviour, Character {
 
     /* Three type of badies will exist
      * Rushers: They'll go for the temple
@@ -538,7 +538,14 @@ public class BadiesAI : MonoBehaviour {
         {
             anim.Play("hit");
             transform.rotation = Quaternion.LookRotation(victim.transform.position- transform.position);
-            victim.SendMessage("decrementHealth", strenght * Time.deltaTime);
+            //if it's a building
+            HealthManager victimHealth = victim.GetComponent<HealthManager>();
+            if (victimHealth != null)
+            {
+                victimHealth.decrementHealth(strenght * Time.deltaTime);
+            } else {
+                Debug.LogError("Trying to attack something that doesn not have health");
+            }
             return true;
         }
         return false;
@@ -602,6 +609,11 @@ public class BadiesAI : MonoBehaviour {
     {
         yield return new WaitForSeconds(waitTime);
         GameObject.Destroy(gameObject);
+    }
+
+    public void changeMode(bool val)
+    {
+        //Not used for baddies atm
     }
 
 }
