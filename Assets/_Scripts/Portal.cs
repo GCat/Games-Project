@@ -13,9 +13,9 @@ public class Portal : MonoBehaviour {
     // behaviour 0  uses maxSpawns and spawns at constant rate behaviour 1 spawns exponentialy
     private int behaviour;
     private int maxSpawns;
-    public int spawns = 0;
+    private int spawns = 0;
 
-    public float coef = 10f;
+    public float coef = 1f;
 
     float[] distribution = new float[] { 0f, 0f, 0f, 0f };
 
@@ -47,11 +47,7 @@ public class Portal : MonoBehaviour {
                     }
                 }
                 else if(behaviour == 1)
-                {
-                    if(frequency > 1)
-                    {
-                        frequency = 21 - Mathf.Pow(2.71f, spawns/coef);
-                    }
+                { 
                     timer = Time.time - startTime;
                     if (timer >= frequency)
                     {
@@ -85,7 +81,15 @@ public class Portal : MonoBehaviour {
             else if (val < distribution[0] + distribution[1] + distribution[2] + distribution[3]) ((BadiesAI)b.GetComponent(typeof(BadiesAI))).spawn(3);
             startTime = Time.time;
             spawns++;
+            if (behaviour == 1)
+            {
+                string s = string.Format("Prev Freq {0}", frequency);
+                Debug.Log(s);
 
+                frequency = (frequency > 1f)? (21f - Mathf.Pow(1.5f, (((float)(spawns)) / coef))): 1;
+                s = string.Format("After Freq {0}, val {1}", frequency, Mathf.Pow(1.5f, ((float)(spawns)) / coef));
+                Debug.Log(s);
+            }
         }
         else
         {

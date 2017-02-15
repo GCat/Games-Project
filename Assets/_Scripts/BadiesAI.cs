@@ -261,6 +261,10 @@ public class BadiesAI : MonoBehaviour, Character {
                     }
                     else attack(hitColliders[0].gameObject);
                 }
+                else
+                {
+                    Debug.Log("PROBLEM");
+                }
             }
         }
 

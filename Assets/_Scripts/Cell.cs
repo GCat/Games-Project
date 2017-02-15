@@ -8,6 +8,7 @@ public class Cell : MonoBehaviour {
 	public int id;
     private PathFinding pathfinding;
     private bool covered = false;
+    private GameObject covering;
 
     // Use this for initialization
     private void Awake()
@@ -20,8 +21,12 @@ public class Cell : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-	
+	void FixedUpdate () {
+	    if (covering == null)
+        {
+            covered = false;
+            details = "empty";
+        }
 	}
 	public string getStatus(){
 		return details;
@@ -38,25 +43,27 @@ public class Cell : MonoBehaviour {
             return;
         }
 
-            if (other.gameObject.layer == 10) {
-                if (other.GetComponent<Building>() != null) {
-                    pathfinding.buildingAdded(id);
-                    details = "blocked";
-                    other.GetComponent<Building>().activate();
-                }
-                else
-                {
-                    Debug.Log("Trying to activate an object in the building layer, which is not a building", other.gameObject);
-                }
+        if (other.gameObject.layer == 10) {
+            covering = other.gameObject;
+            if (other.GetComponent<Building>() != null) {
+                pathfinding.buildingAdded(id);
+                details = "blocked";
+                other.GetComponent<Building>().activate();
             }
+            else
+            {
+                Debug.Log("Trying to activate an object in the building layer, which is not a building", other.gameObject);
+            }
+        }
         covered = true;
     }
 
-	void OnTriggerExit(Collider other) {
+    void OnTriggerExit(Collider other) {
 
 
         if (other.gameObject.layer == 10)
         {
+            covering = null;
             if (other.GetComponent<Building>() != null)
             {
                 pathfinding.buildingRemoved(id);

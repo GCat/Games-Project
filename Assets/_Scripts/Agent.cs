@@ -51,7 +51,6 @@ public class Agent : MonoBehaviour, Character
     public Animation anim;
 
     // movements
-    private bool stopMoving;
     public float priority = 0;
     public Vector3 startMarker;
     public Vector3 endMarker;
@@ -77,7 +76,6 @@ public class Agent : MonoBehaviour, Character
     // Fighting
     enum Fighter { Killer, Defender, Camper };
     public int fighterType;
-    public bool fightMode;
 
     //Killer
     private GameObject closestEnemy;
@@ -95,10 +93,8 @@ public class Agent : MonoBehaviour, Character
 
     void Start()
     {
-        stopMoving = false;
         nextNode = new Vector3(0.0f, -50.0f, 0.0f);
         waypoints = new List<int>();
-        fightMode = false;
 
         priority = UnityEngine.Random.Range(0.0f, 20.0f);
 
@@ -126,13 +122,10 @@ public class Agent : MonoBehaviour, Character
             }
             else if (beingGrabbed)
             {
-                waypoints = new List<int>();
-                nextNode.y = -50.0f;
                 sacrifice();
             }
             else if (falling)
             {
-                Debug.Log(rb.velocity);
                 if (transform.position.y < 1.0f)
                 {
                     rb.isKinematic = true;
@@ -146,7 +139,7 @@ public class Agent : MonoBehaviour, Character
             }
             else
             {
-                moveToNextTarget();
+                moveToNextTarget(false);
             }
 
 
@@ -170,7 +163,6 @@ public class Agent : MonoBehaviour, Character
                     sacrificeEntered = true;
                     rb.isKinematic = false;
                     rb.useGravity = true;
-                    GameObject resourceTab = GameObject.Find("Resource_tablet");
                     resources.addFaith(100);
                     AudioSource source = GetComponent<AudioSource>();
                     source.PlayOneShot(sacrificeClip, 0.5f);
@@ -193,6 +185,7 @@ public class Agent : MonoBehaviour, Character
     IEnumerator WaitToDestroy(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
+        resources.removePop();
         GameObject.Destroy(gameObject);
     }
 
@@ -207,7 +200,7 @@ public class Agent : MonoBehaviour, Character
 
     //what does this do?? 
     //okay so on spawn we set the next node to -50 presumably to indicate we haven't found one yet
-    private void moveToNextTarget()
+    private void moveToNextTarget(bool fighting)
     {
 
         // for this to work 2*tolerance >= speed/framerate  so tolerance is 0.1f therefore speed/frame < 0.2f
@@ -220,7 +213,6 @@ public class Agent : MonoBehaviour, Character
                 //move character towards next target
                 if (offset.magnitude > 0.5f)
                 {
-                    Vector3 finalVal = offset *100;
                     // rb.MovePosition(transform.position + finalVal * Time.deltaTime);
                     float distCovered = (Time.time - startTime) * speed;
                     float fracJourney = distCovered / journeyLength;
@@ -231,6 +223,8 @@ public class Agent : MonoBehaviour, Character
                         Time.deltaTime * rotationspeed);
                     anim.Play("walk");
                 }
+                else if (fighting)
+                    getNextNodeFighter();
                 else
                     getNextNode();
             }
@@ -262,6 +256,7 @@ public class Agent : MonoBehaviour, Character
             {
                 if (!attack(closestEnemy)) closestEnemy = null;
             }
+            else moveToNextTarget(true);
         }
         else
         {
@@ -269,82 +264,87 @@ public class Agent : MonoBehaviour, Character
         }
     }
 
-    private void getNextNode()
-    {
+    // NEED TO FIND ANOTHER WAY TO MOVE 
+    private void getNextNodeFighter() {
         if (waypoints.Count > 0)
         {
-            if (!fightMode)
+            if (closestEnemy != null)
             {
-                targetCell = waypoints[0];
-                waypoints.Remove(targetCell);
-                Vector3 p = pathFinder.getCellPosition(targetCell);
-                p.y = 0.0f;
-                nextNode = p;
-                startTime = Time.time;
-                startMarker = transform.position;
-                endMarker = p;
-                journeyLength = Vector3.Distance(startMarker, endMarker);
-            }
-            else
-            {
-                if(closestEnemy != null)
+                // check if distacne between you and target is growing
+                if (dis2Enemy - 0.2f > Vector3.Distance(transform.position, closestEnemy.transform.position))
                 {
-                    if (dis2Enemy - 0.2f > Vector3.Distance(transform.position, closestEnemy.transform.position))
-                    {
-                        int srcCell = coord2cellID(transform.position);
-                        targetCell = coord2cellID(closestEnemy.transform.position);
-                        dis2Enemy = Vector3.Distance(transform.position, closestEnemy.transform.position);
-                        if (!threadRunning)
-                        {
-                            threadRunning = true;
-                            t1 = new Thread(() => astar(srcCell, targetCell));
-                            t1.Start();
-                        }
-                    }
-                    else
-                    {
-                        targetCell = waypoints[0];
-                        waypoints.Remove(targetCell);
-                        Vector3 p = pathFinder.getCellPosition(targetCell);
-                        p.y = 0.0f;
-                        nextNode = p;
-                        startTime = Time.time;
-                        startMarker = transform.position;
-                        endMarker = p;
-                        journeyLength = Vector3.Distance(startMarker, endMarker);
-                    }
-                }
-                
-            }
-
-        }
-        else
-        {   if (!fightMode)
-            {
-                int srcCell = coord2cellID(transform.position);
-                targetCell = calculateNewTarget();
-                if (!threadRunning)
-                {
-                    threadRunning = true;
-                    t1 = new Thread(() => astar(srcCell, targetCell));
-                    t1.Start();
-                }
-            }
-            else
-            {
-                if (closestEnemy != null)
-                {
-                    int srcCell = coord2cellID(transform.position);
-                    targetCell = coord2cellID(closestEnemy.transform.position);
                     dis2Enemy = Vector3.Distance(transform.position, closestEnemy.transform.position);
                     if (!threadRunning)
                     {
+                        int srcCell = coord2cellID(transform.position);
+                        targetCell = coord2cellID(closestEnemy.transform.position);
                         threadRunning = true;
                         t1 = new Thread(() => astar(srcCell, targetCell));
                         t1.Start();
                     }
                 }
-                
+                else
+                {
+                    Debug.Log("Moving towards enemy");
+                    // else keep on found path
+                    dis2Enemy = Vector3.Distance(transform.position, closestEnemy.transform.position);
+                    targetCell = waypoints[0];
+                    waypoints.Remove(targetCell);
+                    Vector3 p = pathFinder.getCellPosition(targetCell);
+                    p.y = 0.0f;
+                    nextNode = p;
+                    startTime = Time.time;
+                    startMarker = transform.position;
+                    endMarker = p;
+                    journeyLength = Vector3.Distance(startMarker, endMarker);
+                }
+            }
+        }
+        else
+        {
+            if (closestEnemy != null)
+            {
+                dis2Enemy = Vector3.Distance(transform.position, closestEnemy.transform.position);
+                if (!threadRunning)
+                {
+                    Debug.Log("Finding path to enemy");
+                    int srcCell = coord2cellID(transform.position);
+                    targetCell = coord2cellID(closestEnemy.transform.position);
+                    threadRunning = true;
+                    t1 = new Thread(() => astar(srcCell, targetCell));
+                    t1.Start();
+                }
+            }
+        }
+        
+    }
+
+    private void getNextNode()
+    {
+        if (waypoints.Count > 0)
+        {
+            targetCell = waypoints[0];
+            waypoints.Remove(targetCell);
+            Vector3 p = pathFinder.getCellPosition(targetCell);
+            p.y = 0.0f;
+            nextNode = p;
+            startTime = Time.time;
+            startMarker = transform.position;
+            endMarker = p;
+            journeyLength = Vector3.Distance(startMarker, endMarker);
+
+        }
+        else
+        {
+            if (!threadRunning)
+            {
+                int srcCell = coord2cellID(transform.position);
+                targetCell = calculateNewTarget();
+                waypoints = new List<int>();
+                nextNode.y = -50f;
+                threadRunning = true;
+                t1 = new Thread(() => astar(srcCell, targetCell));
+                t1.Start();
             }
         }
     }
@@ -366,6 +366,8 @@ public class Agent : MonoBehaviour, Character
     private GameObject findClosestEnemy()
     {
         GameObject[] badies;
+        nextNode.y = -50f;
+        waypoints = new List<int>();
         GameObject closest = null;
         badies = GameObject.FindGameObjectsWithTag("Badies");
         float distance = Mathf.Infinity;
@@ -411,6 +413,7 @@ public class Agent : MonoBehaviour, Character
 
     void OnTriggerEnter(Collider other)
     {
+        /*
         if (other.tag == "Human")
         {
             Debug.Log("Humans close to each other!");
@@ -445,17 +448,20 @@ public class Agent : MonoBehaviour, Character
                 //x = (c2-c1) / (m1-m2)
             }
 
-        }
+        }*/
     }
+
     public void changeMoving(Boolean move)
     {
-        stopMoving = move;
+        
 
     }
 
     public void grabbed ()
     {
         beingGrabbed = true;
+        nextNode.y = -50f;
+        waypoints = new List<int>();
         realeased = false;
         rb.isKinematic = true;
         rb.useGravity = false;
@@ -480,10 +486,6 @@ public class Agent : MonoBehaviour, Character
             GetComponent<Collider>().enabled = enabled;
         }
     }
-    public void changeMode (bool val)
-    {
-        fightMode = val;
-    }
 
     bool attack(GameObject victim)
     {
@@ -504,6 +506,12 @@ public class Agent : MonoBehaviour, Character
         }
         return false;
     }
+
+    public void changeMode(bool val)
+    {
+        
+    }
+
     public void activate()
     {
         active = true;
