@@ -50,15 +50,26 @@ public class PathFinding : MonoBehaviour
     private void Update()
     {
         if(Input.GetKey(KeyCode.KeypadEnter)|| Input.GetKey("enter")){
+            //this script should maintain a set of these, rather than finding them each frame, i'll do this later -- Gavin
             GameObject[] badies = GameObject.FindGameObjectsWithTag("Badies");
             foreach (GameObject b in badies)
             {
                 b.SendMessage("changeMoving", true);
+                Character c = b.GetComponent<Character>();
+                if (c != null)
+                {
+                    c.changeMoving(true);
+                }
             }
+            //also I don't know the difference between changemode and changemoving -- I'll keep it as it was for now
             GameObject[] humans = GameObject.FindGameObjectsWithTag("Human");
             foreach (GameObject h in humans)
             {
-                h.SendMessage("changeMode", true);
+                Character c = h.GetComponent<Character>();
+                if (c != null)
+                {
+                    c.changeMode(true);
+                }
             }
 
         }

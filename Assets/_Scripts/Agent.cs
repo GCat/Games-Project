@@ -160,7 +160,7 @@ public class Agent : MonoBehaviour, Character
                     rb.isKinematic = false;
                     rb.useGravity = true;
                     GameObject resourceTab = GameObject.Find("Resource_tablet");
-                    resourceTab.SendMessage("addFaith", 100);
+                    resources.addFaith(100);
                     AudioSource source = GetComponent<AudioSource>();
                     source.PlayOneShot(sacrificeClip, 0.5f);
                     anim.Play("diehard");

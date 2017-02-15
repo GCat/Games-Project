@@ -35,8 +35,16 @@ public class Arrow : MonoBehaviour {
                 {
                     if (!damageDone)
                     {
-                        target.SendMessage("decrementHealth", damage);
-                        damageDone = true;
+                        HealthManager health = target.GetComponent<HealthManager>();
+                        if (health != null)
+                        {
+                            health.decrementHealth(damage);
+                            damageDone = true;
+                        }
+                        else
+                        {
+                            Debug.Log("arrow cannot damage something without health");
+                        }
                     }
                     Destroy(gameObject,1.5f);
                 }

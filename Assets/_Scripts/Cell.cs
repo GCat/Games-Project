@@ -56,7 +56,6 @@ public class Cell : MonoBehaviour {
                     Debug.Log("Trying to activate an object in the building layer, which is not a building", other.gameObject);
                 }
             }
-            //if (other.tag != "Tablet" && other.gameObject.layer == 10) other.gameObject.SendMessage("activate");
 		}
         covered = true;
     }

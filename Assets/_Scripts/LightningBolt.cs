@@ -61,8 +61,14 @@ public class LightningBolt : MonoBehaviour, Placeable {
             int i = 0;
             while (i < damageZone.Length)
             {
-                if (damageZone[i].name == "Badie")
-                    damageZone[i].SendMessage("decrementHealth", 25);
+                HealthManager victimHealth = damageZone[i].GetComponent<HealthManager>();
+                //we can probably do something cleaner than comparing name - maybe some enums for different character types
+                if (victimHealth != null && damageZone[i].name == "badie")
+                {
+                    victimHealth.decrementHealth(25);
+                } else {
+                    //can't damage something without health -- in this case that's fine
+                }
                 i++;
             }
         }
