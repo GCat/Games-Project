@@ -146,7 +146,7 @@ public class Agent : MonoBehaviour, Character
             }
             else
             {
-                wanderNav();
+                moveToNextTarget();
             }
 
 
@@ -207,7 +207,7 @@ public class Agent : MonoBehaviour, Character
 
     //what does this do?? 
     //okay so on spawn we set the next node to -50 presumably to indicate we haven't found one yet
-    private void wanderNav()
+    private void moveToNextTarget()
     {
 
         // for this to work 2*tolerance >= speed/framerate  so tolerance is 0.1f therefore speed/frame < 0.2f
@@ -217,6 +217,7 @@ public class Agent : MonoBehaviour, Character
             if (pathFinder.checkCell(targetCell) == "empty")
             {
                 Vector3 offset = nextNode - transform.position;
+                //move character towards next target
                 if (offset.magnitude > 0.5f)
                 {
                     Vector3 finalVal = offset *100;
