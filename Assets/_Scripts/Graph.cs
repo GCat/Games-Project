@@ -164,8 +164,8 @@ public class Graph
                 Vector3 position = new Vector3((float)(x + 1.0f), 0.05f, (float)(z + 1.0f));
                 GameObject pre = Resources.Load("Cell") as GameObject;
                 GameObject c = GameObject.Instantiate(pre, position, Quaternion.identity) as GameObject;
-                c.name = string.Format("cell{0}", i);
-                c.SendMessage("setid", i);
+                c.GetComponent<Cell>().setid(i);
+
                 nodes.Add(c);
                 i++;
             }
