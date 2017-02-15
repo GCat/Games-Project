@@ -38,8 +38,8 @@ public class Agent : MonoBehaviour, Character
 {
     // Human characteristics
     public float health = 100.0f;
-    public float strenght = 10.0f;
-    private float speed = 2.0f;
+    public float strength = 10.0f;
+    public float speed = 2.0f;
     private float rotationspeed = 5.0f;
     public float gravity = 9.81F;
     public float weapon_strength;
@@ -89,7 +89,7 @@ public class Agent : MonoBehaviour, Character
     public float time_between_searches = 5;
 
     public bool active = true;
-
+    public CharacterController controller;
 
     void Start()
     {
@@ -135,7 +135,7 @@ public class Agent : MonoBehaviour, Character
             }
             else if (resources.baddies > 0)
             {
-                fightNav();
+                killerNav();
             }
             else
             {
@@ -150,6 +150,25 @@ public class Agent : MonoBehaviour, Character
         }
     }
 
+
+    //we should only use this method for moving -- once per frame
+    void walkTo(Vector3 target)
+    {
+        Vector3 offset = target - transform.position;
+        if (offset.magnitude > 0.1f)
+        {
+            offset = offset.normalized * speed;
+            controller.Move(offset * Time.deltaTime);
+            //don't spin in circles
+            if (offset.magnitude > 2)
+            {
+                offset.y = transform.position.y;
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(offset), Time.deltaTime * rotationspeed);
+            }
+            anim.Play("walk");
+        }
+
+    }
 
     void sacrifice()
     {
@@ -213,15 +232,7 @@ public class Agent : MonoBehaviour, Character
                 //move character towards next target
                 if (offset.magnitude > 0.5f)
                 {
-                    // rb.MovePosition(transform.position + finalVal * Time.deltaTime);
-                    float distCovered = (Time.time - startTime) * speed;
-                    float fracJourney = distCovered / journeyLength;
-                    transform.position = Vector3.Lerp(startMarker, endMarker, fracJourney);
-                    transform.rotation = Quaternion.Slerp(
-                        transform.rotation,
-                        Quaternion.LookRotation(offset),
-                        Time.deltaTime * rotationspeed);
-                    anim.Play("walk");
+                    walkTo(nextNode);
                 }
                 else if (fighting)
                     getNextNodeFighter();
@@ -238,12 +249,17 @@ public class Agent : MonoBehaviour, Character
     }
 
 
-    private void fightNav()
+    //private void fightNav()
+    //{
+    //   if (fighterType == (int)Fighter.Killer)
+    //    {
+    //        killerNav();
+    //    }
+    //}
+
+    private void moveStraightToTarget(GameObject target)
     {
-       if (fighterType == (int)Fighter.Killer)
-        {
-            killerNav();
-        }
+        walkTo(target.transform.position);
     }
 
     private void killerNav()
@@ -252,11 +268,15 @@ public class Agent : MonoBehaviour, Character
 
         if (closestEnemy != null)
         {
-            if (Vector3.Distance(transform.position, closestEnemy.transform.position) < 2.0f)
+            if (Vector3.Distance(transform.position, closestEnemy.transform.position) < 3.0f)
             {
                 if (!attack(closestEnemy)) closestEnemy = null;
             }
-            else moveToNextTarget(true);
+            else
+            {
+                moveStraightToTarget(closestEnemy);
+            }
+            //moveToNextTarget(true);
         }
         else
         {
@@ -292,7 +312,14 @@ public class Agent : MonoBehaviour, Character
                     targetCell = waypoints[0];
                     waypoints.Remove(targetCell);
                     Vector3 p = pathFinder.getCellPosition(targetCell);
-                    p.y = 0.0f;
+                    if (transform.position.y >= 0 && transform.position.y < 10)
+                    {
+                        p.y = transform.position.y;
+                    }
+                    else
+                    {
+                        p.y = 0;
+                    }
                     nextNode = p;
                     startTime = Time.time;
                     startMarker = transform.position;
@@ -497,7 +524,7 @@ public class Agent : MonoBehaviour, Character
             HealthManager victimHealth = victim.GetComponent<HealthManager>();
             if (victimHealth != null)
             {
-                victimHealth.decrementHealth(strenght * Time.deltaTime);
+                victimHealth.decrementHealth(strength * Time.deltaTime);
             }
             else
             {
