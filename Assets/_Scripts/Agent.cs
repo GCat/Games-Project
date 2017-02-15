@@ -87,6 +87,9 @@ public class Agent : MonoBehaviour, Character
 
     private ResourceCounter resources;
 
+    private float last_search = 0;
+    //Time between searching the scene for a new target
+    public float time_between_searches = 5;
 
     public bool active = true;
 
@@ -97,7 +100,7 @@ public class Agent : MonoBehaviour, Character
         nextNode = new Vector3(0.0f, -50.0f, 0.0f);
         waypoints = new List<int>();
         noMoreEnemies = false;
-        fightMode = true;
+        fightMode = false;
 
         priority = UnityEngine.Random.Range(0.0f, 20.0f);
 
@@ -139,10 +142,20 @@ public class Agent : MonoBehaviour, Character
                     falling = false;
                 }
             }
-            else if (fightMode && !stopMoving)
+            else if (resources.baddies > 0)
+            {
                 fightNav();
-            else if (!stopMoving)
+            }
+            else
+            {
                 wanderNav();
+            }
+
+
+            //else if (fightMode && !stopMoving)
+            //    fightNav();
+            //else if (!stopMoving)
+            //    wanderNav();
         }
     }
 
@@ -196,6 +209,7 @@ public class Agent : MonoBehaviour, Character
 
     private void wanderNav()
     {
+
         // for this to work 2*tolerance >= speed/framerate  so tolerance is 0.1f therefore speed/frame < 0.2f
         if (nextNode.y == -50f) getNextNode();
         else
@@ -239,11 +253,9 @@ public class Agent : MonoBehaviour, Character
 
     private void killerNav()
     {
-        if (noMoreEnemies)
-        {
-            fightMode = false;
-        }
-        else if (closestEnemy != null)
+
+
+        if (closestEnemy != null)
         {
             if (Vector3.Distance(transform.position, closestEnemy.transform.position) < 2.0f)
             {
@@ -256,7 +268,7 @@ public class Agent : MonoBehaviour, Character
         }
         else
         {
-            closestEnemy = findClosestEnemy();
+           closestEnemy = findClosestEnemy();
         }
     }
 
