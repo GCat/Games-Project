@@ -6,4 +6,9 @@ public interface Placeable {
 
     void activate();
 
+    //function to be called when grabbed by hand
+    void grab();
+
+    //function to be called when released from hand
+    void release(Vector3 vel);
 }

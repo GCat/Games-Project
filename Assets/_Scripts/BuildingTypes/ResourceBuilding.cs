@@ -108,7 +108,7 @@ public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
         on_game_board = false;   
     }
 
-    void grabbed()
+    public void grab()
     {
         held = true;
         badplacement = false;

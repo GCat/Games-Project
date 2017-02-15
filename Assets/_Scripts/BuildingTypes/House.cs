@@ -196,7 +196,7 @@ public class House  : MonoBehaviour, Building, Placeable
     {
         active = false;
     }
-    void grabbed()
+    public void grab()
     {
         badplacement = false;
         held = true;
@@ -214,7 +214,8 @@ public class House  : MonoBehaviour, Building, Placeable
         GetComponent<Collider>().enabled = false;
 
     }
-    void release(Vector3 vel)
+
+    public void release(Vector3 vel)
     {
 
         //Snap to grid

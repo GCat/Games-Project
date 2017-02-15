@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LightningBolt : MonoBehaviour {
+public class LightningBolt : MonoBehaviour, Placeable {
 
     public bool held = false;
     GameObject highlight = null;
@@ -18,7 +19,7 @@ public class LightningBolt : MonoBehaviour {
 		
 	}
 
-    void grabbed()
+    public void grab()
     {
         held = true;
         // Deactivate collider and gravity
@@ -38,7 +39,7 @@ public class LightningBolt : MonoBehaviour {
         GetComponent<Collider>().enabled = false;
 
     }
-    void release(Vector3 vel)
+    public void release(Vector3 vel)
     {
         GetComponent<Rigidbody>().useGravity = true;
         GetComponent<Rigidbody>().isKinematic = false;
@@ -67,6 +68,9 @@ public class LightningBolt : MonoBehaviour {
         }
     }
 
-    
-   
+    public void activate()
+    {
+        throw new NotImplementedException();
+    }
+
 }

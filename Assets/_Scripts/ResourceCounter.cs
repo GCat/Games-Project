@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-public class ResourceCounter : MonoBehaviour
+public class ResourceCounter : MonoBehaviour, Placeable
 {
 
     public Dictionary<string, GameObject[]> resource_nodes;
@@ -181,7 +181,7 @@ public class ResourceCounter : MonoBehaviour
         }
     }
 
-    void grabbed()
+    public void grab()
     {
       
         // Deactivate  collider and gravity
@@ -189,11 +189,16 @@ public class ResourceCounter : MonoBehaviour
         GetComponent<Rigidbody>().isKinematic = true;
         GetComponent<Collider>().enabled = false;
     }
-    void release(Vector3 vel)
+    public void release(Vector3 vel)
     {
         GetComponent<Rigidbody>().useGravity = true;
         GetComponent<Rigidbody>().isKinematic = false;
         GetComponent<Collider>().enabled = true;
         GetComponent<Rigidbody>().velocity = vel;
+    }
+    public void activate()
+    {
+
+
     }
 }

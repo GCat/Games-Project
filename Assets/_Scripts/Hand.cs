@@ -224,7 +224,16 @@ public class Hand : MonoBehaviour {
                 }
                 
                 holding = true;
-                heldObject.SendMessage("grabbed");
+                Placeable placeable = heldObject.GetComponent<Placeable>();
+
+                if (placeable != null)
+                {
+                    placeable.grab();
+                }
+                else
+                {
+                    Debug.Log("This object is not placeable", heldObject);
+                }
                 heldObject.transform.parent = transform;                
             }
             else
@@ -259,7 +268,16 @@ public class Hand : MonoBehaviour {
             Vector3 velocity = (transform.position - held_object_positions[4]) / (time);
             //heldObject.GetComponent<Rigidbody>().velocity = velocity;
 
-            heldObject.SendMessage("release", velocity);
+            Placeable placeable = heldObject.GetComponent<Placeable>();
+            if (placeable != null)
+            {
+                placeable.release(velocity);
+            }
+            else
+            {
+                Debug.Log("This object is not placeable", heldObject);
+            }
+
             holding = false;
             heldObject.transform.parent = null;
                         

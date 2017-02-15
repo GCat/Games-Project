@@ -210,7 +210,7 @@ public class WatchTower : MonoBehaviour, Building, Placeable
         active = false;
     }
 
-    void grabbed()
+    public void grab()
     {
         held = true;
         badplacement = false;
@@ -228,7 +228,7 @@ public class WatchTower : MonoBehaviour, Building, Placeable
         GetComponent<Collider>().enabled = false;
 
     }
-    void release(Vector3 vel)
+    public void release(Vector3 vel)
     {
         //Snap to grid
         float y = transform.position.y;
