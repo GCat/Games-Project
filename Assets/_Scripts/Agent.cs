@@ -34,7 +34,7 @@ using System;
 
 
 
-public class Agent : MonoBehaviour, Character
+public class Agent : MonoBehaviour, Character, Placeable
 {
     // Human characteristics
     public float health = 100.0f;
@@ -131,6 +131,7 @@ public class Agent : MonoBehaviour, Character
                     rb.isKinematic = true;
                     rb.useGravity = false;
                     falling = false;
+                    controller.enabled = true;
                 }
             }
             else if (resources.baddies > 0)
@@ -485,8 +486,9 @@ public class Agent : MonoBehaviour, Character
 
     }
 
-    public void grabbed ()
+    public void grab ()
     {
+        controller.enabled = false;
         beingGrabbed = true;
         nextNode.y = -50f;
         waypoints = new List<int>();
@@ -496,23 +498,25 @@ public class Agent : MonoBehaviour, Character
         GetComponent<Collider>().enabled = false;
     }
 
-    public void released(Vector3 vel)
+    public void release(Vector3 vel)
     {
         realeased = true;
         if (transform.position.y > 1.0f)
         {
             rb.isKinematic = false;
-            rb.useGravity = true;
             falling = true;
             rb.velocity = vel;
             Debug.Log("FALLING!");
         }
         else
         {
+            controller.enabled = true;
             rb.isKinematic = true;
-            rb.useGravity = true;
             GetComponent<Collider>().enabled = enabled;
         }
+        rb.useGravity = true;
+        beingGrabbed = false;
+
     }
 
     bool attack(GameObject victim)
@@ -544,4 +548,5 @@ public class Agent : MonoBehaviour, Character
     {
         active = true;
     }
+
 }
