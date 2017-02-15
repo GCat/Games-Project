@@ -96,12 +96,14 @@ public class BadiesAI : MonoBehaviour, Character {
     private bool buildingsLeft = true;
     public GameObject[] buildings;
 
+    private ResourceCounter resources;
 
     void Start()
     {
-     
-        
-        
+        resources = GameObject.FindGameObjectWithTag("Tablet").GetComponent<ResourceCounter>();
+        resources.addBaddie();
+
+
     }
 
     public void spawn(int type)
@@ -608,6 +610,7 @@ public class BadiesAI : MonoBehaviour, Character {
     IEnumerator WaitToDestroy(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
+        resources.removeBaddie();
         GameObject.Destroy(gameObject);
     }
 

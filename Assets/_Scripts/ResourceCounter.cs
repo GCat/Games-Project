@@ -8,7 +8,7 @@ public class ResourceCounter : MonoBehaviour, Placeable
 
     public Dictionary<string, GameObject[]> resource_nodes;
     //The text displayed on the tablet
-    public Text text; 
+    public Text text;
     public int faith = 0;
     private int population = 0;
     private int iron = 0;
@@ -19,6 +19,7 @@ public class ResourceCounter : MonoBehaviour, Placeable
     private int armour = 0;
     private int swordMult = 1;
     private int armourMult = 1;
+    public int baddies = 0;
 
 
     private void Awake()
@@ -39,16 +40,16 @@ public class ResourceCounter : MonoBehaviour, Placeable
     // Update is called once per frame
     void Update()
     {
-        if (iron > 10*swordMult)
+        if (iron > 10 * swordMult)
         {
             swords++;
-            iron -= 10*swordMult;
+            iron -= 10 * swordMult;
             swordMult *= 2;
         }
-        if (iron > 20*armourMult)
+        if (iron > 20 * armourMult)
         {
             armour++;
-            iron -= 20*armourMult;
+            iron -= 20 * armourMult;
             armourMult *= 2;
         }
         setResourceText();
@@ -126,7 +127,7 @@ public class ResourceCounter : MonoBehaviour, Placeable
     }
     public void addFaith()
     {
-        faith += (population*1)+1;
+        faith += (population * 1) + 1;
     }
     public void addSwords()
     {
@@ -135,6 +136,14 @@ public class ResourceCounter : MonoBehaviour, Placeable
     public void addPop()
     {
         population++;
+    }
+    public void addBaddie()
+    {
+        baddies++;
+    }
+    public void removeBaddie()
+    {
+        baddies--;
     }
     public void removePop()
     {
