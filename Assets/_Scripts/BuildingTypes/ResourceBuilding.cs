@@ -63,6 +63,7 @@ public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
             Destroy(gameObject);
         }
     }
+    //fixedupdate can be run 100+ times per second...maybe this shouldn't be calling 'highlightcheck' here
     void FixedUpdate()
     {
         if (on_game_board)

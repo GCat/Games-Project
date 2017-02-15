@@ -266,6 +266,7 @@ public class Agent : MonoBehaviour, Character
 
     // NEED TO FIND ANOTHER WAY TO MOVE 
     private void getNextNodeFighter() {
+
         if (waypoints.Count > 0)
         {
             if (closestEnemy != null)
