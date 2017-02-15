@@ -34,7 +34,7 @@ public class WatchTower : MonoBehaviour, Building, Placeable
 
     public Material matEmpty;
     public Material matInval;
-
+    private ResourceCounter resources;
 
     string Building.getName()
     {
@@ -67,6 +67,7 @@ public class WatchTower : MonoBehaviour, Building, Placeable
         StartTime2 = Time.time;
         timer3 = 0f;
         StartTime3 = Time.time;
+        resources = GameObject.FindGameObjectWithTag("Tablet").GetComponent<ResourceCounter>();
     }
 
     void Start () {
@@ -126,6 +127,11 @@ public class WatchTower : MonoBehaviour, Building, Placeable
                 if (targets.Count < 3)
                 {
                     int layerMask = 1 << 11;
+                    //pretty poor performance on this - I've tried my best to reduce it
+                    if (resources.baddies < 1)
+                    {
+                        return;
+                    }
                     List<Collider> hitColliders = new List<Collider>(Physics.OverlapSphere(transform.position, radius, layerMask));
                     foreach (Collider c in hitColliders)
                     {

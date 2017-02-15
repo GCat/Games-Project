@@ -81,7 +81,6 @@ public class Agent : MonoBehaviour, Character
 
     //Killer
     private GameObject closestEnemy;
-    private bool noMoreEnemies;
     private int maxCell;
     private float dis2Enemy =0;
 
@@ -99,7 +98,6 @@ public class Agent : MonoBehaviour, Character
         stopMoving = false;
         nextNode = new Vector3(0.0f, -50.0f, 0.0f);
         waypoints = new List<int>();
-        noMoreEnemies = false;
         fightMode = false;
 
         priority = UnityEngine.Random.Range(0.0f, 20.0f);
@@ -207,6 +205,8 @@ public class Agent : MonoBehaviour, Character
         threadRunning = false;
     }
 
+    //what does this do?? 
+    //okay so on spawn we set the next node to -50 presumably to indicate we haven't found one yet
     private void wanderNav()
     {
 
@@ -260,10 +260,6 @@ public class Agent : MonoBehaviour, Character
             if (Vector3.Distance(transform.position, closestEnemy.transform.position) < 2.0f)
             {
                 if (!attack(closestEnemy)) closestEnemy = null;
-            }
-            else
-            {
-                wanderNav();
             }
         }
         else
@@ -386,10 +382,7 @@ public class Agent : MonoBehaviour, Character
                 }
             }  
         }
-        else
-        {
-            noMoreEnemies = true;
-        }
+
         return closest;
     }
 

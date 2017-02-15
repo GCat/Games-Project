@@ -194,60 +194,54 @@ public class Hand : MonoBehaviour {
 
     private void grabObject()
     {
-        if (!holding)
+        if (holding) return;
+
+
+        GameObject closest = null;
+        int layerMask = (1 << 9) | ( 1 << 10) | (1 << 14);
+        Vector3 p = grab_position.transform.position;//new Vector3(transform.position.x - 14, transform.position.y - 18, transform.position.z);
+        things = Physics.OverlapSphere(p, 4.0f, layerMask);
+        float distance = Mathf.Infinity;
+        if (things.Length > 0)
         {
-            GameObject closest = null;
-            int layerMask = (1 << 9) | ( 1 << 10) | (1 << 14);
-            Vector3 p = grab_position.transform.position;//new Vector3(transform.position.x - 14, transform.position.y - 18, transform.position.z);
-            things = Physics.OverlapSphere(p, 4.0f, layerMask);
-            float distance = Mathf.Infinity;
-            if (things.Length > 0)
+            foreach (Collider thing in things)
             {
-                foreach (Collider thing in things)
+                Vector3 diff = thing.ClosestPointOnBounds(p) - p;
+                float current_distance = diff.sqrMagnitude;
+                if (current_distance < distance)
                 {
-                    Vector3 diff = thing.ClosestPointOnBounds(p) - p;
-                    float current_distance = diff.sqrMagnitude;
-                    if (current_distance < distance)
-                    {
-                        distance = current_distance;
-                        closest = thing.gameObject;
-                    }
+                    distance = current_distance;
+                    closest = thing.gameObject;
                 }
             }
-            heldObject = closest;
-            if (heldObject != null)
+        }
+        heldObject = closest;
+        if (heldObject != null)
+        {
+            Debug.Log("GRABBED");
+            if (heldObject.tag == "Shelf Object")
             {
-                Debug.Log("GRABBED");
-                if (heldObject.tag == "Shelf Object")
-                {
-                    original_position = heldObject.transform.position;
-                }
+                original_position = heldObject.transform.position;
+            }
                 
-                holding = true;
-                Placeable placeable = heldObject.GetComponent<Placeable>();
+            holding = true;
+            Placeable placeable = heldObject.GetComponent<Placeable>();
 
-                if (placeable != null)
-                {
-                    placeable.grab();
-                }
-                else
-                {
-                    Debug.Log("This object is not placeable", heldObject);
-                }
-                heldObject.transform.parent = transform;                
+            if (placeable != null)
+            {
+                placeable.grab();
             }
             else
             {
-                //Debug.Log("NOTHING TO GRAB!");
+                Debug.Log("This object is not placeable", heldObject);
             }
+            heldObject.transform.parent = transform;                
         }
         else
         {
-            Debug.Log("Can't grab whilst holding something");
+            //Debug.Log("NOTHING TO GRAB!");
         }
-
     }
-
 
     void OnDrawGizmosSelected()
     {
@@ -283,6 +277,7 @@ public class Hand : MonoBehaviour {
                         
             if (heldObject.tag == "Shelf Object")
             {
+                //this is a little dodgy - the watchtower should still be a building
                 WatchTower script = heldObject.GetComponent<WatchTower>();
                 if (script != null) heldObject.tag = "Tower";
                 else heldObject.tag = "Building";
@@ -295,10 +290,6 @@ public class Hand : MonoBehaviour {
 
             heldObject = null;
 
-        }
-        else
-        {
-            //Debug.Log("Nothing to realease");
         }
 
     }
