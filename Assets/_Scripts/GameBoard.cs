@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class GameBoard : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
+    public Vector2 bottomLeft = new Vector2(-50, -100);
+    public Vector2 topRight = new Vector2(50, 100);
+
+
+    // Use this for initialization
+    void Start () {
 		
 	}
 	

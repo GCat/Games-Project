@@ -109,8 +109,6 @@ public class BadiesAI : MonoBehaviour, Character {
     MonsterState currentState = MonsterState.AttackTemple;
     void Start()
     {
-        resources = GameObject.FindGameObjectWithTag("Tablet").GetComponent<ResourceCounter>();
-        resources.addBaddie();
         agent = GetComponent<NavMeshAgent>();
 
     }
@@ -141,6 +139,9 @@ public class BadiesAI : MonoBehaviour, Character {
         //maybe we want to do this regularly in case the monsters behaviour changes
 
         templeAttackPoint = temple.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
+        resources = GameObject.FindGameObjectWithTag("Tablet").GetComponent<ResourceCounter>();
+        resources.addBaddie();
+
     }
 
     void Update()
@@ -644,11 +645,12 @@ public class BadiesAI : MonoBehaviour, Character {
     public void decrementHealth(float damage)
     {
         health -= damage;
-        if (health <= 0)
+        if (health <= 0 && alive == true)
         {
             alive = false;
             anim.Play("die");
             StartCoroutine(WaitToDestroy(0.7f));
+            resources.removeBaddie();
         }
     }
     private GameObject findClosestEnemy()
@@ -685,7 +687,6 @@ public class BadiesAI : MonoBehaviour, Character {
     IEnumerator WaitToDestroy(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
-        resources.removeBaddie();
         GameObject.Destroy(gameObject);
     }
 
