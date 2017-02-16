@@ -6,9 +6,6 @@ public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
     public AudioClip build;
     public AudioClip destroy;
     public string buildingName;
-    public float timer;
-    public float startTime;
-    public float timeStep;
     public ResourceCounter resourceCounter;
     public float health = 100.0f;
     public bool on_game_board = false;
@@ -78,16 +75,7 @@ public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
     //fixedupdate can be run 100+ times per second...maybe this shouldn't be calling 'highlightcheck' here
     void FixedUpdate()
     {
-        if (on_game_board)
-        {
-            timer = Time.time - startTime;
-            if (timer > timeStep)
-            {
-                incrementResource();
-                startTime = Time.time;
-            }
-        }
-        else if (badplacement)
+        if (badplacement)
         {
             if (Time.time - placementTime > 5.0f)
             {
@@ -106,6 +94,7 @@ public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
     //Is there enough faith ..  to construct building
     public bool canBuy()
     {
+        Debug.Log(resourceCounter.faith);
         if (resourceCounter.faith >= faithCost())
         {
             resourceCounter.removeFaith(faithCost());
@@ -201,10 +190,15 @@ public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
             if (success && canBuy())
             {
                 create_building();
-            }
+                GetComponent<Rigidbody>().useGravity = false;
+                GetComponent<Rigidbody>().isKinematic = true;
 
-            GetComponent<Rigidbody>().useGravity = false;
-            GetComponent<Rigidbody>().isKinematic = true;        
+            }
+            else
+            {
+                Destroy(gameObject);
+                highlightDestroy();
+            }
         }
         else
         {

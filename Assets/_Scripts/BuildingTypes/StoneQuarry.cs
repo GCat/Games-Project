@@ -13,12 +13,8 @@ public class StoneQuarry : ResourceBuilding
 
     public override void create_building()
     {
-        this.timer = 0f;
-        this.startTime = Time.time;
-        timeStep = 4.0f;
         buildingName = "QUARRY";
-        GameObject tablet = GameObject.Find("Resource_tablet");
-        if (tablet != null) resourceCounter = (ResourceCounter)tablet.GetComponent<ResourceCounter>();
+        InvokeRepeating("incrementResource", 10.0f, 4.0f); // after 10 sec call every 4 
     }
 
     // Use this for initialization

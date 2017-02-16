@@ -12,12 +12,8 @@ public class Farm : ResourceBuilding
 
     public override void create_building()
     {
-        Debug.Log("CREATING FARM");
-        this.timer = 0f;
-        this.startTime = Time.time;
-        timeStep = 1.0f;
         buildingName = "FARM";
-        resourceCounter = (ResourceCounter)GameObject.Find("Resource_tablet").GetComponent("ResourceCounter");
+        InvokeRepeating("incrementResource", 10.0f, 10.0f); // after 10 sec call every 4
     }
 
     // Use this for initialization

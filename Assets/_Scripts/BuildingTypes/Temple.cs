@@ -18,18 +18,15 @@ public class Temple : ResourceBuilding
 
     public override void create_building()
     {
-        Debug.Log("Temple create building");
-        this.timer = 0f;
-        this.startTime = Time.time;
         this.health = 500.0f;
-        timeStep = 0.5f;
         buildingName = "TEMPLE";
         world.startGame(tablet);
         placed = true;
-        tablet = GameObject.Find("Resource_tablet");
+        tablet = GameObject.FindGameObjectWithTag("Tablet");
         if (tablet != null) resourceCounter = (ResourceCounter)tablet.GetComponent<ResourceCounter>();
         else Debug.Log("Tablet not found");
         spawnHumans();
+        InvokeRepeating("incrementResource", 10.0f, 5.0f); // after 10 sec call every 5
     }
 
     public bool isPlaced()
@@ -48,9 +45,6 @@ public class Temple : ResourceBuilding
     // Use this for initialization
     void Start()
     {
-        //spawnHumans();
-        //create_building();
-
     }
 
     public override void incrementResource()

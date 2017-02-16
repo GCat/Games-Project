@@ -12,12 +12,9 @@ public class LumberYard : ResourceBuilding
 
     public override void create_building()
     {
-        this.timer = 0f;
-        this.startTime = Time.time;
-        timeStep = 2.0f;
         buildingName = "LUMBERYARD";
-        resourceCounter = (ResourceCounter)GameObject.Find("Resource_tablet").GetComponent("ResourceCounter");
         resource_node = findNearestResourceNode();
+        InvokeRepeating("incrementResource", 10.0f, 2.0f); // after 10 sec call every 4
     }
 
     // Use this for initialization
@@ -25,6 +22,7 @@ public class LumberYard : ResourceBuilding
     {
 
     }
+
     public override void incrementResource()
     {
         if (resource_node == null)
