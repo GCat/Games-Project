@@ -67,76 +67,18 @@ public class Hand : MonoBehaviour {
         // MOUSE TESTING
         if (useMouse)
         {
-            Vector3 curLocation = transform.position;
-            float h = Input.GetAxis("Mouse X");
-            float v = Input.GetAxis("Mouse Y");
-            float scroll = Input.GetAxis("Mouse ScrollWheel");
-            transform.position = new Vector3(curLocation.x - 6 * v, curLocation.y - 20 * scroll, curLocation.z + 6 * h);
-            curLocation.x -= 14;
-            curLocation.y -= 10;
-
-            if (Input.GetMouseButtonDown(0))
-            {
-                openHand();
-            }
-            if (Input.GetMouseButtonDown(1))
-            {
-                closeHand();
-            }
+            mouseMovement();
         }
         else
         {
-            if (right_hand)
+            if ((right_hand && kinect_view.rightHandClosed) || (!right_hand && kinect_view.leftHandClosed))
             {
-
-                if (!kinect_view.rightHandTracked)
-                {
-                    renderer_open.material.SetColor("_Color", Color.red);
-                    renderer_closed.material.SetColor("_Color", Color.red);
-
-                }
-                else
-                {
-                    renderer_open.material.SetColor("_Color", defaultColor);
-                    renderer_closed.material.SetColor("_Color", defaultColor);
-
-                }
-
-                if (kinect_view.rightHandClosed)
-                {
-                    closeHand();
-                }
-                else
-                {
-                    openHand();
-                }
+                closeHand();
             }
             else
             {
-                if (!kinect_view.leftHandTracked)
-                {   
-                    renderer_open.material.SetColor("_Color", Color.red);
-                    renderer_closed.material.SetColor("_Color", Color.red);
-
-                }
-                else
-                {
-                    renderer_open.material.SetColor("_Color", defaultColor);
-                    renderer_closed.material.SetColor("_Color", defaultColor);
-
-                }
-
-                if (kinect_view.leftHandClosed)
-                {
-                    closeHand();
-                }
-                else
-                {
-                    openHand();
-                }
+                openHand();
             }
-
-
         }
         if (change)
         {
@@ -164,6 +106,64 @@ public class Hand : MonoBehaviour {
         }
 
                
+    }
+
+    //handle player interaction using the mouse foor testing
+    void mouseMovement()
+    {
+        Vector3 curLocation = transform.position;
+        float h = Input.GetAxis("Mouse X");
+        float v = Input.GetAxis("Mouse Y");
+        float scroll = Input.GetAxis("Mouse ScrollWheel");
+        transform.position = new Vector3(curLocation.x - 6 * v, curLocation.y - 20 * scroll, curLocation.z + 6 * h);
+        curLocation.x -= 14;
+        curLocation.y -= 10;
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            openHand();
+        }
+        if (Input.GetMouseButtonDown(1))
+        {
+            closeHand();
+        }
+
+    }
+    //changes colour of wrist band based on tracking
+    void setTrackingColour()
+    {
+        if (right_hand)
+        {
+            if (!kinect_view.rightHandTracked)
+            {
+                renderer_open.material.SetColor("_Color", Color.red);
+                renderer_closed.material.SetColor("_Color", Color.red);
+
+            }
+            else
+            {
+                renderer_open.material.SetColor("_Color", defaultColor);
+                renderer_closed.material.SetColor("_Color", defaultColor);
+
+            }
+        }
+        else
+        {
+            if (!kinect_view.leftHandTracked)
+            {
+                renderer_open.material.SetColor("_Color", Color.red);
+                renderer_closed.material.SetColor("_Color", Color.red);
+
+            }
+            else
+            {
+                renderer_open.material.SetColor("_Color", defaultColor);
+                renderer_closed.material.SetColor("_Color", defaultColor);
+
+            }
+
+        }
+
     }
 
     public void openHand()
