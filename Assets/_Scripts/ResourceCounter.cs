@@ -63,6 +63,7 @@ public class ResourceCounter : MonoBehaviour, Placeable
         resourceText += "Wood: " + wood.ToString() + "\n";
         resourceText += "Stone: " + stone.ToString() + "\n";
         resourceText += "Iron: " + iron.ToString() + "\n";
+        resourceText += "Monsters: " + baddies.ToString() + "\n";
         resourceText += "Population: " + population.ToString() + "\n";
         resourceText += "Sword Level: " + swords.ToString() + "\n";
         resourceText += "Armour Level: " + armour.ToString() + "\n";

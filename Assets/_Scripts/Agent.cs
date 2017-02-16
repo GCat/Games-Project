@@ -92,6 +92,11 @@ public class Agent : MonoBehaviour, Character, Placeable
     public bool active = true;
     //public CharacterController controller;
     private NavMeshAgent agent;
+    private HumanState currentState = HumanState.Wandering;
+
+    private Vector3 wanderPoint = Vector3.zero;
+
+    enum HumanState { Fighting, Wandering, Grabbed, Falling };
 
     void Start()
     {
@@ -122,39 +127,45 @@ public class Agent : MonoBehaviour, Character, Placeable
             {
                 anim.Play("diehard");
                 StartCoroutine(WaitToDestroy(2.1f));
+                return;
             }
-            else if (beingGrabbed)
+            if (resources.baddies > 0)
             {
-                sacrifice();
-            }
-            else if (falling)
-            {
-                if (transform.position.y < 1.0f)
-                {
-                    rb.isKinematic = true;
-                    rb.useGravity = false;
-                    falling = false;
-                    agent.enabled = true;
-                    //controller.enabled = true;
-                }
-            }
-            else if (resources.baddies > 0)
-            {
-                killerNav();
-            }
-            else
-            {
-                moveToNextTarget(false);
+                currentState = HumanState.Fighting;
+            } else {
+                currentState = HumanState.Wandering;
             }
 
 
-            //else if (fightMode && !stopMoving)
-            //    fightNav();
-            //else if (!stopMoving)
-            //    wanderNav();
+
+            switch (currentState){
+                case HumanState.Wandering:
+                    wander();
+                    break;
+
+                case HumanState.Fighting:
+                    attack();
+
+                    break;
+
+                case HumanState.Grabbed:
+                    //sacrifice();
+                    break;
+
+                case HumanState.Falling:
+                    if (transform.position.y < 1.0f)
+                       {
+                           rb.isKinematic = true;
+                           rb.useGravity = false;
+                           falling = false;
+                           agent.enabled = true;
+                           //controller.enabled = true;
+                       }
+                    break;
+
+            }
         }
     }
-
 
     //we should only use this method for moving -- once per frame
     void walkTo(Vector3 target)
@@ -174,6 +185,37 @@ public class Agent : MonoBehaviour, Character, Placeable
             anim.Play("walk");
         }
 
+    }
+
+    private void wander()
+    {
+        if (wanderPoint == Vector3.zero || Vector3.Distance(transform.position, wanderPoint) < 5)
+        {
+            Debug.Log("finding a new target to wander to");
+            wanderPoint = findNewTarget();
+        }
+        else
+        {
+            walkTo(wanderPoint);
+        }
+    }
+
+
+    //generates a new point on the board to wander to
+    private Vector3 findNewTarget()
+    {
+        float randX = UnityEngine.Random.Range(-50, 50);
+        float randZ = UnityEngine.Random.Range(-100, 100);
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(new Vector3(randX, 0, randZ), out hit, 20.0f, NavMesh.AllAreas))
+        {
+            return hit.position;
+        }
+        else
+        {
+            Debug.LogError("Could not calculate a new wander target");
+            return transform.position;
+        }
     }
 
     void sacrifice()
@@ -214,188 +256,34 @@ public class Agent : MonoBehaviour, Character, Placeable
         GameObject.Destroy(gameObject);
     }
 
-
-
-
-    void astar(int srcCell, int targetCell)
-    {
-        waypoints = new List<int>(pathFinder.Astar(srcCell, targetCell));
-        threadRunning = false;
-    }
-
-    //what does this do?? 
-    //okay so on spawn we set the next node to -50 presumably to indicate we haven't found one yet
-    private void moveToNextTarget(bool fighting)
-    {
-
-        // for this to work 2*tolerance >= speed/framerate  so tolerance is 0.1f therefore speed/frame < 0.2f
-        if (nextNode.y == -50f) getNextNode();
-        else
-        {
-            if (pathFinder.checkCell(targetCell) == "empty")
-            {
-                Vector3 offset = nextNode - transform.position;
-                //move character towards next target
-                if (offset.magnitude > 0.5f)
-                {
-                    walkTo(nextNode);
-                }
-                else if (fighting)
-                    getNextNodeFighter();
-                else
-                    getNextNode();
-            }
-            else
-            {
-                waypoints = new List<int>();
-                nextNode.y = -50f;
-                getNextNode();
-            }
-        }
-    }
-
-
-    //private void fightNav()
-    //{
-    //   if (fighterType == (int)Fighter.Killer)
-    //    {
-    //        killerNav();
-    //    }
-    //}
-
     private void moveStraightToTarget(GameObject target)
     {
         walkTo(target.transform.position);
     }
 
-    private void killerNav()
+    private void attack()
     {
-
-
-        if (closestEnemy != null)
+        if (closestEnemy == null)
         {
-            if (Vector3.Distance(transform.position, closestEnemy.transform.position) < 3.0f)
-            {
-                if (!attack(closestEnemy)) closestEnemy = null;
-            }
-            else
-            {
-                moveStraightToTarget(closestEnemy);
-            }
-            //moveToNextTarget(true);
+            closestEnemy = findClosestEnemy();
         }
-        else
-        {
-           closestEnemy = findClosestEnemy();
-        }
-    }
 
-    // NEED TO FIND ANOTHER WAY TO MOVE 
-    private void getNextNodeFighter() {
-
-        if (waypoints.Count > 0)
+        if (Vector3.Distance(transform.position, closestEnemy.transform.position) < 3.0f)
         {
-            if (closestEnemy != null)
+            if (!attack(closestEnemy))
             {
-                // check if distacne between you and target is growing
-                if (dis2Enemy - 0.2f > Vector3.Distance(transform.position, closestEnemy.transform.position))
-                {
-                    dis2Enemy = Vector3.Distance(transform.position, closestEnemy.transform.position);
-                    if (!threadRunning)
-                    {
-                        int srcCell = coord2cellID(transform.position);
-                        targetCell = coord2cellID(closestEnemy.transform.position);
-                        threadRunning = true;
-                        t1 = new Thread(() => astar(srcCell, targetCell));
-                        t1.Start();
-                    }
-                }
-                else
-                {
-                    Debug.Log("Moving towards enemy");
-                    // else keep on found path
-                    dis2Enemy = Vector3.Distance(transform.position, closestEnemy.transform.position);
-                    targetCell = waypoints[0];
-                    waypoints.Remove(targetCell);
-                    Vector3 p = pathFinder.getCellPosition(targetCell);
-                    if (transform.position.y >= 0 && transform.position.y < 10)
-                    {
-                        p.y = transform.position.y;
-                    }
-                    else
-                    {
-                        p.y = 0;
-                    }
-                    nextNode = p;
-                    startTime = Time.time;
-                    startMarker = transform.position;
-                    endMarker = p;
-                    journeyLength = Vector3.Distance(startMarker, endMarker);
-                }
+
+                closestEnemy = null;
+                currentState = HumanState.Wandering;
             }
         }
         else
         {
-            if (closestEnemy != null)
-            {
-                dis2Enemy = Vector3.Distance(transform.position, closestEnemy.transform.position);
-                if (!threadRunning)
-                {
-                    Debug.Log("Finding path to enemy");
-                    int srcCell = coord2cellID(transform.position);
-                    targetCell = coord2cellID(closestEnemy.transform.position);
-                    threadRunning = true;
-                    t1 = new Thread(() => astar(srcCell, targetCell));
-                    t1.Start();
-                }
-            }
+            moveStraightToTarget(closestEnemy);
         }
-        
+
     }
 
-    private void getNextNode()
-    {
-        if (waypoints.Count > 0)
-        {
-            targetCell = waypoints[0];
-            waypoints.Remove(targetCell);
-            Vector3 p = pathFinder.getCellPosition(targetCell);
-            p.y = 0.0f;
-            nextNode = p;
-            startTime = Time.time;
-            startMarker = transform.position;
-            endMarker = p;
-            journeyLength = Vector3.Distance(startMarker, endMarker);
-
-        }
-        else
-        {
-            if (!threadRunning)
-            {
-                int srcCell = coord2cellID(transform.position);
-                targetCell = calculateNewTarget();
-                waypoints = new List<int>();
-                nextNode.y = -50f;
-                threadRunning = true;
-                t1 = new Thread(() => astar(srcCell, targetCell));
-                t1.Start();
-            }
-        }
-    }
-
-    // lazy function cuz i can not be bothered to find the correct mathematical approach tonight
-    private int coord2cellID(Vector3 coords)
-    {
-        int layerMask = 1 << 8;
-        Vector3 target = new Vector3(coords.x, 0.05f, coords.z);
-
-        Collider[] obstacles = Physics.OverlapSphere(target, 0.05f, layerMask);
-        if (obstacles.Length != 0)
-        {
-            return obstacles[0].gameObject.GetComponent<Cell>().id;
-        }
-        return -1;
-    }
 
     private GameObject findClosestEnemy()
     {
@@ -431,64 +319,6 @@ public class Agent : MonoBehaviour, Character, Placeable
             anim.Play("diehard");
             StartCoroutine(WaitToDestroy(2.0f));
         }
-    }
-
-    int calculateNewTarget()
-    {
-        int target = (int)UnityEngine.Random.Range(0.0f, maxCell);
-        string status = pathFinder.checkCell(target);
-        while (status != "empty")
-        {
-            target = (int)UnityEngine.Random.Range(0.0f, maxCell);
-            status = pathFinder.checkCell(target);
-        }
-        return target;
-    }
-
-    void OnTriggerEnter(Collider other)
-    {
-        /*
-        if (other.tag == "Human")
-        {
-            Debug.Log("Humans close to each other!");
-            Agent nearHuman = (Agent)(other.gameObject).GetComponent(typeof(Agent));
-            Vector3 mypos = new Vector3(transform.position.x, 0.0f, transform.position.y);
-            Vector3 hispos = new Vector3(other.transform.position.x, 0.0f, other.transform.position.y);
-            Vector3 lnn = nextNode;
-            Vector3 hlnn = nearHuman.nextNode;
-            float mym = (lnn.z - mypos.z) / (lnn.x - mypos.x);
-            float hism = (hlnn.z - hispos.z) / (hlnn.x - mypos.x);
-            if (mym == hism)
-            {
-                Debug.Log("Parrallel");
-            }
-            else
-            {
-                float myc = lnn.z - mym * lnn.x;
-                float hisc = hlnn.z - hism * hlnn.x;
-                float x = (hisc - myc) / (mym - hism);
-                float z = mym * x + myc;
-
-                if ((z > Mathf.Min(lnn.z, mypos.z)) && (z < Mathf.Max(lnn.z, mypos.z)) && (x > Mathf.Min(lnn.x, mypos.x)) && (x < Mathf.Max(lnn.x, mypos.x)))
-                {
-                    if ((z > Mathf.Min(hlnn.z, hispos.z)) && (z < Mathf.Max(hlnn.z, hispos.z)) && (x > Mathf.Min(hlnn.x, hispos.x)) && (x < Mathf.Max(hlnn.x, hispos.x)))
-                    {
-                        Debug.Log("Paths cross");
-                    }
-                }
-                //m1x +c1 = m2x+c2
-                // m1x-m2c = c2-c1
-                //x(m-m2) = c2-c1
-                //x = (c2-c1) / (m1-m2)
-            }
-
-        }*/
-    }
-
-    public void changeMoving(Boolean move)
-    {
-        
-
     }
 
     public void grab ()
@@ -544,14 +374,19 @@ public class Agent : MonoBehaviour, Character, Placeable
         return false;
     }
 
-    public void changeMode(bool val)
-    {
-        
-    }
 
     public void activate()
     {
         active = true;
     }
 
+    public void changeMoving(bool val)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void changeMode(bool val)
+    {
+        throw new NotImplementedException();
+    }
 }
