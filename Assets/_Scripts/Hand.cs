@@ -191,7 +191,7 @@ public class Hand : MonoBehaviour {
         }
 
     }
-
+    //checks a surrounding sphere for objects, grabs them
     private void grabObject()
     {
         if (holding) return;
