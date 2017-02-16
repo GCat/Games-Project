@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using UnityEngine.AI;
 
 /* AI LOGIC EXPLANATION
  * 
@@ -74,6 +75,7 @@ public class BadiesAI : MonoBehaviour, Character {
 
     // Rusher
     private GameObject temple;
+    private Vector3 templeAttackPoint; // nearest bound on temple
     public bool templeInRange = false;
     public bool pathToTempleFound = false;
 
@@ -97,14 +99,22 @@ public class BadiesAI : MonoBehaviour, Character {
     public GameObject[] buildings;
 
     private ResourceCounter resources;
+    private NavMeshAgent agent;
 
+    //the nearest position on the navmesh to the desired target point
+    private Vector3 nextBestTarget;
+
+    enum MonsterState {AttackTemple, AttackHumans, AttackBuildings, Idle };
+
+    MonsterState currentState = MonsterState.AttackTemple;
     void Start()
     {
         resources = GameObject.FindGameObjectWithTag("Tablet").GetComponent<ResourceCounter>();
         resources.addBaddie();
-
+        agent = GetComponent<NavMeshAgent>();
 
     }
+
     //can we make the spawn type an enum please xoxo
     public void spawn(int type)
     {
@@ -116,8 +126,7 @@ public class BadiesAI : MonoBehaviour, Character {
 
         anim = GetComponent<Animation>();
         rb = GetComponent<Rigidbody>();
-        rb.interpolation = RigidbodyInterpolation.Interpolate;
-
+        //rb.interpolation = RigidbodyInterpolation.Interpolate;
         pathFinder = (PathFinding)GameObject.FindGameObjectWithTag("PathFinder").GetComponent(typeof(PathFinding));
         maxCell = 5000;
         closestEnemy = null;
@@ -127,18 +136,41 @@ public class BadiesAI : MonoBehaviour, Character {
         temple = GameObject.FindGameObjectWithTag("Temple");
         alive = true;
         Debug.Log(string.Format("Spawn at: {0} with Type: {1}", transform.position, fighterType));
+        currentState = MonsterState.AttackTemple;
+
+        //maybe we want to do this regularly in case the monsters behaviour changes
+
+        templeAttackPoint = temple.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
     }
 
-    private void Update()
+    void Update()
     {   if (alive)
         {
 
-            if (false/*temple == null*/)  anim.Play("rage");
-            else if (!moving) anim.Play("idle");
-            else if (fighterType == (int)Fighter.Rusher) rusherNav();
-            else if (fighterType == (int)Fighter.Defender) defenderNav();
-            else if (fighterType == (int)Fighter.Killer) killerNav();
-            else if (fighterType == (int)Fighter.Training) trainingNav();
+            switch (currentState) {
+                case MonsterState.AttackTemple:
+                    walkTowards(templeAttackPoint);
+                    break;
+                case MonsterState.AttackHumans:
+                    //find nearest human
+                    
+                    break;
+                case MonsterState.AttackBuildings:
+
+                    break;
+                case MonsterState.Idle:
+
+                    break;
+            }
+
+            
+
+            //if (false/*temple == null*/)  anim.Play("rage");
+            //else if (!moving) anim.Play("idle");
+            //else if (fighterType == (int)Fighter.Rusher) rusherNav();
+            //else if (fighterType == (int)Fighter.Defender) defenderNav();
+            //else if (fighterType == (int)Fighter.Killer) killerNav();
+            //else if (fighterType == (int)Fighter.Training) trainingNav();
         }
     }
 
@@ -196,14 +228,8 @@ public class BadiesAI : MonoBehaviour, Character {
                     Vector3 offset = nextNode - transform.position;
                     if (offset.magnitude > 0.2f)
                     {
-                        Vector3 finalVal = offset * speed;
-                        float distCovered = (Time.time - startTime) * speed;
-                        float fracJourney = distCovered / journeyLength;
-                        transform.position = Vector3.Lerp(startMarker, endMarker, fracJourney);
-                        transform.rotation = Quaternion.Slerp(
-                            transform.rotation,
-                            Quaternion.LookRotation(offset),
-                            Time.deltaTime * rotationSpeed);
+                        walkTowards(endMarker);
+
                         anim.Play("walk");
                     }
                     else getnextWaypoint();
@@ -237,14 +263,8 @@ public class BadiesAI : MonoBehaviour, Character {
                 Vector3 offset = nextNode - transform.position;
                 if (offset.magnitude > 0.2f)
                 {
-                    Vector3 finalVal = offset * speed;
-                    float distCovered = (Time.time - startTime) * speed;
-                    float fracJourney = distCovered / journeyLength;
-                    transform.position = Vector3.Lerp(startMarker, endMarker, fracJourney);
-                    transform.rotation = Quaternion.Slerp(
-                        transform.rotation,
-                        Quaternion.LookRotation(offset),
-                        Time.deltaTime * rotationSpeed);
+                    walkTowards(endMarker);
+
                     anim.Play("walk");
                 }
                 else getnextWaypoint();
@@ -287,15 +307,7 @@ public class BadiesAI : MonoBehaviour, Character {
                     Vector3 offset = nextNode - transform.position;
                     if (offset.magnitude > 0.2f)
                     {
-                        Vector3 finalVal = offset * speed;
-                        float distCovered = (Time.time - startTime) * speed;
-                        float fracJourney = distCovered / journeyLength;
-                        transform.position = Vector3.Lerp(startMarker, endMarker, fracJourney);
-                        transform.rotation = Quaternion.Slerp(
-                            transform.rotation,
-                            Quaternion.LookRotation(offset),
-                            Time.deltaTime * rotationSpeed);
-                        anim.Play("walk");
+                        walkTowards(endMarker);
                     }
                     else getnextWaypoint();
                 }
@@ -365,14 +377,8 @@ public class BadiesAI : MonoBehaviour, Character {
                     Vector3 offset = nextNode - transform.position;
                     if (offset.magnitude > 0.2f)
                     {
-                        Vector3 finalVal = offset * speed;
-                        float distCovered = (Time.time - startTime) * speed;
-                        float fracJourney = distCovered / journeyLength;
-                        transform.position = Vector3.Lerp(startMarker, endMarker, fracJourney);
-                        transform.rotation = Quaternion.Slerp(
-                            transform.rotation,
-                            Quaternion.LookRotation(offset),
-                            Time.deltaTime * rotationSpeed);
+                        walkTowards(endMarker);
+
                         anim.Play("walk");
                     }
                     else killerNextWaypoint();
@@ -409,6 +415,71 @@ public class BadiesAI : MonoBehaviour, Character {
         path2Enemy = true;
         moving = true;
     }
+
+
+    private Vector3 getClosestPointToTarget(Vector3 target)
+    {
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(target, out hit, 20.0f, NavMesh.AllAreas))
+        {
+            return hit.position;
+        }
+        else
+        {
+            Debug.LogError("Cannot walk here!");
+            return transform.position;
+        }
+
+    }
+
+
+    private void walkTowards(Vector3 target)
+    {
+        if (target != nextBestTarget)
+        {
+            //if the target is not on the nav mesh, just get the nearest valid point for now
+            nextBestTarget = getClosestPointToTarget(target);
+            target = nextBestTarget;
+        }
+        Vector3 offset = target - transform.position;
+        offset = offset.normalized * speed;
+        agent.destination = target;
+        //controller.Move(offset * Time.deltaTime);
+        //don't spin in circles
+        if (offset.magnitude > 5)
+        {
+            offset.y = transform.position.y;
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(offset), Time.deltaTime * rotationSpeed);
+            anim.Play("walk");
+        }
+        else
+        {
+
+            reachedTarget();
+
+        }
+    }
+    private void reachedTarget()
+    {
+        switch (currentState)
+        {
+            case MonsterState.AttackTemple:
+                attack(temple);
+                break;
+            case MonsterState.AttackHumans:
+
+                break;
+            case MonsterState.AttackBuildings:
+
+                break;
+            case MonsterState.Idle:
+
+                break;
+        }
+
+
+    }
+
 
     private void killerNextWaypoint()
     {
