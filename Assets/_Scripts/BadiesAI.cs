@@ -123,8 +123,7 @@ public class BadiesAI : MonoBehaviour, Character {
 
         anim = GetComponent<Animation>();
         rb = GetComponent<Rigidbody>();
-        rb.interpolation = RigidbodyInterpolation.Interpolate;
-
+        //rb.interpolation = RigidbodyInterpolation.Interpolate;
         pathFinder = (PathFinding)GameObject.FindGameObjectWithTag("PathFinder").GetComponent(typeof(PathFinding));
         maxCell = 5000;
         closestEnemy = null;
@@ -137,7 +136,7 @@ public class BadiesAI : MonoBehaviour, Character {
         currentState = MonsterState.AttackTemple;
     }
 
-    private void Update()
+    void Update()
     {   if (alive)
         {
 
@@ -409,22 +408,42 @@ public class BadiesAI : MonoBehaviour, Character {
         moving = true;
     }
 
+
+    private Vector3 getClosestPointToTarget(Vector3 target)
+    {
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(target, out hit, 20.0f, NavMesh.AllAreas))
+        {
+            return hit.position;
+        }
+        else
+        {
+            Debug.LogError("Cannot walk here!");
+            return transform.position;
+        }
+
+    }
+
+
     private void walkTowards(Vector3 target)
     {
+        target = getClosestPointToTarget(target);
         Vector3 offset = target - transform.position;
-        if (offset.magnitude > 0.1f)
+        offset = offset.normalized * speed;
+        agent.destination = target;
+        //controller.Move(offset * Time.deltaTime);
+        //don't spin in circles
+        if (offset.magnitude > 2)
         {
-            offset = offset.normalized * speed;
-            agent.destination = target;
-            //controller.Move(offset * Time.deltaTime);
-            //don't spin in circles
-            if (offset.magnitude > 2)
-            {
-                offset.y = transform.position.y;
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(offset), Time.deltaTime * rotationSpeed);
-            }
-            anim.Play("walk");
+            offset.y = transform.position.y;
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(offset), Time.deltaTime * rotationSpeed);
+            Debug.Log("badie walking towards" + target);
         }
+        else
+        {
+            Debug.Log("badie reached target" + target);
+        }
+        anim.Play("walk");
     }
 
     private void killerNextWaypoint()
