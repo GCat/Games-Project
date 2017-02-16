@@ -266,6 +266,11 @@ public class Hand : MonoBehaviour {
             if (placeable != null)
             {
                 placeable.release(velocity);
+                Building building = heldObject.GetComponent<Building>();
+                if (building != null)
+                {
+                    building.activate();
+                }
             }
             else
             {
