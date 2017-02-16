@@ -162,8 +162,8 @@ public class Graph
             for (float x = minx; x < maxx; x += gridx)
             {
                 Vector3 position = new Vector3((float)(x + 1.0f), 0.05f, (float)(z + 1.0f));
-                GameObject pre = Resources.Load("Cell") as GameObject;
-                GameObject c = GameObject.Instantiate(pre, position, Quaternion.identity) as GameObject;
+                GameObject cell = Resources.Load("Cell") as GameObject;
+                GameObject c = GameObject.Instantiate(cell, position, Quaternion.identity) as GameObject;
                 c.GetComponent<Cell>().setid(i);
 
                 nodes.Add(c);
