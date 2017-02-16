@@ -1,20 +1,18 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WatchTower : MonoBehaviour, Building, Placeable
+public class WatchTower : Building, Placeable
 {
-
 
     public AudioClip build;
     public AudioClip destroy;
 
     public string buildingName;
-    private GameObject temple;
-    public float health = 100.0f;
     public List<GameObject> targets;
     private float radius = 25.0f;
-    public int fCost = 100;
+    public int fCost = 500;
 
     bool active = false;
     public bool held = false;
@@ -36,51 +34,38 @@ public class WatchTower : MonoBehaviour, Building, Placeable
     public Material matInval;
     private ResourceCounter resources;
 
-    //public override int faithCost()
-    //{
-    //    return fCost;
-    //}
-
-    string Building.getName()
-    {
-        return buildingName;
-    }
-    Vector3 Building.getLocation()
-    {
-        return transform.position;
-    }
     float getHealth()
     {
         return health;
     }
-    public void decrementHealth(float damage)
+ 
+
+    public override void create_building()
     {
-        health -= damage;
-        if (health <= 0)
+        Debug.Log("CREATE BUILD TOWER");
+        if (canBuy())
         {
-            Destroy(gameObject);
+
+            buildingName = "TOWER";
+            targets = new List<GameObject>();
+            timer1 = 0f;
+            StartTime1 = Time.time;
+            timer2 = 0f;
+            StartTime2 = Time.time;
+            timer3 = 0f;
+            StartTime3 = Time.time;
+            resources = tablet.GetComponent<ResourceCounter>();
+        }
+        else
+        {
+            die();
+            highlightDestroy();
         }
     }
 
-    public void create_building()
-    {
-        buildingName = "TOWER";
-        targets = new List<GameObject>();
-        timer1 = 0f;
-        StartTime1 = Time.time;
-        timer2 = 0f;
-        StartTime2 = Time.time;
-        timer3 = 0f;
-        StartTime3 = Time.time;
-        resources = GameObject.FindGameObjectWithTag("Tablet").GetComponent<ResourceCounter>();
-    }
-
     void Start () {
-        create_building();
-        temple = GameObject.FindGameObjectWithTag("Temple");
         boxSize = GetComponent<BoxCollider>().bounds.size / 2;
         boxSize.y = 0.01f;
-
     }
 
     void OnDrawGizmosSelected()
@@ -107,51 +92,50 @@ public class WatchTower : MonoBehaviour, Building, Placeable
         }
         else if (active)
         {
-            if (temple != null)
+            
+            if (targets.Count > 0)
             {
-                if (targets.Count > 0)
+                targets.RemoveAll(x => x == null);
+                int i = 0;
+                List<int> pop = new List<int>();
+                foreach (GameObject target in targets)
                 {
-                    targets.RemoveAll(x => x == null);
-                    int i = 0;
-                    List<int> pop = new List<int>();
-                    foreach (GameObject target in targets)
+                    if (Vector3.Distance(transform.position, target.transform.position) <= radius)
                     {
-                        if (Vector3.Distance(transform.position, target.transform.position) <= radius)
-                        {
 
-                            attack(target, i);
-                        }
-                        else pop.Add(i);
-                        i++;
+                        attack(target, i);
                     }
-                    foreach (int j in pop)
-                    {
-                        if (j < targets.Count) targets.RemoveAt(j);
-                    }
+                    else pop.Add(i);
+                    i++;
                 }
-                if (targets.Count < 3)
+                foreach (int j in pop)
                 {
-                    int layerMask = 1 << 11;
-                    //pretty poor performance on this - I've tried my best to reduce it
-                    if (resources.baddies < 1)
+                    if (j < targets.Count) targets.RemoveAt(j);
+                }
+            }
+            if (targets.Count < 3)
+            {
+                int layerMask = 1 << 11;
+                //pretty poor performance on this - I've tried my best to reduce it
+                if (resources.baddies < 1)
+                {
+                    return;
+                }
+                List<Collider> hitColliders = new List<Collider>(Physics.OverlapSphere(transform.position, radius, layerMask));
+                foreach (Collider c in hitColliders)
+                {
+                    if (!targets.Contains(c.gameObject))
                     {
-                        return;
-                    }
-                    List<Collider> hitColliders = new List<Collider>(Physics.OverlapSphere(transform.position, radius, layerMask));
-                    foreach (Collider c in hitColliders)
-                    {
-                        if (!targets.Contains(c.gameObject))
+                        if (targets.Count >= 3) break;
+                        else
                         {
-                            if (targets.Count >= 3) break;
-                            else
-                            {
-                                targets.Add(c.gameObject);
-                                attack(c.gameObject, targets.Count - 1);
-                            }
+                            targets.Add(c.gameObject);
+                            attack(c.gameObject, targets.Count - 1);
                         }
                     }
                 }
             }
+            
         }
     }
 
@@ -203,22 +187,6 @@ public class WatchTower : MonoBehaviour, Building, Placeable
             GameObject c = GameObject.Instantiate(pre, pos, Quaternion.LookRotation(victim.transform.position)) as GameObject;
             ((Arrow)(c.GetComponent(typeof(Arrow)))).attack(victim);
         }
-    }
-
-    public void activate()
-    {
-        if (!badplacement)
-        {
-            active = true;
-            if (highlight != null) Destroy(highlight);
-            highlight = null;
-            held = false;
-        }
-
-    }
-    public void deactivate()
-    {
-        active = false;
     }
 
     public void grab()
@@ -310,4 +278,44 @@ public class WatchTower : MonoBehaviour, Building, Placeable
         highlight.GetComponent<Renderer>().enabled = false;
     }
 
+    public override string getName()
+    {
+        return buildingName;
+    }
+
+    public override Vector3 getLocation()
+    {
+        return transform.position;
+    }
+
+    public override bool canBuy()
+    {
+        if (resourceCounter.faith >= fCost)
+        {
+            resourceCounter.removeFaith(fCost);
+            return true;
+        }
+        return false;
+    }
+
+    public override void die()
+    {
+        Destroy(gameObject);
+    }
+
+    public override void activate()
+    {
+        if (!badplacement)
+        {
+            active = true;
+            if (highlight != null) Destroy(highlight);
+            highlight = null;
+            held = false;
+        }
+    }
+
+    public override void deactivate()
+    {
+        active = false;
+    }
 }

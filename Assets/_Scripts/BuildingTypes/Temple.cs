@@ -5,9 +5,7 @@ public class Temple : ResourceBuilding
 {
 
     public bool spawnedGarrison = false;
-
     public WorldStarter world;
-    public GameObject tablet;
     public bool placed = false;
     public int fCost = 0;
 
@@ -18,13 +16,10 @@ public class Temple : ResourceBuilding
 
     public override void create_building()
     {
-        this.health = 500.0f;
+        health = 500.0f;
         buildingName = "TEMPLE";
         world.startGame(tablet);
         placed = true;
-        tablet = GameObject.FindGameObjectWithTag("Tablet");
-        if (tablet != null) resourceCounter = (ResourceCounter)tablet.GetComponent<ResourceCounter>();
-        else Debug.Log("Tablet not found");
         spawnHumans();
         InvokeRepeating("incrementResource", 10.0f, 5.0f); // after 10 sec call every 5
     }
@@ -32,19 +27,6 @@ public class Temple : ResourceBuilding
     public bool isPlaced()
     {
         return placed;
-    }
-
-    private void Update()
-    {
-        if (this.health <= 10 && placed)
-        {
-            this.enabled = false;
-            world.stopGame();
-        }
-    }
-    // Use this for initialization
-    void Start()
-    {
     }
 
     public override void incrementResource()
@@ -74,7 +56,12 @@ public class Temple : ResourceBuilding
         return point;
     }
 
-
+    //This stops the game
+    public new void die()
+    {
+        this.enabled = false;
+        world.stopGame();
+    }
 
 
 }

@@ -16,12 +16,7 @@ public class IronMine : ResourceBuilding
         resource_node = findNearestResourceNode();
         InvokeRepeating("incrementResource", 10.0f, 5.0f); // after 10 sec call every 5
     }
-
-    // Use this for initialization
-    void Start()
-    {
-        //create_building();
-    }
+    
     public override void incrementResource()
     {
         if (resource_node == null)
@@ -32,6 +27,11 @@ public class IronMine : ResourceBuilding
         {
             resourceCounter.addIron();
         }
+    }
+
+    public new void die()
+    {
+        Destroy(gameObject);
     }
 
 }

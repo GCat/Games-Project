@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
-public class House  : MonoBehaviour, Building, Placeable
+public class House  : Building, Placeable
 {
 
     public AudioClip build;
@@ -15,9 +16,7 @@ public class House  : MonoBehaviour, Building, Placeable
     private float StartTime;
     public Vector3 location;  //position of house 
     private bool full_house;   // flag of some sort
-    public ResourceCounter resourceCounter;
     private int foodCost = 10;
-    public float health = 100.0f;
     public int faithCost = 1;
 
 
@@ -47,12 +46,12 @@ public class House  : MonoBehaviour, Building, Placeable
 
     }
 
-    public string getName()
+    public override string getName()
     {
         return "house";
     }
 
-    public Vector3 getLocation()
+    public override Vector3 getLocation()
     {
         return this.gameObject.transform.position;
     }
@@ -60,18 +59,7 @@ public class House  : MonoBehaviour, Building, Placeable
     {
         return health;
     }
-    public void decrementHealth(float damage)
-    {
-        health -= damage;
-        if (health <= 0)
-        {
-            AudioSource sc = gameObject.AddComponent(typeof(AudioSource)) as AudioSource;
-            sc.volume = 0.3f;
-            //sc.PlayOneShot(destroy);
-           // Debug.Log("Aduio playing");
-            Destroy(gameObject);
-        }
-    }
+ 
     // Adding human to the count
     private void add_human()
     {
@@ -105,8 +93,6 @@ public class House  : MonoBehaviour, Building, Placeable
     void Start()
     {
         location = this.transform.position;
-        GameObject tablet = GameObject.Find("Resource_tablet");
-        if (tablet != null) resourceCounter = (ResourceCounter) tablet.GetComponent<ResourceCounter>();
         matEmpty = Resources.Load("Materials/highlight2") as Material;
         matInval = Resources.Load("Materials/highlight") as Material;
         boxSize = GetComponent<BoxCollider>().bounds.size / 2;
@@ -184,7 +170,7 @@ public class House  : MonoBehaviour, Building, Placeable
         return -1;
     }
 
-    public void activate()
+    public override void activate()
     {
         if (!badplacement)
         {
@@ -194,7 +180,7 @@ public class House  : MonoBehaviour, Building, Placeable
             StartTime = Time.time;
         }
     }
-    public void deactivate()
+    public override void deactivate()
     {
         active = false;
     }
@@ -289,5 +275,25 @@ public class House  : MonoBehaviour, Building, Placeable
 
         highlight.GetComponent<Collider>().isTrigger = true;
         highlight.GetComponent<Renderer>().enabled = false;
+    }
+
+    public override void die()
+    {
+        Destroy(gameObject);
+    }
+
+    public override void create_building()
+    {
+        //
+    }
+
+    public override bool canBuy()
+    {
+        if (resourceCounter.faith >= faithCost)
+        {
+            resourceCounter.removeFaith(faithCost);
+            return true;
+        }
+        return false;
     }
 }

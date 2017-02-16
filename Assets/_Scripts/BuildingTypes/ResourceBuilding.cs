@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
+public abstract class ResourceBuilding : Building, Placeable
 {
     public AudioClip build;
     public AudioClip destroy;
     public string buildingName;
-    public ResourceCounter resourceCounter;
-    public float health = 100.0f;
+    
     public bool on_game_board = false;
     public bool held = false;
     GameObject highlight = null;
@@ -20,34 +19,22 @@ public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
     Material matEmpty;
     Material matInval;
 
-    public abstract void create_building();
     public abstract void incrementResource();
     public abstract int faithCost();
 
- 
-    string Building.getName()
+    public override void die()
+    {
+        Destroy(gameObject);
+    }
+
+    public override string getName()
     {
         return buildingName;
     }
 
-    Vector3 Building.getLocation()
+    public override Vector3 getLocation()
     {
         return this.gameObject.transform.position;
-    }
-
-    float getHealth()
-    {
-        return health;
-    }
-    private void Awake()
-    {
-        GameObject tablet = GameObject.FindGameObjectWithTag("Tablet");
-        if (tablet != null)
-        {
-            resourceCounter = (ResourceCounter)tablet.GetComponent<ResourceCounter>();
-            badplacement = false;
-        }
-        else Debug.Log("Tablet not found");
     }
 
     private void Start()
@@ -57,21 +44,10 @@ public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
         matInval = Resources.Load("Materials/highlight") as Material;
         boxSize = GetComponent<BoxCollider>().bounds.size / 2;
         boxSize.y = 0.01f;
+        badplacement = false;
     }
-    public void decrementHealth(float damage) 
-    {
-        health -= damage;
-        if (health <= 0)
-        {
-           
-            AudioSource sc = gameObject.AddComponent(typeof(AudioSource)) as AudioSource;
-            //sc.volume = 0.3f;
-            //sc.PlayOneShot(destroy);
-           // Debug.Log("Aduio playing");
-            
-            Destroy(gameObject);
-        }
-    }
+
+
     //fixedupdate can be run 100+ times per second...maybe this shouldn't be calling 'highlightcheck' here
     void FixedUpdate()
     {
@@ -92,9 +68,8 @@ public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
     }
 
     //Is there enough faith ..  to construct building
-    public bool canBuy()
+    public override bool canBuy()
     {
-        Debug.Log(resourceCounter.faith);
         if (resourceCounter.faith >= faithCost())
         {
             resourceCounter.removeFaith(faithCost());
@@ -104,7 +79,7 @@ public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
     }
 
     //Do not need this function
-    public void activate()
+    public override void activate()
     {
         /*if (!badplacement)
         {
@@ -124,7 +99,7 @@ public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
     }
 
     //Don't need this
-    public void deactivate()
+    public override void deactivate()
     {
         on_game_board = false;   
     }

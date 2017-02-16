@@ -17,13 +17,14 @@ public class StoneQuarry : ResourceBuilding
         InvokeRepeating("incrementResource", 10.0f, 4.0f); // after 10 sec call every 4 
     }
 
-    // Use this for initialization
-    void Start()
-    {
-        create_building();
-    }
+ 
     public override void incrementResource()
     {
         //resourceCounter.addStone();
+    }
+
+    public new void die()
+    {
+        Destroy(gameObject);
     }
 }

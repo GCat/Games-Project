@@ -5,6 +5,11 @@ public class Farm : ResourceBuilding
 {
     public int fCost = 10;
 
+    public new void die()
+    {
+        Destroy(gameObject);
+    }
+
     public override int faithCost()
     {
         return fCost;

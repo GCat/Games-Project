@@ -17,12 +17,6 @@ public class LumberYard : ResourceBuilding
         InvokeRepeating("incrementResource", 10.0f, 2.0f); // after 10 sec call every 4
     }
 
-    // Use this for initialization
-    void Start()
-    {
-
-    }
-
     public override void incrementResource()
     {
         if (resource_node == null)
@@ -37,5 +31,10 @@ public class LumberYard : ResourceBuilding
         {
             Debug.Log("Out of range: " + resource_node.GetComponent<ResourceNode>().range + "<" + Vector3.Distance(transform.position, resource_node.transform.position));
         }
+    }
+
+    public new void die()
+    {
+        Destroy(gameObject);
     }
 }
