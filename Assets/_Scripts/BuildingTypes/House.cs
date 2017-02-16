@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.AI;
 
 public class House  : MonoBehaviour, Building, Placeable
 {
@@ -151,17 +152,15 @@ public class House  : MonoBehaviour, Building, Placeable
             Vector3 location_human = new Vector3(location.x, 0.5f, (location.z + 4));
             int layerMask = 1 << 8;
             Vector3 target = new Vector3(location_human.x, 0.05f, location_human.z);
-            Collider[] obstacles = Physics.OverlapSphere(target, 0.05f, layerMask);
-            if (obstacles.Length != 0)
-            {
-                string check = obstacles[0].gameObject.GetComponent<Cell>().getStatus();
-				layerMask = ~layerMask;
-				obstacles = Physics.OverlapSphere(location_human, 1.0f, layerMask);
-				if (obstacles.Length != 0){
-					if (check == "empty") Instantiate(Resources.Load("Characters/Human"), location_human, Quaternion.identity);
-					else Debug.Log("Oops");
-				}
+            NavMeshHit hit;
+            //spawn human in nearest valid nav mesh point
+            Vector3 spawnPosition = transform.position;
+            if(NavMesh.SamplePosition(transform.position, out hit, 10, NavMesh.AllAreas)){
+                spawnPosition = hit.position;
             }
+            Instantiate(Resources.Load("Characters/Human"), spawnPosition, Quaternion.identity);
+
+            Collider[] obstacles = Physics.OverlapSphere(target, 0.05f, layerMask);
             add_human();
             update_happiness();
             resourceCounter.removeFood(foodCost);
@@ -169,18 +168,6 @@ public class House  : MonoBehaviour, Building, Placeable
         else full_house = true;
     }
 
-    private int coord2cellID(Vector3 coords)
-    {
-        int layerMask = 1 << 8;
-        Vector3 target = new Vector3(coords.x, 0.05f, coords.z);
-
-        Collider[] obstacles = Physics.OverlapSphere(target, 0.05f, layerMask);
-        if (obstacles.Length != 0)
-        {
-            return obstacles[0].gameObject.GetComponent<Cell>().id;
-        }
-        return -1;
-    }
 
     public void activate()
     {
