@@ -75,6 +75,7 @@ public class BadiesAI : MonoBehaviour, Character {
 
     // Rusher
     private GameObject temple;
+    private Vector3 templeAttackPoint; // nearest bound on temple
     public bool templeInRange = false;
     public bool pathToTempleFound = false;
 
@@ -100,6 +101,8 @@ public class BadiesAI : MonoBehaviour, Character {
     private ResourceCounter resources;
     private NavMeshAgent agent;
 
+    //the nearest position on the navmesh to the desired target point
+    private Vector3 nextBestTarget;
 
     enum MonsterState {AttackTemple, AttackHumans, AttackBuildings, Idle };
 
@@ -134,6 +137,10 @@ public class BadiesAI : MonoBehaviour, Character {
         alive = true;
         Debug.Log(string.Format("Spawn at: {0} with Type: {1}", transform.position, fighterType));
         currentState = MonsterState.AttackTemple;
+
+        //maybe we want to do this regularly in case the monsters behaviour changes
+
+        templeAttackPoint = temple.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
     }
 
     void Update()
@@ -142,7 +149,7 @@ public class BadiesAI : MonoBehaviour, Character {
 
             switch (currentState) {
                 case MonsterState.AttackTemple:
-                    walkTowards(temple.transform.position);
+                    walkTowards(templeAttackPoint);
                     break;
                 case MonsterState.AttackHumans:
 
@@ -427,24 +434,50 @@ public class BadiesAI : MonoBehaviour, Character {
 
     private void walkTowards(Vector3 target)
     {
-        target = getClosestPointToTarget(target);
+        if (target != nextBestTarget)
+        {
+            nextBestTarget = getClosestPointToTarget(target);
+            target = nextBestTarget;
+        }
         Vector3 offset = target - transform.position;
         offset = offset.normalized * speed;
         agent.destination = target;
         //controller.Move(offset * Time.deltaTime);
         //don't spin in circles
-        if (offset.magnitude > 2)
+        if (offset.magnitude > 5)
         {
             offset.y = transform.position.y;
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(offset), Time.deltaTime * rotationSpeed);
-            Debug.Log("badie walking towards" + target);
+            anim.Play("walk");
         }
         else
         {
-            Debug.Log("badie reached target" + target);
+
+            reachedTarget();
+
         }
-        anim.Play("walk");
     }
+    private void reachedTarget()
+    {
+        switch (currentState)
+        {
+            case MonsterState.AttackTemple:
+                attack(temple);
+                break;
+            case MonsterState.AttackHumans:
+
+                break;
+            case MonsterState.AttackBuildings:
+
+                break;
+            case MonsterState.Idle:
+
+                break;
+        }
+
+
+    }
+
 
     private void killerNextWaypoint()
     {
