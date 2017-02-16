@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Kinect = Windows.Kinect;
 using System.IO;
+using UnityEngine.VR;
 
 public class BodySourceView : MonoBehaviour 
 {
@@ -318,9 +319,10 @@ public class BodySourceView : MonoBehaviour
 
             player_objects.Add(jt, jointObj);
         }
+        InputTracking.Recenter();
 
 
- 
+
         return body;
     }
     

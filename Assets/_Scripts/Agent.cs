@@ -62,7 +62,6 @@ public class Agent : MonoBehaviour, Character, Placeable
     private Thread t1;
     private bool threadRunning = false;
     List<int> waypoints;
-    private PathFinding pathFinder;
     public Vector3 nextNode;
     public int targetCell;
 
@@ -100,7 +99,6 @@ public class Agent : MonoBehaviour, Character, Placeable
 
     void Start()
     {
-        nextNode = new Vector3(0.0f, -50.0f, 0.0f);
         waypoints = new List<int>();
 
         priority = UnityEngine.Random.Range(0.0f, 20.0f);
@@ -109,7 +107,6 @@ public class Agent : MonoBehaviour, Character, Placeable
         rb = GetComponent<Rigidbody>();
         rb.interpolation = RigidbodyInterpolation.Interpolate;
         temple = GameObject.FindGameObjectWithTag("Temple");
-        pathFinder = (PathFinding)GameObject.FindGameObjectWithTag("PathFinder").GetComponent(typeof(PathFinding));
         maxCell = 5000;
         closestEnemy = null;
         fighterType = (int)Fighter.Killer;
