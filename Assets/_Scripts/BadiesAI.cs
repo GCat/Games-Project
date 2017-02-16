@@ -152,7 +152,8 @@ public class BadiesAI : MonoBehaviour, Character {
                     walkTowards(templeAttackPoint);
                     break;
                 case MonsterState.AttackHumans:
-
+                    //find nearest human
+                    
                     break;
                 case MonsterState.AttackBuildings:
 
@@ -436,6 +437,7 @@ public class BadiesAI : MonoBehaviour, Character {
     {
         if (target != nextBestTarget)
         {
+            //if the target is not on the nav mesh, just get the nearest valid point for now
             nextBestTarget = getClosestPointToTarget(target);
             target = nextBestTarget;
         }
