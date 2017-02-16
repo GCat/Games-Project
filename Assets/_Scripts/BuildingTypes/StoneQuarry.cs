@@ -4,6 +4,13 @@ using System;
 
 public class StoneQuarry : ResourceBuilding
 {
+    public int fCost = 20;
+
+    public override int faithCost()
+    {
+        return fCost;
+    }
+
     public override void create_building()
     {
         this.timer = 0f;

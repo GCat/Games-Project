@@ -9,6 +9,12 @@ public class Temple : ResourceBuilding
     public WorldStarter world;
     public GameObject tablet;
     public bool placed = false;
+    public int fCost = 0;
+
+    public override int faithCost()
+    {
+        return fCost;
+    }
 
     public override void create_building()
     {

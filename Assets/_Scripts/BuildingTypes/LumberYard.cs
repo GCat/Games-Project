@@ -3,6 +3,12 @@ using System.Collections;
 
 public class LumberYard : ResourceBuilding
 {
+    public int fCost = 30;
+
+    public override int faithCost()
+    {
+        return fCost;
+    }
 
     public override void create_building()
     {

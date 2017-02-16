@@ -25,25 +25,37 @@ public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
 
     public abstract void create_building();
     public abstract void incrementResource();
+    public abstract int faithCost();
+
+ 
     string Building.getName()
     {
         return buildingName;
     }
+
     Vector3 Building.getLocation()
     {
         return this.gameObject.transform.position;
     }
+
     float getHealth()
     {
         return health;
     }
+    private void Awake()
+    {
+        GameObject tablet = GameObject.FindGameObjectWithTag("Tablet");
+        if (tablet != null)
+        {
+            resourceCounter = (ResourceCounter)tablet.GetComponent<ResourceCounter>();
+            badplacement = false;
+        }
+        else Debug.Log("Tablet not found");
+    }
 
     private void Start()
     {
-        GameObject tablet = GameObject.Find("Resource_tablet");
-        badplacement = false;
-        if (tablet != null) resourceCounter = (ResourceCounter)tablet.GetComponent<ResourceCounter>();
-        else Debug.Log("Tablet not found");
+      
         matEmpty = Resources.Load("Materials/highlight2") as Material;
         matInval = Resources.Load("Materials/highlight") as Material;
         boxSize = GetComponent<BoxCollider>().bounds.size / 2;
@@ -91,19 +103,38 @@ public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
         }
     }
 
+    //Is there enough faith ..  to construct building
+    public bool canBuy()
+    {
+        if (resourceCounter.faith >= faithCost())
+        {
+            resourceCounter.removeFaith(faithCost());
+            return true;
+        }
+        return false;
+    }
+
+    //Do not need this function
     public void activate()
     {
-
-        if (!badplacement)
+        /*if (!badplacement)
         {
-            startTime = Time.time;
-            on_game_board = true;
-            held = false;
-            highlightDestroy();
+            if (canBuy())
+            {
+                startTime = Time.time;
+                on_game_board = true;
+                held = false;
+                highlightDestroy();
+            }else
+            {
+                Destroy(gameObject); // check if need to open hand and stuff
+            }   
         }
-        
-        Debug.Log("RESOURCE W+ONE");
+        */
+        //Debug.Log("RESOURCE W+ONE");
     }
+
+    //Don't need this
     public void deactivate()
     {
         on_game_board = false;   
@@ -143,7 +174,6 @@ public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
 
     public void release(Vector3 vel)
     {
-
         //Snap to grid
         float y = transform.position.y;
         float x = transform.position.x;
@@ -168,14 +198,13 @@ public abstract class ResourceBuilding : MonoBehaviour, Building, Placeable
             
             transform.position = new Vector3(Mathf.Floor(x), 0, Mathf.Floor(z));
             transform.rotation = Quaternion.LookRotation(Vector3.forward);
-            if (success)
+            if (success && canBuy())
             {
                 create_building();
             }
 
             GetComponent<Rigidbody>().useGravity = false;
-            GetComponent<Rigidbody>().isKinematic = true;
-            
+            GetComponent<Rigidbody>().isKinematic = true;        
         }
         else
         {

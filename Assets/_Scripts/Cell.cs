@@ -48,7 +48,7 @@ public class Cell : MonoBehaviour {
             if (other.GetComponent<Building>() != null) {
                 pathfinding.buildingAdded(id);
                 details = "blocked";
-                other.GetComponent<Building>().activate();
+                //other.GetComponent<Building>().activate();
             }
             else
             {
@@ -68,7 +68,7 @@ public class Cell : MonoBehaviour {
             {
                 pathfinding.buildingRemoved(id);
                 details = "empty";
-                other.GetComponent<Building>().deactivate();
+                //other.GetComponent<Building>().deactivate();
             }
             else
             {
