@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Threading;
 using System;
+using UnityEngine.AI;
 
 
 /* AI LOGIC EXPLANATION
@@ -89,7 +90,8 @@ public class Agent : MonoBehaviour, Character, Placeable
     public float time_between_searches = 5;
 
     public bool active = true;
-    public CharacterController controller;
+    //public CharacterController controller;
+    private NavMeshAgent agent;
 
     void Start()
     {
@@ -108,6 +110,7 @@ public class Agent : MonoBehaviour, Character, Placeable
         fighterType = (int)Fighter.Killer;
         resources = GameObject.FindGameObjectWithTag("Tablet").GetComponent<ResourceCounter>();
         resources.addPop();
+        agent = GetComponent<NavMeshAgent>();
     }
 
     // Update is called once per frame
@@ -131,7 +134,8 @@ public class Agent : MonoBehaviour, Character, Placeable
                     rb.isKinematic = true;
                     rb.useGravity = false;
                     falling = false;
-                    controller.enabled = true;
+                    agent.enabled = true;
+                    //controller.enabled = true;
                 }
             }
             else if (resources.baddies > 0)
@@ -159,7 +163,8 @@ public class Agent : MonoBehaviour, Character, Placeable
         if (offset.magnitude > 0.1f)
         {
             offset = offset.normalized * speed;
-            controller.Move(offset * Time.deltaTime);
+            agent.destination = target;
+            //controller.Move(offset * Time.deltaTime);
             //don't spin in circles
             if (offset.magnitude > 2)
             {
@@ -488,7 +493,7 @@ public class Agent : MonoBehaviour, Character, Placeable
 
     public void grab ()
     {
-        controller.enabled = false;
+        agent.enabled = false;
         beingGrabbed = true;
         nextNode.y = -50f;
         waypoints = new List<int>();
@@ -510,7 +515,7 @@ public class Agent : MonoBehaviour, Character, Placeable
         }
         else
         {
-            controller.enabled = true;
+            agent.enabled = true;
             rb.isKinematic = true;
             GetComponent<Collider>().enabled = enabled;
         }
