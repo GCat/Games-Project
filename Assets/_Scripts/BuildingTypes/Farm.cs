@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Farm : ResourceBuilding
 {
-    public int fCost = 10;
+    public int fCost = 50;
 
     public new void die()
     {

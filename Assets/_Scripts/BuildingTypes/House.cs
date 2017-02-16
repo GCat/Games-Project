@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using UnityEngine.AI;
 
 public class House  : Building, Placeable
 {
@@ -155,15 +156,6 @@ public class House  : Building, Placeable
         else full_house = true;
     }
 
-
-        Collider[] obstacles = Physics.OverlapSphere(target, 0.05f, layerMask);
-        if (obstacles.Length != 0)
-        {
-            return obstacles[0].gameObject.GetComponent<Cell>().id;
-        }
-        return -1;
-    }
-
     public override void activate()
     {
         if (!badplacement)
@@ -209,7 +201,6 @@ public class House  : Building, Placeable
         //test within table bounds
         if (GameBoard.withinBounds(transform.position))
         {
-            GetComponent<Collider>().enabled = true;
             if (Physics.CheckBox(new Vector3(Mathf.Floor(x), 0, Mathf.Floor(z)), boxSize, Quaternion.LookRotation(Vector3.forward), layerMask))
             {
                 badplacement = true;

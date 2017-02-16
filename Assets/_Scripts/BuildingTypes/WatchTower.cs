@@ -32,7 +32,6 @@ public class WatchTower : Building, Placeable
 
     public Material matEmpty;
     public Material matInval;
-    private ResourceCounter resources;
 
     float getHealth()
     {
@@ -54,7 +53,6 @@ public class WatchTower : Building, Placeable
             StartTime2 = Time.time;
             timer3 = 0f;
             StartTime3 = Time.time;
-            resources = tablet.GetComponent<ResourceCounter>();
         }
         else
         {
@@ -117,7 +115,7 @@ public class WatchTower : Building, Placeable
             {
                 int layerMask = 1 << 11;
                 //pretty poor performance on this - I've tried my best to reduce it
-                if (resources.baddies < 1)
+                if (resourceCounter.baddies < 1)
                 {
                     return;
                 }

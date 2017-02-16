@@ -51,20 +51,20 @@ public abstract class ResourceBuilding : Building, Placeable
     //fixedupdate can be run 100+ times per second...maybe this shouldn't be calling 'highlightcheck' here
     void FixedUpdate()
     {
-        if (badplacement)
+        if (held)
+        {
+            if (highlight != null)
+            {
+                highlightCheck();
+            }
+        }else if (badplacement)
         {
             if (Time.time - placementTime > 5.0f)
             {
                 DestroyObject(gameObject);
             }
         }
-        else if (held)
-        {
-            if (highlight != null)
-            {
-                highlightCheck();
-            }
-        }
+        
     }
 
     //Is there enough faith ..  to construct building
@@ -109,7 +109,7 @@ public abstract class ResourceBuilding : Building, Placeable
         held = true;
         badplacement = false;
         // Deactivate  collider and gravity
-    
+
 
         // highlight where object wiould place if falling straight down
         if (highlight != null)
@@ -149,6 +149,7 @@ public abstract class ResourceBuilding : Building, Placeable
         {
             bool success = true;
             GetComponent<BoxCollider>().enabled = true;
+
             if (Physics.CheckBox(new Vector3(Mathf.Floor(x), 0, Mathf.Floor(z)),boxSize, Quaternion.LookRotation(Vector3.forward), layerMask))
             {
                 badplacement = true;
@@ -162,18 +163,18 @@ public abstract class ResourceBuilding : Building, Placeable
             
             transform.position = new Vector3(Mathf.Floor(x), 0, Mathf.Floor(z));
             transform.rotation = Quaternion.LookRotation(Vector3.forward);
+
             if (success && canBuy())
             {
                 create_building();
-                GetComponent<Rigidbody>().useGravity = false;
-                GetComponent<Rigidbody>().isKinematic = true;
-
             }
-            else
+            else // case when not enough resources to buy a building
             {
                 Destroy(gameObject);
-                highlightDestroy();
+                DestroyImmediate(highlight);
             }
+            GetComponent<Rigidbody>().useGravity = false;
+            GetComponent<Rigidbody>().isKinematic = true;
         }
         else
         {
@@ -225,6 +226,7 @@ public abstract class ResourceBuilding : Building, Placeable
     {
         if (highlight != null) Destroy(highlight);
     }
+
     public void highlightCheck()
     {
         if (transform.position.y > 0.0 && Mathf.Abs(transform.position.x) <= 50 && Mathf.Abs(transform.position.z) <= 100)
@@ -248,6 +250,7 @@ public abstract class ResourceBuilding : Building, Placeable
 
     public void createHighlight()
     {
+        Debug.Log("Create highlight");
         highlight = GameObject.CreatePrimitive(PrimitiveType.Cube);
         highlight.GetComponent<Renderer>().material = matEmpty;
         highlight.transform.localScale = new Vector3(GetComponent<BoxCollider>().bounds.size.x, 0.1f, GetComponent<BoxCollider>().bounds.size.z);
