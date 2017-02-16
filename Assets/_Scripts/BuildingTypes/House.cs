@@ -19,6 +19,8 @@ public class House  : MonoBehaviour, Building, Placeable
     public ResourceCounter resourceCounter;
     private int foodCost = 10;
     public float health = 100.0f;
+    public int faithCost = 1;
+
 
     public bool active = false;
     public bool held = false;

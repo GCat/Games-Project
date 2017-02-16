@@ -3,16 +3,18 @@ using System.Collections;
 
 public class IronMine : ResourceBuilding
 {
+    private int fCost = 30;
+
+    public override int faithCost()
+    {
+        return fCost;
+    } 
+
     public override void create_building()
     {
-        this.timer = 0f;
-        this.startTime = Time.time;
-        timeStep = 5.0f;
         buildingName = "IRONMINE";
-        GameObject tablet = GameObject.Find("Resource_tablet");
-        if (tablet != null) resourceCounter = (ResourceCounter)tablet.GetComponent<ResourceCounter>();
-        else Debug.Log("Tablet not found");
         resource_node = findNearestResourceNode();
+        InvokeRepeating("incrementResource", 10.0f, 5.0f); // after 10 sec call every 5
     }
 
     // Use this for initialization

@@ -14,7 +14,7 @@ public class WatchTower : MonoBehaviour, Building, Placeable
     public float health = 100.0f;
     public List<GameObject> targets;
     private float radius = 25.0f;
-
+    public int fCost = 100;
 
     bool active = false;
     public bool held = false;
@@ -35,6 +35,11 @@ public class WatchTower : MonoBehaviour, Building, Placeable
     public Material matEmpty;
     public Material matInval;
     private ResourceCounter resources;
+
+    //public override int faithCost()
+    //{
+    //    return fCost;
+    //}
 
     string Building.getName()
     {
