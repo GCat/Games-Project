@@ -3,7 +3,7 @@ using System.Collections;
 
 public class LumberYard : ResourceBuilding
 {
-    public int fCost = 30;
+    private int fCost = 30;
 
     public override int faithCost()
     {

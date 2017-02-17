@@ -4,7 +4,7 @@ using System;
 
 public class StoneQuarry : ResourceBuilding
 {
-    public int fCost = 20;
+    private int fCost = 20;
 
     public override int faithCost()
     {

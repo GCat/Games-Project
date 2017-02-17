@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Farm : ResourceBuilding
 {
-    public int fCost = 50;
+    private int fCost = 50;
 
     public new void die()
     {
@@ -18,12 +18,7 @@ public class Farm : ResourceBuilding
     public override void create_building()
     {
         buildingName = "FARM";
-        InvokeRepeating("incrementResource", 10.0f, 10.0f); // after 10 sec call every 4
-    }
-
-    // Use this for initialization
-    void Start()
-    {
+        InvokeRepeating("incrementResource", 10.0f, 10.0f); // after 10 sec call every 10
     }
 
     public override void incrementResource()

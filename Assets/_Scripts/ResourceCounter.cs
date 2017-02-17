@@ -37,7 +37,7 @@ public class ResourceCounter : MonoBehaviour, Placeable
 
     }
 
-    // Update is called once per frame
+    // Update is called once per frame : 
     void Update()
     {
         if (iron > 10 * swordMult)
