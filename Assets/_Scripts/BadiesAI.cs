@@ -42,6 +42,9 @@ public class BadiesAI : MonoBehaviour, Character {
 
     public float strenght = 20.0f;
     public float health = 100.0f;
+    public float totalHealth = 100.0f;
+    GameObject healthBar;
+    Quaternion healthBarOri;
     private float speed = 7.0f;
     public float rotationSpeed = 6.0f;
     private bool alive = false;
@@ -99,7 +102,8 @@ public class BadiesAI : MonoBehaviour, Character {
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-
+        createHealthBar();
+        healthBarOri = healthBar.transform.rotation;
     }
 
     //can we make the spawn type an enum please xoxo
@@ -130,7 +134,9 @@ public class BadiesAI : MonoBehaviour, Character {
     }
 
     void Update()
-    {   if (alive)
+    {
+        healthBar.transform.rotation = healthBarOri;
+        if (alive)
         {
 
             switch (currentState) {
@@ -267,6 +273,9 @@ public class BadiesAI : MonoBehaviour, Character {
     public void decrementHealth(float damage)
     {
         health -= damage;
+        float scale = (health / totalHealth);
+        healthBar.transform.localScale = new Vector3(1.0f, scale * 10f, 1.0f);
+        if (scale != 0) healthBar.GetComponent<Renderer>().material.SetColor("_Color", new Color(1.0f - scale, scale, 0));
         if (health <= 0 && alive == true)
         {
             alive = false;
@@ -274,6 +283,16 @@ public class BadiesAI : MonoBehaviour, Character {
             StartCoroutine(WaitToDestroy(0.7f));
             resources.removeBaddie();
         }
+    }
+
+    public void createHealthBar()
+    {
+        Bounds dims = gameObject.GetComponent<Collider>().bounds;
+        Vector3 actualSize = dims.size;
+        healthBar = GameObject.Instantiate(Resources.Load("CharacterHealthBar")) as GameObject;
+        healthBar.transform.position = gameObject.GetComponent<Collider>().transform.position;
+        healthBar.transform.Translate(new Vector3(0, 0, dims.size.y * -1.0f));
+        healthBar.transform.SetParent(gameObject.transform);
     }
 
     private GameObject findClosestEnemy()
