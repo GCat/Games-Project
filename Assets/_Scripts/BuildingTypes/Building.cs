@@ -17,8 +17,10 @@ public abstract class Building : MonoBehaviour, HealthManager{
     public void decrementHealth(float damage)
     {
         health -= damage;
-        float scale = (health / totalHealth) * 10f;
-        healthBar.transform.localScale = Vector3.Lerp(healthBar.transform.localScale, new Vector3(1.0f,scale,1.0f), 2.0f * Time.deltaTime);
+        float scale = (health / totalHealth);
+        healthBar.transform.localScale = new Vector3(1.0f, scale * 10f, 1.0f);
+        if (scale != 0) healthBar.GetComponent<Renderer>().material.SetColor("_Color", new Color(1.0f-scale, scale, 0));
+
         if (health <= 0)
         {
             die();

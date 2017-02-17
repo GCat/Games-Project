@@ -44,6 +44,7 @@ public class House  : Building, Placeable
         humans = 0;
         StartTime = Time.time;
         smokeEffect.Stop();
+        createHealthBar();
 
     }
 

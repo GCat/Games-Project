@@ -39,6 +39,9 @@ public class Agent : MonoBehaviour, Character, Placeable
 {
     // Human characteristics
     public float health = 100.0f;
+    public float totalHealth = 100.0f;
+    GameObject healthBar;
+    Quaternion healthBarOri;
     public float strength = 10.0f;
     public float speed = 2.0f;
     private float rotationspeed = 5.0f;
@@ -113,11 +116,14 @@ public class Agent : MonoBehaviour, Character, Placeable
         resources = GameObject.FindGameObjectWithTag("Tablet").GetComponent<ResourceCounter>();
         resources.addPop();
         agent = GetComponent<NavMeshAgent>();
+        createHealthBar();
+        healthBarOri = healthBar.transform.rotation;
     }
 
     // Update is called once per frame
     void Update()
     {
+        healthBar.transform.rotation = healthBarOri;
         if (active)
         {
             if (temple == null)
@@ -311,11 +317,24 @@ public class Agent : MonoBehaviour, Character, Placeable
     public void decrementHealth(float damage)
     {
         health -= damage;
+        float scale = (health / totalHealth);
+        healthBar.transform.localScale = new Vector3(1.0f, scale * 10f, 1.0f);
+        if (scale != 0) healthBar.GetComponent<Renderer>().material.SetColor("_Color", new Color(1.0f - scale, scale, 0));
         if (health <= 0)
         {
             anim.Play("diehard");
             StartCoroutine(WaitToDestroy(2.0f));
         }
+    }
+
+    public void createHealthBar()
+    {
+        Bounds dims = gameObject.GetComponent<Collider>().bounds;
+        Vector3 actualSize = dims.size;
+        healthBar = GameObject.Instantiate(Resources.Load("CharacterHealthBar")) as GameObject;
+        healthBar.transform.position = gameObject.GetComponent<Collider>().transform.position;
+        healthBar.transform.Translate(new Vector3(0, 0, dims.size.y * -1.0f));
+        healthBar.transform.SetParent(gameObject.transform);
     }
 
     public void grab ()
