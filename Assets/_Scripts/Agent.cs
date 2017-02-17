@@ -54,12 +54,10 @@ public class Agent : MonoBehaviour, Character, Placeable
 
 
     // God interactions
-    bool beingMoved = false;
     private bool sacrificeEntered = false;
-    private bool beingGrabbed = false;
     private bool realeased = false;
     private bool falling = false;
-
+    private bool grounded = true;
 
     // Fighting
     enum Fighter { Killer, Defender, Camper };
@@ -108,35 +106,43 @@ public class Agent : MonoBehaviour, Character, Placeable
                 StartCoroutine(WaitToDestroy(2.1f));
                 return;
             }
-            if (resources.baddies > 0)
-            {
-                currentState = HumanState.Fighting;
-            } else {
-                currentState = HumanState.Wandering;
-            }
-            
             switch (currentState){
                 case HumanState.Wandering:
-                    wander();
+                    if (resources.baddies > 0) {
+                        currentState = HumanState.Fighting;
+                    }
+                    else
+                        wander();
                     break;
 
                 case HumanState.Fighting:
-                    attack();
+                    if (resources.baddies <= 0)
+                    {
+                        currentState = HumanState.Wandering;
+                    }
+                    else
+                        attack();
                     break;
 
                 case HumanState.Grabbed:
-                    //sacrifice();
                     break;
 
                 case HumanState.Falling:
-                    if (transform.position.y < 1.0f)
-                       {
-                           rb.isKinematic = true;
-                           rb.useGravity = false;
-                           falling = false;
-                           agent.enabled = true;
-                           //controller.enabled = true;
-                       }
+                    if (!sacrificeEntered)
+                    {
+                        if (GameBoard.aboveBoard(transform.position))
+                        {
+                            if (transform.position.y  < 0.5)
+                            {
+                                agent.enabled = true;
+                                currentState = HumanState.Wandering;
+                            }
+                        }
+                        else
+                        {
+                            sacrifice();
+                        }
+                    }
                     break;
             }
         }
@@ -192,32 +198,17 @@ public class Agent : MonoBehaviour, Character, Placeable
         }
     }
 
+
     void sacrifice()
     {
-
-        if (realeased)
-        {
-            if (Mathf.Abs(transform.position.x) > 50f || Mathf.Abs(transform.position.z) > 100f)
-            {
-                if (!sacrificeEntered)
-                {
-                    sacrificeEntered = true;
-                    rb.useGravity = true;
-                    resources.addFaith(100);
-                    AudioSource source = GetComponent<AudioSource>();
-                    source.PlayOneShot(sacrificeClip, 0.5f);
-                    anim.Play("diehard");
-                    resources.removePop();
-                    Destroy(gameObject, 2.1f);
-                }
-            }
-            else
-            {
-                realeased = false;
-                beingGrabbed = false;
-                rb.useGravity = true;
-                GetComponent<Collider>().enabled = enabled;
-            }
+        if (!sacrificeEntered) {
+            Debug.Log(transform.position);
+            AudioSource source = GetComponent<AudioSource>();
+            source.PlayOneShot(sacrificeClip, 0.5f);
+            resources.addFaith(128);
+            sacrificeEntered = true;
+            anim.Play("diehard");
+            StartCoroutine(WaitToDestroy(2.1f));
         }
     }
 
@@ -295,27 +286,16 @@ public class Agent : MonoBehaviour, Character, Placeable
     public void grab ()
     {
         agent.enabled = false;
-        beingGrabbed = true;
-        realeased = false;
+        currentState = HumanState.Grabbed;
         rb.useGravity = false;
         GetComponent<Collider>().enabled = false;
     }
 
     public void release(Vector3 vel)
     {
-        realeased = true;
-        if (transform.position.y > 1.0f)
-        {
-            falling = true;
-            rb.velocity = vel;
-        }
-        else
-        {
-            agent.enabled = true;
-            GetComponent<Collider>().enabled = enabled;
-        }
+        currentState = HumanState.Falling;
+        GetComponent<Collider>().enabled = true;
         rb.useGravity = true;
-        beingGrabbed = false;
 
     }
 
@@ -354,4 +334,5 @@ public class Agent : MonoBehaviour, Character, Placeable
     {
         throw new NotImplementedException();
     }
+
 }

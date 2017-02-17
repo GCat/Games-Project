@@ -85,7 +85,7 @@ NavMeshSettings:
     agentHeight: 2
     agentSlope: 45
     agentClimb: 0.4
-    ledgeDropHeight: 0
+    ledgeDropHeight: 1
     maxJumpAcrossDistance: 0
     minRegionArea: 2
     manualCellSize: 0
@@ -1699,7 +1699,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Convex: 0
+  m_Convex: 1
   m_InflateMesh: 0
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
@@ -1735,8 +1735,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7949c1a5dedae424196bff62facc1622, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bottomLeft: {x: -50, y: -100}
-  topRight: {x: 50, y: 100}
 --- !u!1 &774146309
 GameObject:
   m_ObjectHideFlags: 0
@@ -2534,13 +2532,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75febd242c999f04d9654522a10c006b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  intensity: 0.05
-  radius: 0.26
+  intensity: 0.5
+  radius: 0.2
   blurIterations: 1
   blurFilterDistance: 1.25
   downsample: 0
-  rand: {fileID: 2800000, guid: a181ca8e3c62f3e4b8f183f6c586b032, type: 3}
-  aoShader: {fileID: 4800000, guid: 95616c020c5604dda96cf76afbbc0272, type: 3}
+  rand: {fileID: 0}
+  aoShader: {fileID: 0}
 --- !u!1001 &1139002589
 Prefab:
   m_ObjectHideFlags: 0
