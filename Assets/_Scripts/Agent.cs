@@ -48,33 +48,19 @@ public class Agent : MonoBehaviour, Character, Placeable
     public float gravity = 9.81F;
     public float weapon_strength;
     private GameObject temple;
+    private bool alive = true;
 
     // Components
     public AudioClip sacrificeClip;
     private Rigidbody rb;
     public Animation anim;
 
-    // movements
-    public float priority = 0;
-    public Vector3 startMarker;
-    public Vector3 endMarker;
-    private float startTime;
-    private float journeyLength;
-
-    // Pathfinding
-    private Thread t1;
-    private bool threadRunning = false;
-    List<int> waypoints;
-    public Vector3 nextNode;
-    public int targetCell;
 
     // God interactions
-    bool beingMoved = false;
     private bool sacrificeEntered = false;
-    private bool beingGrabbed = false;
     private bool realeased = false;
     private bool falling = false;
-
+    private bool grounded = true;
 
     // Fighting
     enum Fighter { Killer, Defender, Camper };
@@ -83,13 +69,9 @@ public class Agent : MonoBehaviour, Character, Placeable
     //Killer
     private GameObject closestEnemy;
     private int maxCell;
-    private float dis2Enemy =0;
+    private float dis2Enemy = 0;
 
     private ResourceCounter resources;
-
-    private float last_search = 0;
-    //Time between searching the scene for a new target
-    public float time_between_searches = 5;
 
     public bool active = true;
     //public CharacterController controller;
@@ -102,9 +84,6 @@ public class Agent : MonoBehaviour, Character, Placeable
 
     void Start()
     {
-        waypoints = new List<int>();
-
-        priority = UnityEngine.Random.Range(0.0f, 20.0f);
 
         anim = GetComponent<Animation>();
         rb = GetComponent<Rigidbody>();
@@ -132,40 +111,46 @@ public class Agent : MonoBehaviour, Character, Placeable
                 StartCoroutine(WaitToDestroy(2.1f));
                 return;
             }
-            if (resources.baddies > 0)
+            switch (currentState)
             {
-                currentState = HumanState.Fighting;
-            } else {
-                currentState = HumanState.Wandering;
-            }
-
-
-
-            switch (currentState){
                 case HumanState.Wandering:
-                    wander();
+                    if (resources.baddies > 0)
+                    {
+                        currentState = HumanState.Fighting;
+                    }
+                    else
+                        wander();
                     break;
 
                 case HumanState.Fighting:
-                    attack();
-
+                    if (resources.baddies <= 0)
+                    {
+                        currentState = HumanState.Wandering;
+                    }
+                    else
+                        attack();
                     break;
 
                 case HumanState.Grabbed:
-                    //sacrifice();
                     break;
 
                 case HumanState.Falling:
-                    if (transform.position.y < 1.0f)
-                       {
-                           rb.isKinematic = true;
-                           rb.useGravity = false;
-                           falling = false;
-                           agent.enabled = true;
-                           //controller.enabled = true;
-                       }
+                    if (!sacrificeEntered)
+                    {
+                        if (GameBoard.aboveBoard(transform.position))
+                        {
+                            if (transform.position.y < 0.5)
+                            {
+                                agent.enabled = true;
+                                currentState = HumanState.Wandering;
+                            }
+                        }
+                        else
+                        {
+                            sacrifice();
+                        }
+                    }
                     break;
-
             }
         }
     }
@@ -176,7 +161,6 @@ public class Agent : MonoBehaviour, Character, Placeable
         Vector3 offset = target - transform.position;
         if (offset.magnitude > 0.1f)
         {
-            offset = offset.normalized * speed;
             agent.destination = target;
             //controller.Move(offset * Time.deltaTime);
             //don't spin in circles
@@ -221,34 +205,18 @@ public class Agent : MonoBehaviour, Character, Placeable
         }
     }
 
+
     void sacrifice()
     {
-
-        if (realeased)
+        if (!sacrificeEntered)
         {
-            if (Mathf.Abs(transform.position.x) > 50f || Mathf.Abs(transform.position.z) > 100f)
-            {
-                if (!sacrificeEntered)
-                {
-                    sacrificeEntered = true;
-                    rb.isKinematic = false;
-                    rb.useGravity = true;
-                    resources.addFaith(100);
-                    AudioSource source = GetComponent<AudioSource>();
-                    source.PlayOneShot(sacrificeClip, 0.5f);
-                    anim.Play("diehard");
-                    resources.removePop();
-                    Destroy(gameObject, 2.1f);
-                }
-            }
-            else
-            {
-                realeased = false;
-                beingGrabbed = false;
-                rb.isKinematic = true;
-                rb.useGravity = true;
-                GetComponent<Collider>().enabled = enabled;
-            }
+            Debug.Log(transform.position);
+            AudioSource source = GetComponent<AudioSource>();
+            source.PlayOneShot(sacrificeClip, 0.5f);
+            resources.addFaith(128);
+            sacrificeEntered = true;
+            anim.Play("diehard");
+            StartCoroutine(WaitToDestroy(2.1f));
         }
     }
 
@@ -291,13 +259,11 @@ public class Agent : MonoBehaviour, Character, Placeable
     private GameObject findClosestEnemy()
     {
         GameObject[] badies;
-        nextNode.y = -50f;
-        waypoints = new List<int>();
         GameObject closest = null;
         badies = GameObject.FindGameObjectsWithTag("Badies");
         float distance = Mathf.Infinity;
         Vector3 position = transform.position;
-        if( badies.Length> 0)
+        if (badies.Length > 0)
         {
             foreach (GameObject badie in badies)
             {
@@ -308,7 +274,7 @@ public class Agent : MonoBehaviour, Character, Placeable
                     distance = current_distance;
                     closest = badie;
                 }
-            }  
+            }
         }
 
         return closest;
@@ -320,8 +286,9 @@ public class Agent : MonoBehaviour, Character, Placeable
         float scale = (health / totalHealth);
         healthBar.transform.localScale = new Vector3(1.0f, scale * 10f, 1.0f);
         if (scale != 0) healthBar.GetComponent<Renderer>().material.SetColor("_Color", new Color(1.0f - scale, scale, 0));
-        if (health <= 0)
+        if (health <= 0 && alive == true)
         {
+            alive = false;
             anim.Play("diehard");
             StartCoroutine(WaitToDestroy(2.0f));
         }
@@ -336,37 +303,19 @@ public class Agent : MonoBehaviour, Character, Placeable
         healthBar.transform.Translate(new Vector3(0, 0, dims.size.y * -1.0f));
         healthBar.transform.SetParent(gameObject.transform);
     }
-
-    public void grab ()
+    public void grab()
     {
         agent.enabled = false;
-        beingGrabbed = true;
-        nextNode.y = -50f;
-        waypoints = new List<int>();
-        realeased = false;
-        rb.isKinematic = true;
+        currentState = HumanState.Grabbed;
         rb.useGravity = false;
         GetComponent<Collider>().enabled = false;
     }
 
     public void release(Vector3 vel)
     {
-        realeased = true;
-        if (transform.position.y > 1.0f)
-        {
-            rb.isKinematic = false;
-            falling = true;
-            rb.velocity = vel;
-            Debug.Log("FALLING!");
-        }
-        else
-        {
-            agent.enabled = true;
-            rb.isKinematic = true;
-            GetComponent<Collider>().enabled = enabled;
-        }
+        currentState = HumanState.Falling;
+        GetComponent<Collider>().enabled = true;
         rb.useGravity = true;
-        beingGrabbed = false;
 
     }
 
@@ -405,4 +354,5 @@ public class Agent : MonoBehaviour, Character, Placeable
     {
         throw new NotImplementedException();
     }
+
 }
