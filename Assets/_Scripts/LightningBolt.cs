@@ -36,14 +36,14 @@ public class LightningBolt : MonoBehaviour, Placeable {
 
         GetComponent<Rigidbody>().useGravity = false;
         GetComponent<Rigidbody>().isKinematic = true;
-        GetComponent<Collider>().enabled = false;
+        GetComponent<CapsuleCollider>().enabled = false;
 
     }
     public void release(Vector3 vel)
     {
         GetComponent<Rigidbody>().useGravity = true;
         GetComponent<Rigidbody>().isKinematic = false;
-        GetComponent<Collider>().enabled = true;
+        GetComponent<CapsuleCollider>().enabled = true;
         GetComponent<Rigidbody>().velocity = vel;
     }
 
