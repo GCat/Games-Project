@@ -18,7 +18,7 @@ public class House  : Building, Placeable
     public Vector3 location;  //position of house 
     private bool full_house;   // flag of some sort
     private int foodCost = 10;
-    public int faithCost = 1;
+    private int faithCost = 1;
 
 
     public bool active = false;

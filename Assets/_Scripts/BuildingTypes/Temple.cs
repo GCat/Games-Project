@@ -7,7 +7,7 @@ public class Temple : ResourceBuilding
     public bool spawnedGarrison = false;
     public WorldStarter world;
     public bool placed = false;
-    public int fCost = 0;
+    private int fCost = 0;
 
     public override int faithCost()
     {

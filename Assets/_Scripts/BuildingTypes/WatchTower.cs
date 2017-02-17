@@ -12,7 +12,7 @@ public class WatchTower : Building, Placeable
     public string buildingName;
     public List<GameObject> targets;
     private float radius = 25.0f;
-    public int fCost = 500;
+    private int fCost = 15;
 
     bool active = false;
     public bool held = false;
@@ -38,27 +38,17 @@ public class WatchTower : Building, Placeable
         return health;
     }
  
-
+    //never goes in here 
     public override void create_building()
     {
-        Debug.Log("CREATE BUILD TOWER");
-        if (canBuy())
-        {
-
-            buildingName = "TOWER";
-            targets = new List<GameObject>();
-            timer1 = 0f;
-            StartTime1 = Time.time;
-            timer2 = 0f;
-            StartTime2 = Time.time;
-            timer3 = 0f;
-            StartTime3 = Time.time;
-        }
-        else
-        {
-            die();
-            highlightDestroy();
-        }
+        buildingName = "TOWER";
+        targets = new List<GameObject>();
+        timer1 = 0f;
+        StartTime1 = Time.time;
+        timer2 = 0f;
+        StartTime2 = Time.time;
+        timer3 = 0f;
+        StartTime3 = Time.time;
     }
 
     void Start () {
@@ -229,6 +219,15 @@ public class WatchTower : Building, Placeable
             transform.rotation = Quaternion.LookRotation(Vector3.forward);
             GetComponent<Rigidbody>().useGravity = false;
             GetComponent<Rigidbody>().isKinematic = true;
+            if (canBuy())
+            {
+                Debug.Log("CANNNN BUY TOWER");
+                create_building();
+            }else
+            {
+                Destroy(gameObject);
+            }
+
         }
         else
         {
@@ -243,6 +242,7 @@ public class WatchTower : Building, Placeable
     {
         if (highlight != null) Destroy(highlight);
     }
+
     private void highlightCheck()
     {
         if (transform.position.y > 0.0 && Mathf.Abs(transform.position.x) <= 50 && Mathf.Abs(transform.position.z) <= 100)
@@ -255,8 +255,6 @@ public class WatchTower : Building, Placeable
                 highlight.GetComponent<Renderer>().material = matInval;
             else
                 highlight.GetComponent<Renderer>().material = matEmpty;
-
-
         }
         else
         {
@@ -303,6 +301,7 @@ public class WatchTower : Building, Placeable
 
     public override void activate()
     {
+        //when do you call create buiding for towers ? -- cost does not work 
         if (!badplacement)
         {
             active = true;

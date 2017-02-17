@@ -16,8 +16,8 @@ public abstract class ResourceBuilding : Building, Placeable
     private bool badplacement = false;
     private float placementTime;
     private Vector3 boxSize;
-    Material matEmpty;
-    Material matInval;
+    public Material matEmpty;
+    public Material matInval;
 
     public abstract void incrementResource();
     public abstract int faithCost();
@@ -39,8 +39,7 @@ public abstract class ResourceBuilding : Building, Placeable
 
     private void Start()
     {
-      
-        matEmpty = Resources.Load("Materials/highlight2") as Material;
+        matEmpty = Resources.Load("Materials/highlight2") as Material; 
         matInval = Resources.Load("Materials/highlight") as Material;
         boxSize = GetComponent<BoxCollider>().bounds.size / 2;
         boxSize.y = 0.01f;
@@ -101,7 +100,7 @@ public abstract class ResourceBuilding : Building, Placeable
     //Don't need this
     public override void deactivate()
     {
-        on_game_board = false;   
+        //on_game_board = false;   
     }
 
     public void grab()
@@ -109,13 +108,11 @@ public abstract class ResourceBuilding : Building, Placeable
         held = true;
         badplacement = false;
         // Deactivate  collider and gravity
-
-
-        // highlight where object wiould place if falling straight down
         if (highlight != null)
         {
             DestroyImmediate(highlight);
         }
+        // highlight where object wiould place if falling straight down
         createHighlight();
 
         GetComponent<Rigidbody>().useGravity = false;
@@ -149,13 +146,13 @@ public abstract class ResourceBuilding : Building, Placeable
         {
             bool success = true;
             GetComponent<BoxCollider>().enabled = true;
-
+   
             if (Physics.CheckBox(new Vector3(Mathf.Floor(x), 0, Mathf.Floor(z)),boxSize, Quaternion.LookRotation(Vector3.forward), layerMask))
             {
-                badplacement = true;
-                held = false;
                 placementTime = Time.time;
                 GetComponent<BoxCollider>().enabled = false;
+                badplacement = true;
+                held = false;
                 highlightDestroy();
                 success = false;
             }
@@ -168,10 +165,10 @@ public abstract class ResourceBuilding : Building, Placeable
             {
                 create_building();
             }
-            else // case when not enough resources to buy a building
+            else // case when not enough resources to buy a building or bad placement
             {
+                highlightDestroy();
                 Destroy(gameObject);
-                DestroyImmediate(highlight);
             }
             GetComponent<Rigidbody>().useGravity = false;
             GetComponent<Rigidbody>().isKinematic = true;
@@ -239,8 +236,6 @@ public abstract class ResourceBuilding : Building, Placeable
                 highlight.GetComponent<Renderer>().material = matInval;
             else
                 highlight.GetComponent<Renderer>().material = matEmpty;
-
-
         }
         else
         {
