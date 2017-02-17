@@ -40,7 +40,7 @@ public class BadiesAI : MonoBehaviour, Character {
 
     // Badie characteristic
 
-    public float strenght = 20.0f;
+    public float strength = 20.0f;
     public float health = 100.0f;
     public float totalHealth = 100.0f;
     GameObject healthBar;
@@ -251,15 +251,20 @@ public class BadiesAI : MonoBehaviour, Character {
     {
         if (victim != null)
         {
-            anim.Play("hit");
-            transform.rotation = Quaternion.LookRotation(victim.transform.position- transform.position);
-            //if it's a building
-            HealthManager victimHealth = victim.GetComponent<HealthManager>();
-            if (victimHealth != null)
+ 
+            transform.rotation = Quaternion.LookRotation(victim.transform.position - transform.position);
+            if (!anim.IsPlaying("hit"))
             {
-                victimHealth.decrementHealth(strenght * Time.deltaTime);
-            } else {
-                Debug.LogError("Trying to attack something that doesn not have health");
+                anim.Play("hit");
+                HealthManager victimHealth = victim.GetComponent<HealthManager>();
+                if (victimHealth != null)
+                {
+                    victimHealth.decrementHealth(strength);
+                }
+                else
+                {
+                    Debug.LogError("Trying to attack something that doesn not have health");
+                }
             }
             return true;
         }

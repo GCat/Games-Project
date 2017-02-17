@@ -321,17 +321,21 @@ public class Agent : MonoBehaviour, Character, Grabbable
     {
         if (victim != null)
         {
-            anim.Play("attack");
             transform.rotation = Quaternion.LookRotation(victim.transform.position - transform.position);
-            HealthManager victimHealth = victim.GetComponent<HealthManager>();
-            if (victimHealth != null)
+            if (!anim.IsPlaying("attack"))
             {
-                victimHealth.decrementHealth(strength * Time.deltaTime);
+                anim.Play("attack");
+                HealthManager victimHealth = victim.GetComponent<HealthManager>();
+                if (victimHealth != null)
+                {
+                    victimHealth.decrementHealth(strength);
+                }
+                else
+                {
+                    Debug.LogError("Trying to attack something that doesn not have health");
+                }
             }
-            else
-            {
-                Debug.LogError("Trying to attack something that doesn not have health");
-            }
+          
             return true;
         }
         return false;
