@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 23821056897584210}
   - component: {fileID: 102179795757264594}
   m_Layer: 0
-  m_Name: WatchTowerCost
+  m_Name: WatchTowerText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
