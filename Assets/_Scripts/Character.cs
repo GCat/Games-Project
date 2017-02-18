@@ -4,6 +4,5 @@ using UnityEngine;
 
 public interface Character : HealthManager
 {
-    void changeMoving(bool val);
-    void changeMode(bool val);
+
 }

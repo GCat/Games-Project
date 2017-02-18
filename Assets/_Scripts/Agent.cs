@@ -58,9 +58,6 @@ public class Agent : MonoBehaviour, Character, Grabbable
 
     // God interactions
     private bool sacrificeEntered = false;
-    private bool realeased = false;
-    private bool falling = false;
-    private bool grounded = true;
 
     // Fighting
     enum Fighter { Killer, Defender, Camper };

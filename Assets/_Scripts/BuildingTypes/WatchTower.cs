@@ -21,7 +21,7 @@ public class WatchTower : Building, Grabbable
     private float StartTime1;
 
     private bool badplacement = false;
-    private float placementTime;
+    private float placementTime = 0;
 
     int attackMask = 1 << 11;
     GameObject pre;

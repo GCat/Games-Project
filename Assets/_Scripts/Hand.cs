@@ -40,7 +40,7 @@ public class Hand : MonoBehaviour {
     private Vector3[] held_object_positions;
     private float[] held_object_times;
 
-    private Vector3 original_position;
+
 
     float rotationTimer;
     float startTime;
@@ -226,11 +226,7 @@ public class Hand : MonoBehaviour {
         if (heldObject != null)
         {
             Debug.Log("GRABBED");
-            if (heldObject.tag == "Shelf Object")
-            {
-                original_position = heldObject.transform.position;
-            }
-                
+
             holding = true;
             Grabbable placeable = heldObject.GetComponent<Grabbable>();
 

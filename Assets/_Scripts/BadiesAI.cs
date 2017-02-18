@@ -54,7 +54,6 @@ public class BadiesAI : MonoBehaviour, Character {
     public Animation anim;
 
     // Movement
-    private bool moving= true;
     public Vector3 startMarker;
     public Vector3 endMarker;
 
@@ -74,8 +73,7 @@ public class BadiesAI : MonoBehaviour, Character {
 
     // Killer
     public GameObject closestEnemy;
-    private bool noMoreEnemies = false;
-    private float dis2Enemy = 0;
+
 
     //Defender
     private float radius = 25.0f;
@@ -87,7 +85,7 @@ public class BadiesAI : MonoBehaviour, Character {
 
     // Training
     private bool enemyFound;
-    private bool buildingsLeft = true;
+
     public GameObject[] buildings;
 
     private ResourceCounter resources;
@@ -110,8 +108,6 @@ public class BadiesAI : MonoBehaviour, Character {
     public void spawn(int type)
     {
         
-        moving = true;
-        noMoreEnemies = false;
 
         anim = GetComponent<Animation>();
         rb = GetComponent<Rigidbody>();
@@ -318,13 +314,9 @@ public class BadiesAI : MonoBehaviour, Character {
         }
         else
         {
-            noMoreEnemies = true;
+
         }
         return closest;
-    }
-    public void changeMoving(bool val)
-    {
-        moving = val;
     }
 
     IEnumerator WaitToDestroy(float waitTime)

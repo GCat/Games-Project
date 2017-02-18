@@ -47,7 +47,7 @@ public abstract class Building : MonoBehaviour, HealthManager{
     //return true if within bounds & not above another building
     public bool canPlace()
     {
-        float y = transform.position.y;
+
         float x = transform.position.x;
         float z = transform.position.z;
 
