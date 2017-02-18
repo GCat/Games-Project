@@ -303,8 +303,10 @@ public class Agent : MonoBehaviour, Character, Grabbable
     }
     public void grab()
     {
+        Debug.Log("Human Grabbed");
         agent.enabled = false;
         currentState = HumanState.Grabbed;
+        rb.isKinematic = true;
         rb.useGravity = false;
         GetComponent<Collider>().enabled = false;
     }
@@ -314,6 +316,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
         currentState = HumanState.Falling;
         GetComponent<Collider>().enabled = true;
         rb.useGravity = true;
+        rb.isKinematic = false;
 
     }
 

@@ -45,7 +45,11 @@ public class Temple : ResourceBuilding
         humanLocation = new Vector3(myLocation.x, myLocation.y, myLocation.z + 33);
         for (int i = 0; i < 5; i++)
         {
-            Instantiate(Resources.Load("Characters/Human"), humanLocation, Quaternion.identity);
+            int layerMask = 1 << 16;
+            Collider[] hitColliders = Physics.OverlapSphere(new Vector3(humanLocation.x, 0f, humanLocation.z), 0.01f,layerMask);
+            if (hitColliders.Length > 0)
+                Instantiate(Resources.Load("Characters/Human"), humanLocation, Quaternion.identity);
+               
             humanLocation = rotateAroundPivot(humanLocation, myLocation, new Vector3(0, (360 / 5), 0));
         }
         spawnedGarrison = true;

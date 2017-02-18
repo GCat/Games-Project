@@ -225,8 +225,6 @@ public class Hand : MonoBehaviour {
         heldObject = closest;
         if (heldObject != null)
         {
-            Debug.Log("GRABBED");
-
             holding = true;
             Grabbable placeable = heldObject.GetComponent<Grabbable>();
 
@@ -299,6 +297,7 @@ public class Hand : MonoBehaviour {
         float x = placeable.transform.position.x;
         float z = placeable.transform.position.z;
         placeable.transform.position = new Vector3(Mathf.Floor(x), 0, Mathf.Floor(z));
+        // if we are not alowing hand rotation is this still nesesary?
         placeable.transform.rotation = Quaternion.LookRotation(Vector3.forward);
 
     }

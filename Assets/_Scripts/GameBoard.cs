@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class GameBoard : MonoBehaviour {
 
+    // have to create function that calulates size of the ground and the height at which its placed
+    // May require this object to not ber static
+
     public static Vector2 bottomLeft = new Vector2(-50, -100);
     public static Vector2 topRight = new Vector2(50, 100);
 
