@@ -134,7 +134,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
                 case HumanState.Falling:
                     if (!sacrificeEntered)
                     {
-                        if (GameBoard.aboveBoard(transform.position))
+                        if (resources.aboveBoard(transform.position))
                         {
                             if (transform.position.y < 0.5)
                             {
@@ -197,7 +197,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
         }
         else
         {
-            Debug.LogError("Could not calculate a new wander target");
+            Debug.Log("Could not calculate a new wander target");
             return transform.position;
         }
     }
