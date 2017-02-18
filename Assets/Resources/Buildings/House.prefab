@@ -2756,13 +2756,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a25bbba434e2794e8bd5c0264fbe8fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  totalHealth: 100
+  health: 100
+  resourceCounter: {fileID: 0}
+  tablet: {fileID: 0}
+  highlight: {fileID: 0}
+  matEmpty: {fileID: 2100000, guid: 79ef561946cb1bb4884c0cca457d417b, type: 2}
+  matInval: {fileID: 2100000, guid: 4a47be7d74c42494682ec45ef083f2d6, type: 2}
   build: {fileID: 0}
   destroy: {fileID: 8300000, guid: 903652cac7f2f744ab1f18d72f2461ba, type: 3}
   smokeEffect: {fileID: 198221221841677044}
   timer: 0
   location: {x: 0, y: 0, z: 0}
-  resourceCounter: {fileID: 0}
-  health: 100
   active: 0
   held: 0
 --- !u!198 &198221221841677044
@@ -2773,7 +2778,7 @@ ParticleSystem:
   m_GameObject: {fileID: 1992552206681822}
   serializedVersion: 5
   lengthInSec: 10
-  speed: 1
+  simulationSpeed: 1
   looping: 1
   prewarm: 1
   playOnAwake: 1

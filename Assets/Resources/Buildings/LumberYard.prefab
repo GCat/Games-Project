@@ -639,14 +639,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b5fdbe766691474dbbb2ccb5e726588, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  totalHealth: 100
+  health: 100
+  resourceCounter: {fileID: 0}
+  tablet: {fileID: 0}
+  highlight: {fileID: 0}
+  matEmpty: {fileID: 2100000, guid: 79ef561946cb1bb4884c0cca457d417b, type: 2}
+  matInval: {fileID: 2100000, guid: 4a47be7d74c42494682ec45ef083f2d6, type: 2}
   build: {fileID: 0}
   destroy: {fileID: 0}
   buildingName: 
-  timer: 0
-  startTime: 0
-  timeStep: 0
-  resourceCounter: {fileID: 0}
-  health: 100
   on_game_board: 0
   held: 0
   required_resource_tag: Forest
