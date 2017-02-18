@@ -7,17 +7,20 @@ public class Portal : MonoBehaviour {
     * Distribution states probability of  spawingn any of the four clases, it shoud add up to one
     * {Rushers, Defender, Killer, Training} 
     */
+    enum SpawnBehaviour { Constant, Exponential, Linear };
 
     bool active = false;
 
     // behaviour 0  uses maxSpawns and spawns at constant rate behaviour 1 spawns exponentialy
-    private int behaviour;
+    private SpawnBehaviour behaviour;
     private int maxSpawns;
     private int spawns = 0;
 
     public float coef = 1f;
 
     float[] distribution = new float[] { 0f, 0f, 0f, 0f };
+
+
 
     // frequency of spawning
     float frequency;
@@ -36,11 +39,15 @@ public class Portal : MonoBehaviour {
     }
 	
 	void Update () {
+        if(temple == null)
+        {
+            return;
+        }
         if (active )
         {
             if (Time.time - delayStart > delay)
             {
-                if (behaviour == 0 && spawns < maxSpawns)
+                if (behaviour == SpawnBehaviour.Constant && spawns < maxSpawns)
                 {
                     timer = Time.time - startTime;
                     if (timer >= frequency)
@@ -48,7 +55,7 @@ public class Portal : MonoBehaviour {
                         spawn();
                     }
                 }
-                else if(behaviour == 1)
+                else if(behaviour == SpawnBehaviour.Exponential)
                 { 
                     timer = Time.time - startTime;
                     if (timer >= frequency)
@@ -63,7 +70,7 @@ public class Portal : MonoBehaviour {
             if (temple.GetComponent<Temple>().isPlaced())
             {
                 delayStart = Time.time;
-                setup(1, new float[] { 1f, 1f, 1f, 1f }, 21.0f);
+                setup(SpawnBehaviour.Exponential, new float[] { 1f, 1f, 1f, 1f }, 21.0f);
             }
         }
 	}
@@ -91,7 +98,7 @@ public class Portal : MonoBehaviour {
 
             startTime = Time.time;
             spawns++;
-            if (behaviour == 1)
+            if (behaviour == SpawnBehaviour.Exponential)
             {
                 string s = string.Format("Prev Freq {0}", frequency);
                 Debug.Log(s);
@@ -141,7 +148,7 @@ public class Portal : MonoBehaviour {
 
     }
 
-    void setup(int behaviour, float[] distribution, float f)
+    void setup(SpawnBehaviour behaviour, float[] distribution, float f)
     {
         active = true;
         startTime = Time.time;
