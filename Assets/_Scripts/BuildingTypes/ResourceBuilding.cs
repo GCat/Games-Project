@@ -77,30 +77,15 @@ public abstract class ResourceBuilding : Building, Placeable
         return false;
     }
 
-    //Do not need this function
+    //Don't need this 
     public override void activate()
     {
-        /*if (!badplacement)
-        {
-            if (canBuy())
-            {
-                startTime = Time.time;
-                on_game_board = true;
-                held = false;
-                highlightDestroy();
-            }else
-            {
-                Destroy(gameObject); // check if need to open hand and stuff
-            }   
-        }
-        */
-        //Debug.Log("RESOURCE W+ONE");
+       //do nothing 
     }
 
     //Don't need this
     public override void deactivate()
-    {
-        //on_game_board = false;   
+    {  
     }
 
     public void grab()
@@ -164,14 +149,15 @@ public abstract class ResourceBuilding : Building, Placeable
             if (success && canBuy())
             {
                 create_building();
+                GetComponent<Rigidbody>().useGravity = false;
+                GetComponent<Rigidbody>().isKinematic = true;
             }
             else // case when not enough resources to buy a building or bad placement
             {
                 highlightDestroy();
                 Destroy(gameObject);
             }
-            GetComponent<Rigidbody>().useGravity = false;
-            GetComponent<Rigidbody>().isKinematic = true;
+            
         }
         else
         {
@@ -255,6 +241,7 @@ public abstract class ResourceBuilding : Building, Placeable
         highlight.GetComponent<Collider>().enabled = false;
         highlight.GetComponent<Renderer>().enabled = false;
     }
+
     public bool getbp()
     {
         return badplacement;
