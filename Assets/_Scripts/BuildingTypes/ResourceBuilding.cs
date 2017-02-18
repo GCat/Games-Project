@@ -114,63 +114,7 @@ public abstract class ResourceBuilding : Building, Grabbable
 
     }
 
-    public void release(Vector3 vel)
-    {
-        //Snap to grid
-        float y = transform.position.y;
-        float x = transform.position.x;
-        float z = transform.position.z;
-        int layerMask = (1 << 10);
 
-        //test within table bounds
-        if (GameBoard.withinBounds(transform.position))
-        {
-            bool success = true;
-            GetComponent<BoxCollider>().enabled = true;
-   
-            if (Physics.CheckBox(new Vector3(Mathf.Floor(x), 0, Mathf.Floor(z)),boxSize, Quaternion.LookRotation(Vector3.forward), layerMask))
-            {
-                placementTime = Time.time;
-                GetComponent<BoxCollider>().enabled = false;
-                badplacement = true;
-                held = false;
-                highlightDestroy();
-                success = false;
-            }
-
-            
-            transform.position = new Vector3(Mathf.Floor(x), 0, Mathf.Floor(z));
-            transform.rotation = Quaternion.LookRotation(Vector3.forward);
-
-            if (success && canBuy())
-            {
-                create_building();
-            }
-            else // case when not enough resources to buy a building or bad placement
-            {
-                highlightDestroy();
-                Destroy(gameObject);
-            }
-            GetComponent<Rigidbody>().useGravity = false;
-            GetComponent<Rigidbody>().isKinematic = true;
-        }
-        else
-        {
-            GetComponent<Rigidbody>().useGravity = true;
-            GetComponent<Rigidbody>().isKinematic = false;
-            GetComponent<Collider>().enabled = true;
-            Debug.Log("Resource Building vel:" + vel);
-            GetComponent<Rigidbody>().AddForce(vel, ForceMode.VelocityChange);
-        }
-
-        if (required_resource_tag != "None")
-        {
-            foreach (GameObject n in resourceCounter.resource_nodes[required_resource_tag])
-            {
-                n.GetComponent<ResourceNode>().hideRange();
-            }
-        }
-    }
 
 
     public GameObject findNearestResourceNode()

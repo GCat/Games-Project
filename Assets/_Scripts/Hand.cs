@@ -214,7 +214,14 @@ public class Hand : MonoBehaviour {
                     closest = thing.gameObject;
                 }
             }
+            Building building = closest.GetComponent<Building>();
+            if (building != null && building.canBeGrabbed == false)
+            {
+                return;
+            }
         }
+
+
         heldObject = closest;
         if (heldObject != null)
         {
@@ -229,6 +236,7 @@ public class Hand : MonoBehaviour {
 
             if (placeable != null)
             {
+
                 placeable.grab();
             }
             else
@@ -275,6 +283,7 @@ public class Hand : MonoBehaviour {
                     {
                         throwObject(heldObject);
                     }
+                    building.highlightDestroy();
                 }
             }
             else

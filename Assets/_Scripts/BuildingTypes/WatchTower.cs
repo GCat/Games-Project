@@ -142,19 +142,7 @@ public class WatchTower : Building, Grabbable
         GetComponent<Collider>().enabled = false;
 
     }
-    //release is called when object is released from the hand - regardless of placement success
-    public void release(Vector3 vel)
-    {
-        //Snap to grid
-        float y = transform.position.y;
-        float x = transform.position.x;
-        float z = transform.position.z;
-        int layerMask = (1 << 10);
-        transform.position = new Vector3(Mathf.Floor(x), 0, Mathf.Floor(z));
-        transform.rotation = Quaternion.LookRotation(Vector3.forward);
-        GetComponent<Rigidbody>().useGravity = false;
-        GetComponent<Rigidbody>().isKinematic = true;
-    }
+
 
 
 

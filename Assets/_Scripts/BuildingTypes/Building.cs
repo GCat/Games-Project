@@ -15,6 +15,7 @@ public abstract class Building : MonoBehaviour, HealthManager{
     public GameObject highlight;
     public Material matEmpty;
     public Material matInval;
+    public bool canBeGrabbed = true;
 
     public abstract bool canBuy();
 
@@ -30,7 +31,6 @@ public abstract class Building : MonoBehaviour, HealthManager{
             die();
         }
     }
-
     private void Awake()
     {
         tablet = GameObject.FindGameObjectWithTag("Tablet");
@@ -62,6 +62,15 @@ public abstract class Building : MonoBehaviour, HealthManager{
             return true;
         }
         return false;
+    }
+
+    public void release(Vector3 vel)
+    {
+        GetComponent<Rigidbody>().useGravity = true;
+        GetComponent<Rigidbody>().isKinematic = false;
+        GetComponent<Collider>().enabled = true;
+        Debug.Log("Resource Building vel:" + vel);
+        GetComponent<Rigidbody>().AddForce(vel, ForceMode.VelocityChange);
     }
 
     public void createHealthBar()
