@@ -11173,17 +11173,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00bcda1f813d788499d512fe75db07b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  totalHealth: 100
+  health: 100
+  resourceCounter: {fileID: 0}
+  tablet: {fileID: 0}
+  highlight: {fileID: 0}
+  matEmpty: {fileID: 2100000, guid: fa76a35daf45c3844b759848aad81cb0, type: 2}
+  matInval: {fileID: 2100000, guid: fa76a35daf45c3844b759848aad81cb0, type: 2}
   build: {fileID: 0}
   destroy: {fileID: 0}
   buildingName: 
-  health: 100
-  targets: []
+  target: {fileID: 0}
   held: 0
   timer1: 0
-  timer2: 0
-  timer3: 0
-  matEmpty: {fileID: 2100000, guid: fa76a35daf45c3844b759848aad81cb0, type: 2}
-  matInval: {fileID: 2100000, guid: fa76a35daf45c3844b759848aad81cb0, type: 2}
 --- !u!208 &208718995710538024
 NavMeshObstacle:
   m_ObjectHideFlags: 1

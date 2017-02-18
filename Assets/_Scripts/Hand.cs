@@ -225,7 +225,7 @@ public class Hand : MonoBehaviour {
             }
                 
             holding = true;
-            Placeable placeable = heldObject.GetComponent<Placeable>();
+            Grabbable placeable = heldObject.GetComponent<Grabbable>();
 
             if (placeable != null)
             {
@@ -254,48 +254,69 @@ public class Hand : MonoBehaviour {
     {
         if (holding)
         {
-            float time = 0;
-            foreach (float t in held_object_times)
-            {
-                time += t;
-            }
-            Vector3 velocity = (transform.position - held_object_positions[4]) / (time);
-            //heldObject.GetComponent<Rigidbody>().velocity = velocity;
+            holding = false;
+            heldObject.transform.parent = null;
+            Building building = heldObject.GetComponent<Building>();
 
-            Placeable placeable = heldObject.GetComponent<Placeable>();
-            if (placeable != null)
+            if(building != null)
             {
-                placeable.release(velocity);
-                Building building = heldObject.GetComponent<Building>();
-                if (building != null)
+                if(building.canPlace() && building.canBuy())
                 {
+                    snapToGrid(heldObject);
                     building.activate();
+                }
+                else
+                {
+                    if (GameBoard.withinBounds(heldObject.transform.position))
+                    {
+                        Destroy(heldObject);
+                    }
+                    else
+                    {
+                        throwObject(heldObject);
+                    }
                 }
             }
             else
             {
-                Debug.Log("This object is not placeable", heldObject);
-            }
-
-            holding = false;
-            heldObject.transform.parent = null;
-                        
-            if (heldObject.tag == "Shelf Object")
-            {
-                //this is a little dodgy - the watchtower should still be a building
-                WatchTower script = heldObject.GetComponent<WatchTower>();
-                if (script != null) heldObject.tag = "Tower";
-                else heldObject.tag = "Building";
-                GameObject clone = Instantiate(heldObject, original_position, Quaternion.identity) as GameObject;
-                clone.transform.localScale = heldObject.transform.localScale;
-                clone.GetComponent<BoxCollider>().enabled = true;
-                clone.tag = "Shelf Object";
-                
+                throwObject(heldObject);
             }
 
             heldObject = null;
 
         }
 
+    }
+
+    //function called to place an object neatly on the game board
+    private void snapToGrid(GameObject placeable)
+    {
+        float x = placeable.transform.position.x;
+        float z = placeable.transform.position.z;
+        placeable.transform.position = new Vector3(Mathf.Floor(x), 0, Mathf.Floor(z));
+        placeable.transform.rotation = Quaternion.LookRotation(Vector3.forward);
+
+    }
+
+    //function called to release any physics object from the hand
+    private void throwObject(GameObject projectile)
+    {
+        float time = 0;
+        foreach (float t in held_object_times)
+        {
+            time += t;
+        }
+        Vector3 velocity = (projectile.transform.position - held_object_positions[4]) / (time);
+
+        Grabbable placeable = heldObject.GetComponent<Grabbable>();
+        if (placeable != null)
+        {
+            placeable.release(velocity);
+
+        }
+        else
+        {
+            Debug.Log("This object is not placeable", heldObject);
+        }
     }
 }

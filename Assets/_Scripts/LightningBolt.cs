@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LightningBolt : MonoBehaviour, Placeable {
+public class LightningBolt : MonoBehaviour, Grabbable {
 
     public bool held = false;
     GameObject highlight = null;

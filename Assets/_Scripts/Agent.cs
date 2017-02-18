@@ -35,7 +35,7 @@ using UnityEngine.AI;
 
 
 
-public class Agent : MonoBehaviour, Character, Placeable
+public class Agent : MonoBehaviour, Character, Grabbable
 {
     // Human characteristics
     public float health = 100.0f;
