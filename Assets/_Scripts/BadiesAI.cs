@@ -126,7 +126,6 @@ public class BadiesAI : MonoBehaviour, Character {
         templeAttackPoint = temple.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
         resources = GameObject.FindGameObjectWithTag("Tablet").GetComponent<ResourceCounter>();
         resources.addBaddie();
-
     }
 
     void Update()
@@ -140,8 +139,11 @@ public class BadiesAI : MonoBehaviour, Character {
                     walkTowards(templeAttackPoint);
                     break;
                 case MonsterState.AttackHumans:
-                    //find nearest human
-                    
+                    if (resources.getPop() > 0)
+                    {
+
+                    }
+                    else currentState = MonsterState.AttackBuildings;
                     break;
                 case MonsterState.AttackBuildings:
 
@@ -195,9 +197,23 @@ public class BadiesAI : MonoBehaviour, Character {
             Debug.LogError("Cannot walk here!");
             return transform.position;
         }
-
     }
 
+    private void humanAttack()
+    {
+        if (resources.getPop() > 0)
+        {
+            if(closestEnemy != null)
+            {
+                walkTowards(closestEnemy.transform.position);
+            }
+            else findClosestEnemy();
+        }
+        else
+        {
+            currentState = MonsterState.AttackBuildings;
+        }
+    }
 
     private void walkTowards(Vector3 target)
     {
@@ -234,7 +250,7 @@ public class BadiesAI : MonoBehaviour, Character {
                 attack(temple);
                 break;
             case MonsterState.AttackHumans:
-
+                attack(closestEnemy);
                 break;
             case MonsterState.AttackBuildings:
 
@@ -243,8 +259,6 @@ public class BadiesAI : MonoBehaviour, Character {
 
                 break;
         }
-
-
     }
 
     bool attack(GameObject victim)
@@ -317,10 +331,6 @@ public class BadiesAI : MonoBehaviour, Character {
                 }
             }
         }
-        else
-        {
-
-        }
         return closest;
     }
 
@@ -333,6 +343,11 @@ public class BadiesAI : MonoBehaviour, Character {
     public void changeMode(bool val)
     {
         //Not used for baddies atm
+    }
+
+    public void setTempleAttackPoint(Vector3 p)
+    {
+        templeAttackPoint = p;
     }
 
 }

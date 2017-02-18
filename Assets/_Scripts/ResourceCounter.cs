@@ -112,6 +112,10 @@ public class ResourceCounter : MonoBehaviour, Grabbable
     {
         return swords;
     }
+    public int getPop()
+    {
+        return population;
+    }
     public void addFood()
     {
         food++;

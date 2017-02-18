@@ -103,7 +103,7 @@ public class Portal : MonoBehaviour {
                 //string s = string.Format("Prev Freq {0}", frequency);
                // Debug.Log(s);
 
-                frequency = (frequency > 1f)? (21f - Mathf.Pow(1.5f, (((spawns)) / coef))): 1;
+                frequency = (frequency > 1f)? (10f - Mathf.Pow(1.5f, (((spawns)) / coef))): 1;
                 //s = string.Format("After Freq {0}, val {1}", frequency, Mathf.Pow(1.5f, ((spawns)) / coef));
                // Debug.Log(s);
             }
