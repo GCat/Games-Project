@@ -23,6 +23,7 @@ public class Temple : ResourceBuilding
         placed = true;
         spawnHumans();
         InvokeRepeating("incrementResource", 10.0f, 5.0f); // after 10 sec call every 5
+        canBeGrabbed = false;
     }
 
     public bool isPlaced()

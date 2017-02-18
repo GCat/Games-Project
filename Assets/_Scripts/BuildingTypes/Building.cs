@@ -11,6 +11,11 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
     public ResourceCounter resourceCounter;
     public GameObject tablet;
     GameObject healthBar;
+    private Vector3 boxSize;
+    public GameObject highlight;
+    public Material matEmpty;
+    public Material matInval;
+    public bool canBeGrabbed = true;
 
     public abstract bool canBuy();
 
@@ -26,7 +31,6 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
             die();
         }
     }
-
     private void Awake()
     {
         tablet = GameObject.FindGameObjectWithTag("Tablet");
@@ -36,6 +40,37 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         }
         else Debug.Log("Tablet not found");
         createHealthBar();
+        boxSize = GetComponent<BoxCollider>().bounds.size / 2;
+        boxSize.y = 0.01f;
+    }
+
+    //return true if within bounds & not above another building
+    public bool canPlace()
+    {
+        float y = transform.position.y;
+        float x = transform.position.x;
+        float z = transform.position.z;
+
+        int layerMask = 1 << 10;
+        if (GameBoard.withinBounds(transform.position))
+        {
+            GetComponent<Collider>().enabled = true;
+            if (Physics.CheckBox(new Vector3(Mathf.Floor(x), 0, Mathf.Floor(z)), boxSize, Quaternion.LookRotation(Vector3.forward), layerMask))
+            {
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public void release(Vector3 vel)
+    {
+        GetComponent<Rigidbody>().useGravity = true;
+        GetComponent<Rigidbody>().isKinematic = false;
+        GetComponent<Collider>().enabled = true;
+        Debug.Log("Resource Building vel:" + vel);
+        GetComponent<Rigidbody>().AddForce(vel, ForceMode.VelocityChange);
     }
 
     public void createHealthBar()
@@ -48,6 +83,44 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         healthBar.transform.localRotation = gameObject.transform.localRotation;
         healthBar.transform.Rotate(new Vector3(90, 0, 0));
         healthBar.transform.SetParent(gameObject.transform);
+    }
+
+    public void highlightCheck()
+    {
+        if (transform.position.y > 0.0 && Mathf.Abs(transform.position.x) <= 50 && Mathf.Abs(transform.position.z) <= 100)
+        {
+            highlight.GetComponent<Renderer>().enabled = true;
+            highlight.transform.position = new Vector3(Mathf.Floor(transform.position.x), 0.1f, Mathf.Floor(transform.position.z));
+            highlight.transform.rotation = Quaternion.LookRotation(Vector3.forward);
+            int layerMask = 1 << 10;
+            if (Physics.CheckBox(new Vector3(Mathf.Floor(transform.position.x), 0, Mathf.Floor(transform.position.z)), boxSize, Quaternion.LookRotation(Vector3.forward), layerMask))
+                highlight.GetComponent<Renderer>().material = matInval;
+            else
+                highlight.GetComponent<Renderer>().material = matEmpty;
+        }
+        else
+        {
+            highlight.GetComponent<Renderer>().enabled = false;
+        }
+    }
+
+    public void highlightDestroy()
+    {
+        if (highlight != null) Destroy(highlight);
+    }
+
+
+
+    public void createHighlight()
+    {
+        highlight = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        highlight.GetComponent<Renderer>().material = matEmpty;
+        highlight.transform.localScale = new Vector3(GetComponent<BoxCollider>().bounds.size.x, 0.1f, GetComponent<BoxCollider>().bounds.size.z);
+        highlight.transform.position = new Vector3(Mathf.Floor(transform.position.x), 0.1f, Mathf.Floor(transform.position.z));
+        highlight.transform.rotation = Quaternion.LookRotation(Vector3.forward);
+
+        highlight.GetComponent<Collider>().isTrigger = true;
+        highlight.GetComponent<Renderer>().enabled = false;
     }
 
     public abstract void die();

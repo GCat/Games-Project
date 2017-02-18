@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class ResourceBuilding : Building, Placeable
+public abstract class ResourceBuilding : Building, Grabbable
 {
     public AudioClip build;
     public AudioClip destroy;
@@ -9,15 +9,12 @@ public abstract class ResourceBuilding : Building, Placeable
     
     public bool on_game_board = false;
     public bool held = false;
-    GameObject highlight = null;
     public string required_resource_tag = "None";
     public  GameObject resource_node;
 
     private bool badplacement = false;
     private float placementTime;
     private Vector3 boxSize;
-    public Material matEmpty;
-    public Material matInval;
 
     public abstract void incrementResource();
     public abstract int faithCost();
@@ -39,8 +36,6 @@ public abstract class ResourceBuilding : Building, Placeable
 
     private void Start()
     {
-        matEmpty = Resources.Load("Materials/highlight2") as Material; 
-        matInval = Resources.Load("Materials/highlight") as Material;
         boxSize = GetComponent<BoxCollider>().bounds.size / 2;
         boxSize.y = 0.01f;
         badplacement = false;
@@ -80,7 +75,7 @@ public abstract class ResourceBuilding : Building, Placeable
     //Don't need this 
     public override void activate()
     {
-       //do nothing 
+        create_building();
     }
 
     //Don't need this
@@ -118,64 +113,7 @@ public abstract class ResourceBuilding : Building, Placeable
 
     }
 
-    public void release(Vector3 vel)
-    {
-        //Snap to grid
-        float y = transform.position.y;
-        float x = transform.position.x;
-        float z = transform.position.z;
-        int layerMask = (1 << 10);
 
-        //test within table bounds
-        if (GameBoard.withinBounds(transform.position))
-        {
-            bool success = true;
-            GetComponent<BoxCollider>().enabled = true;
-   
-            if (Physics.CheckBox(new Vector3(Mathf.Floor(x), 0, Mathf.Floor(z)),boxSize, Quaternion.LookRotation(Vector3.forward), layerMask))
-            {
-                placementTime = Time.time;
-                GetComponent<BoxCollider>().enabled = false;
-                badplacement = true;
-                held = false;
-                highlightDestroy();
-                success = false;
-            }
-
-            
-            transform.position = new Vector3(Mathf.Floor(x), 0, Mathf.Floor(z));
-            transform.rotation = Quaternion.LookRotation(Vector3.forward);
-
-            if (success && canBuy())
-            {
-                create_building();
-                GetComponent<Rigidbody>().useGravity = false;
-                GetComponent<Rigidbody>().isKinematic = true;
-            }
-            else // case when not enough resources to buy a building or bad placement
-            {
-                highlightDestroy();
-                Destroy(gameObject);
-            }
-            
-        }
-        else
-        {
-            GetComponent<Rigidbody>().useGravity = true;
-            GetComponent<Rigidbody>().isKinematic = false;
-            GetComponent<Collider>().enabled = true;
-            Debug.Log("Resource Building vel:" + vel);
-            GetComponent<Rigidbody>().AddForce(vel, ForceMode.VelocityChange);
-        }
-
-        if (required_resource_tag != "None")
-        {
-            foreach (GameObject n in resourceCounter.resource_nodes[required_resource_tag])
-            {
-                n.GetComponent<ResourceNode>().hideRange();
-            }
-        }
-    }
 
 
     public GameObject findNearestResourceNode()

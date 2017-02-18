@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-public class ResourceCounter : MonoBehaviour, Placeable
+public class ResourceCounter : MonoBehaviour, Grabbable
 {
 
     public Dictionary<string, GameObject[]> resource_nodes;

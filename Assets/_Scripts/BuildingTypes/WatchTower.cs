@@ -3,14 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WatchTower : Building, Placeable
+public class WatchTower : Building, Grabbable
 {
 
     public AudioClip build;
     public AudioClip destroy;
 
     public string buildingName;
-    public List<GameObject> targets;
+    public GameObject target;
     private float radius = 25.0f;
     private int fCost = 15;
 
@@ -18,20 +18,14 @@ public class WatchTower : Building, Placeable
     public bool held = false;
 
     public float timer1;
-    public float timer2;
-    public float timer3;
     private float StartTime1;
-    private float StartTime2;
-    private float StartTime3;
 
-    GameObject highlight = null;
     private bool badplacement = false;
     private float placementTime;
-    private Vector3 boxSize;
 
+    int attackMask = 1 << 11;
+    GameObject pre;
 
-    public Material matEmpty;
-    public Material matInval;
 
     float getHealth()
     {
@@ -41,19 +35,12 @@ public class WatchTower : Building, Placeable
     //never goes in here 
     public override void create_building()
     {
-        buildingName = "TOWER";
-        targets = new List<GameObject>();
-        timer1 = 0f;
-        StartTime1 = Time.time;
-        timer2 = 0f;
-        StartTime2 = Time.time;
-        timer3 = 0f;
-        StartTime3 = Time.time;
+
     }
 
     void Start () {
-        boxSize = GetComponent<BoxCollider>().bounds.size / 2;
-        boxSize.y = 0.01f;
+
+        pre = Resources.Load("Arrow_Regular") as GameObject;
     }
 
     void OnDrawGizmosSelected()
@@ -80,86 +67,47 @@ public class WatchTower : Building, Placeable
         }
         else if (active)
         {
-            
-            if (targets.Count > 0)
-            {
-                targets.RemoveAll(x => x == null);
-                int i = 0;
-                List<int> pop = new List<int>();
-                foreach (GameObject target in targets)
-                {
-                    if (Vector3.Distance(transform.position, target.transform.position) <= radius)
-                    {
 
-                        attack(target, i);
-                    }
-                    else pop.Add(i);
-                    i++;
-                }
-                foreach (int j in pop)
-                {
-                    if (j < targets.Count) targets.RemoveAt(j);
-                }
-            }
-            if (targets.Count < 3)
+            if (resourceCounter.baddies > 0)
             {
-                int layerMask = 1 << 11;
-                //pretty poor performance on this - I've tried my best to reduce it
-                if (resourceCounter.baddies < 1)
+                if(target != null)
                 {
-                    return;
+                    attack(target);
                 }
-                List<Collider> hitColliders = new List<Collider>(Physics.OverlapSphere(transform.position, radius, layerMask));
-                foreach (Collider c in hitColliders)
+                else
                 {
-                    if (!targets.Contains(c.gameObject))
-                    {
-                        if (targets.Count >= 3) break;
-                        else
-                        {
-                            targets.Add(c.gameObject);
-                            attack(c.gameObject, targets.Count - 1);
-                        }
-                    }
+                    acquireTarget();
                 }
+
             }
-            
         }
     }
 
-    bool attack(GameObject victim,int id)
+    //find a new nearby monster to attack
+    private bool acquireTarget()
+    {
+        List<Collider> hitColliders = new List<Collider>(Physics.OverlapSphere(transform.position, radius, attackMask));
+        if (hitColliders.Count > 0)
+        {
+            target = hitColliders[0].gameObject;
+            return true;
+        }
+
+        return false;
+    }
+
+    //fire an arrow at a target
+    bool attack(GameObject victim)
     {
         if (victim != null)
         {
-            switch (id)
+            timer1 = Time.time - StartTime1;
+            if (timer1 >= 3)
             {
-                case 0:
-                    timer1 = Time.time - StartTime1;
-                    if (timer1 >= 3)
-                    {
-                        throwArrow(victim);
-                        StartTime1 = Time.time;
-                    }
-                    break;
-                case 1:
-                    timer2 = Time.time - StartTime2;
-                    if (timer2 >= 3)
-                    {
-                        throwArrow(victim);
-                        StartTime2 = Time.time;
-                    }
-                    break;
-                case 2:
-                    timer3 = Time.time - StartTime3;
-                    if (timer3 >= 3)
-                    {
-                        throwArrow(victim);
-                        StartTime3 = Time.time;
-                    }
-                    break;
+                throwArrow(victim);
+                StartTime1 = Time.time;
+                return true;
             }
-            
-            return true;
         }
         return false;
     }
@@ -171,7 +119,6 @@ public class WatchTower : Building, Placeable
         {
             Vector3 pos = transform.TransformPoint(GetComponent<BoxCollider>().center);
             pos.y = 10f;
-            GameObject pre = Resources.Load("Arrow_Regular") as GameObject;
             GameObject c = GameObject.Instantiate(pre, pos, Quaternion.LookRotation(victim.transform.position)) as GameObject;
             ((Arrow)(c.GetComponent(typeof(Arrow)))).attack(victim);
         }
@@ -195,84 +142,9 @@ public class WatchTower : Building, Placeable
         GetComponent<Collider>().enabled = false;
 
     }
-    public void release(Vector3 vel)
-    {
-        //Snap to grid
-        float y = transform.position.y;
-        float x = transform.position.x;
-        float z = transform.position.z;
-        int layerMask = (1 << 10);
 
-        //test within table bounds
-        if (GameBoard.withinBounds(transform.position))
-        {
-            GetComponent<Collider>().enabled = true;
-            if (Physics.CheckBox(new Vector3(Mathf.Floor(x), 0, Mathf.Floor(z)), boxSize, Quaternion.LookRotation(Vector3.forward), layerMask))
-            {
-                badplacement = true;
-                held = false;
-                placementTime = Time.time;
-                GetComponent<Collider>().enabled = false;
-                highlightDestroy();
-            }
-            transform.position = new Vector3(Mathf.Floor(x), 0, Mathf.Floor(z));
-            transform.rotation = Quaternion.LookRotation(Vector3.forward);
-            GetComponent<Rigidbody>().useGravity = false;
-            GetComponent<Rigidbody>().isKinematic = true;
-            if (canBuy())
-            {
-                Debug.Log("CANNNN BUY TOWER");
-                create_building();
-            }else
-            {
-                Destroy(gameObject);
-            }
 
-        }
-        else
-        {
-            GetComponent<Rigidbody>().useGravity = true;
-            GetComponent<Rigidbody>().isKinematic = false;
-            GetComponent<BoxCollider>().enabled = true;
-            GetComponent<Rigidbody>().velocity = vel;
-        }
-    }
 
-    private void highlightDestroy()
-    {
-        if (highlight != null) Destroy(highlight);
-    }
-
-    private void highlightCheck()
-    {
-        if (transform.position.y > 0.0 && Mathf.Abs(transform.position.x) <= 50 && Mathf.Abs(transform.position.z) <= 100)
-        {
-            highlight.GetComponent<Renderer>().enabled = true;
-            highlight.transform.position = new Vector3(Mathf.Floor(transform.position.x), 0.1f, Mathf.Floor(transform.position.z));
-            highlight.transform.rotation = Quaternion.LookRotation(Vector3.forward);
-            int layerMask = 1 << 10;
-            if (Physics.CheckBox(new Vector3(Mathf.Floor(transform.position.x), 0, Mathf.Floor(transform.position.z)), boxSize, Quaternion.LookRotation(Vector3.forward), layerMask))
-                highlight.GetComponent<Renderer>().material = matInval;
-            else
-                highlight.GetComponent<Renderer>().material = matEmpty;
-        }
-        else
-        {
-            highlight.GetComponent<Renderer>().enabled = false;
-        }
-    }
-
-    private void createHighlight()
-    {
-        highlight = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        highlight.GetComponent<Renderer>().material = matEmpty;
-        highlight.transform.localScale = new Vector3(GetComponent<BoxCollider>().bounds.size.x, 0.1f, GetComponent<BoxCollider>().bounds.size.z);
-        highlight.transform.position = new Vector3(Mathf.Floor(transform.position.x), 0.1f, Mathf.Floor(transform.position.z));
-        highlight.transform.rotation = Quaternion.LookRotation(Vector3.forward);
-
-        highlight.GetComponent<Collider>().isTrigger = true;
-        highlight.GetComponent<Renderer>().enabled = false;
-    }
 
     public override string getName()
     {
@@ -302,13 +174,13 @@ public class WatchTower : Building, Placeable
     public override void activate()
     {
         //when do you call create buiding for towers ? -- cost does not work 
-        if (!badplacement)
-        {
-            active = true;
-            if (highlight != null) Destroy(highlight);
-            highlight = null;
-            held = false;
-        }
+        active = true;
+        if (highlight != null) Destroy(highlight);
+        highlight = null;
+        held = false;
+        buildingName = "TOWER";
+        timer1 = 0f;
+        StartTime1 = Time.time;
     }
 
     public override void deactivate()

@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface Placeable {
-
+public interface Grabbable {
 
     //function to be called when grabbed by hand
     void grab();

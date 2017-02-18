@@ -3,7 +3,7 @@ using System.Collections;
 using System;
 using UnityEngine.AI;
 
-public class House  : Building, Placeable
+public class House  : Building, Grabbable
 {
 
     public AudioClip build;
