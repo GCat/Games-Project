@@ -64,6 +64,6 @@ public class GameBoard : MonoBehaviour {
         float x = position.x;
         float z = position.z;
 
-        return (y > b.center.y && y < 40 && x > bL.x && x < tR.x && z > bL.z && z < tR.z);
+        return (y >= b.center.y && y < 40 && x > bL.x && x < tR.x && z > bL.z && z < tR.z);
     }
 }
