@@ -7,6 +7,7 @@ public class ResourceCounter : MonoBehaviour, Grabbable
 {
 
     public Dictionary<string, GameObject[]> resource_nodes;
+    private GameBoard ground;
     //The text displayed on the tablet
     public Text text;
     public int faith = 0;
@@ -32,6 +33,7 @@ public class ResourceCounter : MonoBehaviour, Grabbable
     {
         GameObject[] forests = GameObject.FindGameObjectsWithTag("Forest");
         GameObject[] ironNode = GameObject.FindGameObjectsWithTag("Iron");
+        ground = GameObject.FindGameObjectWithTag("Ground").GetComponent<GameBoard>();
         resource_nodes.Add("Forest", forests);
         resource_nodes.Add("Iron", ironNode);
 
@@ -109,6 +111,10 @@ public class ResourceCounter : MonoBehaviour, Grabbable
     public int getSwords()
     {
         return swords;
+    }
+    public int getPop()
+    {
+        return population;
     }
     public void addFood()
     {
@@ -210,5 +216,13 @@ public class ResourceCounter : MonoBehaviour, Grabbable
     {
 
 
+    }
+    public bool aboveBoard(Vector3 p)
+    {
+        return ground.dynamicAboveBoard(p);
+    }
+    public bool withinBounds(Vector3 p)
+    {
+        return ground.dynamicWithinBounds(p);
     }
 }

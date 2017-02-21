@@ -41,18 +41,18 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         else Debug.Log("Tablet not found");
         createHealthBar();
         boxSize = GetComponent<BoxCollider>().bounds.size / 2;
-        boxSize.y = 0.01f;
+        boxSize.y = 1f;
     }
 
     //return true if within bounds & not above another building
     public bool canPlace()
     {
-        float y = transform.position.y;
+
         float x = transform.position.x;
         float z = transform.position.z;
 
         int layerMask = 1 << 10;
-        if (GameBoard.withinBounds(transform.position))
+        if (resourceCounter.withinBounds(transform.position))
         {
             GetComponent<Collider>().enabled = true;
             if (Physics.CheckBox(new Vector3(Mathf.Floor(x), 0, Mathf.Floor(z)), boxSize, Quaternion.LookRotation(Vector3.forward), layerMask))

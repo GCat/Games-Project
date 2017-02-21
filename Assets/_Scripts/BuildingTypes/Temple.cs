@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.AI;
 
 public class Temple : ResourceBuilding
 {
@@ -39,13 +40,21 @@ public class Temple : ResourceBuilding
 
     void spawnHumans()
     {
-        Debug.Log("Spawning");
         Vector3 myLocation = gameObject.transform.position;
         Vector3 humanLocation;
         humanLocation = new Vector3(myLocation.x, myLocation.y, myLocation.z + 33);
         for (int i = 0; i < 5; i++)
         {
-            Instantiate(Resources.Load("Characters/Human"), humanLocation, Quaternion.identity);
+            if (resourceCounter.aboveBoard(humanLocation))
+                Instantiate(Resources.Load("Characters/Human"), humanLocation, Quaternion.identity);
+            else
+            {
+                NavMeshHit hit;
+                if (NavMesh.SamplePosition(humanLocation, out hit, 20.0f, NavMesh.AllAreas))
+                    Instantiate(Resources.Load("Characters/Human"), hit.position, Quaternion.identity);
+                else
+                    Debug.Log("Could not spawn human");
+            }
             humanLocation = rotateAroundPivot(humanLocation, myLocation, new Vector3(0, (360 / 5), 0));
         }
         spawnedGarrison = true;

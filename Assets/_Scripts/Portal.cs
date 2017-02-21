@@ -8,6 +8,7 @@ public class Portal : MonoBehaviour {
     * {Rushers, Defender, Killer, Training} 
     */
     enum SpawnBehaviour { Constant, Exponential, Linear };
+    private int[] countType = new int[] { 0, 0, 0, 0 }; 
 
     bool active = false;
 
@@ -32,10 +33,11 @@ public class Portal : MonoBehaviour {
     float delay = 20f;
     GameObject temple;
     GameObject pre;
-
+    ResourceCounter resourceCounter;
     void Start () {
         temple = GameObject.FindGameObjectWithTag("Temple");
         pre = Resources.Load("Characters/Badie") as GameObject;
+        resourceCounter = GameObject.FindGameObjectWithTag("Tablet").GetComponent<ResourceCounter>();
     }
 	
 	void Update () {
@@ -79,7 +81,7 @@ public class Portal : MonoBehaviour {
     {
         Vector3 pos = transform.GetChild(0).transform.position;
         pos.y = 0.0f;
-        if (Mathf.Abs(pos.x) < 50 && Mathf.Abs(pos.z) < 100)
+        if (resourceCounter.withinBounds(pos))
         {
             GameObject b = GameObject.Instantiate(pre, pos, Quaternion.identity);
             float val = Random.Range(0.0f, 1.0f);
@@ -90,6 +92,7 @@ public class Portal : MonoBehaviour {
                 if (val < distribution[i])
                 {
                     spawnType = i;
+                    countType[i]++;
                 }
 
             }
@@ -100,12 +103,12 @@ public class Portal : MonoBehaviour {
             spawns++;
             if (behaviour == SpawnBehaviour.Exponential)
             {
-                string s = string.Format("Prev Freq {0}", frequency);
-                Debug.Log(s);
+                //string s = string.Format("Prev Freq {0}", frequency);
+               // Debug.Log(s);
 
-                frequency = (frequency > 1f)? (21f - Mathf.Pow(1.5f, (((spawns)) / coef))): 1;
-                s = string.Format("After Freq {0}, val {1}", frequency, Mathf.Pow(1.5f, ((spawns)) / coef));
-                Debug.Log(s);
+                frequency = (frequency > 1f)? (10f - Mathf.Pow(1.5f, (((spawns)) / coef))): 1;
+                //s = string.Format("After Freq {0}, val {1}", frequency, Mathf.Pow(1.5f, ((spawns)) / coef));
+               // Debug.Log(s);
             }
         }
         else

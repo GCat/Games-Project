@@ -978,7 +978,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013033331268}
   m_LocalRotation: {x: -0.0006412557, y: -0.22017331, z: -0.0009570377, w: 0.9754601}
-  m_LocalPosition: {x: 11.575075, y: 0.50000006, z: -42.41754}
+  m_LocalPosition: {x: -54.026608, y: 25.579226, z: -50.678658}
   m_LocalScale: {x: 8.000003, y: 8.000002, z: 8}
   m_Children:
   - {fileID: 4000014266301270}
@@ -1402,6 +1402,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 0
+  totalHealth: 100
   strength: 20
   speed: 3
   gravity: 9.81
@@ -1764,7 +1765,7 @@ NavMeshAgent:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013033331268}
   m_Enabled: 1
-  m_Radius: 0.1
+  m_Radius: 0.12
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -1774,6 +1775,6 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 0.4
-  m_BaseOffset: 0
+  m_BaseOffset: 0.001
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4

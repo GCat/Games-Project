@@ -40,7 +40,7 @@ public class BadiesAI : MonoBehaviour, Character {
 
     // Badie characteristic
 
-    public float strenght = 20.0f;
+    public float strength = 20.0f;
     public float health = 100.0f;
     public float totalHealth = 100.0f;
     GameObject healthBar;
@@ -54,7 +54,6 @@ public class BadiesAI : MonoBehaviour, Character {
     public Animation anim;
 
     // Movement
-    private bool moving= true;
     public Vector3 startMarker;
     public Vector3 endMarker;
 
@@ -74,8 +73,7 @@ public class BadiesAI : MonoBehaviour, Character {
 
     // Killer
     public GameObject closestEnemy;
-    private bool noMoreEnemies = false;
-    private float dis2Enemy = 0;
+
 
     //Defender
     private float radius = 25.0f;
@@ -87,7 +85,7 @@ public class BadiesAI : MonoBehaviour, Character {
 
     // Training
     private bool enemyFound;
-    private bool buildingsLeft = true;
+
     public GameObject[] buildings;
 
     private ResourceCounter resources;
@@ -110,8 +108,6 @@ public class BadiesAI : MonoBehaviour, Character {
     public void spawn(int type)
     {
         
-        moving = true;
-        noMoreEnemies = false;
 
         anim = GetComponent<Animation>();
         rb = GetComponent<Rigidbody>();
@@ -130,7 +126,6 @@ public class BadiesAI : MonoBehaviour, Character {
         templeAttackPoint = temple.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
         resources = GameObject.FindGameObjectWithTag("Tablet").GetComponent<ResourceCounter>();
         resources.addBaddie();
-
     }
 
     void Update()
@@ -144,8 +139,11 @@ public class BadiesAI : MonoBehaviour, Character {
                     walkTowards(templeAttackPoint);
                     break;
                 case MonsterState.AttackHumans:
-                    //find nearest human
-                    
+                    if (resources.getPop() > 0)
+                    {
+
+                    }
+                    else currentState = MonsterState.AttackBuildings;
                     break;
                 case MonsterState.AttackBuildings:
 
@@ -199,9 +197,23 @@ public class BadiesAI : MonoBehaviour, Character {
             Debug.LogError("Cannot walk here!");
             return transform.position;
         }
-
     }
 
+    private void humanAttack()
+    {
+        if (resources.getPop() > 0)
+        {
+            if(closestEnemy != null)
+            {
+                walkTowards(closestEnemy.transform.position);
+            }
+            else findClosestEnemy();
+        }
+        else
+        {
+            currentState = MonsterState.AttackBuildings;
+        }
+    }
 
     private void walkTowards(Vector3 target)
     {
@@ -238,7 +250,7 @@ public class BadiesAI : MonoBehaviour, Character {
                 attack(temple);
                 break;
             case MonsterState.AttackHumans:
-
+                attack(closestEnemy);
                 break;
             case MonsterState.AttackBuildings:
 
@@ -247,23 +259,26 @@ public class BadiesAI : MonoBehaviour, Character {
 
                 break;
         }
-
-
     }
 
     bool attack(GameObject victim)
     {
         if (victim != null)
         {
-            anim.Play("hit");
-            transform.rotation = Quaternion.LookRotation(victim.transform.position- transform.position);
-            //if it's a building
-            HealthManager victimHealth = victim.GetComponent<HealthManager>();
-            if (victimHealth != null)
+ 
+            transform.rotation = Quaternion.LookRotation(victim.transform.position - transform.position);
+            if (!anim.IsPlaying("hit"))
             {
-                victimHealth.decrementHealth(strenght * Time.deltaTime);
-            } else {
-                Debug.LogError("Trying to attack something that doesn not have health");
+                anim.Play("hit");
+                HealthManager victimHealth = victim.GetComponent<HealthManager>();
+                if (victimHealth != null)
+                {
+                    victimHealth.decrementHealth(strength);
+                }
+                else
+                {
+                    Debug.LogError("Trying to attack something that doesn not have health");
+                }
             }
             return true;
         }
@@ -316,15 +331,7 @@ public class BadiesAI : MonoBehaviour, Character {
                 }
             }
         }
-        else
-        {
-            noMoreEnemies = true;
-        }
         return closest;
-    }
-    public void changeMoving(bool val)
-    {
-        moving = val;
     }
 
     IEnumerator WaitToDestroy(float waitTime)
@@ -336,6 +343,11 @@ public class BadiesAI : MonoBehaviour, Character {
     public void changeMode(bool val)
     {
         //Not used for baddies atm
+    }
+
+    public void setTempleAttackPoint(Vector3 p)
+    {
+        templeAttackPoint = p;
     }
 
 }

@@ -24,7 +24,7 @@ public class Hand : MonoBehaviour {
     public BodySourceView kinect_view;
     public Renderer renderer_open;
     public Renderer renderer_closed;
-
+    private ResourceCounter resources;
     public Color defaultColor;
 
     public bool useMouse = true;
@@ -40,7 +40,7 @@ public class Hand : MonoBehaviour {
     private Vector3[] held_object_positions;
     private float[] held_object_times;
 
-    private Vector3 original_position;
+
 
     float rotationTimer;
     float startTime;
@@ -56,6 +56,7 @@ public class Hand : MonoBehaviour {
         held_object_positions[2] = Vector3.zero;
         held_object_positions[3] = Vector3.zero;
         held_object_positions[4] = Vector3.zero;
+        resources = GameObject.FindGameObjectWithTag("Tablet").GetComponent<ResourceCounter>();
         if (kinect_view == null) useMouse = true;
         defaultColor = renderer_open.material.GetColor("_Color");
     }
@@ -225,12 +226,6 @@ public class Hand : MonoBehaviour {
         heldObject = closest;
         if (heldObject != null)
         {
-            Debug.Log("GRABBED");
-            if (heldObject.tag == "Shelf Object")
-            {
-                original_position = heldObject.transform.position;
-            }
-                
             holding = true;
             Grabbable placeable = heldObject.GetComponent<Grabbable>();
 
@@ -275,7 +270,8 @@ public class Hand : MonoBehaviour {
                 }
                 else
                 {
-                    if (GameBoard.withinBounds(heldObject.transform.position))
+                    building.highlightDestroy();
+                    if (resources.withinBounds(heldObject.transform.position))
                     {
                         Destroy(heldObject);
                     }
@@ -283,7 +279,6 @@ public class Hand : MonoBehaviour {
                     {
                         throwObject(heldObject);
                     }
-                    building.highlightDestroy();
                 }
             }
             else
@@ -303,6 +298,7 @@ public class Hand : MonoBehaviour {
         float x = placeable.transform.position.x;
         float z = placeable.transform.position.z;
         placeable.transform.position = new Vector3(Mathf.Floor(x), 0, Mathf.Floor(z));
+        // if we are not alowing hand rotation is this still nesesary?
         placeable.transform.rotation = Quaternion.LookRotation(Vector3.forward);
 
     }

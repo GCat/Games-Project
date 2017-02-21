@@ -58,9 +58,6 @@ public class Agent : MonoBehaviour, Character, Grabbable
 
     // God interactions
     private bool sacrificeEntered = false;
-    private bool realeased = false;
-    private bool falling = false;
-    private bool grounded = true;
 
     // Fighting
     enum Fighter { Killer, Defender, Camper };
@@ -137,7 +134,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
                 case HumanState.Falling:
                     if (!sacrificeEntered)
                     {
-                        if (GameBoard.aboveBoard(transform.position))
+                        if (resources.aboveBoard(transform.position))
                         {
                             if (transform.position.y < 0.5)
                             {
@@ -200,7 +197,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
         }
         else
         {
-            Debug.LogError("Could not calculate a new wander target");
+            Debug.Log("Could not calculate a new wander target");
             return transform.position;
         }
     }
@@ -306,8 +303,10 @@ public class Agent : MonoBehaviour, Character, Grabbable
     }
     public void grab()
     {
+        Debug.Log("Human Grabbed");
         agent.enabled = false;
         currentState = HumanState.Grabbed;
+        rb.isKinematic = true;
         rb.useGravity = false;
         GetComponent<Collider>().enabled = false;
     }
@@ -317,6 +316,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
         currentState = HumanState.Falling;
         GetComponent<Collider>().enabled = true;
         rb.useGravity = true;
+        rb.isKinematic = false;
 
     }
 
@@ -324,17 +324,21 @@ public class Agent : MonoBehaviour, Character, Grabbable
     {
         if (victim != null)
         {
-            anim.Play("attack");
             transform.rotation = Quaternion.LookRotation(victim.transform.position - transform.position);
-            HealthManager victimHealth = victim.GetComponent<HealthManager>();
-            if (victimHealth != null)
+            if (!anim.IsPlaying("attack"))
             {
-                victimHealth.decrementHealth(strength * Time.deltaTime);
+                anim.Play("attack");
+                HealthManager victimHealth = victim.GetComponent<HealthManager>();
+                if (victimHealth != null)
+                {
+                    victimHealth.decrementHealth(strength);
+                }
+                else
+                {
+                    Debug.LogError("Trying to attack something that doesn not have health");
+                }
             }
-            else
-            {
-                Debug.LogError("Trying to attack something that doesn not have health");
-            }
+          
             return true;
         }
         return false;
