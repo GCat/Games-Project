@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: e255ce2b53421e4478d992220a49c680
+timeCreated: 1487422270
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Gelio Retsina
+  fontNames:
+  - Gelio Retsina
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

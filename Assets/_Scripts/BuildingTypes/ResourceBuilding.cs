@@ -72,7 +72,7 @@ public abstract class ResourceBuilding : Building, Grabbable
         return false;
     }
 
-    //Do not need this function
+    //Don't need this 
     public override void activate()
     {
         create_building();
@@ -80,8 +80,7 @@ public abstract class ResourceBuilding : Building, Grabbable
 
     //Don't need this
     public override void deactivate()
-    {
-        //on_game_board = false;   
+    {  
     }
 
     public void grab()
@@ -180,6 +179,7 @@ public abstract class ResourceBuilding : Building, Grabbable
         highlight.GetComponent<Collider>().enabled = false;
         highlight.GetComponent<Renderer>().enabled = false;
     }
+
     public bool getbp()
     {
         return badplacement;

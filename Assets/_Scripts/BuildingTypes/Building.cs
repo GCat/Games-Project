@@ -2,7 +2,7 @@
 using System.Collections;
 using System;
 
-public abstract class Building : MonoBehaviour, HealthManager{
+public abstract class Building : MonoBehaviour, HealthManager{ // this should also be placeable hence the grab and release will be written once
     public abstract string getName();
     public abstract Vector3 getLocation();
     public abstract void create_building();
@@ -163,6 +163,8 @@ public abstract class Building : MonoBehaviour, HealthManager{
     }
 
     public abstract void die();
-    public abstract void activate();
+
+    //do we still need these functions
+    public abstract void activate();  
     public abstract void deactivate();
 }
