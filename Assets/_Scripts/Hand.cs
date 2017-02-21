@@ -256,7 +256,6 @@ public class Hand : MonoBehaviour {
 
             if (placeable != null)
             {
-
                 placeable.grab();
                 snapToHand(heldObject);
             }
@@ -270,6 +269,8 @@ public class Hand : MonoBehaviour {
         {
             //Debug.Log("NOTHING TO GRAB!");
         }
+
+        colourChange(heldObject);
     }
 
     void OnDrawGizmosSelected()
@@ -318,6 +319,19 @@ public class Hand : MonoBehaviour {
         }
 
     }
+
+    //changing the colour of the bracelets when sonething grabbed
+    private void colourChange(GameObject heldObject)
+    {
+        if (holding && heldObject != null)
+        {
+            renderer_closed.material.SetColor("_Color", Color.green);
+        }else
+        {
+            renderer_closed.material.SetColor("_Color", Color.red);
+        }
+    }
+        
     //function called to snap object to palm 
     private void snapToHand(GameObject placeable)
     {
