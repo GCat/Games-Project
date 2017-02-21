@@ -111,7 +111,6 @@ public class BadiesAI : MonoBehaviour, Character {
 
         anim = GetComponent<Animation>();
         rb = GetComponent<Rigidbody>();
-        //rb.interpolation = RigidbodyInterpolation.Interpolate;
         closestEnemy = null;
 
         fighterType = type;
@@ -141,7 +140,7 @@ public class BadiesAI : MonoBehaviour, Character {
                 case MonsterState.AttackHumans:
                     if (resources.getPop() > 0)
                     {
-
+                        humanAttack();
                     }
                     else currentState = MonsterState.AttackBuildings;
                     break;
@@ -153,14 +152,6 @@ public class BadiesAI : MonoBehaviour, Character {
                     break;
             }
 
-            
-
-            //if (false/*temple == null*/)  anim.Play("rage");
-            //else if (!moving) anim.Play("idle");
-            //else if (fighterType == (int)Fighter.Rusher) rusherNav();
-            //else if (fighterType == (int)Fighter.Defender) defenderNav();
-            //else if (fighterType == (int)Fighter.Killer) killerNav();
-            //else if (fighterType == (int)Fighter.Training) trainingNav();
         }
     }
 
@@ -199,19 +190,31 @@ public class BadiesAI : MonoBehaviour, Character {
         }
     }
 
-    private void humanAttack()
+
+    private void buildingAttack()
     {
-        if (resources.getPop() > 0)
+        // for now attack towers
+        if (closestEnemy != null)
         {
-            if(closestEnemy != null)
-            {
-                walkTowards(closestEnemy.transform.position);
-            }
-            else findClosestEnemy();
+            walkTowards(closestEnemy.transform.position);
         }
         else
         {
-            currentState = MonsterState.AttackBuildings;
+            closestEnemy = findClosestEnemy("Tower");
+            if (closestEnemy == null) currentState = MonsterState.AttackTemple;
+        }
+
+    }
+    private void humanAttack()
+    {
+
+        if (closestEnemy != null)
+        {
+            walkTowards(closestEnemy.transform.position);
+        }
+        else
+        {
+            closestEnemy = findClosestEnemy("Human");
         }
     }
 
@@ -226,7 +229,7 @@ public class BadiesAI : MonoBehaviour, Character {
         Vector3 offset = target - transform.position;
         offset = offset.normalized * speed;
         agent.destination = target;
-        //controller.Move(offset * Time.deltaTime);
+
         //don't spin in circles
         if (offset.magnitude > 5)
         {
@@ -236,9 +239,7 @@ public class BadiesAI : MonoBehaviour, Character {
         }
         else
         {
-
             reachedTarget();
-
         }
     }
 
@@ -253,7 +254,7 @@ public class BadiesAI : MonoBehaviour, Character {
                 attack(closestEnemy);
                 break;
             case MonsterState.AttackBuildings:
-
+                attack(closestEnemy);
                 break;
             case MonsterState.Idle:
 
@@ -311,11 +312,11 @@ public class BadiesAI : MonoBehaviour, Character {
         healthBar.transform.SetParent(gameObject.transform);
     }
 
-    private GameObject findClosestEnemy()
+    private GameObject findClosestEnemy(string tag)
     {
         GameObject[] humans;
         GameObject closest = null;
-        humans = GameObject.FindGameObjectsWithTag("Human");
+        humans = GameObject.FindGameObjectsWithTag(tag);
         float distance = Mathf.Infinity;
         Vector3 position = transform.position;
         if (humans.Length > 0)
