@@ -16,6 +16,8 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
     public Material matEmpty;
     public Material matInval;
     public bool canBeGrabbed = true;
+    protected Renderer[] child_materials;
+    private Shader outlineShader;
 
     public abstract bool canBuy();
 
@@ -29,6 +31,9 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         if (health <= 0)
         {
             die();
+        }else if(health <= (0.2 * totalHealth))
+        {
+            setWarning();
         }
     }
     private void Awake()
@@ -42,6 +47,8 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         createHealthBar();
         boxSize = GetComponent<BoxCollider>().bounds.size / 2;
         boxSize.y = 1f;
+        child_materials = GetComponentsInChildren<Renderer>();
+        outlineShader = Shader.Find("Toon/Basic Outline");
     }
 
     //return true if within bounds & not above another building
@@ -64,6 +71,48 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         return false;
     }
 
+
+    private void setOutline()
+    {
+        foreach(Renderer renderer in child_materials)
+        {
+            renderer.material.shader = outlineShader;
+            renderer.material.SetColor("_OutlineColor", Color.green);
+        }
+    }
+
+    private void setWarning()
+    {
+        foreach (Renderer renderer in child_materials)
+        {
+            renderer.material.shader = outlineShader;
+            renderer.material.SetColor("_OutlineColor", Color.red);
+        }
+    }
+
+    public void removeOutline()
+    {
+        foreach (Renderer renderer in child_materials)
+        {
+            renderer.material.shader = Shader.Find("Diffuse");
+            //renderer.material.SetColor("_OutlineColor", Color.green);
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.tag == "Hand")
+        {
+            setOutline();
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "Hand")
+        {
+            removeOutline();
+        }
+    }
+
     public void release(Vector3 vel)
     {
         GetComponent<Rigidbody>().useGravity = true;
@@ -71,6 +120,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         GetComponent<Collider>().enabled = true;
         Debug.Log("Resource Building vel:" + vel);
         GetComponent<Rigidbody>().AddForce(vel, ForceMode.VelocityChange);
+        removeOutline();
     }
 
     public void createHealthBar()
