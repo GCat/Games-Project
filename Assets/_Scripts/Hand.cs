@@ -178,8 +178,33 @@ public class Hand : MonoBehaviour {
             change = true;
         }
         
-        
     }
+
+    public GameObject getClosestGrab()
+    {
+        GameObject closest = null;
+        int layerMask = (1 << 9) | (1 << 10) | (1 << 14);
+        Vector3 p = grab_position.transform.position;//new Vector3(transform.position.x - 14, transform.position.y - 18, transform.position.z);
+        things = Physics.OverlapSphere(p, 4.0f, layerMask);
+        float distance = Mathf.Infinity;
+        if (things.Length > 0)
+        {
+            foreach (Collider thing in things)
+            {
+                Vector3 diff = thing.ClosestPointOnBounds(p) - p;
+                float current_distance = diff.sqrMagnitude;
+                if (current_distance < distance)
+                {
+                    distance = current_distance;
+                    closest = thing.gameObject;
+                }
+            }
+           
+        }
+        return closest;
+
+    }
+
 
     public void closeHand()
     {
