@@ -77,6 +77,9 @@ public class Agent : MonoBehaviour, Character, Grabbable
 
     private Vector3 wanderPoint = Vector3.zero;
 
+    protected Renderer[] child_materials;
+    private Shader outlineShader;
+
     enum HumanState { Fighting, Wandering, Grabbed, Falling };
 
     void Start()
@@ -94,6 +97,8 @@ public class Agent : MonoBehaviour, Character, Grabbable
         agent = GetComponent<NavMeshAgent>();
         createHealthBar();
         healthBarOri = healthBar.transform.rotation;
+        child_materials = GetComponentsInChildren<Renderer>();
+        outlineShader = Shader.Find("Toon/Basic Outline");
     }
 
     // Update is called once per frame
@@ -317,6 +322,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
         GetComponent<Collider>().enabled = true;
         rb.useGravity = true;
         rb.isKinematic = false;
+        removeOutline();
 
     }
 
@@ -358,6 +364,39 @@ public class Agent : MonoBehaviour, Character, Grabbable
     public void changeMode(bool val)
     {
         throw new NotImplementedException();
+    }
+
+
+    private void setOutline()
+    {
+        foreach (Renderer renderer in child_materials)
+        {
+            renderer.material.shader = outlineShader;
+            renderer.material.SetColor("_OutlineColor", Color.green);
+        }
+    }
+
+    private void removeOutline()
+    {
+        foreach (Renderer renderer in child_materials)
+        {
+            renderer.material.shader = Shader.Find("Diffuse");
+            //renderer.material.SetColor("_OutlineColor", Color.green);
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Hand")
+        {
+            setOutline();
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "Hand")
+        {
+            removeOutline();
+        }
     }
 
 }

@@ -292,6 +292,7 @@ public class Hand : MonoBehaviour {
                 {
                     snapToGrid(heldObject);
                     building.activate();
+                    building.removeOutline();
                 }
                 else
                 {

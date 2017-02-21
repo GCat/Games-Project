@@ -370,6 +370,10 @@ Prefab:
       propertyPath: renderer_open
       value: 
       objectReference: {fileID: 2048611961}
+    - target: {fileID: 4385652498329310, guid: bc03c5fa11c4f56459e3e3291a813aec, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0.26
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bc03c5fa11c4f56459e3e3291a813aec, type: 2}
   m_IsPrefabParent: 0
@@ -2589,6 +2593,10 @@ Prefab:
         type: 2}
       propertyPath: useMouse
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4617286530502194, guid: f8944127a1ee7404ca8ab160846ee099, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0.17
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f8944127a1ee7404ca8ab160846ee099, type: 2}

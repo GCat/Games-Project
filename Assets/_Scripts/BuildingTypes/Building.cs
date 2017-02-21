@@ -78,15 +78,13 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         }
     }
 
-    private void removeOutline()
+    public void removeOutline()
     {
         foreach (Renderer renderer in child_materials)
         {
             renderer.material.shader = Shader.Find("Diffuse");
             //renderer.material.SetColor("_OutlineColor", Color.green);
         }
-
-
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -110,6 +108,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         GetComponent<Collider>().enabled = true;
         Debug.Log("Resource Building vel:" + vel);
         GetComponent<Rigidbody>().AddForce(vel, ForceMode.VelocityChange);
+        removeOutline();
     }
 
     public void createHealthBar()
