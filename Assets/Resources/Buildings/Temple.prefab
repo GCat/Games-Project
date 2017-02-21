@@ -5487,7 +5487,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1646392064139242}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 4.9, y: 21.3, z: -16.1}
+  m_LocalPosition: {x: -27.1, y: 21.3, z: -16.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4320588042534184}
@@ -18547,21 +18547,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9388817e9db98074bb38ffa3b1789d4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  totalHealth: 100
+  health: 100
+  resourceCounter: {fileID: 0}
+  tablet: {fileID: 1000013233709802, guid: 6fd29a90c461afd40a231c41968b85bb, type: 2}
+  highlight: {fileID: 0}
+  matEmpty: {fileID: 2100000, guid: 79ef561946cb1bb4884c0cca457d417b, type: 2}
+  matInval: {fileID: 2100000, guid: 4a47be7d74c42494682ec45ef083f2d6, type: 2}
+  canBeGrabbed: 1
   build: {fileID: 0}
   destroy: {fileID: 0}
   buildingName: 
-  timer: 0
-  startTime: 0
-  timeStep: 0
-  resourceCounter: {fileID: 0}
-  health: 100
   on_game_board: 0
   held: 0
   required_resource_tag: None
   resource_node: {fileID: 0}
   spawnedGarrison: 0
   world: {fileID: 0}
-  tablet: {fileID: 1000013233709802, guid: 6fd29a90c461afd40a231c41968b85bb, type: 2}
   placed: 0
 --- !u!208 &208392726838024668
 NavMeshObstacle:
