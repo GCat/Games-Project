@@ -258,6 +258,7 @@ public class Hand : MonoBehaviour {
             {
 
                 placeable.grab();
+                snapToHand(heldObject);
             }
             else
             {
@@ -316,6 +317,16 @@ public class Hand : MonoBehaviour {
 
         }
 
+    }
+    //function called to snap object to palm 
+    private void snapToHand(GameObject placeable)
+    {
+        float x = gameObject.transform.position.x;
+        float y = gameObject.transform.position.y;
+        float z = gameObject.transform.position.z;
+       
+         // might need to change the positions slightly to make it nicer looking
+        placeable.transform.position = new Vector3(x, y, z);
     }
 
     //function called to place an object neatly on the game board
