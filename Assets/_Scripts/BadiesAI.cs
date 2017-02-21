@@ -145,7 +145,7 @@ public class BadiesAI : MonoBehaviour, Character {
                     else currentState = MonsterState.AttackBuildings;
                     break;
                 case MonsterState.AttackBuildings:
-
+                    buildingAttack();
                     break;
                 case MonsterState.Idle:
 
