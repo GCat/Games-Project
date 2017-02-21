@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: basic
-  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 4800000, guid: 48dca5b99d113b8d11006bab44295342, type: 3}
   m_ShaderKeywords: _EMISSION
   m_LightmapFlags: 1
   m_CustomRenderQueue: -1
@@ -58,6 +58,12 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - first:
+        name: _Fresnel
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
         name: _LavaTex
       second:
         m_Texture: {fileID: 0}
@@ -94,12 +100,33 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - first:
+        name: _ReflectionTex
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _ReflectiveColor
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _RefractionTex
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
         name: _ToonShade
       second:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - first:
+        name: _BumpAmt
+      second: 10
     - first:
         name: _BumpScale
       second: 1
@@ -146,6 +173,12 @@ Material:
         name: _Parallax
       second: 0.02
     - first:
+        name: _ReflDistort
+      second: 0.44
+    - first:
+        name: _RefrDistort
+      second: 0.4
+    - first:
         name: _SmoothnessTextureChannel
       second: 0
     - first:
@@ -158,9 +191,15 @@ Material:
         name: _UVSec
       second: 0
     - first:
+        name: _WaveScale
+      second: 0.063
+    - first:
         name: _ZWrite
       second: 1
     m_Colors:
+    - first:
+        name: WaveSpeed
+      second: {r: 19, g: 9, b: -16, a: -7}
     - first:
         name: _Color
       second: {r: 0.7607844, g: 0.7607844, b: 0.7607844, a: 1}
@@ -168,5 +207,11 @@ Material:
         name: _EmissionColor
       second: {r: 0, g: 0, b: 0, a: 1}
     - first:
+        name: _HorizonColor
+      second: {r: 0.172, g: 0.463, b: 0.435, a: 1}
+    - first:
         name: _OutlineColor
       second: {r: 0, g: 0.972, b: 0.3284691, a: 1}
+    - first:
+        name: _RefrColor
+      second: {r: 0.34, g: 0.85, b: 0.92, a: 1}
