@@ -31,6 +31,9 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         if (health <= 0)
         {
             die();
+        }else if(health <= (0.2 * totalHealth))
+        {
+            setWarning();
         }
     }
     private void Awake()
@@ -75,6 +78,15 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         {
             renderer.material.shader = outlineShader;
             renderer.material.SetColor("_OutlineColor", Color.green);
+        }
+    }
+
+    private void setWarning()
+    {
+        foreach (Renderer renderer in child_materials)
+        {
+            renderer.material.shader = outlineShader;
+            renderer.material.SetColor("_OutlineColor", Color.red);
         }
     }
 
