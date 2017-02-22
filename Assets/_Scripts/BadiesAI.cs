@@ -170,8 +170,6 @@ public class BadiesAI : MonoBehaviour, Character {
 
     private Vector3 getClosestPointToTarget(Vector3 target)
     {
-        //target.y = 0f;
-        Debug.Log(target);
         NavMeshHit hit; 
         if (NavMesh.SamplePosition(target, out hit, 20.0f, NavMesh.AllAreas))
         {
@@ -186,12 +184,10 @@ public class BadiesAI : MonoBehaviour, Character {
 
     private void destroyObstacle()
     {
-        Debug.Log("Obstacle distruction!");
         if (closestEnemy != null)
             walkTowards(closestEnemy.GetComponent<Collider>().ClosestPointOnBounds(transform.position));
         else
-            currentState = prevState;
-      
+            currentState = prevState;  
     }
 
 
