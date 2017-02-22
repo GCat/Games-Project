@@ -10,6 +10,7 @@ public class LightningBolt : MonoBehaviour, Grabbable {
     GameObject flash;
     protected Renderer renderer;
     protected Shader outlineShader;
+
     // Use this for initialization
     void Start () {
         outlineShader = Shader.Find("Toon/Basic Outline");
