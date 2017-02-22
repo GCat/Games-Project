@@ -31,7 +31,7 @@ public class GameBoard : MonoBehaviour {
         float z = position.z;
 
         // y is -10 and not 0 so that we can deal with the case that some buildings are halfway through
-        return (y > -10 && y < 40 && x > -50 && x < 50 && z > -100 && z < 100);
+        return (y > -40 && y < 40 && x > -50 && x < 50 && z > -100 && z < 100);
     }
 
     public static bool aboveBoard(Vector3 p)

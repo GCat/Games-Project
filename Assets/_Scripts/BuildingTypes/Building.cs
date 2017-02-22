@@ -17,7 +17,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
     public Material matInval;
     public bool canBeGrabbed = true;
     protected Renderer[] child_materials;
-    private Shader outlineShader;
+    protected Shader outlineShader;
 
     public abstract bool canBuy();
 
