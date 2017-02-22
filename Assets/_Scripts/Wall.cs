@@ -7,13 +7,26 @@ public class Wall : Building, Grabbable {
 	// Use this for initialization
 	public float health;
     public int cost_per_meter = 10;
-	void Start () {
+    public bool held = false;
+    private bool badplacement = false;
+    void Start () {
 		health = 400;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	}
+        if (held)
+        {
+            if (highlight != null)
+            {
+                highlightCheck();
+            }
+        }
+        else if(badplacement)
+        {
+            DestroyObject(gameObject);
+        }
+    }
 
     public override string getName()
     {
@@ -79,7 +92,7 @@ public class Wall : Building, Grabbable {
         {
             DestroyImmediate(highlight);
         }
-
+        held = true;
         // highlight where object wiould place if falling straight down
         createHighlight();
 
