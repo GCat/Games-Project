@@ -320,15 +320,16 @@ public class Hand : MonoBehaviour {
 
     }
 
-    //changing the colour of the bracelets when sonething grabbed
+    //changing the colour of the bracelets when something grabbed
     private void colourChange(GameObject heldObject)
     {
-        if (holding && heldObject != null)
+ 
+        if (holding && heldObject != null)                                  //success you've grabbed an object
         {
-            renderer_closed.material.SetColor("_Color", Color.green);
-        }else
+            renderer_closed.material.SetColor("_Color", Color.green); 
+        }else                                                               //fail you've grabbed the air
         {
-            renderer_closed.material.SetColor("_Color", Color.red);
+            renderer_closed.material.SetColor("_Color", Color.red);         
         }
     }
         
