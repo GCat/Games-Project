@@ -79,6 +79,7 @@ public class BadiesAI : MonoBehaviour, Character {
 
     //the nearest position on the navmesh to the desired target point
     private Vector3 nextBestTarget;
+    private LineRenderer lineRenderer;
 
     enum MonsterState {AttackTemple, AttackHumans, AttackBuildings, Idle, PathBlocked };
 
@@ -89,6 +90,7 @@ public class BadiesAI : MonoBehaviour, Character {
         agent = GetComponent<NavMeshAgent>();
         createHealthBar();
         healthBarOri = healthBar.transform.rotation;
+        lineRenderer = GetComponent<LineRenderer>();
     }
 
     //can we make the spawn type an enum please xoxo
@@ -120,6 +122,8 @@ public class BadiesAI : MonoBehaviour, Character {
         if (alive)
         {
 
+
+
             switch (currentState) {
                 case MonsterState.AttackTemple:
                     walkTowards(templeAttackPoint);
@@ -127,11 +131,13 @@ public class BadiesAI : MonoBehaviour, Character {
                 case MonsterState.AttackHumans:
                     if (resources.getPop() > 0)
                     {
+                        showPath();
                         humanAttack();
                     }
                     else currentState = MonsterState.AttackBuildings;
                     break;
                 case MonsterState.AttackBuildings:
+
                     buildingAttack();
                     break;
                 case MonsterState.PathBlocked:
@@ -141,7 +147,6 @@ public class BadiesAI : MonoBehaviour, Character {
 
                     break;
             }
-
         }
     }
 
@@ -180,6 +185,14 @@ public class BadiesAI : MonoBehaviour, Character {
             Debug.LogError("Cannot walk here!");
             return transform.position;
         }
+    }
+    private void showPath()
+    {
+        if (agent.hasPath)
+        {
+            lineRenderer.SetPositions(agent.path.corners);
+        }
+
     }
 
     private void destroyObstacle()
@@ -249,6 +262,7 @@ public class BadiesAI : MonoBehaviour, Character {
         else
         {
             agent.destination = target;
+            showPath();
         }
 
         //don't spin in circles

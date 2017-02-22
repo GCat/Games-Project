@@ -141,7 +141,16 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         {
             highlight.GetComponent<Renderer>().enabled = true;
             highlight.transform.position = new Vector3(Mathf.Floor(transform.position.x), 0.1f, Mathf.Floor(transform.position.z));
-            highlight.transform.rotation = Quaternion.LookRotation(Vector3.forward);
+            float yRot = gameObject.transform.eulerAngles.y;
+            if ((yRot > 45 && yRot < 135) || (yRot > -135 && yRot < -45))
+            {
+                highlight.transform.rotation = Quaternion.LookRotation(Vector3.right);
+
+            }
+            else
+            {
+                highlight.transform.rotation = Quaternion.LookRotation(Vector3.forward);
+            }
             int layerMask = 1 << 10;
             if (Physics.CheckBox(new Vector3(Mathf.Floor(transform.position.x), 0, Mathf.Floor(transform.position.z)), boxSize, Quaternion.LookRotation(Vector3.forward), layerMask))
                 highlight.GetComponent<Renderer>().material = matInval;

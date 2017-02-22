@@ -76,6 +76,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
     private HumanState currentState = HumanState.Wandering;
 
     private Vector3 wanderPoint = Vector3.zero;
+    private LineRenderer lineRenderer;
 
     protected Renderer[] child_materials;
     private Shader outlineShader;
@@ -99,6 +100,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
         healthBarOri = healthBar.transform.rotation;
         child_materials = GetComponentsInChildren<Renderer>();
         outlineShader = Shader.Find("Toon/Basic Outline");
+        lineRenderer = GetComponent<LineRenderer>();
     }
 
     // Update is called once per frame
@@ -164,6 +166,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
         if (offset.magnitude > 0.1f)
         {
             agent.destination = target;
+            showPath();
             //controller.Move(offset * Time.deltaTime);
             //don't spin in circles
             if (offset.magnitude > 2)
@@ -207,6 +210,14 @@ public class Agent : MonoBehaviour, Character, Grabbable
         }
     }
 
+    private void showPath()
+    {
+        if (agent.hasPath)
+        {
+            lineRenderer.SetPositions(agent.path.corners);
+        }
+
+    }
 
     void sacrifice()
     {
