@@ -4015,7 +4015,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000064598565702}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 42.2, y: -32.91, z: 66.66}
+  m_LocalPosition: {x: -13.317465, y: 0.5, z: 4.604284}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 4652998673892220}
@@ -11143,7 +11143,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.9767444, y: 5.738619, z: 2.2285974}
+  m_Size: {x: 3, y: 5.738619, z: 2.2285974}
   m_Center: {x: -0.008415222, y: 2.58, z: -0.011009216}
 --- !u!95 &95382406474536598
 Animator:
@@ -11179,7 +11179,8 @@ MonoBehaviour:
   tablet: {fileID: 0}
   highlight: {fileID: 0}
   matEmpty: {fileID: 2100000, guid: 79ef561946cb1bb4884c0cca457d417b, type: 2}
-  matInval: {fileID: 2100000, guid: fa76a35daf45c3844b759848aad81cb0, type: 2}
+  matInval: {fileID: 0}
+  canBeGrabbed: 1
   build: {fileID: 0}
   destroy: {fileID: 0}
   buildingName: 
@@ -11192,12 +11193,12 @@ NavMeshObstacle:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000064598565702}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 1, y: 3, z: 1}
+  m_Extents: {x: 1.25, y: 2.5, z: 1}
   m_MoveThreshold: 0.1
   m_Carve: 1
   m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 3, z: 0}
-  m_TimeToStationary: 1
+  m_Center: {x: 0, y: 2.3, z: 0}
+  m_TimeToStationary: 0.5

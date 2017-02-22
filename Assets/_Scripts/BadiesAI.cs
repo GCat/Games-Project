@@ -67,25 +67,11 @@ public class BadiesAI : MonoBehaviour, Character {
     // Rusher
     private GameObject temple;
     private Vector3 templeAttackPoint; // nearest bound on temple
-    public bool templeInRange = false;
-    public bool pathToTempleFound = false;
+
 
 
     // Killer
     public GameObject closestEnemy;
-
-
-    //Defender
-    private float radius = 25.0f;
-    private float dis2Temple;
-    public bool enemyInrange = false;
-    public bool defending = false;
-    public bool path2Enemy = false;
-
-
-    // Training
-    private bool enemyFound;
-
     public GameObject[] buildings;
 
     private ResourceCounter resources;
@@ -94,9 +80,10 @@ public class BadiesAI : MonoBehaviour, Character {
     //the nearest position on the navmesh to the desired target point
     private Vector3 nextBestTarget;
 
-    enum MonsterState {AttackTemple, AttackHumans, AttackBuildings, Idle };
+    enum MonsterState {AttackTemple, AttackHumans, AttackBuildings, Idle, PathBlocked };
 
     MonsterState currentState = MonsterState.AttackTemple;
+    MonsterState prevState;
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -147,6 +134,9 @@ public class BadiesAI : MonoBehaviour, Character {
                 case MonsterState.AttackBuildings:
                     buildingAttack();
                     break;
+                case MonsterState.PathBlocked:
+                    destroyObstacle();
+                    break;
                 case MonsterState.Idle:
 
                     break;
@@ -155,30 +145,34 @@ public class BadiesAI : MonoBehaviour, Character {
         }
     }
 
-    private void findBuidling()
+    private GameObject findObstacles()
     {
-        buildings = GameObject.FindGameObjectsWithTag("Building");
-        if( buildings.Length > 0)
+        NavMeshObstacle[] obstacles = GameObject.FindObjectsOfType(typeof(NavMeshObstacle)) as NavMeshObstacle[];
+        closestEnemy = null;
+        if (obstacles.Length > 0)
         {
-            
-            closestEnemy = null;
             float distance = Mathf.Infinity;
-            foreach (GameObject b in buildings)
+            foreach (NavMeshObstacle b in obstacles)
             {
-                Vector3 diff = b.GetComponent<Collider>().ClosestPointOnBounds(transform.position) - transform.position;
+                if (b.gameObject.layer != 10) continue;
+                if (b.gameObject.transform.position.y > 10f) continue;
+                Vector3 diff = b.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position) - transform.position;
                 float curDistance = diff.sqrMagnitude;
                 if (curDistance < distance && b.transform.position.y >= -1.0f)
                 {
-                    closestEnemy = b;
+                    closestEnemy = b.gameObject;
                     distance = curDistance;
                 }
             }
         }
+        return closestEnemy;
     }
 
     private Vector3 getClosestPointToTarget(Vector3 target)
     {
-        NavMeshHit hit;
+        //target.y = 0f;
+        Debug.Log(target);
+        NavMeshHit hit; 
         if (NavMesh.SamplePosition(target, out hit, 20.0f, NavMesh.AllAreas))
         {
             return hit.position;
@@ -190,13 +184,23 @@ public class BadiesAI : MonoBehaviour, Character {
         }
     }
 
+    private void destroyObstacle()
+    {
+        Debug.Log("Obstacle distruction!");
+        if (closestEnemy != null)
+            walkTowards(closestEnemy.GetComponent<Collider>().ClosestPointOnBounds(transform.position));
+        else
+            currentState = prevState;
+      
+    }
+
 
     private void buildingAttack()
     {
         // for now attack towers
         if (closestEnemy != null)
         {
-            walkTowards(closestEnemy.transform.position);
+            walkTowards(closestEnemy.GetComponent<Collider>().ClosestPointOnBounds(transform.position));
         }
         else
         {
@@ -210,7 +214,7 @@ public class BadiesAI : MonoBehaviour, Character {
 
         if (closestEnemy != null)
         {
-            walkTowards(closestEnemy.transform.position);
+            walkTowards(closestEnemy.GetComponent<Collider>().ClosestPointOnBounds(transform.position));
         }
         else
         {
@@ -227,8 +231,29 @@ public class BadiesAI : MonoBehaviour, Character {
             target = nextBestTarget;
         }
         Vector3 offset = target - transform.position;
-        offset = offset.normalized * speed;
-        agent.destination = target;
+        NavMeshPath path = new NavMeshPath();
+        agent.CalculatePath(target, path);
+        if (path.status != NavMeshPathStatus.PathComplete)
+        {
+            //if (currentState == MonsterState.PathBlocked)
+            //{
+            //    Debug.LogError("INFINTE CALL LOOP");
+            //}
+            closestEnemy = findObstacles();
+            if (closestEnemy == null)
+            {
+                Debug.LogError("NO OBSTACLE FOUND AND NO PATH U FUCKED!");
+            }
+            else
+            {
+                prevState = currentState;
+                currentState = MonsterState.PathBlocked;
+            }
+        }
+        else
+        {
+            agent.destination = target;
+        }
 
         //don't spin in circles
         if (offset.magnitude > 5)
@@ -254,6 +279,9 @@ public class BadiesAI : MonoBehaviour, Character {
                 attack(closestEnemy);
                 break;
             case MonsterState.AttackBuildings:
+                attack(closestEnemy);
+                break;
+            case MonsterState.PathBlocked:
                 attack(closestEnemy);
                 break;
             case MonsterState.Idle:
