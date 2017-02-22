@@ -20,7 +20,9 @@ public class Temple : ResourceBuilding
         health = 500.0f;
         totalHealth = 500.0f;
         buildingName = "TEMPLE";
-        world.startGame(tablet);
+        Debug.Log(world);
+        world.startGame();
+        tablet.SetActive(true);
         placed = true;
         spawnHumans();
         InvokeRepeating("incrementResource", 10.0f, 5.0f); // after 10 sec call every 5
@@ -68,10 +70,11 @@ public class Temple : ResourceBuilding
     }
 
     //This stops the game
-    public new void die()
+    public override void die()
     {
         this.enabled = false;
         world.stopGame();
+        Destroy(gameObject);
     }
 
 

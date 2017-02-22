@@ -178,8 +178,33 @@ public class Hand : MonoBehaviour {
             change = true;
         }
         
-        
     }
+
+    public GameObject getClosestGrab()
+    {
+        GameObject closest = null;
+        int layerMask = (1 << 9) | (1 << 10) | (1 << 14);
+        Vector3 p = grab_position.transform.position;//new Vector3(transform.position.x - 14, transform.position.y - 18, transform.position.z);
+        things = Physics.OverlapSphere(p, 4.0f, layerMask);
+        float distance = Mathf.Infinity;
+        if (things.Length > 0)
+        {
+            foreach (Collider thing in things)
+            {
+                Vector3 diff = thing.ClosestPointOnBounds(p) - p;
+                float current_distance = diff.sqrMagnitude;
+                if (current_distance < distance)
+                {
+                    distance = current_distance;
+                    closest = thing.gameObject;
+                }
+            }
+           
+        }
+        return closest;
+
+    }
+
 
     public void closeHand()
     {
@@ -231,8 +256,8 @@ public class Hand : MonoBehaviour {
 
             if (placeable != null)
             {
-
                 placeable.grab();
+                snapToHand(heldObject);
             }
             else
             {
@@ -244,6 +269,8 @@ public class Hand : MonoBehaviour {
         {
             //Debug.Log("NOTHING TO GRAB!");
         }
+
+        colourChange(heldObject);
     }
 
     void OnDrawGizmosSelected()
@@ -267,6 +294,7 @@ public class Hand : MonoBehaviour {
                 {
                     snapToGrid(heldObject);
                     building.activate();
+                    building.removeOutline();
                 }
                 else
                 {
@@ -290,6 +318,30 @@ public class Hand : MonoBehaviour {
 
         }
 
+    }
+
+    //changing the colour of the bracelets when something grabbed
+    private void colourChange(GameObject heldObject)
+    {
+ 
+        if (holding && heldObject != null)                                  //success you've grabbed an object
+        {
+            renderer_closed.material.SetColor("_Color", Color.green); 
+        }else                                                               //fail you've grabbed the air
+        {
+            renderer_closed.material.SetColor("_Color", Color.red);         
+        }
+    }
+        
+    //function called to snap object to palm 
+    private void snapToHand(GameObject placeable)
+    {
+        float x = gameObject.transform.position.x;
+        float y = gameObject.transform.position.y;
+        float z = gameObject.transform.position.z;
+       
+         // might need to change the positions slightly to make it nicer looking
+        placeable.transform.position = new Vector3(x, y, z);
     }
 
     //function called to place an object neatly on the game board

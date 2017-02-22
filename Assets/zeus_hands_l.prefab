@@ -287,7 +287,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1194867560696290}
   m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0.09, y: -0.74, z: -0.4}
+  m_LocalPosition: {x: 0.09, y: 0.26, z: -0.4}
   m_LocalScale: {x: 0.20000006, y: 0.20000006, z: -0.2}
   m_Children: []
   m_Father: {fileID: 4583652171711426}
@@ -737,8 +737,8 @@ MonoBehaviour:
   open_hand: {fileID: 1971902728037730}
   grab_position: {fileID: 1194867560696290}
   kinect_view: {fileID: 0}
-  renderer_open: {fileID: 0}
-  renderer_closed: {fileID: 0}
+  renderer_open: {fileID: 23766236072363946}
+  renderer_closed: {fileID: 23771786406073274}
   defaultColor: {r: 0, g: 0, b: 0, a: 0}
   useMouse: 0
   right_hand: 0

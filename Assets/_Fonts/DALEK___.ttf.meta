@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: f421798f42397e34a94f4e966af9ea66
+timeCreated: 1487422270
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Dalek
+  fontNames:
+  - Dalek
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
