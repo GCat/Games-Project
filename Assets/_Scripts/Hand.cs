@@ -351,7 +351,18 @@ public class Hand : MonoBehaviour {
         float z = placeable.transform.position.z;
         placeable.transform.position = new Vector3(Mathf.Floor(x), 0, Mathf.Floor(z));
         // if we are not alowing hand rotation is this still nesesary?
-        placeable.transform.rotation = Quaternion.LookRotation(Vector3.forward);
+        float yRot = placeable.transform.eulerAngles.y;
+        if((yRot > 45 && yRot < 135) || (yRot > -135 && yRot < -45))
+        {
+            placeable.transform.rotation = Quaternion.LookRotation(Vector3.right);
+
+        }
+        else
+        {
+            placeable.transform.rotation = Quaternion.LookRotation(Vector3.forward);
+        }
+
+
 
     }
 
