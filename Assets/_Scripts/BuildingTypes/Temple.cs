@@ -26,7 +26,7 @@ public class Temple : ResourceBuilding
         tablet.SetActive(true);
         placed = true;
         spawnHumans();
-        InvokeRepeating("incrementResource", 5.0f, 10.0f); // after 10 sec call every 5
+        InvokeRepeating("incrementResource", 5.0f, 0.1f); // after 10 sec call every 5
         canBeGrabbed = false;
         CancelInvoke("showStartOutline");
         CancelInvoke("removeOutline");
@@ -77,7 +77,6 @@ public class Temple : ResourceBuilding
                 if (NavMesh.SamplePosition(humanLocation, out hit, 50.0f, NavMesh.AllAreas))
                 {
                     Instantiate(Resources.Load("Characters/Human"), hit.position, Quaternion.identity);
-                    resourceCounter.addPop();
                 }
                 else
                     Debug.Log("Could not spawn human");
