@@ -5,7 +5,7 @@ using UnityEngine;
 public class BuildingSpawner : MonoBehaviour {
 
     public GameObject buildingToSpawn;
-    private int buildingMask = 1 << 10;
+    private int buildingMask = (1 << 10) | (1 << 14);
 	// Use this for initialization
 	void Start () {
         InvokeRepeating("spawnBuilding", .1f, 5);
