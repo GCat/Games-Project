@@ -83,6 +83,9 @@ public class Agent : MonoBehaviour, Character, Grabbable
     protected Renderer[] child_materials;
     private Shader outlineShader;
 
+    private Vector3 bL;
+    private Vector3 tR;
+
     enum HumanState { Fighting, Wandering, Grabbed, Falling };
 
     void Start()
@@ -105,6 +108,8 @@ public class Agent : MonoBehaviour, Character, Grabbable
         child_materials = GetComponentsInChildren<Renderer>();
         outlineShader = Shader.Find("Toon/Basic Outline");
         lineRenderer = GetComponent<LineRenderer>();
+        tR = resources.getTopRight();
+        bL = resources.getBottomLeft();
     }
 
     // Update is called once per frame
@@ -203,10 +208,11 @@ public class Agent : MonoBehaviour, Character, Grabbable
     //generates a new point on the board to wander to
     private Vector3 findNewTarget()
     {
-        float randX = UnityEngine.Random.Range(-50, 50);
-        float randZ = UnityEngine.Random.Range(-100, 100);
+        float randX = UnityEngine.Random.Range(bL.x, tR.x);
+        float randZ = UnityEngine.Random.Range(bL.z, tR.z);
+        Vector3 v = new Vector3(randX, 0, randZ);
         NavMeshHit hit;
-        if (NavMesh.SamplePosition(new Vector3(randX, 0, randZ), out hit, 20.0f, NavMesh.AllAreas))
+        if (NavMesh.SamplePosition(v, out hit, 20.0f, NavMesh.AllAreas))
         {
             return hit.position;
         }

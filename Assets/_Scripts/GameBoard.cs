@@ -67,4 +67,12 @@ public class GameBoard : MonoBehaviour {
 
         return (y >= b.center.y && y < 40 && x > bL.x && x < tR.x && z > bL.z && z < tR.z);
     }
+    public Vector3 getTopRight()
+    {
+        return tR;
+    }
+    public Vector3 getBottomLeft()
+    {
+        return bL;
+    }
 }

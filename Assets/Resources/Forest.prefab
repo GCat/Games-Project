@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4622110894460432}
   - component: {fileID: 114919872842439852}
   - component: {fileID: 208019122764743750}
+  - component: {fileID: 135608094036385140}
   m_Layer: 15
   m_Name: Forest
   m_TagString: Forest
@@ -743,6 +744,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   range: 110
+--- !u!135 &135608094036385140
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1049970130277436}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!208 &208019122764743750
 NavMeshObstacle:
   m_ObjectHideFlags: 1

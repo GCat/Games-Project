@@ -232,4 +232,13 @@ public class ResourceCounter : MonoBehaviour, Grabbable
     {
         return ground.dynamicWithinBounds(p);
     }
+
+    public Vector3 getTopRight()
+    {
+        return ground.getTopRight();
+    }
+    public Vector3 getBottomLeft()
+    {
+        return ground.getBottomLeft();
+    }
 }
