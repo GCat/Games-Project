@@ -39,9 +39,9 @@ public class GameBoard : MonoBehaviour {
         return (p.x >= bottomLeft.x && p.z >= bottomLeft.y && p.x <= topRight.x && p.z <= topRight.y && p.y >= -1f);
     }
 
-    public static float tableHeight()
+    public float tableHeight()
     {
-        return 0.0f;
+        return bL.y -1;
     }
 
     public float coardHeight()

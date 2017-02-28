@@ -228,6 +228,7 @@ public class ResourceCounter : MonoBehaviour, Grabbable
     {
         return ground.dynamicAboveBoard(p);
     }
+
     public bool withinBounds(Vector3 p)
     {
         return ground.dynamicWithinBounds(p);

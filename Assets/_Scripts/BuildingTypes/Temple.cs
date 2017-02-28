@@ -65,21 +65,19 @@ public class Temple : ResourceBuilding
     {
         Vector3 myLocation = transform.position;
         // can not spawn on resource node
-        int layerMask = 1 << 15;
         Vector3 humanLocation;
         humanLocation = new Vector3(myLocation.x, myLocation.y, myLocation.z + 33);
         for (int i = 0; i < 5; i++)
         {
 
-            if (resourceCounter.aboveBoard(humanLocation) && !(Physics.CheckSphere(humanLocation, 2.0f, layerMask)))
-            {
-                Instantiate(Resources.Load("Characters/Human"), humanLocation, Quaternion.identity);
-            }
-            else
+            if (resourceCounter.aboveBoard(myLocation))
             {
                 NavMeshHit hit;
-                if (NavMesh.SamplePosition(humanLocation, out hit, 30.0f, NavMesh.AllAreas))
+                if (NavMesh.SamplePosition(humanLocation, out hit, 50.0f, NavMesh.AllAreas))
+                {
                     Instantiate(Resources.Load("Characters/Human"), hit.position, Quaternion.identity);
+                    resourceCounter.addPop();
+                }
                 else
                     Debug.Log("Could not spawn human");
             }
@@ -102,13 +100,4 @@ public class Temple : ResourceBuilding
         world.stopGame();
         Destroy(gameObject);
     }
-
-    void Update()
-    {
-        Vector3 myLocation = gameObject.transform.position;
-        myLocation.z += 33f;
-
-        Debug.DrawRay(myLocation, new Vector3(0f, -20f, 0f));
-    }
-
 }
