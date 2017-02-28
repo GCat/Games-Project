@@ -18,15 +18,15 @@ public class Temple : ResourceBuilding
 
     public override void create_building()
     {
-        health = 50000.0f;
-        totalHealth = 50000f;
+        health = 500.0f;
+        totalHealth = 500.0f;
         buildingName = "TEMPLE";
         Debug.Log(world);
         world.startGame();
         tablet.SetActive(true);
         placed = true;
-        //spawnHumans();
-        InvokeRepeating("incrementResource", 5.0f, 10.0f); // after 10 sec call every 5
+        spawnHumans();
+        InvokeRepeating("incrementResource", 5.0f, 5.0f); // after 10 sec call every 5
         canBeGrabbed = false;
         CancelInvoke("showStartOutline");
         CancelInvoke("removeOutline");
