@@ -22,10 +22,13 @@ public class ResourceCounter : MonoBehaviour, Grabbable
     private int armourMult = 1;
     public int baddies = 0;
 
+    private bool gameStarted;
+
 
     private void Awake()
     {
         resource_nodes = new Dictionary<string, GameObject[]>();
+        gameStarted = false;
     }
 
     // Use this for initialization
@@ -241,5 +244,14 @@ public class ResourceCounter : MonoBehaviour, Grabbable
     public Vector3 getBottomLeft()
     {
         return ground.getBottomLeft();
+    }
+
+    public void gameStart()
+    {
+        gameStarted = true;
+    }
+    public bool hasGameStarted()
+    {
+        return gameStarted;
     }
 }

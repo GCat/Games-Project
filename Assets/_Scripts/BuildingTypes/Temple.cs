@@ -30,6 +30,7 @@ public class Temple : ResourceBuilding
         canBeGrabbed = false;
         CancelInvoke("showStartOutline");
         CancelInvoke("removeOutline");
+        resourceCounter.gameStart();
 
     }
 

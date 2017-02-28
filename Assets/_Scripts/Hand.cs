@@ -245,6 +245,8 @@ public class Hand : MonoBehaviour {
             {
                 return;
             }
+            if (!resources.hasGameStarted() && closest.tag != "Temple") return;
+     
         }
 
 
