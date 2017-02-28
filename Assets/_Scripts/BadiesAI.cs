@@ -28,7 +28,8 @@ using UnityEngine.AI;
  * 
  */
 
-public class BadiesAI : MonoBehaviour, Character {
+public class BadiesAI : MonoBehaviour, Character
+{
 
     /* Three type of badies will exist
      * Rushers: They'll go for the temple
@@ -63,31 +64,17 @@ public class BadiesAI : MonoBehaviour, Character {
 
 
     // Fighting
-    public enum Fighter {  Rusher, Defender, Killer, Training };
+    public enum Fighter { Rusher, Defender, Killer, Training };
     public int fighterType;
 
     // Rusher
     private GameObject temple;
     private Vector3 templeAttackPoint; // nearest bound on temple
-    public bool templeInRange = false;
-    public bool pathToTempleFound = false;
+
 
 
     // Killer
     public GameObject closestEnemy;
-
-
-    //Defender
-    private float radius = 25.0f;
-    private float dis2Temple;
-    public bool enemyInrange = false;
-    public bool defending = false;
-    public bool path2Enemy = false;
-
-
-    // Training
-    private bool enemyFound;
-
     public GameObject[] buildings;
 
     private ResourceCounter resources;
@@ -95,10 +82,13 @@ public class BadiesAI : MonoBehaviour, Character {
 
     //the nearest position on the navmesh to the desired target point
     private Vector3 nextBestTarget;
+    private LineRenderer lineRenderer;
 
-    public enum MonsterState {AttackTemple, AttackHumans, AttackBuildings, Idle };
+    enum MonsterState { AttackTemple, AttackHumans, AttackBuildings, Idle, PathBlocked };
 
-    public MonsterState currentState = MonsterState.AttackTemple;
+    MonsterState currentState = MonsterState.AttackTemple;
+    MonsterState prevState;
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -106,16 +96,16 @@ public class BadiesAI : MonoBehaviour, Character {
         healthBarOri = healthBar.transform.rotation;
         createInfoText();
         infoTextOri = infoText.transform.rotation;
+        lineRenderer = GetComponent<LineRenderer>();
     }
 
     //can we make the spawn type an enum please xoxo
     public void spawn(int type)
     {
-        
+
 
         anim = GetComponent<Animation>();
         rb = GetComponent<Rigidbody>();
-        //rb.interpolation = RigidbodyInterpolation.Interpolate;
         closestEnemy = null;
 
         fighterType = type;
@@ -140,59 +130,60 @@ public class BadiesAI : MonoBehaviour, Character {
         if (alive)
         {
 
-            switch (currentState) {
+
+
+            switch (currentState)
+            {
                 case MonsterState.AttackTemple:
-                    
+
                     walkTowards(templeAttackPoint);
                     break;
                 case MonsterState.AttackHumans:
                     gameObject.transform.GetChild(0).GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 1, 0));
                     if (resources.getPop() > 0)
                     {
-
+                        showPath();
+                        humanAttack();
                     }
                     else currentState = MonsterState.AttackBuildings;
                     break;
                 case MonsterState.AttackBuildings:
                     gameObject.transform.GetChild(0).GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 0, 1));
 
+                    buildingAttack();
+                    break;
+                case MonsterState.PathBlocked:
+                    destroyObstacle();
                     break;
                 case MonsterState.Idle:
                     gameObject.transform.GetChild(0).GetComponent<Renderer>().material.SetColor("_Color", new Color(1, 1, 1));
 
                     break;
             }
-
-            
-
-            //if (false/*temple == null*/)  anim.Play("rage");
-            //else if (!moving) anim.Play("idle");
-            //else if (fighterType == (int)Fighter.Rusher) rusherNav();
-            //else if (fighterType == (int)Fighter.Defender) defenderNav();
-            //else if (fighterType == (int)Fighter.Killer) killerNav();
-            //else if (fighterType == (int)Fighter.Training) trainingNav();
         }
     }
 
-    private void findBuidling()
+    private GameObject findObstacles()
     {
-        buildings = GameObject.FindGameObjectsWithTag("Building");
-        if( buildings.Length > 0)
+        NavMeshObstacle[] obstacles = GameObject.FindObjectsOfType(typeof(NavMeshObstacle)) as NavMeshObstacle[];
+        closestEnemy = null;
+        if (obstacles.Length > 0)
         {
-            
-            closestEnemy = null;
             float distance = Mathf.Infinity;
-            foreach (GameObject b in buildings)
+            foreach (NavMeshObstacle b in obstacles)
             {
-                Vector3 diff = b.GetComponent<Collider>().ClosestPointOnBounds(transform.position) - transform.position;
+                if (b.gameObject.layer != 10) continue;
+                if (b.gameObject.transform.position.y > 10f) continue;
+                Vector3 diff = b.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position) - transform.position;
                 float curDistance = diff.sqrMagnitude;
                 if (curDistance < distance && b.transform.position.y >= -1.0f)
                 {
-                    closestEnemy = b;
+                    closestEnemy = b.gameObject;
                     distance = curDistance;
                 }
             }
         }
+        return closestEnemy;
     }
 
     private Vector3 getClosestPointToTarget(Vector3 target)
@@ -208,20 +199,48 @@ public class BadiesAI : MonoBehaviour, Character {
             return transform.position;
         }
     }
-
-    private void humanAttack()
+    private void showPath()
     {
-        if (resources.getPop() > 0)
+        if (agent.hasPath)
         {
-            if(closestEnemy != null)
-            {
-                walkTowards(closestEnemy.transform.position);
-            }
-            else findClosestEnemy();
+            lineRenderer.SetPositions(agent.path.corners);
+        }
+
+    }
+
+    private void destroyObstacle()
+    {
+        if (closestEnemy != null)
+            walkTowards(closestEnemy.GetComponent<Collider>().ClosestPointOnBounds(transform.position));
+        else
+            currentState = prevState;
+    }
+
+
+    private void buildingAttack()
+    {
+        // for now attack towers
+        if (closestEnemy != null)
+        {
+            walkTowards(closestEnemy.GetComponent<Collider>().ClosestPointOnBounds(transform.position));
         }
         else
         {
-            currentState = MonsterState.AttackBuildings;
+            closestEnemy = findClosestEnemy("Tower");
+            if (closestEnemy == null) currentState = MonsterState.AttackTemple;
+        }
+
+    }
+    private void humanAttack()
+    {
+
+        if (closestEnemy != null)
+        {
+            walkTowards(closestEnemy.GetComponent<Collider>().ClosestPointOnBounds(transform.position));
+        }
+        else
+        {
+            closestEnemy = findClosestEnemy("Human");
         }
     }
 
@@ -234,9 +253,31 @@ public class BadiesAI : MonoBehaviour, Character {
             target = nextBestTarget;
         }
         Vector3 offset = target - transform.position;
-        offset = offset.normalized * speed;
-        agent.destination = target;
-        //controller.Move(offset * Time.deltaTime);
+        NavMeshPath path = new NavMeshPath();
+        agent.CalculatePath(target, path);
+        if (path.status != NavMeshPathStatus.PathComplete)
+        {
+            //if (currentState == MonsterState.PathBlocked)
+            //{
+            //    Debug.LogError("INFINTE CALL LOOP");
+            //}
+            closestEnemy = findObstacles();
+            if (closestEnemy == null)
+            {
+                Debug.LogError("NO OBSTACLE FOUND AND NO PATH U FUCKED!");
+            }
+            else
+            {
+                prevState = currentState;
+                currentState = MonsterState.PathBlocked;
+            }
+        }
+        else
+        {
+            agent.destination = target;
+            showPath();
+        }
+
         //don't spin in circles
         if (offset.magnitude > 5)
         {
@@ -246,9 +287,7 @@ public class BadiesAI : MonoBehaviour, Character {
         }
         else
         {
-
             reachedTarget();
-
         }
     }
 
@@ -263,7 +302,10 @@ public class BadiesAI : MonoBehaviour, Character {
                 attack(closestEnemy);
                 break;
             case MonsterState.AttackBuildings:
-
+                attack(closestEnemy);
+                break;
+            case MonsterState.PathBlocked:
+                attack(closestEnemy);
                 break;
             case MonsterState.Idle:
 
@@ -275,7 +317,7 @@ public class BadiesAI : MonoBehaviour, Character {
     {
         if (victim != null)
         {
- 
+
             transform.rotation = Quaternion.LookRotation(victim.transform.position - transform.position);
             if (!anim.IsPlaying("hit"))
             {
@@ -334,11 +376,11 @@ public class BadiesAI : MonoBehaviour, Character {
         infoText.transform.SetParent(gameObject.transform);
     }
 
-    private GameObject findClosestEnemy()
+    private GameObject findClosestEnemy(string tag)
     {
         GameObject[] humans;
         GameObject closest = null;
-        humans = GameObject.FindGameObjectsWithTag("Human");
+        humans = GameObject.FindGameObjectsWithTag(tag);
         float distance = Mathf.Infinity;
         Vector3 position = transform.position;
         if (humans.Length > 0)

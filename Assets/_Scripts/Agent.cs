@@ -78,6 +78,10 @@ public class Agent : MonoBehaviour, Character, Grabbable
     private HumanState currentState = HumanState.Wandering;
 
     private Vector3 wanderPoint = Vector3.zero;
+    private LineRenderer lineRenderer;
+
+    protected Renderer[] child_materials;
+    private Shader outlineShader;
 
     enum HumanState { Fighting, Wandering, Grabbed, Falling };
 
@@ -98,6 +102,9 @@ public class Agent : MonoBehaviour, Character, Grabbable
         healthBarOri = healthBar.transform.rotation;
         createInfoText();
         infoTextOri = infoText.transform.rotation;
+        child_materials = GetComponentsInChildren<Renderer>();
+        outlineShader = Shader.Find("Toon/Basic Outline");
+        lineRenderer = GetComponent<LineRenderer>();
     }
 
     // Update is called once per frame
@@ -166,6 +173,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
         if (offset.magnitude > 0.1f)
         {
             agent.destination = target;
+            showPath();
             //controller.Move(offset * Time.deltaTime);
             //don't spin in circles
             if (offset.magnitude > 2)
@@ -209,6 +217,14 @@ public class Agent : MonoBehaviour, Character, Grabbable
         }
     }
 
+    private void showPath()
+    {
+        if (agent.hasPath)
+        {
+            lineRenderer.SetPositions(agent.path.corners);
+        }
+
+    }
 
     void sacrifice()
     {
@@ -289,7 +305,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
         health -= damage;
         float scale = (health / totalHealth);
         float characterScale = gameObject.transform.localScale.x;
-        healthBar.transform.localScale = new Vector3(0.1f/characterScale, scale/characterScale, 0.1f/characterScale);
+        healthBar.transform.localScale = new Vector3(0.1f / characterScale, scale / characterScale, 0.1f / characterScale);
         if (scale != 0) healthBar.GetComponent<Renderer>().material.SetColor("_Color", new Color(1.0f - scale, scale, 0));
         if (health <= 0 && alive == true)
         {
@@ -340,6 +356,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
         GetComponent<Collider>().enabled = true;
         rb.useGravity = true;
         rb.isKinematic = false;
+        removeOutline();
 
     }
 
@@ -361,7 +378,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
                     Debug.LogError("Trying to attack something that doesn not have health");
                 }
             }
-          
+
             return true;
         }
         return false;
@@ -381,6 +398,39 @@ public class Agent : MonoBehaviour, Character, Grabbable
     public void changeMode(bool val)
     {
         throw new NotImplementedException();
+    }
+
+
+    private void setOutline()
+    {
+        foreach (Renderer renderer in child_materials)
+        {
+            renderer.material.shader = outlineShader;
+            renderer.material.SetColor("_OutlineColor", Color.green);
+        }
+    }
+
+    private void removeOutline()
+    {
+        foreach (Renderer renderer in child_materials)
+        {
+            renderer.material.shader = Shader.Find("Diffuse");
+            //renderer.material.SetColor("_OutlineColor", Color.green);
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Hand")
+        {
+            setOutline();
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "Hand")
+        {
+            removeOutline();
+        }
     }
 
 }
