@@ -140,17 +140,28 @@ public class House  : Building, Grabbable
         {
 
             Vector3 location_human = new Vector3(location.x, 0.5f, (location.z + 4));
-            int layerMask = 1 << 8;
             Vector3 target = new Vector3(location_human.x, 0.05f, location_human.z);
             NavMeshHit hit;
             //spawn human in nearest valid nav mesh point
             Vector3 spawnPosition = transform.position;
-            if(NavMesh.SamplePosition(transform.position, out hit, 10, NavMesh.AllAreas)){
-                spawnPosition = hit.position;
+            if (resourceCounter.aboveBoard(transform.position))
+            {
+                if (NavMesh.SamplePosition(transform.position, out hit, 20.0f, NavMesh.AllAreas))
+                {
+                    spawnPosition = hit.position;
+                    Instantiate(Resources.Load("Characters/Human"), spawnPosition, Quaternion.identity);
+                }
+                else
+                {
+                    Debug.Log("Spawn Human Failed");
+                }
             }
-            Instantiate(Resources.Load("Characters/Human"), spawnPosition, Quaternion.identity);
+            else
+            {
+                Debug.Log("House Off Bounds");
+            }
+            
 
-            Collider[] obstacles = Physics.OverlapSphere(target, 0.05f, layerMask);
             add_human();
             update_happiness();
             resourceCounter.removeFood(foodCost);

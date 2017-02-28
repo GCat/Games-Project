@@ -129,11 +129,16 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
 
     public IEnumerator ResourceGainText(int value,string resource)
     {
+        Vector3 cameraPos = GameObject.FindWithTag("MainCamera").transform.position;
         GameObject resourceText = GameObject.Instantiate(infoText,infoText.transform) as GameObject;
         resourceText.transform.parent = gameObject.transform;
         Vector2 randPos = UnityEngine.Random.insideUnitCircle*15.0f;
         resourceText.transform.Translate(new Vector3(randPos.x,-2.0f,randPos.y));
         Vector3 startLocation = resourceText.transform.position;
+        cameraPos.y = startLocation.y;
+        Debug.Log(cameraPos.y);
+        resourceText.transform.LookAt(2*startLocation - cameraPos);
+        Debug.Log(startLocation.y);
         resourceText.GetComponent<TextMesh>().text = "+" + value.ToString() + " " + resource;
         Color c;
         resourceText.SetActive(true);
