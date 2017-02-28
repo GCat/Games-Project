@@ -14,8 +14,6 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
     GameObject infoText;
     private Vector3 boxSize;
     public GameObject highlight;
-    public Material matEmpty;
-    public Material matInval;
     public bool canBeGrabbed = true;
     protected Renderer[] child_materials;
     protected Shader outlineShader;
@@ -129,6 +127,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         Debug.Log("Resource Building vel:" + vel);
         GetComponent<Rigidbody>().AddForce(vel, ForceMode.VelocityChange);
         removeOutline();
+        highlightDestroy();
     }
 
     public IEnumerator ResourceGainText(int value,string resource)
@@ -192,6 +191,11 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
     {
         if (resourceCounter.aboveBoard(transform.position))
         {
+            if (transform.position.y < 0.1f)
+            {
+                highlightDestroy();
+                return;
+            }
             highlight.GetComponent<Renderer>().enabled = true;
             highlight.transform.position = new Vector3(Mathf.Floor(transform.position.x), 0.1f, Mathf.Floor(transform.position.z));
             float yRot = gameObject.transform.eulerAngles.y;
@@ -205,10 +209,10 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
                 highlight.transform.rotation = Quaternion.LookRotation(Vector3.forward);
             }
             int layerMask = 1 << 10 | 1<<15;
-            if (Physics.CheckBox(new Vector3(Mathf.Floor(transform.position.x), 0, Mathf.Floor(transform.position.z)), boxSize, Quaternion.LookRotation(Vector3.forward), layerMask))
-                highlight.GetComponent<Renderer>().material = matInval;
+            if (Physics.CheckBox(new Vector3(Mathf.Floor(transform.position.x), 0, Mathf.Floor(transform.position.z)), boxSize,gameObject.transform.rotation, layerMask))
+                highlight.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
             else
-                highlight.GetComponent<Renderer>().material = matEmpty;
+                highlight.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
         }
         else
         {
@@ -226,10 +230,10 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
     public void createHighlight()
     {
         highlight = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        highlight.GetComponent<Renderer>().material = matEmpty;
+        highlight.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
         highlight.transform.localScale = new Vector3(GetComponent<BoxCollider>().bounds.size.x, 0.1f, GetComponent<BoxCollider>().bounds.size.z);
         highlight.transform.position = new Vector3(Mathf.Floor(transform.position.x), 0.1f, Mathf.Floor(transform.position.z));
-        highlight.transform.rotation = Quaternion.LookRotation(Vector3.forward);
+        highlight.transform.rotation = transform.rotation;
 
         highlight.GetComponent<Collider>().isTrigger = true;
         highlight.GetComponent<Renderer>().enabled = false;

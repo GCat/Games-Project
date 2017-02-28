@@ -143,43 +143,6 @@ public abstract class ResourceBuilding : Building, Grabbable
         return chosenResource;
     }
 
-    public void highlightDestroy()
-    {
-        if (highlight != null) Destroy(highlight);
-    }
-
-    public void highlightCheck()
-    {
-        if (transform.position.y > 0.0 && Mathf.Abs(transform.position.x) <= 50 && Mathf.Abs(transform.position.z) <= 100)
-        {
-            highlight.GetComponent<Renderer>().enabled = true;
-            highlight.transform.position = new Vector3(Mathf.Floor(transform.position.x), 0.1f, Mathf.Floor(transform.position.z));
-            highlight.transform.rotation = Quaternion.LookRotation(Vector3.forward);
-            int layerMask = 1 << 10;
-            if (Physics.CheckBox(new Vector3(Mathf.Floor(transform.position.x), 0, Mathf.Floor(transform.position.z)), boxSize, Quaternion.LookRotation(Vector3.forward), layerMask))
-                highlight.GetComponent<Renderer>().material = matInval;
-            else
-                highlight.GetComponent<Renderer>().material = matEmpty;
-        }
-        else
-        {
-            highlight.GetComponent<Renderer>().enabled = false;
-        }
-    }
-
-    public void createHighlight()
-    {
-        Debug.Log("Create highlight");
-        highlight = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        highlight.GetComponent<Renderer>().material = matEmpty;
-        highlight.transform.localScale = new Vector3(GetComponent<BoxCollider>().bounds.size.x, 0.1f, GetComponent<BoxCollider>().bounds.size.z);
-        highlight.transform.position = new Vector3(Mathf.Floor(transform.position.x), 0.1f, Mathf.Floor(transform.position.z));
-        highlight.transform.rotation = Quaternion.LookRotation(Vector3.forward);
-
-        highlight.GetComponent<Collider>().enabled = false;
-        highlight.GetComponent<Renderer>().enabled = false;
-    }
-
     public bool getbp()
     {
         return badplacement;
