@@ -135,8 +135,8 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         Vector3 cameraPos = GameObject.FindWithTag("MainCamera").transform.position;
         GameObject resourceText = GameObject.Instantiate(infoText,infoText.transform) as GameObject;
         resourceText.transform.parent = gameObject.transform;
-        Vector2 randPos = UnityEngine.Random.insideUnitCircle*15.0f;
-        resourceText.transform.Translate(new Vector3(randPos.x,-2.0f,randPos.y));
+        Vector2 randPos = UnityEngine.Random.insideUnitCircle*5.0f;
+        resourceText.transform.Translate(new Vector3(randPos.x,-2.0f,randPos.y*2.0f));
         Vector3 startLocation = resourceText.transform.position;
         cameraPos.y = startLocation.y;
         resourceText.transform.LookAt(2*startLocation - cameraPos);

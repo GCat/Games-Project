@@ -26,7 +26,7 @@ public class Temple : ResourceBuilding
         tablet.SetActive(true);
         placed = true;
         spawnHumans();
-        InvokeRepeating("incrementResource", 5.0f, 0.1f); // after 10 sec call every 5
+        InvokeRepeating("incrementResource", 5.0f, 5.0f); // after 5 sec call every 5
         canBeGrabbed = false;
         CancelInvoke("showStartOutline");
         CancelInvoke("removeOutline");
@@ -49,7 +49,7 @@ public class Temple : ResourceBuilding
 
     public override void incrementResource()
     {
-        if (!spawnedGarrison) spawnHumans();
+        //if (!spawnedGarrison) spawnHumans();
         if (resourceCounter != null) StartCoroutine(ResourceGainText(resourceCounter.addFaith(),"Faith"));
     }
 

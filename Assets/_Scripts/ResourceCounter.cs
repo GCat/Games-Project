@@ -142,7 +142,7 @@ public class ResourceCounter : MonoBehaviour, Grabbable
     }
     public int addFaith()
     {
-        int toAdd = (population * 1) + 1;
+        int toAdd = population;
         faith += toAdd;
         return toAdd;
     }
