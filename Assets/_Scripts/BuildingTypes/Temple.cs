@@ -18,14 +18,14 @@ public class Temple : ResourceBuilding
 
     public override void create_building()
     {
-        health = 500.0f;
-        totalHealth = 500.0f;
+        health = 50000.0f;
+        totalHealth = 50000f;
         buildingName = "TEMPLE";
         Debug.Log(world);
         world.startGame();
         tablet.SetActive(true);
         placed = true;
-        spawnHumans();
+        //spawnHumans();
         InvokeRepeating("incrementResource", 5.0f, 10.0f); // after 10 sec call every 5
         canBeGrabbed = false;
         CancelInvoke("showStartOutline");
@@ -49,7 +49,7 @@ public class Temple : ResourceBuilding
 
     public override void incrementResource()
     {
-        if (!spawnedGarrison) spawnHumans();
+        //if (!spawnedGarrison) spawnHumans();
         if (resourceCounter != null) StartCoroutine(ResourceGainText(resourceCounter.addFaith(),"Faith"));
     }
 

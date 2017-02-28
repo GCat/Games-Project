@@ -4807,6 +4807,11 @@ Prefab:
       propertyPath: matInval
       value: 
       objectReference: {fileID: 2100000, guid: 4a47be7d74c42494682ec45ef083f2d6, type: 2}
+    - target: {fileID: 114722057952138204, guid: d5d03b713e924044487109250944c635,
+        type: 2}
+      propertyPath: health
+      value: 50000
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d5d03b713e924044487109250944c635, type: 2}
   m_IsPrefabParent: 0

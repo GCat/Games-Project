@@ -3085,7 +3085,7 @@ GameObject:
   - component: {fileID: 23756534334409480}
   - component: {fileID: 208392726838024668}
   m_Layer: 10
-  m_Name: Temple
+  m_Name: Temple_old
   m_TagString: Temple
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18552,8 +18552,6 @@ MonoBehaviour:
   resourceCounter: {fileID: 0}
   tablet: {fileID: 1000013233709802, guid: 6fd29a90c461afd40a231c41968b85bb, type: 2}
   highlight: {fileID: 0}
-  matEmpty: {fileID: 2100000, guid: 79ef561946cb1bb4884c0cca457d417b, type: 2}
-  matInval: {fileID: 2100000, guid: 4a47be7d74c42494682ec45ef083f2d6, type: 2}
   canBeGrabbed: 1
   build: {fileID: 0}
   destroy: {fileID: 0}

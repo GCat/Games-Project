@@ -88,7 +88,7 @@ public class BadiesAI : MonoBehaviour, Character
 
     MonsterState currentState = MonsterState.AttackTemple;
     MonsterState prevState;
-
+    private Vector3 sT;
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -135,7 +135,7 @@ public class BadiesAI : MonoBehaviour, Character
             switch (currentState)
             {
                 case MonsterState.AttackTemple:
-
+                    closestEnemy = temple;
                     walkTowards(templeAttackPoint);
                     break;
                 case MonsterState.AttackHumans:
@@ -167,6 +167,7 @@ public class BadiesAI : MonoBehaviour, Character
     {
         NavMeshObstacle[] obstacles = GameObject.FindObjectsOfType(typeof(NavMeshObstacle)) as NavMeshObstacle[];
         closestEnemy = null;
+        changeEnemy();
         if (obstacles.Length > 0)
         {
             float distance = Mathf.Infinity;
@@ -189,7 +190,7 @@ public class BadiesAI : MonoBehaviour, Character
     private Vector3 getClosestPointToTarget(Vector3 target)
     {
         NavMeshHit hit;
-        if (NavMesh.SamplePosition(target, out hit, 20.0f, NavMesh.AllAreas))
+        if (NavMesh.SamplePosition(target, out hit, 30.0f, NavMesh.AllAreas))
         {
             return hit.position;
         }
@@ -198,6 +199,51 @@ public class BadiesAI : MonoBehaviour, Character
             Debug.LogError("Cannot walk here!");
             return transform.position;
         }
+    }
+
+    private Vector3 surroundTarget (Vector3 target)
+    {
+        if (currentState == MonsterState.AttackHumans) return target;
+
+        int layerMask = 1 << 11;
+        Collider[] team;
+        team = Physics.OverlapSphere(target, 1.0f, layerMask);
+
+        if (team.Length < 1)
+        {
+            return target;
+        }
+
+        else if (team.Length >= 1)
+        {
+            if (team.Length == 1)
+            {
+                if (team[0].gameObject == gameObject) return target;
+            }
+
+            for (int i = 0; i < 5; i++)
+            {
+                float randX = UnityEngine.Random.Range(-30, 30);
+                float randZ = UnityEngine.Random.Range(-30, 30);
+                if (closestEnemy == null) return target;
+                Vector3 tempT = closestEnemy.GetComponent<Collider>().ClosestPointOnBounds(new Vector3(target.x + randX, target.y, target.z + randZ));
+                NavMeshHit hit;
+                if (NavMesh.SamplePosition(tempT, out hit, 30.0f, NavMesh.AllAreas))
+                {
+                    team = Physics.OverlapSphere(tempT, 1.0f, layerMask);
+                    if (team.Length < 1)
+                    {
+                        return hit.position;
+                    }
+                    else if (team.Length == 1)
+                    {
+                        if (team[0].gameObject == gameObject) return hit.position;
+                    }
+                }
+            }
+            return target;
+        }
+        return target;
     }
     private void showPath()
     {
@@ -213,7 +259,10 @@ public class BadiesAI : MonoBehaviour, Character
         if (closestEnemy != null)
             walkTowards(closestEnemy.GetComponent<Collider>().ClosestPointOnBounds(transform.position));
         else
+        {
             currentState = prevState;
+            changeEnemy();
+        }
     }
 
 
@@ -226,6 +275,7 @@ public class BadiesAI : MonoBehaviour, Character
         }
         else
         {
+            changeEnemy();
             closestEnemy = findClosestEnemy("Tower");
             if (closestEnemy == null) currentState = MonsterState.AttackTemple;
         }
@@ -240,6 +290,7 @@ public class BadiesAI : MonoBehaviour, Character
         }
         else
         {
+            changeEnemy();
             closestEnemy = findClosestEnemy("Human");
         }
     }
@@ -252,38 +303,46 @@ public class BadiesAI : MonoBehaviour, Character
             nextBestTarget = getClosestPointToTarget(target);
             target = nextBestTarget;
         }
+        if (sT == Vector3.zero)
+        {
+            Vector3 tempsT = surroundTarget(nextBestTarget);
+            if (Vector3.Distance(target, tempsT) > 0.5f)
+            {
+                sT = tempsT;
+                target = sT;
+            }
+            
+        }
+        else target = sT;
+ 
         Vector3 offset = target - transform.position;
-        NavMeshPath path = new NavMeshPath();
-        agent.CalculatePath(target, path);
-        if (path.status != NavMeshPathStatus.PathComplete)
-        {
-            //if (currentState == MonsterState.PathBlocked)
-            //{
-            //    Debug.LogError("INFINTE CALL LOOP");
-            //}
-            closestEnemy = findObstacles();
-            if (closestEnemy == null)
-            {
-                Debug.LogError("NO OBSTACLE FOUND AND NO PATH U FUCKED!");
-            }
-            else
-            {
-                prevState = currentState;
-                currentState = MonsterState.PathBlocked;
-            }
-        }
-        else
-        {
-            agent.destination = target;
-            showPath();
-        }
-
+        
         //don't spin in circles
         if (offset.magnitude > 5)
         {
-            offset.y = transform.position.y;
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(offset), Time.deltaTime * rotationSpeed);
-            anim.Play("walk");
+            NavMeshPath path = new NavMeshPath();
+            agent.CalculatePath(target, path);
+            if (path.status != NavMeshPathStatus.PathComplete)
+            {
+                closestEnemy = findObstacles();
+                if (closestEnemy == null)
+                {
+                    Debug.LogError("NO OBSTACLE FOUND AND NO PATH U FUCKED!");
+                }
+                else
+                {
+                    prevState = currentState;
+                    currentState = MonsterState.PathBlocked;
+                }
+            }
+            else
+            {
+                agent.destination = target;
+                showPath();
+                offset.y = transform.position.y;
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(offset), Time.deltaTime * rotationSpeed);
+                anim.Play("walk");
+            }
         }
         else
         {
@@ -296,7 +355,7 @@ public class BadiesAI : MonoBehaviour, Character
         switch (currentState)
         {
             case MonsterState.AttackTemple:
-                attack(temple);
+                attack(closestEnemy);
                 break;
             case MonsterState.AttackHumans:
                 attack(closestEnemy);
@@ -334,6 +393,7 @@ public class BadiesAI : MonoBehaviour, Character
             }
             return true;
         }
+        changeEnemy();
         return false;
     }
 
@@ -380,6 +440,7 @@ public class BadiesAI : MonoBehaviour, Character
     {
         GameObject[] humans;
         GameObject closest = null;
+        changeEnemy();
         humans = GameObject.FindGameObjectsWithTag(tag);
         float distance = Mathf.Infinity;
         Vector3 position = transform.position;
@@ -413,6 +474,11 @@ public class BadiesAI : MonoBehaviour, Character
     public void setTempleAttackPoint(Vector3 p)
     {
         templeAttackPoint = p;
+    }
+
+    private void changeEnemy()
+    {
+        sT = Vector3.zero;
     }
 
 }
