@@ -27,8 +27,9 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         if (!healthBar.activeSelf) healthBar.SetActive(true);
         health -= damage;
         float scale = (health / totalHealth);
-        healthBar.transform.localScale = new Vector3(1.0f, scale * 10f, 1.0f);
-        if (scale != 0) healthBar.GetComponent<Renderer>().material.SetColor("_Color", new Color(1.0f-scale, scale, 0));
+        float buildingScale = gameObject.transform.localScale.x;
+        healthBar.transform.localScale = new Vector3(1.0f / buildingScale, 10.0f * scale / buildingScale, 1.0f / buildingScale);
+        if (scale != 0) healthBar.GetComponent<Renderer>().material.SetColor("_Color", new Color(1.0f - scale, scale, 0));
 
         if (health <= 0)
         {
