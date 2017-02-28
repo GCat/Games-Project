@@ -23,6 +23,7 @@ public class Temple : ResourceBuilding
         world.startGame(tablet);
         placed = true;
         spawnHumans();
+        InvokeRepeating("incrementResource", 5.0f, 10.0f); // after 10 sec call every 5
         canBeGrabbed = false;
     }
 
