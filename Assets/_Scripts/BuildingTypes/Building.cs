@@ -136,9 +136,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         resourceText.transform.Translate(new Vector3(randPos.x,-2.0f,randPos.y));
         Vector3 startLocation = resourceText.transform.position;
         cameraPos.y = startLocation.y;
-        Debug.Log(cameraPos.y);
         resourceText.transform.LookAt(2*startLocation - cameraPos);
-        Debug.Log(startLocation.y);
         resourceText.GetComponent<TextMesh>().text = "+" + value.ToString() + " " + resource;
         Color c;
         resourceText.SetActive(true);
@@ -152,12 +150,6 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         }
         resourceText.SetActive(false);
         GameObject.Destroy(resourceText);
-        /*
-        infoText.transform.position = startLocation;
-        c = infoText.GetComponent<TextMesh>().color;
-        c.a = 1.0f;
-        infoText.GetComponent<TextMesh>().color = c;
-        */
     }
 
     public GameObject getInfoText()
