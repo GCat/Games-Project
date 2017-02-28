@@ -61,7 +61,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         float x = transform.position.x;
         float z = transform.position.z;
 
-        int layerMask = 1 << 10;
+        int layerMask = (1 << 10 | 1<<15);
         if (resourceCounter.withinBounds(transform.position))
         {
             GetComponent<Collider>().enabled = true;

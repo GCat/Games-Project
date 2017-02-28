@@ -303,7 +303,8 @@ public class Hand : MonoBehaviour {
                     building.highlightDestroy();
                     if (resources.withinBounds(heldObject.transform.position))
                     {
-                        Destroy(heldObject);
+                        if (building.gameObject.tag != "Temple")
+                            Destroy(heldObject);
                     }
                     else
                     {
