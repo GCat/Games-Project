@@ -44,10 +44,12 @@ public class BadiesAI : MonoBehaviour, Character {
     public float health = 100.0f;
     public float totalHealth = 100.0f;
     GameObject healthBar;
+    GameObject infoText;
+    Quaternion infoTextOri;
     Quaternion healthBarOri;
     private float speed = 7.0f;
     public float rotationSpeed = 6.0f;
-    private bool alive = false;
+    public bool alive = false;
 
     // Components
     private Rigidbody rb;
@@ -94,14 +96,16 @@ public class BadiesAI : MonoBehaviour, Character {
     //the nearest position on the navmesh to the desired target point
     private Vector3 nextBestTarget;
 
-    enum MonsterState {AttackTemple, AttackHumans, AttackBuildings, Idle };
+    public enum MonsterState {AttackTemple, AttackHumans, AttackBuildings, Idle };
 
-    MonsterState currentState = MonsterState.AttackTemple;
+    public MonsterState currentState = MonsterState.AttackTemple;
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         createHealthBar();
         healthBarOri = healthBar.transform.rotation;
+        createInfoText();
+        infoTextOri = infoText.transform.rotation;
     }
 
     //can we make the spawn type an enum please xoxo
@@ -120,6 +124,7 @@ public class BadiesAI : MonoBehaviour, Character {
         alive = true;
         Debug.Log(string.Format("Spawn at: {0} with Type: {1}", transform.position, fighterType));
         currentState = MonsterState.AttackTemple;
+        gameObject.transform.GetChild(0).GetComponent<Renderer>().material.SetColor("_Color", new Color(1, 0, 0));
 
         //maybe we want to do this regularly in case the monsters behaviour changes
 
@@ -131,14 +136,17 @@ public class BadiesAI : MonoBehaviour, Character {
     void Update()
     {
         healthBar.transform.rotation = healthBarOri;
+        infoText.transform.rotation = infoTextOri;
         if (alive)
         {
 
             switch (currentState) {
                 case MonsterState.AttackTemple:
+                    
                     walkTowards(templeAttackPoint);
                     break;
                 case MonsterState.AttackHumans:
+                    gameObject.transform.GetChild(0).GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 1, 0));
                     if (resources.getPop() > 0)
                     {
 
@@ -146,9 +154,11 @@ public class BadiesAI : MonoBehaviour, Character {
                     else currentState = MonsterState.AttackBuildings;
                     break;
                 case MonsterState.AttackBuildings:
+                    gameObject.transform.GetChild(0).GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 0, 1));
 
                     break;
                 case MonsterState.Idle:
+                    gameObject.transform.GetChild(0).GetComponent<Renderer>().material.SetColor("_Color", new Color(1, 1, 1));
 
                     break;
             }
@@ -309,6 +319,19 @@ public class BadiesAI : MonoBehaviour, Character {
         healthBar.transform.position = gameObject.GetComponent<Collider>().transform.position;
         healthBar.transform.Translate(new Vector3(0, 0, dims.size.y * -1.0f));
         healthBar.transform.SetParent(gameObject.transform);
+    }
+
+    public void createInfoText()
+    {
+        Bounds dims = gameObject.GetComponent<Collider>().bounds;
+        Vector3 actualSize = dims.size;
+        infoText = GameObject.Instantiate(Resources.Load("Info_Text")) as GameObject;
+        infoText.transform.position = gameObject.transform.position;
+        infoText.transform.localScale *= 2;
+        infoText.transform.Translate(new Vector3(0, actualSize.y * 1.4f, 0));
+        infoText.transform.localRotation = gameObject.transform.localRotation;
+        infoText.transform.Rotate(new Vector3(0, -90, 0));
+        infoText.transform.SetParent(gameObject.transform);
     }
 
     private GameObject findClosestEnemy()

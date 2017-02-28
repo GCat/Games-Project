@@ -42,6 +42,8 @@ public class Agent : MonoBehaviour, Character, Grabbable
     public float totalHealth = 100.0f;
     GameObject healthBar;
     Quaternion healthBarOri;
+    GameObject infoText;
+    Quaternion infoTextOri;
     public float strength = 10.0f;
     public float speed = 2.0f;
     private float rotationspeed = 5.0f;
@@ -94,12 +96,15 @@ public class Agent : MonoBehaviour, Character, Grabbable
         agent = GetComponent<NavMeshAgent>();
         createHealthBar();
         healthBarOri = healthBar.transform.rotation;
+        createInfoText();
+        infoTextOri = infoText.transform.rotation;
     }
 
     // Update is called once per frame
     void Update()
     {
         healthBar.transform.rotation = healthBarOri;
+        infoText.transform.rotation = infoTextOri;
         if (active)
         {
             if (temple == null)
@@ -114,6 +119,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
                     if (resources.baddies > 0)
                     {
                         currentState = HumanState.Fighting;
+                        infoText.SetActive(true);
                     }
                     else
                         wander();
@@ -123,6 +129,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
                     if (resources.baddies <= 0)
                     {
                         currentState = HumanState.Wandering;
+                        infoText.SetActive(false);
                     }
                     else
                         attack();
@@ -301,6 +308,22 @@ public class Agent : MonoBehaviour, Character, Grabbable
         healthBar.transform.Translate(new Vector3(0, 0, dims.size.y * -1.0f));
         healthBar.transform.SetParent(gameObject.transform);
     }
+
+    public void createInfoText()
+    {
+        Bounds dims = gameObject.GetComponent<Collider>().bounds;
+        Vector3 actualSize = dims.size;
+        infoText = GameObject.Instantiate(Resources.Load("AttackSprite")) as GameObject;
+        infoText.transform.position = gameObject.transform.position;
+        infoText.transform.localScale *= 2;
+        infoText.transform.Translate(new Vector3(0, actualSize.y * 1.4f, 0));
+        infoText.transform.localRotation = gameObject.transform.localRotation;
+        infoText.transform.Rotate(new Vector3(0, -90, 0));
+        infoText.transform.SetParent(gameObject.transform);
+        infoText.SetActive(false);
+        //infoText.GetComponent<TextMesh>().text = currentState.ToString();
+    }
+
     public void grab()
     {
         Debug.Log("Human Grabbed");

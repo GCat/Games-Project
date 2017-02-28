@@ -11,6 +11,7 @@ public abstract class Building : MonoBehaviour, HealthManager{
     public ResourceCounter resourceCounter;
     public GameObject tablet;
     GameObject healthBar;
+    GameObject infoText;
     private Vector3 boxSize;
     public GameObject highlight;
     public Material matEmpty;
@@ -21,6 +22,7 @@ public abstract class Building : MonoBehaviour, HealthManager{
 
     public void decrementHealth(float damage)
     {
+        if (!healthBar.activeSelf) healthBar.SetActive(true);
         health -= damage;
         float scale = (health / totalHealth);
         healthBar.transform.localScale = new Vector3(1.0f, scale * 10f, 1.0f);
@@ -31,6 +33,7 @@ public abstract class Building : MonoBehaviour, HealthManager{
             die();
         }
     }
+
     private void Awake()
     {
         tablet = GameObject.FindGameObjectWithTag("Tablet");
@@ -40,6 +43,7 @@ public abstract class Building : MonoBehaviour, HealthManager{
         }
         else Debug.Log("Tablet not found");
         createHealthBar();
+        createInfoText();
         boxSize = GetComponent<BoxCollider>().bounds.size / 2;
         boxSize.y = 1f;
     }
@@ -73,16 +77,64 @@ public abstract class Building : MonoBehaviour, HealthManager{
         GetComponent<Rigidbody>().AddForce(vel, ForceMode.VelocityChange);
     }
 
+    public IEnumerator ResourceGainText(int value,string resource)
+    {
+        GameObject resourceText = GameObject.Instantiate(infoText,infoText.transform) as GameObject;
+        resourceText.transform.parent = gameObject.transform;
+        Vector2 randPos = UnityEngine.Random.insideUnitCircle*15.0f;
+        resourceText.transform.Translate(new Vector3(randPos.x,-2.0f,randPos.y));
+        Vector3 startLocation = resourceText.transform.position;
+        resourceText.GetComponent<TextMesh>().text = "+" + value.ToString() + " " + resource;
+        Color c;
+        resourceText.SetActive(true);
+        for (float f = 1f; f >= 0; f -= 0.01f)
+        {
+            c = resourceText.GetComponent<TextMesh>().color;
+            c.a = f;
+            resourceText.GetComponent<TextMesh>().color = c;
+            resourceText.transform.Translate(new Vector3(0, 0.1f, 0));
+            yield return null;
+        }
+        resourceText.SetActive(false);
+        GameObject.Destroy(resourceText);
+        /*
+        infoText.transform.position = startLocation;
+        c = infoText.GetComponent<TextMesh>().color;
+        c.a = 1.0f;
+        infoText.GetComponent<TextMesh>().color = c;
+        */
+    }
+
+    public GameObject getInfoText()
+    {
+        return infoText;
+    }
+
     public void createHealthBar()
     {
         Bounds dims = gameObject.GetComponent<Collider>().bounds;
         Vector3 actualSize = dims.size;
         healthBar = GameObject.Instantiate(Resources.Load("HealthBar")) as GameObject;
         healthBar.transform.position = gameObject.GetComponent<Collider>().transform.position;
-        healthBar.transform.Translate(new Vector3(0, dims.size.y*1.5f, 0));
+        healthBar.transform.Translate(new Vector3(0, actualSize.y*1.5f, 0));
         healthBar.transform.localRotation = gameObject.transform.localRotation;
         healthBar.transform.Rotate(new Vector3(90, 0, 0));
         healthBar.transform.SetParent(gameObject.transform);
+        healthBar.SetActive(false);
+    }
+
+    public void createInfoText()
+    {
+        Bounds dims = gameObject.GetComponent<Collider>().bounds;
+        Vector3 actualSize = dims.size;
+        infoText = GameObject.Instantiate(Resources.Load("Info_Text")) as GameObject;
+        infoText.transform.position = gameObject.transform.position;
+        infoText.transform.localScale *= 2;
+        infoText.transform.Translate(new Vector3(0, actualSize.y * 1.3f, 0));
+        infoText.transform.localRotation = gameObject.transform.localRotation;
+        infoText.transform.Rotate(new Vector3(0, -90, 0));
+        infoText.transform.SetParent(gameObject.transform);
+        infoText.SetActive(false);
     }
 
     public void highlightCheck()

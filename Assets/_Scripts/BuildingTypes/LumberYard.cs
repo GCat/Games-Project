@@ -14,7 +14,7 @@ public class LumberYard : ResourceBuilding
     {
         buildingName = "LUMBERYARD";
         resource_node = findNearestResourceNode();
-        InvokeRepeating("incrementResource", 10.0f, 2.0f); // after 10 sec call every 4
+        InvokeRepeating("incrementResource", 10.0f, 5.0f); // after 10 sec call every 4
     }
 
     public override void incrementResource()
@@ -25,7 +25,7 @@ public class LumberYard : ResourceBuilding
         }
         if (Vector3.Distance(transform.position, resource_node.transform.position) < resource_node.GetComponent<ResourceNode>().range)
         {
-            resourceCounter.addWood();
+            StartCoroutine(ResourceGainText(resourceCounter.addWood(),"Wood"));
         }
         else
         {

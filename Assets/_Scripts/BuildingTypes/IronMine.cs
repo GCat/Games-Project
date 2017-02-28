@@ -25,7 +25,7 @@ public class IronMine : ResourceBuilding
         }
         if (Vector3.Distance(transform.position, resource_node.transform.position) < resource_node.GetComponent<ResourceNode>().range)
         {
-            resourceCounter.addIron();
+            StartCoroutine(ResourceGainText(resourceCounter.addIron(),"Iron"));
         }
     }
 

@@ -45,6 +45,7 @@ public class House  : Building, Grabbable
         StartTime = Time.time;
         smokeEffect.Stop();
         createHealthBar();
+        createInfoText();
 
     }
 

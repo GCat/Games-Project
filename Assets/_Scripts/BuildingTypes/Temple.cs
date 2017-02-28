@@ -23,7 +23,6 @@ public class Temple : ResourceBuilding
         world.startGame(tablet);
         placed = true;
         spawnHumans();
-        InvokeRepeating("incrementResource", 10.0f, 5.0f); // after 10 sec call every 5
         canBeGrabbed = false;
     }
 
@@ -35,7 +34,7 @@ public class Temple : ResourceBuilding
     public override void incrementResource()
     {
         if (!spawnedGarrison) spawnHumans();
-        if (resourceCounter != null) resourceCounter.addFaith();
+        if (resourceCounter != null) StartCoroutine(ResourceGainText(resourceCounter.addFaith(),"Faith"));
     }
 
     void spawnHumans()

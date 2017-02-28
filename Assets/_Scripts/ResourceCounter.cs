@@ -79,9 +79,10 @@ public class ResourceCounter : MonoBehaviour, Grabbable
         addFaith(1);
     }
 
-    public void addFaith(int faith)
+    public int addFaith(int faith)
     {
         this.faith += faith;
+        return faith;
     }
 
     public int getFaith()
@@ -116,25 +117,31 @@ public class ResourceCounter : MonoBehaviour, Grabbable
     {
         return population;
     }
-    public void addFood()
+    public int addFood()
     {
         food++;
+        return 1;
     }
-    public void addWood()
+    public int addWood()
     {
         wood++;
+        return 1;
     }
-    public void addStone()
+    public int addStone()
     {
         stone++;
+        return 1;
     }
-    public void addIron()
+    public int addIron()
     {
         iron++;
+        return 1;
     }
-    public void addFaith()
+    public int addFaith()
     {
-        faith += (population * 1) + 1;
+        int toAdd = (population * 1) + 1;
+        faith += toAdd;
+        return toAdd;
     }
     public void addSwords()
     {

@@ -18,11 +18,11 @@ public class Farm : ResourceBuilding
     public override void create_building()
     {
         buildingName = "FARM";
-        InvokeRepeating("incrementResource", 10.0f, 10.0f); // after 10 sec call every 10
+        InvokeRepeating("incrementResource", 10.0f, 5.0f); // after 10 sec call every 10
     }
 
     public override void incrementResource()
     {
-        resourceCounter.addFood();
+        StartCoroutine(ResourceGainText(resourceCounter.addFood(),"Food"));
     }
 }
