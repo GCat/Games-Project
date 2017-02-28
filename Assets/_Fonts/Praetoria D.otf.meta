@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: d04a52775cee4524e9bbb0e0e45bdd6a
+timeCreated: 1487421716
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Praetoria
+  fontNames:
+  - Praetoria
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

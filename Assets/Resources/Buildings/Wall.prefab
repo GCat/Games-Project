@@ -20,9 +20,12 @@ GameObject:
   m_Component:
   - component: {fileID: 4000010466370290}
   - component: {fileID: 114000014003861900}
-  m_Layer: 0
+  - component: {fileID: 208372280704976308}
+  - component: {fileID: 65024212219374802}
+  - component: {fileID: 54785852075296320}
+  m_Layer: 10
   m_Name: Wall
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -35,7 +38,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4044118751429436}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: pCube4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -50,7 +53,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4408554243904846}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: transform3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -65,7 +68,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4052583910458292}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: transform5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -80,7 +83,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4778339524477332}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: transform4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -96,9 +99,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4672694764092034}
   - component: {fileID: 33007846555172194}
-  - component: {fileID: 65214386985945658}
   - component: {fileID: 23144794033778694}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -114,10 +116,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4049017430771932}
   - component: {fileID: 95284703843987776}
-  - component: {fileID: 65399684404521850}
-  - component: {fileID: 54147037938764316}
-  - component: {fileID: 114325339098682346}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: turret_b
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -132,7 +131,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4338272466504542}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: pCube7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -147,7 +146,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4375915828119296}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: transform2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -162,7 +161,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4821555322004526}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: pCube8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -177,7 +176,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4221350127496814}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: pCube7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -192,7 +191,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4000379293789946}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: pCube5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -207,7 +206,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4541235093397750}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: pCube3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -222,7 +221,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4837986256578924}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: transform1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -237,7 +236,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4214595582382070}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: transform2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -252,7 +251,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4872782767263800}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: transform6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -267,7 +266,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4785921206537220}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: pCube6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -283,10 +282,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4438326224536636}
   - component: {fileID: 95804235395629864}
-  - component: {fileID: 65423739794599644}
-  - component: {fileID: 54006719755751088}
-  - component: {fileID: 114795826824363036}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: turret_a
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -301,7 +297,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4825000557064194}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: transform8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -316,7 +312,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4598768890344460}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: transform6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -331,7 +327,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4366445612242720}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: transform3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -346,7 +342,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4688194741265218}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: transform4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -361,7 +357,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4281587284689166}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: transform1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -376,7 +372,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4860963824860410}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: transform7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -391,7 +387,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4286553152989936}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: transform5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -406,7 +402,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4156337747922120}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: pCube1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -421,7 +417,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4189162107633234}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: pCube5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -436,7 +432,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4420796859965678}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: transform9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -451,7 +447,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4099387134577278}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: pCube4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -466,7 +462,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4796142689009432}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: pCube2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -481,7 +477,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4281224425198334}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: pCube9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -496,7 +492,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4726163478795094}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: pCube6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -511,7 +507,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4743422904142644}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: transform9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -528,7 +524,7 @@ GameObject:
   - component: {fileID: 4429855048367224}
   - component: {fileID: 33060346189645734}
   - component: {fileID: 23634264051521332}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: pCube10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -543,7 +539,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4136639900007046}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: pCube1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -558,7 +554,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4516259421496136}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: pCube9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -573,7 +569,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4973987470938880}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: pCube2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -588,7 +584,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4703257737036810}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: pCube8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -603,7 +599,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4193920512948060}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: transform8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -620,7 +616,7 @@ GameObject:
   - component: {fileID: 4582908537674274}
   - component: {fileID: 33005642556358410}
   - component: {fileID: 23653337541882764}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: pCube10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -635,7 +631,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4948118569777024}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: pCube3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -650,7 +646,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4312953869122736}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: transform7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -664,7 +660,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010810685680}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 51.276745, y: 5.2, z: -44.574963}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4672694764092034}
@@ -972,7 +968,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1356206817766396}
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0.04, y: 0, z: 5}
+  m_LocalPosition: {x: 0.04, y: 0, z: 14.43}
   m_LocalScale: {x: 106.172935, y: 106.17287, z: 106.17293}
   m_Children:
   - {fileID: 4136639900007046}
@@ -1049,8 +1045,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1083709367599340}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.81, z: 0.01}
-  m_LocalScale: {x: 1.0243663, y: 5.313999, z: 7.856853}
+  m_LocalPosition: {x: 0, y: 2.81, z: 4.59}
+  m_LocalScale: {x: 1.0243663, y: 5.313999, z: 16.499123}
   m_Children: []
   m_Father: {fileID: 4000010466370290}
   m_RootOrder: 0
@@ -1358,12 +1354,12 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1795454094071242}
   m_Mesh: {fileID: 4300000, guid: b5eb31e1181767c4b99b14ff3a8e8d8d, type: 3}
---- !u!54 &54006719755751088
+--- !u!54 &54785852075296320
 Rigidbody:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1356206817766396}
+  m_GameObject: {fileID: 1000010810685680}
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
@@ -1373,57 +1369,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!54 &54147037938764316
-Rigidbody:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1088060195567358}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!65 &65214386985945658
+--- !u!65 &65024212219374802
 BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1083709367599340}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!65 &65399684404521850
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1088060195567358}
+  m_GameObject: {fileID: 1000010810685680}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.04464003, y: 0.075497255, z: 0.03826979}
-  m_Center: {x: -0.0015398578, y: 0.03696904, z: -0.0018269568}
---- !u!65 &65423739794599644
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1356206817766396}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.04464003, y: 0.075497255, z: 0.03826979}
-  m_Center: {x: -0.0015398578, y: 0.03696904, z: -0.0018269568}
+  m_Size: {x: 4.14, y: 7.5, z: 23.81}
+  m_Center: {x: 0, y: 4, z: 4.86}
 --- !u!95 &95284703843987776
 Animator:
   serializedVersion: 3
@@ -1469,31 +1426,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb20c619b9dd02e4e88c97540c7b7e02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  totalHealth: 100
   health: 100
-  turret_a: {fileID: 1356206817766396}
-  turret_b: {fileID: 1088060195567358}
-  wall_section: {fileID: 1083709367599340}
---- !u!114 &114325339098682346
-MonoBehaviour:
+  resourceCounter: {fileID: 0}
+  tablet: {fileID: 0}
+  highlight: {fileID: 0}
+  matEmpty: {fileID: 2100000, guid: 79ef561946cb1bb4884c0cca457d417b, type: 2}
+  matInval: {fileID: 2100000, guid: 4a47be7d74c42494682ec45ef083f2d6, type: 2}
+  canBeGrabbed: 1
+  health: 100
+  cost_per_meter: 10
+--- !u!208 &208372280704976308
+NavMeshObstacle:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1088060195567358}
+  m_GameObject: {fileID: 1000010810685680}
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ae5b31b8f5cb894b90d9f3cb13390a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  placeable: 1
---- !u!114 &114795826824363036
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1356206817766396}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ae5b31b8f5cb894b90d9f3cb13390a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  placeable: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 3, y: 4, z: 12}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 4.1, z: 4.5}
+  m_TimeToStationary: 0.5

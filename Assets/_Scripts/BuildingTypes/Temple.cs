@@ -10,6 +10,7 @@ public class Temple : ResourceBuilding
     public bool placed = false;
     private int fCost = 0;
 
+
     public override int faithCost()
     {
         return fCost;
@@ -20,11 +21,24 @@ public class Temple : ResourceBuilding
         health = 500.0f;
         totalHealth = 500.0f;
         buildingName = "TEMPLE";
-        world.startGame(tablet);
+        Debug.Log(world);
+        world.startGame();
+        tablet.SetActive(true);
         placed = true;
         spawnHumans();
         InvokeRepeating("incrementResource", 5.0f, 10.0f); // after 10 sec call every 5
         canBeGrabbed = false;
+        CancelInvoke("showStartOutline");
+        CancelInvoke("removeOutline");
+
+    }
+
+    private void Start()
+    {
+        showStartOutline();
+        InvokeRepeating("showStartOutline", 1, 1.0f);
+        InvokeRepeating("removeOutline", 1.5f, 1.0f);
+    
     }
 
     public bool isPlaced()
@@ -36,6 +50,15 @@ public class Temple : ResourceBuilding
     {
         if (!spawnedGarrison) spawnHumans();
         if (resourceCounter != null) StartCoroutine(ResourceGainText(resourceCounter.addFaith(),"Faith"));
+    }
+
+    private void showStartOutline()
+    {
+        foreach (Renderer renderer in child_materials)
+        {
+            renderer.material.shader = outlineShader;
+            renderer.material.SetColor("_OutlineColor", Color.yellow);
+        }   
     }
 
     void spawnHumans()
@@ -68,10 +91,11 @@ public class Temple : ResourceBuilding
     }
 
     //This stops the game
-    public new void die()
+    public override void die()
     {
         this.enabled = false;
         world.stopGame();
+        Destroy(gameObject);
     }
 
 

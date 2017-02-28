@@ -20,7 +20,8 @@ public class Portal : MonoBehaviour {
     public float coef = 1f;
 
     float[] distribution = new float[] { 0f, 0f, 0f, 0f };
-
+    public GameObject spawnPos;
+    Vector3 pos;
 
 
     // frequency of spawning
@@ -38,6 +39,7 @@ public class Portal : MonoBehaviour {
         temple = GameObject.FindGameObjectWithTag("Temple");
         pre = Resources.Load("Characters/Badie") as GameObject;
         resourceCounter = GameObject.FindGameObjectWithTag("Tablet").GetComponent<ResourceCounter>();
+        pos = spawnPos.transform.position;
     }
 	
 	void Update () {
@@ -79,7 +81,6 @@ public class Portal : MonoBehaviour {
 
     void spawn()
     {
-        Vector3 pos = transform.GetChild(0).transform.position;
         pos.y = 0.0f;
         if (resourceCounter.withinBounds(pos))
         {

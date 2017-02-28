@@ -2,7 +2,7 @@
 using System.Collections;
 using System;
 
-public abstract class Building : MonoBehaviour, HealthManager{
+public abstract class Building : MonoBehaviour, HealthManager{ // this should also be placeable hence the grab and release will be written once
     public abstract string getName();
     public abstract Vector3 getLocation();
     public abstract void create_building();
@@ -17,6 +17,8 @@ public abstract class Building : MonoBehaviour, HealthManager{
     public Material matEmpty;
     public Material matInval;
     public bool canBeGrabbed = true;
+    protected Renderer[] child_materials;
+    protected Shader outlineShader;
 
     public abstract bool canBuy();
 
@@ -31,6 +33,9 @@ public abstract class Building : MonoBehaviour, HealthManager{
         if (health <= 0)
         {
             die();
+        }else if(health <= (0.2 * totalHealth))
+        {
+            setWarning();
         }
     }
 
@@ -46,6 +51,8 @@ public abstract class Building : MonoBehaviour, HealthManager{
         createInfoText();
         boxSize = GetComponent<BoxCollider>().bounds.size / 2;
         boxSize.y = 1f;
+        child_materials = GetComponentsInChildren<Renderer>();
+        outlineShader = Shader.Find("Toon/Basic Outline");
     }
 
     //return true if within bounds & not above another building
@@ -68,6 +75,48 @@ public abstract class Building : MonoBehaviour, HealthManager{
         return false;
     }
 
+
+    private void setOutline()
+    {
+        foreach(Renderer renderer in child_materials)
+        {
+            renderer.material.shader = outlineShader;
+            renderer.material.SetColor("_OutlineColor", Color.green);
+        }
+    }
+
+    private void setWarning()
+    {
+        foreach (Renderer renderer in child_materials)
+        {
+            renderer.material.shader = outlineShader;
+            renderer.material.SetColor("_OutlineColor", Color.red);
+        }
+    }
+
+    public void removeOutline()
+    {
+        foreach (Renderer renderer in child_materials)
+        {
+            renderer.material.shader = Shader.Find("Diffuse");
+            //renderer.material.SetColor("_OutlineColor", Color.green);
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.tag == "Hand")
+        {
+            setOutline();
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "Hand")
+        {
+            removeOutline();
+        }
+    }
+
     public void release(Vector3 vel)
     {
         GetComponent<Rigidbody>().useGravity = true;
@@ -75,6 +124,7 @@ public abstract class Building : MonoBehaviour, HealthManager{
         GetComponent<Collider>().enabled = true;
         Debug.Log("Resource Building vel:" + vel);
         GetComponent<Rigidbody>().AddForce(vel, ForceMode.VelocityChange);
+        removeOutline();
     }
 
     public IEnumerator ResourceGainText(int value,string resource)
@@ -143,7 +193,16 @@ public abstract class Building : MonoBehaviour, HealthManager{
         {
             highlight.GetComponent<Renderer>().enabled = true;
             highlight.transform.position = new Vector3(Mathf.Floor(transform.position.x), 0.1f, Mathf.Floor(transform.position.z));
-            highlight.transform.rotation = Quaternion.LookRotation(Vector3.forward);
+            float yRot = gameObject.transform.eulerAngles.y;
+            if ((yRot > 45 && yRot < 135) || (yRot > -135 && yRot < -45))
+            {
+                highlight.transform.rotation = Quaternion.LookRotation(Vector3.right);
+
+            }
+            else
+            {
+                highlight.transform.rotation = Quaternion.LookRotation(Vector3.forward);
+            }
             int layerMask = 1 << 10;
             if (Physics.CheckBox(new Vector3(Mathf.Floor(transform.position.x), 0, Mathf.Floor(transform.position.z)), boxSize, Quaternion.LookRotation(Vector3.forward), layerMask))
                 highlight.GetComponent<Renderer>().material = matInval;
@@ -176,6 +235,8 @@ public abstract class Building : MonoBehaviour, HealthManager{
     }
 
     public abstract void die();
-    public abstract void activate();
+
+    //do we still need these functions
+    public abstract void activate();  
     public abstract void deactivate();
 }

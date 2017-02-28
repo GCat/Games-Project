@@ -8,16 +8,31 @@ public class LightningBolt : MonoBehaviour, Grabbable {
     public bool held = false;
     GameObject highlight = null;
     GameObject flash;
+    protected Renderer renderer;
+    protected Shader outlineShader;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
+        outlineShader = Shader.Find("Toon/Basic Outline");
+        renderer = GetComponent<Renderer>();
+    }
+
+    // Update is called once per frame
+    void Update () {
 		
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+    public void removeOutline()
+    {
+
+        renderer.material.shader = Shader.Find("Diffuse");
+    }
+
+    private void setOutline()
+    {
+        renderer.material.shader = outlineShader;
+        renderer.material.SetColor("_OutlineColor", Color.blue);
+    }
 
     public void grab()
     {
@@ -29,21 +44,21 @@ public class LightningBolt : MonoBehaviour, Grabbable {
         Material mat = Resources.Load("Materials/highlight.mat") as Material;
         highlight = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
         highlight.GetComponent<Renderer>().material = mat;
-        highlight.transform.localScale = new Vector3(GetComponent<CapsuleCollider>().bounds.size.x, 0.1f, GetComponent<CapsuleCollider>().bounds.size.z);
+        highlight.transform.localScale = new Vector3(GetComponent<Collider>().bounds.size.x, 0.1f, GetComponent<Collider>().bounds.size.z);
         highlight.transform.position = new Vector3(transform.position.x, 0.1f, transform.position.z);
         highlight.GetComponent<Collider>().enabled = false;
         highlight.GetComponent<Renderer>().enabled = false;
 
         GetComponent<Rigidbody>().useGravity = false;
         GetComponent<Rigidbody>().isKinematic = true;
-        GetComponent<CapsuleCollider>().enabled = false;
+        GetComponent<Collider>().enabled = false;
 
     }
     public void release(Vector3 vel)
     {
         GetComponent<Rigidbody>().useGravity = true;
         GetComponent<Rigidbody>().isKinematic = false;
-        GetComponent<CapsuleCollider>().enabled = true;
+        GetComponent<Collider>().enabled = true;
         GetComponent<Rigidbody>().velocity = vel;
     }
 
@@ -71,6 +86,21 @@ public class LightningBolt : MonoBehaviour, Grabbable {
                 }
                 i++;
             }
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Hand")
+        {
+            setOutline();
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "Hand")
+        {
+            removeOutline();
         }
     }
 
