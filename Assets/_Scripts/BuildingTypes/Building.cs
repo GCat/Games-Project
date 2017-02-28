@@ -106,7 +106,10 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
     {
         if(other.gameObject.tag == "Hand")
         {
-            setOutline();
+            if (resourceCounter.hasGameStarted() || gameObject.tag == "Temple")
+                setOutline();
+            else
+                setWarning();
         }
     }
     private void OnTriggerExit(Collider other)
@@ -186,7 +189,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
 
     public void highlightCheck()
     {
-        if (transform.position.y > 0.0 && Mathf.Abs(transform.position.x) <= 50 && Mathf.Abs(transform.position.z) <= 100)
+        if (resourceCounter.aboveBoard(transform.position))
         {
             highlight.GetComponent<Renderer>().enabled = true;
             highlight.transform.position = new Vector3(Mathf.Floor(transform.position.x), 0.1f, Mathf.Floor(transform.position.z));
@@ -200,7 +203,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
             {
                 highlight.transform.rotation = Quaternion.LookRotation(Vector3.forward);
             }
-            int layerMask = 1 << 10;
+            int layerMask = 1 << 10 | 1<<15;
             if (Physics.CheckBox(new Vector3(Mathf.Floor(transform.position.x), 0, Mathf.Floor(transform.position.z)), boxSize, Quaternion.LookRotation(Vector3.forward), layerMask))
                 highlight.GetComponent<Renderer>().material = matInval;
             else
