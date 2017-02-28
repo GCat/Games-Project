@@ -167,8 +167,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         healthBar = GameObject.Instantiate(Resources.Load("HealthBar")) as GameObject;
         healthBar.transform.position = gameObject.GetComponent<Collider>().transform.position;
         healthBar.transform.Translate(new Vector3(0, actualSize.y*1.5f, 0));
-        healthBar.transform.localRotation = gameObject.transform.localRotation;
-        healthBar.transform.Rotate(new Vector3(90, 0, 0));
+        healthBar.transform.eulerAngles = new Vector3(0.0f, 90.0f, 90.0f);
         healthBar.transform.SetParent(gameObject.transform);
         healthBar.SetActive(false);
     }
