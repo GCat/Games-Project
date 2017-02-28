@@ -62,16 +62,16 @@ public class ResourceCounter : MonoBehaviour, Grabbable
 
     public void setResourceText()
     {
-        string resourceText = "RESOURCES \n";
+        string resourceText = "Resources \n";
         resourceText += "Faith: " + faith.ToString() + "\n";
-        resourceText += "Food: " + food.ToString() + "\n";
-        resourceText += "Wood: " + wood.ToString() + "\n";
-        resourceText += "Stone: " + stone.ToString() + "\n";
-        resourceText += "Iron: " + iron.ToString() + "\n";
+        //resourceText += "Food: " + food.ToString() + "\n";
+        //resourceText += "Wood: " + wood.ToString() + "\n";
+        //resourceText += "Stone: " + stone.ToString() + "\n";
+        //resourceText += "Iron: " + iron.ToString() + "\n";
         resourceText += "Monsters: " + baddies.ToString() + "\n";
         resourceText += "Population: " + population.ToString() + "\n";
-        resourceText += "Sword Level: " + swords.ToString() + "\n";
-        resourceText += "Armour Level: " + armour.ToString() + "\n";
+        //resourceText += "Sword Level: " + swords.ToString() + "\n";
+        //resourceText += "Armour Level: " + armour.ToString() + "\n";
         text.text = resourceText;
     }
 
@@ -142,7 +142,7 @@ public class ResourceCounter : MonoBehaviour, Grabbable
     }
     public int addFaith()
     {
-        int toAdd = (population * 1) + 1;
+        int toAdd = population;
         faith += toAdd;
         return toAdd;
     }

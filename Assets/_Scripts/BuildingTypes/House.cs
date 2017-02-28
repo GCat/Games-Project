@@ -67,7 +67,6 @@ public class House  : Building, Grabbable
     private void add_human()
     {
         humans += 1;
-        resourceCounter.addPop();
     }
 
     private void update_happiness()
