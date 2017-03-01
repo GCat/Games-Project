@@ -26,6 +26,7 @@ public class WatchTower : Building, Grabbable
     int attackMask = 1 << 11;
     GameObject pre;
 
+    private GameObject infoText;
 
     float getHealth()
     {
@@ -41,6 +42,22 @@ public class WatchTower : Building, Grabbable
     void Start () {
 
         pre = Resources.Load("Arrow_Regular") as GameObject;
+        createInfoText();
+    }
+
+    new public void createInfoText()
+    {
+        Bounds dims = gameObject.GetComponent<Collider>().bounds;
+        Vector3 actualSize = dims.size;
+        infoText = GameObject.Instantiate(Resources.Load("FaithCost")) as GameObject;
+        infoText.transform.position = gameObject.transform.position;
+        infoText.transform.localScale *= 2;
+        infoText.transform.Translate(new Vector3(0, actualSize.y * 1.3f, 0));
+        infoText.transform.localRotation = gameObject.transform.localRotation;
+        infoText.transform.Rotate(new Vector3(0, -90, 0));
+        infoText.transform.SetParent(gameObject.transform);
+        infoText.GetComponent<TextMesh>().text = "  " + fCost.ToString();
+        infoText.SetActive(true);
     }
 
     void OnDrawGizmosSelected()
@@ -49,6 +66,7 @@ public class WatchTower : Building, Grabbable
        //Gizmos.DrawSphere(transform.position, radius);
     }
 
+    
     void Update()
     {
         if (held)
@@ -128,6 +146,8 @@ public class WatchTower : Building, Grabbable
     {
         held = true;
         badplacement = false;
+        infoText.SetActive(false);
+
         // Deactivate  collider and gravity
         if (highlight != null)
         {
@@ -181,6 +201,7 @@ public class WatchTower : Building, Grabbable
         buildingName = "TOWER";
         timer1 = 0f;
         StartTime1 = Time.time;
+
     }
 
     public override void deactivate()
