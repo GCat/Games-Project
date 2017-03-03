@@ -11,6 +11,7 @@ public abstract class ResourceBuilding : Building, Grabbable
     public bool held = false;
     public string required_resource_tag = "None";
     public  GameObject resource_node;
+    GameObject buildingCostText;
 
     private bool badplacement = false;
     private float placementTime;
@@ -39,6 +40,8 @@ public abstract class ResourceBuilding : Building, Grabbable
         boxSize = GetComponent<BoxCollider>().bounds.size / 2;
         boxSize.y = 0.01f;
         badplacement = false;
+        buildingCostText = createInfoText();
+        setInfoText(buildingCostText, faithCost());
     }
 
 
@@ -87,6 +90,11 @@ public abstract class ResourceBuilding : Building, Grabbable
     {
         held = true;
         badplacement = false;
+        if (this.tag != "Temple")
+        {
+            Destroy(buildingCostText);
+        }
+        
         // Deactivate  collider and gravity
         if (highlight != null)
         {

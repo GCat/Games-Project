@@ -9,9 +9,12 @@ public class Wall : Building, Grabbable {
     public int cost_per_meter = 10;
     public bool held = false;
     private bool badplacement = false;
+    private GameObject infoText;
     void Start () {
 		health = 400;
-	}
+        infoText = createInfoText();
+        setInfoText(infoText, cost_per_meter," per meter");
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -88,6 +91,7 @@ public class Wall : Building, Grabbable {
     public void grab()
     {
         // Deactivate  collider and gravity
+        Destroy(infoText);
         if (highlight != null)
         {
             DestroyImmediate(highlight);
