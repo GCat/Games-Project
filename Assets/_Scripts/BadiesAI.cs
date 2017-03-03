@@ -41,7 +41,7 @@ public class BadiesAI : MonoBehaviour, Character
 
     // Badie characteristic
 
-    public float strength = 20.0f;
+    public float strength = 1.0f;
     public float health = 100.0f;
     public float totalHealth = 100.0f;
     GameObject healthBar;
