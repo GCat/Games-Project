@@ -42,22 +42,8 @@ public class WatchTower : Building, Grabbable
     void Start () {
 
         pre = Resources.Load("Arrow_Regular") as GameObject;
-        createInfoText();
-    }
-
-    new public void createInfoText()
-    {
-        Bounds dims = gameObject.GetComponent<Collider>().bounds;
-        Vector3 actualSize = dims.size;
-        infoText = GameObject.Instantiate(Resources.Load("FaithCost")) as GameObject;
-        infoText.transform.position = gameObject.transform.position;
-        infoText.transform.localScale *= 2;
-        infoText.transform.Translate(new Vector3(0, actualSize.y * 1.3f, 0));
-        infoText.transform.localRotation = gameObject.transform.localRotation;
-        infoText.transform.Rotate(new Vector3(0, -90, 0));
-        infoText.transform.SetParent(gameObject.transform);
-        infoText.GetComponent<TextMesh>().text = "  " + fCost.ToString();
-        infoText.SetActive(true);
+        infoText = createInfoText();
+        setInfoText(infoText, fCost);
     }
 
     void OnDrawGizmosSelected()
@@ -146,7 +132,7 @@ public class WatchTower : Building, Grabbable
     {
         held = true;
         badplacement = false;
-        infoText.SetActive(false);
+        Destroy(infoText);
 
         // Deactivate  collider and gravity
         if (highlight != null)

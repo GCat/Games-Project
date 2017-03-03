@@ -11,12 +11,14 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
     public ResourceCounter resourceCounter;
     public GameObject tablet;
     GameObject healthBar;
-    GameObject infoText;
+    GameObject resourceGainText;
+
     private Vector3 boxSize;
     public GameObject highlight;
     public bool canBeGrabbed = true;
     protected Renderer[] child_materials;
     protected Shader outlineShader;
+
 
     public abstract bool canBuy();
 
@@ -47,7 +49,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         }
         else Debug.Log("Tablet not found");
         createHealthBar();
-        createInfoText();
+        resourceGainText = createInfoText();
         boxSize = GetComponent<BoxCollider>().bounds.size / 2;
         boxSize.y = 1f;
         child_materials = GetComponentsInChildren<Renderer>();
@@ -133,7 +135,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
     public IEnumerator ResourceGainText(int value,string resource)
     {
         Vector3 cameraPos = GameObject.FindWithTag("MainCamera").transform.position;
-        GameObject resourceText = GameObject.Instantiate(infoText,infoText.transform) as GameObject;
+        GameObject resourceText = GameObject.Instantiate(resourceGainText,resourceGainText.transform) as GameObject;
         resourceText.transform.parent = gameObject.transform;
         Vector2 randPos = UnityEngine.Random.insideUnitCircle*5.0f;
         resourceText.transform.Translate(new Vector3(randPos.x,-2.0f,randPos.y*2.0f));
@@ -155,9 +157,19 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         GameObject.Destroy(resourceText);
     }
 
-    public GameObject getInfoText()
+    public void setInfoText(GameObject infoText, int faithCost)
     {
-        return infoText;
+        infoText.GetComponent<TextMesh>().alignment = TextAlignment.Center;
+        infoText.GetComponent<TextMesh>().text = "Cost:\n" + faithCost.ToString() + " Faith";
+        infoText.SetActive(true);
+    }
+
+    public void setInfoText(GameObject infoText, int faithCost, string extra)
+    {
+        infoText.transform.Translate(0, 3.0f, 0);
+        infoText.GetComponent<TextMesh>().alignment = TextAlignment.Center;
+        infoText.GetComponent<TextMesh>().text = "Cost:\n" + faithCost.ToString() + " Faith" + extra;
+        infoText.SetActive(true);
     }
 
     public void createHealthBar()
@@ -172,18 +184,19 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         healthBar.SetActive(false);
     }
 
-    public void createInfoText()
+    public GameObject createInfoText()
     {
         Bounds dims = gameObject.GetComponent<Collider>().bounds;
         Vector3 actualSize = dims.size;
-        infoText = GameObject.Instantiate(Resources.Load("Info_Text")) as GameObject;
-        infoText.transform.position = gameObject.transform.position;
-        infoText.transform.localScale *= 2;
-        infoText.transform.Translate(new Vector3(0, actualSize.y * 1.3f, 0));
-        infoText.transform.localRotation = gameObject.transform.localRotation;
-        infoText.transform.Rotate(new Vector3(0, -90, 0));
-        infoText.transform.SetParent(gameObject.transform);
-        infoText.SetActive(false);
+        GameObject newText = GameObject.Instantiate(Resources.Load("Info_Text")) as GameObject;
+        newText.transform.position = gameObject.transform.position;
+        newText.transform.localScale *= 2;
+        newText.transform.Translate(new Vector3(0, actualSize.y * 1.3f, 0));
+        newText.transform.localRotation = gameObject.transform.localRotation;
+        newText.transform.Rotate(new Vector3(0, -90, 0));
+        newText.transform.SetParent(gameObject.transform);
+        newText.SetActive(false);
+        return newText;
     }
 
     public void highlightCheck()

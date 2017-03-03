@@ -38,8 +38,7 @@ public class Temple : ResourceBuilding
     {
         showStartOutline();
         InvokeRepeating("showStartOutline", 1, 1.0f);
-        InvokeRepeating("removeOutline", 1.5f, 1.0f);
-    
+        InvokeRepeating("removeOutline", 1.5f, 1.0f);   
     }
 
     public bool isPlaced()

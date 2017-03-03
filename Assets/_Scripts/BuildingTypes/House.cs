@@ -18,7 +18,7 @@ public class House  : Building, Grabbable
     public Vector3 location;  //position of house 
     private bool full_house;   // flag of some sort
     private int foodCost = 10;
-    private int faithCost = 1;
+    private int faithCost = 10;
 
 
     public bool active = false;
@@ -46,22 +46,9 @@ public class House  : Building, Grabbable
         StartTime = Time.time;
         smokeEffect.Stop();
         createHealthBar();
-        createInfoText();
-    }
-
-    new public void createInfoText()
-    {
-        Bounds dims = gameObject.GetComponent<Collider>().bounds;
-        Vector3 actualSize = dims.size;
-        infoText = GameObject.Instantiate(Resources.Load("FaithCost")) as GameObject;
-        infoText.transform.position = gameObject.transform.position;
-        infoText.transform.localScale *= 2;
-        infoText.transform.Translate(new Vector3(0, actualSize.y * 1.3f, 0));
-        infoText.transform.localRotation = gameObject.transform.localRotation;
-        infoText.transform.Rotate(new Vector3(0, -90, 0));
-        infoText.transform.SetParent(gameObject.transform);
-        infoText.GetComponent<TextMesh>().text = "  " + faithCost.ToString();
-        infoText.SetActive(true);
+        infoText = createInfoText();
+        setInfoText(infoText,faithCost);
+        
     }
 
     public override string getName()
@@ -201,7 +188,7 @@ public class House  : Building, Grabbable
     {
         badplacement = false;
         held = true;
-        infoText.SetActive(false);
+        Destroy(infoText);
 
         // Deactivate  collider and gravity
         if (highlight != null)
