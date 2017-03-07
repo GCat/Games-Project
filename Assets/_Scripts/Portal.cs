@@ -36,7 +36,7 @@ public class Portal : MonoBehaviour {
      * len(waves) = nWaves * baddieTypes
      * Current array contains number of rushers 
      */
-    int[] waves = new int[] {4, 2, 5, 3, 7, 8, 4, 10, 12, 15, 20, 30, 50, 42, 36};
+    int[] waves = new int[] {1, 1, 1, 3, 7, 8, 4, 10, 12, 15, 20, 30, 50, 42, 36};
     void Start () {
         temple = GameObject.FindGameObjectWithTag("Temple");
         pre = Resources.Load("Characters/Badie") as GameObject;

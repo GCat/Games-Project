@@ -8,9 +8,8 @@ public class ResourceNode : MonoBehaviour {
     public float range;
 	// Use this for initialization
 	void Start () {
-        Material mat = Resources.Load("Materials/highlight2") as Material;
         highlight = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        highlight.GetComponent<Renderer>().material = mat;
+        highlight.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
         highlight.transform.localScale = new Vector3(range, 0.1f, range);
         highlight.transform.position = new Vector3(gameObject.transform.position.x, 0.1f, gameObject.transform.position.z);
         highlight.transform.rotation = Quaternion.LookRotation(Vector3.forward);

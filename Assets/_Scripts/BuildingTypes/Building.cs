@@ -103,7 +103,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
             //renderer.material.SetColor("_OutlineColor", Color.green);
         }
     }
-    private void OnTriggerEnter(Collider other)
+    public void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.tag == "Hand")
         {
@@ -113,7 +113,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
                 setWarning();
         }
     }
-    private void OnTriggerExit(Collider other)
+    public void OnTriggerExit(Collider other)
     {
         if (other.gameObject.tag == "Hand")
         {
