@@ -12,8 +12,8 @@ public class Wall : Building, Grabbable {
     private GameObject infoText;
     void Start () {
 		health = 400;
-        infoText = createInfoText();
-        setInfoText(infoText, cost_per_meter," per meter");
+        infoText = createInfoText("FaithCost");
+        setInfoText(infoText, cost_per_meter);
     }
 	
 	// Update is called once per frame

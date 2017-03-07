@@ -40,7 +40,7 @@ public abstract class ResourceBuilding : Building, Grabbable
         boxSize = GetComponent<BoxCollider>().bounds.size / 2;
         boxSize.y = 0.01f;
         badplacement = false;
-        buildingCostText = createInfoText();
+        buildingCostText = createInfoText("FaithCost");
         setInfoText(buildingCostText, faithCost());
     }
 

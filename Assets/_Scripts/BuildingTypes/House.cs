@@ -46,7 +46,7 @@ public class House  : Building, Grabbable
         StartTime = Time.time;
         smokeEffect.Stop();
         createHealthBar();
-        infoText = createInfoText();
+        infoText = createInfoText("FaithCost");
         setInfoText(infoText,faithCost);
         
     }
