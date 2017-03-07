@@ -16,7 +16,8 @@ public class BuildingSpawner : MonoBehaviour {
 
         if(Physics.OverlapSphere(transform.position, 8.0f, buildingMask).Length == 0)
         {
-            Instantiate(buildingToSpawn, transform.position, Quaternion.identity);
+            GameObject building = Instantiate(buildingToSpawn, transform.position, Quaternion.identity);
+            building.transform.parent = transform;
         }
 
     }

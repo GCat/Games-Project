@@ -245,6 +245,10 @@ public class Hand : MonoBehaviour {
             {
                 return;
             }
+            if (building != null)
+            {
+                building.transform.parent = null;
+            }
             if (!resources.hasGameStarted() && closest.tag != "Temple") return;
      
         }
@@ -292,7 +296,7 @@ public class Hand : MonoBehaviour {
 
             if(building != null)
             {
-                if(building.canPlace() && building.canBuy())
+                if(building.canPlace() && (building.bought || building.canBuy()))
                 {
                     snapToGrid(heldObject);
                     building.activate();
