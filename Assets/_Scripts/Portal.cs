@@ -20,7 +20,7 @@ public class Portal : MonoBehaviour {
     ResourceCounter resourceCounter;
 
     int nWaves = 5;
-    int baddieTypes = 2;
+    int baddieTypes = 3;
     int currentType = 0;
     float betweenWaveDelay = 40f;
     float wavetimer;
@@ -36,7 +36,7 @@ public class Portal : MonoBehaviour {
      * len(waves) = nWaves * baddieTypes
      * Current array contains number of rushers 
      */
-    int[] waves = new int[] {2, 5, 7, 8, 10, 12, 15, 20, 30, 50};
+    int[] waves = new int[] {4, 2, 5, 3, 7, 8, 4, 10, 12, 15, 20, 30, 50, 42, 36};
     void Start () {
         temple = GameObject.FindGameObjectWithTag("Temple");
         pre = Resources.Load("Characters/Badie") as GameObject;

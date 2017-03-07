@@ -3526,6 +3526,18 @@ Prefab:
       propertyPath: m_Name
       value: Resource_tablet
       objectReference: {fileID: 0}
+    - target: {fileID: 1525123270760694, guid: 6fd29a90c461afd40a231c41968b85bb, type: 2}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1794478163605666, guid: 6fd29a90c461afd40a231c41968b85bb, type: 2}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013233709802, guid: 6fd29a90c461afd40a231c41968b85bb, type: 2}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6fd29a90c461afd40a231c41968b85bb, type: 2}
   m_IsPrefabParent: 0

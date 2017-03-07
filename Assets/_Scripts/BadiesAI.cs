@@ -127,6 +127,11 @@ public class BadiesAI : MonoBehaviour, Character
                 originalState = currentState;
                 transform.GetChild(0).GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 1, 0));
                 break;
+            case 2:
+                currentState = MonsterState.AttackBuildings;
+                originalState = currentState;
+                transform.GetChild(0).GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 0, 1));
+                break;
         }
 
         //maybe we want to do this regularly in case the monsters behaviour changes
@@ -290,7 +295,7 @@ public class BadiesAI : MonoBehaviour, Character
         else
         {
             changeEnemy();
-            closestEnemy = findClosestEnemy("Tower");
+            closestEnemy = findClosestBuilding();
             if (closestEnemy == null) currentState = MonsterState.AttackTemple;
         }
 
@@ -463,6 +468,37 @@ public class BadiesAI : MonoBehaviour, Character
         {
             foreach (GameObject badie in humans)
             {
+                if (Mathf.Abs(badie.transform.position.y) > 5.0f) continue;
+                Vector3 diff = badie.transform.position - position;
+                float current_distance = diff.sqrMagnitude;
+                if (current_distance < distance)
+                {
+                    distance = current_distance;
+                    closest = badie;
+                }
+            }
+        }
+        return closest;
+    }
+
+    private GameObject findClosestBuilding()
+    {
+        List<GameObject> buildings = new List<GameObject>();
+        string []tags = new string[]{"Tower", "House", "Wall", "Farm"};
+        GameObject closest = null;
+        changeEnemy();
+        foreach (string tag in tags)
+        {
+            buildings.AddRange((GameObject.FindGameObjectsWithTag(tag)));
+        }
+        
+        float distance = Mathf.Infinity;
+        Vector3 position = transform.position;
+        if (buildings.Count > 0)
+        {
+            foreach (GameObject badie in buildings)
+            {
+                if (Mathf.Abs(badie.transform.position.y) > 5.0f) continue;
                 Vector3 diff = badie.transform.position - position;
                 float current_distance = diff.sqrMagnitude;
                 if (current_distance < distance)

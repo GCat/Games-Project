@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 65000010071824914}
   - component: {fileID: 23000010803112288}
   - component: {fileID: 114000013597673588}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Resource_tablet
   m_TagString: Tablet
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   - component: {fileID: 224578745346826618}
   - component: {fileID: 222312056949748182}
   - component: {fileID: 114114284980272038}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -59,7 +59,7 @@ GameObject:
   - component: {fileID: 114642861688425544}
   - component: {fileID: 114871133630846316}
   - component: {fileID: 222164558536656922}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
