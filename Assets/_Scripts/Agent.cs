@@ -49,6 +49,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
     private float rotationspeed = 5.0f;
     public float gravity = 9.81F;
     public float weapon_strength;
+    public bool debug = false;
     private GameObject temple;
     private bool alive = true;
 
@@ -225,7 +226,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
 
     private void showPath()
     {
-        if (agent.hasPath)
+        if (agent.hasPath && debug)
         {
             lineRenderer.SetPositions(agent.path.corners);
         }

@@ -18,8 +18,6 @@ public class Temple : ResourceBuilding
 
     public override void create_building()
     {
-        health = 500.0f;
-        totalHealth = 500.0f;
         buildingName = "TEMPLE";
         Debug.Log(world);
         world.startGame();

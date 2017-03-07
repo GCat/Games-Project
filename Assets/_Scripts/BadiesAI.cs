@@ -40,7 +40,7 @@ public class BadiesAI : MonoBehaviour, Character
      */
 
     // Badie characteristic
-
+    public bool debug = false;
     public float strength = 1.0f;
     public float health = 100.0f;
     public float totalHealth = 100.0f;
@@ -247,7 +247,7 @@ public class BadiesAI : MonoBehaviour, Character
     }
     private void showPath()
     {
-        if (agent.hasPath)
+        if (agent.hasPath && debug)
         {
             lineRenderer.SetPositions(agent.path.corners);
         }
