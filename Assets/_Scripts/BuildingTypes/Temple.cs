@@ -18,8 +18,6 @@ public class Temple : ResourceBuilding
 
     public override void create_building()
     {
-        health = 500.0f;
-        totalHealth = 500.0f;
         buildingName = "TEMPLE";
         Debug.Log(world);
         world.startGame();
@@ -76,7 +74,6 @@ public class Temple : ResourceBuilding
                 if (NavMesh.SamplePosition(humanLocation, out hit, 50.0f, NavMesh.AllAreas))
                 {
                     Instantiate(Resources.Load("Characters/Human"), hit.position, Quaternion.identity);
-                    resourceCounter.addPop();
                 }
                 else
                     Debug.Log("Could not spawn human");
