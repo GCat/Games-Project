@@ -27,6 +27,7 @@ public class WatchTower : Building, Grabbable
 
     int attackMask = 1 << 11;
     GameObject pre;
+    bool grabbedOnce = false;
 
     private GameObject infoText;
 
@@ -139,6 +140,8 @@ public class WatchTower : Building, Grabbable
 
     public void grab()
     {
+        showRange();
+        grabbedOnce = true;
         held = true;
         badplacement = false;
         Destroy(infoText);
@@ -221,19 +224,9 @@ public class WatchTower : Building, Grabbable
     new void OnTriggerEnter(Collider other)
     {
         base.OnTriggerEnter(other);
-        if (other.gameObject.tag == "Hand")
+        if (other.gameObject.tag == "Hand" && grabbedOnce)
         {
             showRange();
-
-        }
-    }
-
-    new void OnTriggerExit(Collider other)
-    {
-        base.OnTriggerExit(other);
-        if (other.gameObject.tag == "Hand")
-        {
-            hideRange();
         }
     }
 
