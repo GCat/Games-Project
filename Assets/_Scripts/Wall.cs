@@ -12,8 +12,8 @@ public class Wall : Building, Grabbable {
     private GameObject infoText;
     void Start () {
 		health = 400;
-        infoText = createInfoText();
-        setInfoText(infoText, cost_per_meter," per meter");
+        infoText = createInfoText("FaithCost");
+        setInfoText(infoText, cost_per_meter);
     }
 	
 	// Update is called once per frame
@@ -43,8 +43,9 @@ public class Wall : Building, Grabbable {
 
     public override bool canBuy()
     {
-        if (resourceCounter.faith >= faithCost())
+        if (!bought && (resourceCounter.faith >= faithCost()))
         {
+            bought = true;
             resourceCounter.removeFaith(faithCost());
             return true;
         }

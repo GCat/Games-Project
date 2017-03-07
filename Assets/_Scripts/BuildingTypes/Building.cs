@@ -12,6 +12,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
     public GameObject tablet;
     GameObject healthBar;
     GameObject resourceGainText;
+    public bool bought = false;
 
     private Vector3 boxSize;
     public GameObject highlight;
@@ -49,7 +50,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         }
         else Debug.Log("Tablet not found");
         createHealthBar();
-        resourceGainText = createInfoText();
+        resourceGainText = createInfoText("Info_Text");
         boxSize = GetComponent<BoxCollider>().bounds.size / 2;
         boxSize.y = 1f;
         child_materials = GetComponentsInChildren<Renderer>();
@@ -159,16 +160,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
 
     public void setInfoText(GameObject infoText, int faithCost)
     {
-        infoText.GetComponent<TextMesh>().alignment = TextAlignment.Center;
-        infoText.GetComponent<TextMesh>().text = "Cost:\n" + faithCost.ToString() + " Faith";
-        infoText.SetActive(true);
-    }
-
-    public void setInfoText(GameObject infoText, int faithCost, string extra)
-    {
-        infoText.transform.Translate(0, 3.0f, 0);
-        infoText.GetComponent<TextMesh>().alignment = TextAlignment.Center;
-        infoText.GetComponent<TextMesh>().text = "Cost:\n" + faithCost.ToString() + " Faith" + extra;
+        infoText.GetComponent<TextMesh>().text = "  " + faithCost.ToString();
         infoText.SetActive(true);
     }
 
@@ -184,11 +176,11 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         healthBar.SetActive(false);
     }
 
-    public GameObject createInfoText()
+    public GameObject createInfoText(string prefab)
     {
         Bounds dims = gameObject.GetComponent<Collider>().bounds;
         Vector3 actualSize = dims.size;
-        GameObject newText = GameObject.Instantiate(Resources.Load("Info_Text")) as GameObject;
+        GameObject newText = GameObject.Instantiate(Resources.Load(prefab)) as GameObject;
         newText.transform.position = gameObject.transform.position;
         newText.transform.localScale *= 2;
         newText.transform.Translate(new Vector3(0, actualSize.y * 1.3f, 0));

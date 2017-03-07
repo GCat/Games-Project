@@ -64,7 +64,7 @@ public class ResourceCounter : MonoBehaviour, Grabbable
     {
         string resourceText = "Resources \n";
         resourceText += "Faith: " + faith.ToString() + "\n";
-        //resourceText += "Food: " + food.ToString() + "\n";
+        resourceText += "Food: " + food.ToString() + "\n";
         //resourceText += "Wood: " + wood.ToString() + "\n";
         //resourceText += "Stone: " + stone.ToString() + "\n";
         //resourceText += "Iron: " + iron.ToString() + "\n";
