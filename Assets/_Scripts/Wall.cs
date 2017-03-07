@@ -43,8 +43,9 @@ public class Wall : Building, Grabbable {
 
     public override bool canBuy()
     {
-        if (resourceCounter.faith >= faithCost())
+        if (!bought && (resourceCounter.faith >= faithCost()))
         {
+            bought = true;
             resourceCounter.removeFaith(faithCost());
             return true;
         }

@@ -76,7 +76,6 @@ public class Temple : ResourceBuilding
                 if (NavMesh.SamplePosition(humanLocation, out hit, 50.0f, NavMesh.AllAreas))
                 {
                     Instantiate(Resources.Load("Characters/Human"), hit.position, Quaternion.identity);
-                    resourceCounter.addPop();
                 }
                 else
                     Debug.Log("Could not spawn human");

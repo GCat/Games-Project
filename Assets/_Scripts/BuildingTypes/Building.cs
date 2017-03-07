@@ -12,6 +12,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
     public GameObject tablet;
     GameObject healthBar;
     GameObject resourceGainText;
+    public bool bought = false;
 
     private Vector3 boxSize;
     public GameObject highlight;

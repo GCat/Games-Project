@@ -290,9 +290,10 @@ public class House  : Building, Grabbable
 
     public override bool canBuy()
     {
-        if (resourceCounter.faith >= faithCost)
+        if (!bought && (resourceCounter.faith >= faithCost))
         {
             resourceCounter.removeFaith(faithCost);
+            bought = true;
             return true;
         }
         return false;

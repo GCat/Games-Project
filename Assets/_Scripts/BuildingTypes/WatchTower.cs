@@ -164,9 +164,10 @@ public class WatchTower : Building, Grabbable
 
     public override bool canBuy()
     {
-        if (resourceCounter.faith >= fCost)
+        if (!bought && (resourceCounter.faith >= fCost))
         {
             resourceCounter.removeFaith(fCost);
+            bought = true;
             return true;
         }
         return false;
