@@ -19,8 +19,6 @@ public class House : Building, Grabbable
     private bool badplacement = false;
     private float placementTime = 0;
     private Vector3 boxSize;
-
-
     Material matEmpty;
     Material matInval;
 
@@ -42,6 +40,7 @@ public class House : Building, Grabbable
     {
         return health;
     }
+
 
     void Update()
     {
@@ -84,7 +83,7 @@ public class House : Building, Grabbable
                 Instantiate(Resources.Load("Characters/Human"), hit.position, Quaternion.identity);
                 resourceCounter.removeFood(foodCost);
                 inhabitants++;
-                Debug.Log("Spawned a chap");
+                StartCoroutine(ResourceGainText(1, "Chap"));
             }
             else
                 Debug.Log("Could not spawn human");
@@ -105,6 +104,7 @@ public class House : Building, Grabbable
         if (highlight != null) Destroy(highlight);
         highlight = null;
         held = false;
+        //ResourceGainText(1, "Chap");
     }
     public override void deactivate()
     {
