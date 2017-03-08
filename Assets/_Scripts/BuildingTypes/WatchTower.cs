@@ -9,6 +9,8 @@ public class WatchTower : Building, Grabbable
     public AudioClip build;
     public AudioClip destroy;
 
+    GameObject rangeHighlight;
+
     public string buildingName;
     public GameObject target;
     private float radius = 25.0f;
@@ -25,6 +27,7 @@ public class WatchTower : Building, Grabbable
 
     int attackMask = 1 << 11;
     GameObject pre;
+    bool grabbedOnce = false;
 
     private GameObject infoText;
 
@@ -32,29 +35,36 @@ public class WatchTower : Building, Grabbable
     {
         return health;
     }
- 
+
     //never goes in here 
     public override void create_building()
     {
 
     }
 
-    void Start () {
+    void Start()
+    {
 
         pre = Resources.Load("Arrow_Regular") as GameObject;
         infoText = createInfoText("FaithCost");
         setInfoText(infoText, fCost);
+
+        rangeHighlight = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        rangeHighlight.GetComponent<Renderer>().material.SetColor("_Color", new Color(0.0f,0.6f,0.0f,0.2f));
+        rangeHighlight.transform.localScale = new Vector3(radius, 0.1f, radius);
+        rangeHighlight.transform.position = new Vector3(gameObject.transform.position.x, 0.1f, gameObject.transform.position.z);
+        rangeHighlight.transform.rotation = Quaternion.LookRotation(Vector3.forward);
+
+        rangeHighlight.GetComponent<Collider>().enabled = false;
+        rangeHighlight.GetComponent<Renderer>().enabled = true;
+        rangeHighlight.SetActive(false);
     }
 
-    void OnDrawGizmosSelected()
-    {
-       //Gizmos.color = Color.red;
-       //Gizmos.DrawSphere(transform.position, radius);
-    }
 
-    
     void Update()
     {
+        rangeHighlight.transform.position = new Vector3(gameObject.transform.position.x, 0.1f, gameObject.transform.position.z);
+
         if (held)
         {
             if (highlight != null)
@@ -74,7 +84,7 @@ public class WatchTower : Building, Grabbable
 
             if (resourceCounter.baddies > 0)
             {
-                if(target != null)
+                if (target != null)
                 {
                     attack(target);
                 }
@@ -117,7 +127,7 @@ public class WatchTower : Building, Grabbable
     }
 
 
-    void throwArrow (GameObject victim)
+    void throwArrow(GameObject victim)
     {
         if (victim != null)
         {
@@ -130,6 +140,8 @@ public class WatchTower : Building, Grabbable
 
     public void grab()
     {
+        showRange();
+        grabbedOnce = true;
         held = true;
         badplacement = false;
         Destroy(infoText);
@@ -188,11 +200,39 @@ public class WatchTower : Building, Grabbable
         buildingName = "TOWER";
         timer1 = 0f;
         StartTime1 = Time.time;
+        hideRange();
 
     }
 
     public override void deactivate()
     {
         active = false;
+    }
+
+    public void showRange()
+    {
+        rangeHighlight.SetActive(true);
+
+    }
+
+    public void hideRange()
+    {
+        rangeHighlight.SetActive(false);
+
+    }
+
+    new void OnTriggerEnter(Collider other)
+    {
+        base.OnTriggerEnter(other);
+        if (other.gameObject.tag == "Hand" && grabbedOnce)
+        {
+            showRange();
+        }
+    }
+
+    new void release(Vector3 vel)
+    {
+        base.release(vel);
+        hideRange();
     }
 }

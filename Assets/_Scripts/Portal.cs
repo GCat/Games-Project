@@ -19,9 +19,10 @@ public class Portal : MonoBehaviour {
     GameObject pre;
     ResourceCounter resourceCounter;
 
-    int nWaves = 10;
-    int baddieTypes = 1;
-    float betweenWaveDelay = 30f;
+    int nWaves = 5;
+    int baddieTypes = 3;
+    int currentType = 0;
+    float betweenWaveDelay = 40f;
     float wavetimer;
     float delayBetweenBadies = 2f;
     float baddietimer;
@@ -35,7 +36,7 @@ public class Portal : MonoBehaviour {
      * len(waves) = nWaves * baddieTypes
      * Current array contains number of rushers 
      */
-    int[] waves = new int[] {2, 5, 7, 8, 10, 12, 15, 20, 30, 50};
+    int[] waves = new int[] {1, 1, 1, 3, 7, 8, 4, 10, 12, 15, 20, 30, 50, 42, 36};
     void Start () {
         temple = GameObject.FindGameObjectWithTag("Temple");
         pre = Resources.Load("Characters/Badie") as GameObject;
@@ -89,30 +90,46 @@ public class Portal : MonoBehaviour {
         {
             if (spawns == 0)
             {
-                asource.Play();
-                GameObject b = GameObject.Instantiate(pre, pos, Quaternion.identity);
-                b.GetComponent<BadiesAI>().spawn(0);
-                spawns++;
-                baddietimer = Time.time;
-            }
-            else if (Time.time - baddietimer > delayBetweenBadies)
-            {
-                if (waveNumber * baddieTypes > waves.Length)
-                {
-                    waveFinished = true;
-                }
-                else if (spawns < waves[waveNumber * baddieTypes])
+                if (waves[waveNumber * baddieTypes + currentType] > 0)
                 {
                     asource.Play();
                     GameObject b = GameObject.Instantiate(pre, pos, Quaternion.identity);
-                    b.GetComponent<BadiesAI>().spawn(0);
+                    b.GetComponent<BadiesAI>().spawn(currentType);
                     spawns++;
+                    baddietimer = Time.time;
+                }
+                else if (currentType < baddieTypes - 1) currentType++;
+                else
+                {
+                    waveNumber++;
+                    currentType = 0;
+                }
+            }
+            else if (Time.time - baddietimer > delayBetweenBadies)
+            {
+                if (waveNumber * baddieTypes +currentType> waves.Length)
+                {
+                    waveFinished = true;
+                }
+                else if (spawns < waves[waveNumber * baddieTypes + currentType])
+                {
+                    asource.Play();
+                    GameObject b = GameObject.Instantiate(pre, pos, Quaternion.identity);
+                    b.GetComponent<BadiesAI>().spawn(currentType);
+                    spawns++;
+                    baddietimer = Time.time;
+                }
+                else if (currentType < baddieTypes - 1)
+                {
+                    spawns = 0;
+                    currentType++;
                     baddietimer = Time.time;
                 }
                 else
                 {
                     waveSpawnning = false;
                     spawns = 0;
+                    currentType=0;
                     wavetimer = Time.time;
                 }
                 
