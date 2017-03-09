@@ -955,12 +955,14 @@ MonoBehaviour:
   resourceCounter: {fileID: 0}
   tablet: {fileID: 0}
   bought: 0
+  faithCost: 20
   highlight: {fileID: 0}
   canBeGrabbed: 1
   build: {fileID: 0}
   destroy: {fileID: 0}
   linerenderer: {fileID: 120518207163346196}
   mirror: {fileID: 1570672673396010}
+  damage_per_second: 5
   buildingName: 
   target: {fileID: 0}
   held: 0
