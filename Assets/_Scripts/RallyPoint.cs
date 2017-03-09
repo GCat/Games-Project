@@ -89,7 +89,7 @@ public class RallyPoint : Building, Grabbable {
 
     }
 
-    public override void createHighlight()
+    public void createHighlight()
     {
         highlight = GameObject.CreatePrimitive(PrimitiveType.Cube);
         highlight.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
