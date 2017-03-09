@@ -3,12 +3,6 @@ using System.Collections;
 
 public class IronMine : ResourceBuilding
 {
-    private int fCost = 30;
-
-    public override int faithCost()
-    {
-        return fCost;
-    } 
 
     public override void create_building()
     {

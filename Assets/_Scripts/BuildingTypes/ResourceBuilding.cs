@@ -6,7 +6,6 @@ public abstract class ResourceBuilding : Building, Grabbable
     public AudioClip build;
     public AudioClip destroy;
     public string buildingName;
-    
     public bool on_game_board = false;
     public bool held = false;
     public string required_resource_tag = "None";
@@ -15,10 +14,8 @@ public abstract class ResourceBuilding : Building, Grabbable
 
     private bool badplacement = false;
     private float placementTime;
-    private Vector3 boxSize;
 
     public abstract void incrementResource();
-    public abstract int faithCost();
 
     public override void die()
     {
@@ -37,11 +34,11 @@ public abstract class ResourceBuilding : Building, Grabbable
 
     private void Start()
     {
-        boxSize = GetComponent<BoxCollider>().bounds.size / 2;
-        boxSize.y = 0.01f;
+        //boxSize = GetComponent<BoxCollider>().bounds.size / 2;
+        //boxSize.y = 0.01f;
         badplacement = false;
         buildingCostText = createInfoText("FaithCost");
-        setInfoText(buildingCostText, faithCost());
+        setInfoText(buildingCostText, faithCost);
     }
 
 
@@ -67,9 +64,9 @@ public abstract class ResourceBuilding : Building, Grabbable
     //Is there enough faith ..  to construct building
     public override bool canBuy()
     {
-        if (!bought && (resourceCounter.faith >= faithCost()))
+        if (!bought && (resourceCounter.faith >= faithCost))
         {
-            resourceCounter.removeFaith(faithCost());
+            resourceCounter.removeFaith(faithCost);
             bought = true;
             return true;
         }

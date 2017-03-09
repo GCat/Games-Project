@@ -14,7 +14,6 @@ public class WatchTower : Building, Grabbable
     public string buildingName;
     public GameObject target;
     private float radius = 25.0f;
-    private int fCost = 15;
 
     bool active = false;
     public bool held = false;
@@ -47,7 +46,7 @@ public class WatchTower : Building, Grabbable
 
         pre = Resources.Load("Arrow_Regular") as GameObject;
         infoText = createInfoText("FaithCost");
-        setInfoText(infoText, fCost);
+        setInfoText(infoText, faithCost);
 
         rangeHighlight = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         rangeHighlight.GetComponent<Renderer>().material.SetColor("_Color", new Color(0.0f,0.6f,0.0f,0.2f));
@@ -176,9 +175,9 @@ public class WatchTower : Building, Grabbable
 
     public override bool canBuy()
     {
-        if (!bought && (resourceCounter.faith >= fCost))
+        if (!bought && (resourceCounter.faith >= faithCost))
         {
-            resourceCounter.removeFaith(fCost);
+            resourceCounter.removeFaith(faithCost);
             bought = true;
             return true;
         }

@@ -13,8 +13,8 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
     GameObject healthBar;
     GameObject resourceGainText;
     public bool bought = false;
-
-    private Vector3 boxSize;
+    public int faithCost;
+    protected Vector3 boxSize;
     public GameObject highlight;
     public bool canBeGrabbed = true;
     protected Renderer[] child_materials;

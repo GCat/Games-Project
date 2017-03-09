@@ -3,16 +3,9 @@ using System.Collections;
 
 public class Farm : ResourceBuilding
 {
-    private int fCost = 50;
-
     public new void die()
     {
         Destroy(gameObject);
-    }
-
-    public override int faithCost()
-    {
-        return fCost;
     }
 
     public override void create_building()

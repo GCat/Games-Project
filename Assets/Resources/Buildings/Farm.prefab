@@ -1524,9 +1524,10 @@ MonoBehaviour:
   health: 100
   resourceCounter: {fileID: 0}
   tablet: {fileID: 0}
+  bought: 0
+  faithCost: 20
   highlight: {fileID: 0}
-  matEmpty: {fileID: 2100000, guid: 79ef561946cb1bb4884c0cca457d417b, type: 2}
-  matInval: {fileID: 0}
+  canBeGrabbed: 1
   build: {fileID: 0}
   destroy: {fileID: 0}
   buildingName: 
