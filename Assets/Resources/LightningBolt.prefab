@@ -303,7 +303,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   held: 0
-  fCost: 100
+  fCost: 10
   damage: 50
   damageRadius: 30
   res: {fileID: 0}

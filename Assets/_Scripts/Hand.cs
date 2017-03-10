@@ -318,7 +318,18 @@ public class Hand : MonoBehaviour {
             }
             else
             {
-                throwObject(heldObject);
+                LightningBolt light = heldObject.GetComponent<LightningBolt>();
+                if (light != null)
+                {
+                    if (light.canBuy()) {
+                        throwObject(heldObject);
+                        Debug.Log("LIGHTINGBOLT! ");
+                    }
+                    else DestroyImmediate(heldObject);
+
+                }
+                else
+                    throwObject(heldObject);
             }
 
             heldObject = null;

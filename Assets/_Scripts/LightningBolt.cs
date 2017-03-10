@@ -6,7 +6,7 @@ using UnityEngine;
 public class LightningBolt : MonoBehaviour, Grabbable {
 
     public bool held = false;
-    public int fCost = 100;
+    public int fCost = 10;
     public float damage = 50f;
     public float damageRadius = 30f;
     GameObject highlight = null;
@@ -28,7 +28,14 @@ public class LightningBolt : MonoBehaviour, Grabbable {
     void Update () {
 		
 	}
-
+    public bool canBuy()
+    {
+        Debug.Log(fCost);
+        Debug.Log(res.faith);
+        Debug.Log(res.faith > fCost);
+        if (res.faith > fCost) return true;
+        else return false;
+    }
     public void removeOutline()
     {
 
