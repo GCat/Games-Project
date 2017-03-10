@@ -1270,6 +1270,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPos: {fileID: 1552852297756788}
+  monsterTypes:
+  - {fileID: 1830059517110030, guid: d27d199e890e0f44ba28c100c8b40d55, type: 2}
+  - {fileID: 1944568527468440, guid: 41663deb42f81fa4cbdb56b983585257, type: 2}
+  - {fileID: 1830059517110030, guid: d27d199e890e0f44ba28c100c8b40d55, type: 2}
 --- !u!114 &114731457494940228
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1303,7 +1307,7 @@ ParticleSystem:
   m_GameObject: {fileID: 1983860544026312}
   serializedVersion: 5
   lengthInSec: 0.28
-  speed: 1
+  simulationSpeed: 1
   looping: 1
   prewarm: 0
   playOnAwake: 1
@@ -3940,7 +3944,7 @@ ParticleSystem:
   m_GameObject: {fileID: 1394648185065624}
   serializedVersion: 5
   lengthInSec: 0.28
-  speed: 1
+  simulationSpeed: 1
   looping: 1
   prewarm: 0
   playOnAwake: 1

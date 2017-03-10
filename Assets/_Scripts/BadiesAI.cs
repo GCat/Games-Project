@@ -54,7 +54,7 @@ public class BadiesAI : MonoBehaviour, Character
 
     // Components
     private Rigidbody rb;
-    public Animation anim;
+    public Animator animator;
 
     // Movement
     public Vector3 startMarker;
@@ -65,7 +65,7 @@ public class BadiesAI : MonoBehaviour, Character
 
     // Fighting
     public enum Fighter { Rusher, Defender, Killer, Training };
-    public int fighterType;
+    public Portal.MonsterType monsterType;
 
     // Rusher
     private GameObject temple;
@@ -83,7 +83,9 @@ public class BadiesAI : MonoBehaviour, Character
     //the nearest position on the navmesh to the desired target point
     private Vector3 nextBestTarget;
     private LineRenderer lineRenderer;
+    private Renderer[] renderers;
 
+    private GameObject currentVictim;
     enum MonsterState { AttackTemple, AttackHumans, AttackBuildings, Idle, PathBlocked };
 
     MonsterState currentState = MonsterState.AttackTemple;
@@ -101,36 +103,39 @@ public class BadiesAI : MonoBehaviour, Character
     }
 
     //can we make the spawn type an enum please xoxo
-    public void spawn(int type)
+    public void spawn(Portal.MonsterType type)
     {
 
 
-        anim = GetComponent<Animation>();
         rb = GetComponent<Rigidbody>();
         closestEnemy = null;
 
-        fighterType = type;
+        monsterType = type;
 
         temple = GameObject.FindGameObjectWithTag("Temple");
         alive = true;
-        Debug.Log(string.Format("Spawn at: {0} with Type: {1}", transform.position, fighterType));
-
+        Debug.Log(string.Format("Spawn at: {0} with Type: {1}", transform.position, monsterType));
+        renderers = GetComponentsInChildren<Renderer>();
         switch (type)
         {
-            case 0:
+            case Portal.MonsterType.Monster:
                 currentState = MonsterState.AttackTemple;
                 originalState = currentState;
-                transform.GetChild(0).GetComponent<Renderer>().material.SetColor("_Color", new Color(1, 0, 0));
+
+               
                 break;
-            case 1:
+            case Portal.MonsterType.Minataur:
                 currentState = MonsterState.AttackHumans;
                 originalState = currentState;
-                transform.GetChild(0).GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 1, 0));
+
                 break;
-            case 2:
+            case Portal.MonsterType.Monster2:
                 currentState = MonsterState.AttackBuildings;
                 originalState = currentState;
-                transform.GetChild(0).GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 0, 1));
+                foreach (Renderer renderer in renderers)
+                {
+                    renderer.material.SetColor("_Color", new Color(0, 0, 1));
+                }
                 break;
         }
 
@@ -204,6 +209,24 @@ public class BadiesAI : MonoBehaviour, Character
             }
         }
         return closestEnemy;
+    }
+
+    public void hit()
+    {
+        if(currentVictim == null)
+        {
+            Debug.Log("No current victim");
+            return;
+        }
+        HealthManager victimHealth = currentVictim.GetComponent<HealthManager>();
+        if (victimHealth != null)
+        {
+            victimHealth.decrementHealth(strength);
+        }
+        else
+        {
+            Debug.LogError("Trying to attack something that doesn not have health");
+        }
     }
 
     private Vector3 getClosestPointToTarget(Vector3 target)
@@ -360,7 +383,7 @@ public class BadiesAI : MonoBehaviour, Character
                 showPath();
                 offset.y = transform.position.y;
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(offset), Time.deltaTime * rotationSpeed);
-                anim.Play("walk");
+                animator.SetBool("Walking", true);
             }
         }
         else
@@ -397,23 +420,17 @@ public class BadiesAI : MonoBehaviour, Character
         {
 
             transform.rotation = Quaternion.LookRotation(victim.transform.position - transform.position);
-            if (!anim.IsPlaying("hit"))
-            {
-                anim.Play("hit");
-                HealthManager victimHealth = victim.GetComponent<HealthManager>();
-                if (victimHealth != null)
-                {
-                    victimHealth.decrementHealth(strength);
-                }
-                else
-                {
-                    Debug.LogError("Trying to attack something that doesn not have health");
-                }
-            }
+            currentVictim = victim;
+            animator.SetBool("Attacking", true);
             return true;
         }
-        changeEnemy();
-        return false;
+        else
+        {
+            currentVictim = null;
+            changeEnemy();
+            return false;
+
+        }
     }
 
     public void decrementHealth(float damage)
@@ -426,7 +443,9 @@ public class BadiesAI : MonoBehaviour, Character
         if (health <= 0 && alive == true)
         {
             alive = false;
-            anim.Play("die");
+            //die animation here
+            animator.enabled = false;
+
             StartCoroutine(WaitToDestroy(0.7f));
             resources.removeBaddie();
         }
@@ -529,6 +548,8 @@ public class BadiesAI : MonoBehaviour, Character
 
     private void changeEnemy()
     {
+        animator.SetBool("Attacking", false);
+
         sT = Vector3.zero;
     }
 

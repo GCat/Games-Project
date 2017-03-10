@@ -7,6 +7,8 @@ public class Portal : MonoBehaviour {
     bool active = false;
 
     public GameObject spawnPos;
+
+    public GameObject[] monsterTypes;
     Vector3 pos;
     AudioClip attackClip;
     AudioSource asource;
@@ -16,12 +18,10 @@ public class Portal : MonoBehaviour {
     float delay = 30f;
 
     GameObject temple;
-    GameObject pre;
     ResourceCounter resourceCounter;
 
     int nWaves = 5;
     int baddieTypes = 3;
-    int currentType = 0;
     float betweenWaveDelay = 40f;
     float wavetimer;
     float delayBetweenBadies = 2f;
@@ -31,6 +31,11 @@ public class Portal : MonoBehaviour {
     bool allDead = true;
     int waveNumber = 0;
     bool waveFinished = false;
+
+    public enum MonsterType {Monster, Minataur, Monster2 };
+
+    MonsterType currentType = 0;
+
     /*
      * Array of ints describes number of baddies to be spawn per wave
      * len(waves) = nWaves * baddieTypes
@@ -39,7 +44,6 @@ public class Portal : MonoBehaviour {
     int[] waves = new int[] {1, 1, 1, 3, 7, 8, 4, 10, 12, 15, 20, 30, 50, 42, 36};
     void Start () {
         temple = GameObject.FindGameObjectWithTag("Temple");
-        pre = Resources.Load("Characters/Badie") as GameObject;
         resourceCounter = GameObject.FindGameObjectWithTag("Tablet").GetComponent<ResourceCounter>();
         pos = spawnPos.transform.position;
         asource = GetComponent<AudioSource>();
@@ -90,15 +94,21 @@ public class Portal : MonoBehaviour {
         {
             if (spawns == 0)
             {
-                if (waves[waveNumber * baddieTypes + currentType] > 0)
+                if (waves[waveNumber * baddieTypes + (int)currentType] > 0)
                 {
                     asource.Play();
-                    GameObject b = GameObject.Instantiate(pre, pos, Quaternion.identity);
+                    GameObject b;
+                    if (currentType == MonsterType.Monster) {
+                        b = GameObject.Instantiate(monsterTypes[0], pos, Quaternion.identity);
+                    }else
+                    {
+                        b = GameObject.Instantiate(monsterTypes[1], pos, Quaternion.identity);
+                    }
                     b.GetComponent<BadiesAI>().spawn(currentType);
                     spawns++;
                     baddietimer = Time.time;
                 }
-                else if (currentType < baddieTypes - 1) currentType++;
+                else if ((int)currentType < baddieTypes - 1) currentType++;
                 else
                 {
                     waveNumber++;
@@ -107,19 +117,19 @@ public class Portal : MonoBehaviour {
             }
             else if (Time.time - baddietimer > delayBetweenBadies)
             {
-                if (waveNumber * baddieTypes +currentType> waves.Length)
+                if (waveNumber * baddieTypes + (int)currentType> waves.Length)
                 {
                     waveFinished = true;
                 }
-                else if (spawns < waves[waveNumber * baddieTypes + currentType])
+                else if (spawns < waves[waveNumber * baddieTypes + (int)currentType])
                 {
                     asource.Play();
-                    GameObject b = GameObject.Instantiate(pre, pos, Quaternion.identity);
+                    GameObject b = GameObject.Instantiate(monsterTypes[0], pos, Quaternion.identity);
                     b.GetComponent<BadiesAI>().spawn(currentType);
                     spawns++;
                     baddietimer = Time.time;
                 }
-                else if (currentType < baddieTypes - 1)
+                else if ((int)currentType < baddieTypes - 1)
                 {
                     spawns = 0;
                     currentType++;
@@ -148,7 +158,7 @@ public class Portal : MonoBehaviour {
         if (resourceCounter.withinBounds(pos))
         {
             asource.Play();
-            GameObject b = GameObject.Instantiate(pre, pos, Quaternion.identity);
+            GameObject b = GameObject.Instantiate(monsterTypes[0], pos, Quaternion.identity);
             b.GetComponent<BadiesAI>().spawn(0);
         }
         else

@@ -233,6 +233,10 @@ public class Agent : MonoBehaviour, Character, Grabbable
         }
 
     }
+    public void hit()
+    {
+        Debug.Log("hit");
+    }
 
     void sacrifice()
     {
