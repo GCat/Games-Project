@@ -57,6 +57,7 @@ public abstract class ResourceBuilding : Building, Grabbable
             {
                 highlightCheck();
             }
+            else if (transform.position.y > 0.1f) createHighlight();
         }else if (badplacement)
         {
             if (Time.time - placementTime > 5.0f)
