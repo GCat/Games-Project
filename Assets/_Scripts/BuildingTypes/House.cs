@@ -61,6 +61,12 @@ public class House : Building, Grabbable
 
     }
 
+
+    public override void changeTextColour(Color colour)
+    {
+        infoText.GetComponent<TextMesh>().GetComponent<Renderer>().material.SetColor("_Color", colour);
+    }
+
     void Start()
     {
         matEmpty = Resources.Load("Materials/highlight2") as Material;

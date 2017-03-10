@@ -22,6 +22,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
 
 
     public abstract bool canBuy();
+    public abstract void changeTextColour(Color colour);
 
     public void decrementHealth(float damage)
     {
@@ -94,6 +95,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
             renderer.material.shader = outlineShader;
             renderer.material.SetColor("_OutlineColor", Color.red);
         }
+        
     }
 
     public void removeOutline()
@@ -106,12 +108,19 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
     }
     public void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "Hand")
+        if (other.gameObject.tag == "Hand")
         {
-            if (resourceCounter.hasGameStarted() || gameObject.tag == "Temple")
+
+            if ((resourceCounter.hasGameStarted() && (faithCost <= resourceCounter.getFaith())) || gameObject.tag == "Temple")
+            {
                 setOutline();
+                changeTextColour(Color.green);
+            }
             else
+            {
                 setWarning();
+                changeTextColour(Color.red);
+            }
         }
     }
     public void OnTriggerExit(Collider other)
@@ -119,6 +128,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         if (other.gameObject.tag == "Hand")
         {
             removeOutline();
+            changeTextColour(Color.white);
         }
     }
 

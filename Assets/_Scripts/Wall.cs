@@ -36,6 +36,11 @@ public class Wall : Building, Grabbable {
         return "Wall";
     }
 
+    public override void changeTextColour(Color colour)
+    {
+        infoText.GetComponent<TextMesh>().GetComponent<Renderer>().material.SetColor("_Color", colour);
+    }
+
     public override Vector3 getLocation()
     {
         return this.gameObject.transform.position;

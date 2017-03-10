@@ -21,6 +21,10 @@ public class RallyPoint : Building, Grabbable {
     bool grabbedOnce = false;
     bool humanIsHeld = false;
 
+    public override void changeTextColour(Color colour)
+    {
+        //infoText.GetComponent<TextMesh>().GetComponent<Renderer>().material.SetColor("_Color", colour);
+    }
 
     //private GameObject infoText;
 

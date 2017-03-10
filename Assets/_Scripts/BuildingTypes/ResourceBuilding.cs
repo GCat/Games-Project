@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public abstract class ResourceBuilding : Building, Grabbable
 {
@@ -39,6 +40,11 @@ public abstract class ResourceBuilding : Building, Grabbable
         badplacement = false;
         buildingCostText = createInfoText("FaithCost");
         setInfoText(buildingCostText, faithCost);
+    }
+
+    public override void changeTextColour(Color colour)
+    {
+        buildingCostText.GetComponent<TextMesh>().GetComponent<Renderer>().material.SetColor("_Color", colour);
     }
 
 
