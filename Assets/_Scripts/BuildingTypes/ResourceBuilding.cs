@@ -44,18 +44,26 @@ public abstract class ResourceBuilding : Building, Grabbable
 
     public override void changeTextColour(Color colour)
     {
-        buildingCostText.GetComponent<TextMesh>().GetComponent<Renderer>().material.SetColor("_Color", colour);
+        if (buildingCostText)
+        {
+            buildingCostText.GetComponent<TextMesh>().GetComponent<Renderer>().material.SetColor("_Color", colour);
+        }
+        
     }
 
 
     //fixedupdate can be run 100+ times per second...maybe this shouldn't be calling 'highlightcheck' here
-    void FixedUpdate()
+    void Update()
     {
         if (held)
         {
             if (highlight != null)
             {
                 highlightCheck();
+            }
+            else if (transform.position.y > 0f)
+            {
+                createHighlight();
             }
         }else if (badplacement)
         {

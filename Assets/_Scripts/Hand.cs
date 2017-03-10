@@ -318,7 +318,18 @@ public class Hand : MonoBehaviour {
             }
             else
             {
-                throwObject(heldObject);
+                LightningBolt light = heldObject.GetComponent<LightningBolt>();
+                if (light != null)
+                {
+                    if (light.canBuy()) {
+                        throwObject(heldObject);
+                        Debug.Log("LIGHTINGBOLT! ");
+                    }
+                    else DestroyImmediate(heldObject);
+
+                }
+                else
+                    throwObject(heldObject);
             }
 
             heldObject = null;
@@ -356,7 +367,7 @@ public class Hand : MonoBehaviour {
     {
         float x = placeable.transform.position.x;
         float z = placeable.transform.position.z;
-        placeable.transform.position = new Vector3(Mathf.Floor(x), 0, Mathf.Floor(z));
+        placeable.transform.position = new Vector3(x, 0, z);
         // if we are not alowing hand rotation is this still nesesary?
         float yRot = placeable.transform.eulerAngles.y;
         if((yRot > 45 && yRot < 135) || (yRot > -135 && yRot < -45))

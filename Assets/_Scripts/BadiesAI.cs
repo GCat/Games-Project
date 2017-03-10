@@ -299,7 +299,16 @@ public class BadiesAI : MonoBehaviour, Character
     private void destroyObstacle()
     {
         if (closestEnemy != null)
-            walkTowards(closestEnemy.GetComponent<Collider>().ClosestPointOnBounds(transform.position));
+        {
+            if (Mathf.Abs(closestEnemy.transform.position.y) > 5.0f)
+            {
+                closestEnemy = null;
+                changeEnemy();
+                currentState = prevState;
+            }
+            else
+                walkTowards(closestEnemy.GetComponent<Collider>().ClosestPointOnBounds(transform.position));
+        }  
         else
         {
             currentState = prevState;
@@ -313,7 +322,15 @@ public class BadiesAI : MonoBehaviour, Character
         // for now attack towers
         if (closestEnemy != null)
         {
-            walkTowards(closestEnemy.GetComponent<Collider>().ClosestPointOnBounds(transform.position));
+            if (Mathf.Abs(closestEnemy.transform.position.y) > 5.0f)
+            {
+                closestEnemy = null;
+                changeEnemy();
+            }
+            else
+            {
+                walkTowards(closestEnemy.GetComponent<Collider>().ClosestPointOnBounds(transform.position));
+            }
         }
         else
         {
@@ -328,7 +345,13 @@ public class BadiesAI : MonoBehaviour, Character
 
         if (closestEnemy != null)
         {
-            walkTowards(closestEnemy.GetComponent<Collider>().ClosestPointOnBounds(transform.position));
+            if (Mathf.Abs(closestEnemy.transform.position.y) > 5.0f)
+            {
+                closestEnemy = null;
+                changeEnemy();
+            }
+            else
+                walkTowards(closestEnemy.GetComponent<Collider>().ClosestPointOnBounds(transform.position));
         }
         else
         {

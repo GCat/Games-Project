@@ -43,7 +43,10 @@ public class WatchTower : Building, Grabbable
 
     public override void changeTextColour(Color colour)
     {
-        infoText.GetComponent<TextMesh>().GetComponent<Renderer>().material.SetColor("_Color", colour);
+        if (infoText)
+        {
+            infoText.GetComponent<TextMesh>().GetComponent<Renderer>().material.SetColor("_Color", colour);
+        }
     }
 
     void Start()
@@ -74,6 +77,16 @@ public class WatchTower : Building, Grabbable
             if (highlight != null)
             {
                 highlightCheck();
+                showRange();
+            }
+            else if (transform.position.y > 0f)
+            {
+                createHighlight();
+                showRange();
+            }
+            else
+            {
+                hideRange();
             }
         }
         else if (badplacement)
@@ -231,6 +244,14 @@ public class WatchTower : Building, Grabbable
         if (other.gameObject.tag == "Hand" && grabbedOnce)
         {
             showRange();
+        }
+    }
+    new void OnTriggerExit(Collider other)
+    {
+        base.OnTriggerExit(other);
+        if (other.gameObject.tag == "Hand")
+        {
+            hideRange();
         }
     }
 

@@ -13,6 +13,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
     GameObject healthBar;
     GameObject resourceGainText;
     public bool bought = false;
+
     public int faithCost;
     protected Vector3 boxSize;
     public GameObject highlight;
@@ -69,7 +70,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         if (resourceCounter.withinBounds(transform.position))
         {
             GetComponent<Collider>().enabled = true;
-            if (Physics.CheckBox(new Vector3(Mathf.Floor(x), 0, Mathf.Floor(z)), boxSize, Quaternion.LookRotation(Vector3.forward), layerMask))
+            if (Physics.CheckBox(new Vector3(x, 0, z), boxSize, Quaternion.LookRotation(Vector3.forward), layerMask))
             {
                 return false;
             }
@@ -211,7 +212,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
                 return;
             }
             highlight.GetComponent<Renderer>().enabled = true;
-            highlight.transform.position = new Vector3(Mathf.Floor(transform.position.x), 0.1f, Mathf.Floor(transform.position.z));
+            highlight.transform.position = new Vector3(transform.position.x, 0.1f,transform.position.z);
             float yRot = gameObject.transform.eulerAngles.y;
             if ((yRot > 45 && yRot < 135) || (yRot > -135 && yRot < -45))
             {
@@ -245,8 +246,8 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
     {
         highlight = GameObject.CreatePrimitive(PrimitiveType.Cube);
         highlight.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
-        highlight.transform.localScale = new Vector3(GetComponent<BoxCollider>().bounds.size.x, 0.1f, GetComponent<BoxCollider>().bounds.size.z);
-        highlight.transform.position = new Vector3(Mathf.Floor(transform.position.x), 0.1f, Mathf.Floor(transform.position.z));
+        highlight.transform.localScale = new Vector3(boxSize.x*2.0f, 0.1f, boxSize.z*2.0f);
+        highlight.transform.position = new Vector3(transform.position.x , 0.1f, transform.position.z);
         highlight.transform.rotation = transform.rotation;
 
         highlight.GetComponent<Collider>().isTrigger = true;

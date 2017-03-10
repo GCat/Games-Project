@@ -64,7 +64,10 @@ public class House : Building, Grabbable
 
     public override void changeTextColour(Color colour)
     {
-        infoText.GetComponent<TextMesh>().GetComponent<Renderer>().material.SetColor("_Color", colour);
+        if (infoText)
+        {
+            infoText.GetComponent<TextMesh>().GetComponent<Renderer>().material.SetColor("_Color", colour);
+        }
     }
 
     void Start()

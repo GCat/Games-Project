@@ -25,6 +25,8 @@ TagManager:
   - Forest
   - Iron
   - Table
+  - Turret
+  - WallSegment
   layers:
   - Default
   - TransparentFX
