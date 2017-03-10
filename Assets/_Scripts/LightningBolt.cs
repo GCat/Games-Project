@@ -6,15 +6,20 @@ using UnityEngine;
 public class LightningBolt : MonoBehaviour, Grabbable {
 
     public bool held = false;
+    public int fCost = 100;
+    public float damage = 50f;
+    public float damageRadius = 30f;
     GameObject highlight = null;
     GameObject flash;
-    protected Renderer renderer;
+    protected Renderer rend;
     protected Shader outlineShader;
+    public ResourceCounter res;
 
     // Use this for initialization
     void Start () {
         outlineShader = Shader.Find("Toon/Basic Outline");
-        renderer = GetComponent<Renderer>();
+        rend = GetComponent<Renderer>();
+        res = GameObject.FindGameObjectWithTag("Tablet").GetComponent<ResourceCounter>();
     }
 
     // Update is called once per frame
@@ -25,13 +30,13 @@ public class LightningBolt : MonoBehaviour, Grabbable {
     public void removeOutline()
     {
 
-        renderer.material.shader = Shader.Find("Diffuse");
+        rend.material.shader = Shader.Find("Diffuse");
     }
 
     private void setOutline()
     {
-        renderer.material.shader = outlineShader;
-        renderer.material.SetColor("_OutlineColor", Color.blue);
+        rend.material.shader = outlineShader;
+        rend.material.SetColor("_OutlineColor", Color.blue);
     }
 
     public void grab()
@@ -65,9 +70,11 @@ public class LightningBolt : MonoBehaviour, Grabbable {
     void OnCollisionEnter(Collision col)
     {
         if (col.gameObject.name == "Ground") {
+            res.removeFaith(fCost);
+            int layerMask = 1 << 11;
             ContactPoint hit = col.contacts[0];
             Destroy(this.gameObject);
-            Collider[] damageZone = Physics.OverlapSphere(hit.point, 30);
+            Collider[] damageZone = Physics.OverlapSphere(hit.point, damageRadius, layerMask);
           
             GameObject resource = Resources.Load("Bolt flash") as GameObject;
             flash = GameObject.Instantiate(resource, hit.point, Quaternion.identity);
@@ -80,7 +87,7 @@ public class LightningBolt : MonoBehaviour, Grabbable {
                 //we can probably do something cleaner than comparing name - maybe some enums for different character types
                 if (victimHealth != null && damageZone[i].name == "badie")
                 {
-                    victimHealth.decrementHealth(25);
+                    victimHealth.decrementHealth(damage);
                 } else {
                     //can't damage something without health -- in this case that's fine
                 }
