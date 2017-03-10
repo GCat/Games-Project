@@ -720,7 +720,7 @@ MonoBehaviour:
   mesh: {fileID: 43446887600282508}
   optimizedSolidMaterial: {fileID: 21166957185403628}
   optimizedCutoutMaterial: {fileID: 21153793706348694}
-  isInPreviewMode: 0
+  isInPreviewMode: 1
 --- !u!193 &193281423047055274
 Tree:
   m_ObjectHideFlags: 1

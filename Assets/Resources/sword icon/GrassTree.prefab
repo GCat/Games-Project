@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 193962280109133148}
   - component: {fileID: 33419120447094862}
   - component: {fileID: 23392627365617072}
+  - component: {fileID: 65030427358230408}
   m_Layer: 0
   m_Name: GrassTree
   m_TagString: Untagged
@@ -36,7 +37,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1954095845286314}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 50.10147, y: 0.07, z: -30.34557}
+  m_LocalPosition: {x: 88.087555, y: 20, z: -73}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -80,6 +81,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1954095845286314}
   m_Mesh: {fileID: 43446887600282508, guid: a511d51281f34e54db9ffabf074c18f2, type: 2}
+--- !u!65 &65030427358230408
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1954095845286314}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.0235167, y: 2.0331316, z: 2.032388}
+  m_Center: {x: 0.012927413, y: 0.9997647, z: 0.01742068}
 --- !u!193 &193962280109133148
 Tree:
   m_ObjectHideFlags: 1
