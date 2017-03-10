@@ -246,7 +246,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
     {
         highlight = GameObject.CreatePrimitive(PrimitiveType.Cube);
         highlight.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
-        highlight.transform.localScale = new Vector3(GetComponent<BoxCollider>().bounds.size.x, 0.1f, GetComponent<BoxCollider>().bounds.size.z);
+        highlight.transform.localScale = new Vector3(boxSize.x*2.0f, 0.1f, boxSize.z*2.0f);
         highlight.transform.position = new Vector3(transform.position.x , 0.1f, transform.position.z);
         highlight.transform.rotation = transform.rotation;
 
