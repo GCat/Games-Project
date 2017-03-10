@@ -44,7 +44,11 @@ public abstract class ResourceBuilding : Building, Grabbable
 
     public override void changeTextColour(Color colour)
     {
-        buildingCostText.GetComponent<TextMesh>().GetComponent<Renderer>().material.SetColor("_Color", colour);
+        if (buildingCostText)
+        {
+            buildingCostText.GetComponent<TextMesh>().GetComponent<Renderer>().material.SetColor("_Color", colour);
+        }
+        
     }
 
 
