@@ -4,13 +4,6 @@ using System;
 
 public class StoneQuarry : ResourceBuilding
 {
-    private int fCost = 20;
-
-    public override int faithCost()
-    {
-        return fCost;
-    }
-
     public override void create_building()
     {
         buildingName = "QUARRY";

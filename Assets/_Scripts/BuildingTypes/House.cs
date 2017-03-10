@@ -13,7 +13,6 @@ public class House : Building, Grabbable
     public int capacity = 5;      //size of house: bigger house => bigger capacity
     public int inhabitants = 0;        //human counter
     public int foodCost = 10;
-    public int faithCost = 10;
     public bool active = false;
     public bool held = false;
     private bool badplacement = false;
@@ -60,6 +59,12 @@ public class House : Building, Grabbable
         }
 
 
+    }
+
+
+    public override void changeTextColour(Color colour)
+    {
+        infoText.GetComponent<TextMesh>().GetComponent<Renderer>().material.SetColor("_Color", colour);
     }
 
     void Start()

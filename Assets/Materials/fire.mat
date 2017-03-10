@@ -98,6 +98,9 @@ Material:
         name: _GlossyReflections
       second: 1
     - first:
+        name: _InvFade
+      second: 1
+    - first:
         name: _Metallic
       second: 0
     - first:
@@ -127,7 +130,10 @@ Material:
     m_Colors:
     - first:
         name: _Color
-      second: {r: 0.5588235, g: 0.2917671, b: 0.049307972, a: 1}
+      second: {r: 0.8103448, g: 0.4230888, b: 0.07150108, a: 1}
     - first:
         name: _EmissionColor
       second: {r: 0.7794118, g: 0.42496124, b: 0.103157446, a: 1}
+    - first:
+        name: _TintColor
+      second: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}

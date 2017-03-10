@@ -14,8 +14,8 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
     GameObject resourceGainText;
     public bool bought = false;
 
-    public Vector3 boxSize;
-    private Vector3 boxCenter;
+    public int faithCost;
+    protected Vector3 boxSize;
     public GameObject highlight;
     public bool canBeGrabbed = true;
     protected Renderer[] child_materials;
@@ -23,6 +23,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
 
 
     public abstract bool canBuy();
+    public abstract void changeTextColour(Color colour);
 
     public void decrementHealth(float damage)
     {
@@ -53,7 +54,6 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         createHealthBar();
         resourceGainText = createInfoText("Info_Text");
         boxSize = GetComponent<BoxCollider>().bounds.size / 2;
-        boxCenter = GetComponent<BoxCollider>().bounds.center;
         boxSize.y = 1f;
         child_materials = GetComponentsInChildren<Renderer>();
         outlineShader = Shader.Find("Toon/Basic Outline");
@@ -96,6 +96,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
             renderer.material.shader = outlineShader;
             renderer.material.SetColor("_OutlineColor", Color.red);
         }
+        
     }
 
     public void removeOutline()
@@ -108,12 +109,19 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
     }
     public void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "Hand")
+        if (other.gameObject.tag == "Hand")
         {
-            if (resourceCounter.hasGameStarted() || gameObject.tag == "Temple")
+
+            if ((resourceCounter.hasGameStarted() && (faithCost <= resourceCounter.getFaith())) || gameObject.tag == "Temple")
+            {
                 setOutline();
+                changeTextColour(Color.green);
+            }
             else
+            {
                 setWarning();
+                changeTextColour(Color.red);
+            }
         }
     }
     public void OnTriggerExit(Collider other)
@@ -121,6 +129,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         if (other.gameObject.tag == "Hand")
         {
             removeOutline();
+            changeTextColour(Color.white);
         }
     }
 
@@ -238,7 +247,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         highlight = GameObject.CreatePrimitive(PrimitiveType.Cube);
         highlight.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
         highlight.transform.localScale = new Vector3(GetComponent<BoxCollider>().bounds.size.x, 0.1f, GetComponent<BoxCollider>().bounds.size.z);
-        highlight.transform.position = new Vector3(transform.position.x - boxCenter.x , 0.1f, transform.position.z - boxCenter.z);
+        highlight.transform.position = new Vector3(transform.position.x , 0.1f, transform.position.z);
         highlight.transform.rotation = transform.rotation;
 
         highlight.GetComponent<Collider>().isTrigger = true;
