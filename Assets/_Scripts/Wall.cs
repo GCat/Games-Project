@@ -5,13 +5,16 @@ using System;
 public class Wall : Building, Grabbable {
 
 	// Use this for initialization
-	public float health;
     public int cost_per_meter = 10;
     public bool held = false;
     private bool badplacement = false;
     private GameObject infoText;
+
+    private Transform turretB= null;
+    private Transform turretA=null;
+    private Transform wallSegment=null;
+    public float adjustRange = 15.0f;
     void Start () {
-		health = 400;
         infoText = createInfoText("FaithCost");
         setInfoText(infoText, cost_per_meter);
     }
@@ -64,6 +67,7 @@ public class Wall : Building, Grabbable {
 
     public override void create_building()
     {
+       // WALL SNAPPING WITH EACH OTHER CODE HERE I FAILED MISERABLY
 
     }
     //Don't need this 
@@ -77,14 +81,6 @@ public class Wall : Building, Grabbable {
     {
     }
 
-
-
-    public void decrementHealth(float damage){
-		health -= damage;
-		if (health <= 0){
-			Destroy(gameObject);
-		}
-	}
 	void onCollisionEnter(Collision collision){
 		Debug.Log("Sup");	
 	}

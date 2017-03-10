@@ -14,7 +14,8 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
     GameObject resourceGainText;
     public bool bought = false;
 
-    private Vector3 boxSize;
+    public Vector3 boxSize;
+    private Vector3 boxCenter;
     public GameObject highlight;
     public bool canBeGrabbed = true;
     protected Renderer[] child_materials;
@@ -52,6 +53,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         createHealthBar();
         resourceGainText = createInfoText("Info_Text");
         boxSize = GetComponent<BoxCollider>().bounds.size / 2;
+        boxCenter = GetComponent<BoxCollider>().bounds.center;
         boxSize.y = 1f;
         child_materials = GetComponentsInChildren<Renderer>();
         outlineShader = Shader.Find("Toon/Basic Outline");
@@ -68,7 +70,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         if (resourceCounter.withinBounds(transform.position))
         {
             GetComponent<Collider>().enabled = true;
-            if (Physics.CheckBox(new Vector3(Mathf.Floor(x), 0, Mathf.Floor(z)), boxSize, Quaternion.LookRotation(Vector3.forward), layerMask))
+            if (Physics.CheckBox(new Vector3(x, 0, z), boxSize, Quaternion.LookRotation(Vector3.forward), layerMask))
             {
                 return false;
             }
@@ -201,7 +203,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
                 return;
             }
             highlight.GetComponent<Renderer>().enabled = true;
-            highlight.transform.position = new Vector3(Mathf.Floor(transform.position.x), 0.1f, Mathf.Floor(transform.position.z));
+            highlight.transform.position = new Vector3(transform.position.x, 0.1f,transform.position.z);
             float yRot = gameObject.transform.eulerAngles.y;
             if ((yRot > 45 && yRot < 135) || (yRot > -135 && yRot < -45))
             {
@@ -236,7 +238,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         highlight = GameObject.CreatePrimitive(PrimitiveType.Cube);
         highlight.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
         highlight.transform.localScale = new Vector3(GetComponent<BoxCollider>().bounds.size.x, 0.1f, GetComponent<BoxCollider>().bounds.size.z);
-        highlight.transform.position = new Vector3(Mathf.Floor(transform.position.x), 0.1f, Mathf.Floor(transform.position.z));
+        highlight.transform.position = new Vector3(transform.position.x - boxCenter.x , 0.1f, transform.position.z - boxCenter.z);
         highlight.transform.rotation = transform.rotation;
 
         highlight.GetComponent<Collider>().isTrigger = true;

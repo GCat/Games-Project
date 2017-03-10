@@ -196,7 +196,6 @@ public class Agent : MonoBehaviour, Character, Grabbable
     {
         if (wanderPoint == Vector3.zero || Vector3.Distance(transform.position, wanderPoint) < 5)
         {
-            Debug.Log("finding a new target to wander to");
             wanderPoint = findNewTarget();
         }
         else

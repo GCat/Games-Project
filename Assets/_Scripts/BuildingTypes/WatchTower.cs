@@ -71,6 +71,10 @@ public class WatchTower : Building, Grabbable
             {
                 highlightCheck();
             }
+            else if (transform.position.y > 0.1f)
+            {
+                createHighlight();
+            }
         }
         else if (badplacement)
         {
