@@ -651,10 +651,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a64dd27b23a609b44b3950081cae6889, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  strength: 20
+  strength: 2
   health: 100
   totalHealth: 100
   rotationSpeed: 4
+  alive: 0
   anim: {fileID: 0}
   startMarker: {x: 0, y: 0, z: 0}
   endMarker: {x: 0, y: 0, z: 0}

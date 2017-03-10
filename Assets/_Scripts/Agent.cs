@@ -49,8 +49,10 @@ public class Agent : MonoBehaviour, Character, Grabbable
     private float rotationspeed = 5.0f;
     public float gravity = 9.81F;
     public float weapon_strength;
+    public bool debug = false;
     private GameObject temple;
     private bool alive = true;
+    public bool humanHeld = false;
 
     // Components
     public AudioClip sacrificeClip;
@@ -86,7 +88,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
     private Vector3 bL;
     private Vector3 tR;
 
-    enum HumanState { Fighting, Wandering, Grabbed, Falling };
+    public enum HumanState { Fighting, Wandering, Grabbed, Falling, Defending };
 
     void Start()
     {
@@ -225,7 +227,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
 
     private void showPath()
     {
-        if (agent.hasPath)
+        if (agent.hasPath && debug)
         {
             lineRenderer.SetPositions(agent.path.corners);
         }
@@ -354,6 +356,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
         rb.isKinematic = true;
         rb.useGravity = false;
         GetComponent<Collider>().enabled = false;
+        humanHeld = true;
     }
 
     public void release(Vector3 vel)
@@ -362,6 +365,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
         GetComponent<Collider>().enabled = true;
         rb.useGravity = true;
         rb.isKinematic = false;
+        humanHeld = false;
         removeOutline();
 
     }
@@ -439,4 +443,5 @@ public class Agent : MonoBehaviour, Character, Grabbable
         }
     }
 
+    
 }

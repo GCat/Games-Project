@@ -13,8 +13,8 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
     GameObject healthBar;
     GameObject resourceGainText;
     public bool bought = false;
-
-    private Vector3 boxSize;
+    public int faithCost;
+    protected Vector3 boxSize;
     public GameObject highlight;
     public bool canBeGrabbed = true;
     protected Renderer[] child_materials;
@@ -104,7 +104,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
             //renderer.material.SetColor("_OutlineColor", Color.green);
         }
     }
-    private void OnTriggerEnter(Collider other)
+    public void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.tag == "Hand")
         {
@@ -114,7 +114,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
                 setWarning();
         }
     }
-    private void OnTriggerExit(Collider other)
+    public void OnTriggerExit(Collider other)
     {
         if (other.gameObject.tag == "Hand")
         {

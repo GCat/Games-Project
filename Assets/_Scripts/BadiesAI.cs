@@ -40,7 +40,7 @@ public class BadiesAI : MonoBehaviour, Character
      */
 
     // Badie characteristic
-
+    public bool debug = false;
     public float strength = 1.0f;
     public float health = 100.0f;
     public float totalHealth = 100.0f;
@@ -88,6 +88,7 @@ public class BadiesAI : MonoBehaviour, Character
 
     MonsterState currentState = MonsterState.AttackTemple;
     MonsterState prevState;
+    MonsterState originalState;
     private Vector3 sT;
     void Start()
     {
@@ -113,11 +114,27 @@ public class BadiesAI : MonoBehaviour, Character
         temple = GameObject.FindGameObjectWithTag("Temple");
         alive = true;
         Debug.Log(string.Format("Spawn at: {0} with Type: {1}", transform.position, fighterType));
-        currentState = MonsterState.AttackTemple;
-        gameObject.transform.GetChild(0).GetComponent<Renderer>().material.SetColor("_Color", new Color(1, 0, 0));
+
+        switch (type)
+        {
+            case 0:
+                currentState = MonsterState.AttackTemple;
+                originalState = currentState;
+                transform.GetChild(0).GetComponent<Renderer>().material.SetColor("_Color", new Color(1, 0, 0));
+                break;
+            case 1:
+                currentState = MonsterState.AttackHumans;
+                originalState = currentState;
+                transform.GetChild(0).GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 1, 0));
+                break;
+            case 2:
+                currentState = MonsterState.AttackBuildings;
+                originalState = currentState;
+                transform.GetChild(0).GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 0, 1));
+                break;
+        }
 
         //maybe we want to do this regularly in case the monsters behaviour changes
-
         templeAttackPoint = temple.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
         resources = GameObject.FindGameObjectWithTag("Tablet").GetComponent<ResourceCounter>();
         resources.addBaddie();
@@ -135,11 +152,17 @@ public class BadiesAI : MonoBehaviour, Character
             switch (currentState)
             {
                 case MonsterState.AttackTemple:
-                    closestEnemy = temple;
-                    walkTowards(templeAttackPoint);
+                    if (originalState == MonsterState.AttackHumans && resources.getPop() > 0)
+                    {
+                        currentState = originalState;
+                    }
+                    else
+                    {
+                        closestEnemy = temple;
+                        walkTowards(templeAttackPoint);
+                    }
                     break;
                 case MonsterState.AttackHumans:
-                    gameObject.transform.GetChild(0).GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 1, 0));
                     if (resources.getPop() > 0)
                     {
                         showPath();
@@ -148,16 +171,12 @@ public class BadiesAI : MonoBehaviour, Character
                     else currentState = MonsterState.AttackBuildings;
                     break;
                 case MonsterState.AttackBuildings:
-                    gameObject.transform.GetChild(0).GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 0, 1));
-
                     buildingAttack();
                     break;
                 case MonsterState.PathBlocked:
                     destroyObstacle();
                     break;
                 case MonsterState.Idle:
-                    gameObject.transform.GetChild(0).GetComponent<Renderer>().material.SetColor("_Color", new Color(1, 1, 1));
-
                     break;
             }
         }
@@ -247,7 +266,7 @@ public class BadiesAI : MonoBehaviour, Character
     }
     private void showPath()
     {
-        if (agent.hasPath)
+        if (agent.hasPath && debug)
         {
             lineRenderer.SetPositions(agent.path.corners);
         }
@@ -276,7 +295,7 @@ public class BadiesAI : MonoBehaviour, Character
         else
         {
             changeEnemy();
-            closestEnemy = findClosestEnemy("Tower");
+            closestEnemy = findClosestBuilding();
             if (closestEnemy == null) currentState = MonsterState.AttackTemple;
         }
 
@@ -449,6 +468,37 @@ public class BadiesAI : MonoBehaviour, Character
         {
             foreach (GameObject badie in humans)
             {
+                if (Mathf.Abs(badie.transform.position.y) > 5.0f) continue;
+                Vector3 diff = badie.transform.position - position;
+                float current_distance = diff.sqrMagnitude;
+                if (current_distance < distance)
+                {
+                    distance = current_distance;
+                    closest = badie;
+                }
+            }
+        }
+        return closest;
+    }
+
+    private GameObject findClosestBuilding()
+    {
+        List<GameObject> buildings = new List<GameObject>();
+        string []tags = new string[]{"Tower", "House", "Wall", "Farm"};
+        GameObject closest = null;
+        changeEnemy();
+        foreach (string tag in tags)
+        {
+            buildings.AddRange((GameObject.FindGameObjectsWithTag(tag)));
+        }
+        
+        float distance = Mathf.Infinity;
+        Vector3 position = transform.position;
+        if (buildings.Count > 0)
+        {
+            foreach (GameObject badie in buildings)
+            {
+                if (Mathf.Abs(badie.transform.position.y) > 5.0f) continue;
                 Vector3 diff = badie.transform.position - position;
                 float current_distance = diff.sqrMagnitude;
                 if (current_distance < distance)

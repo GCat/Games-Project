@@ -138,10 +138,10 @@ public class BodySourceView : MonoBehaviour
                     if (player_id == 99)
                     {
                         _Bodies[body.TrackingId] = CreateBodyObject(body.TrackingId);
-                        Vector3 foot = GetVector3FromJoint(body.Joints[Kinect.JointType.FootRight]);
-                        float footHeight = foot.y;
-                        float floorHeight = -70;
-                        float feetOffset = footHeight - floorHeight;
+                        Vector3 headObject = GetVector3FromJoint(body.Joints[Kinect.JointType.Head]);
+                        float headHeight = headObject.y;
+                        float idealHeight = 40;
+                        float feetOffset = headHeight - idealHeight;
                         kinectLocation.transform.position += new Vector3(0,-feetOffset,0);
                         player_id = body.TrackingId;
                     }

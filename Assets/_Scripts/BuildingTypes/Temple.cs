@@ -8,18 +8,9 @@ public class Temple : ResourceBuilding
     public bool spawnedGarrison = false;
     public WorldStarter world;
     public bool placed = false;
-    private int fCost = 0;
-
-
-    public override int faithCost()
-    {
-        return fCost;
-    }
 
     public override void create_building()
     {
-        health = 500.0f;
-        totalHealth = 500.0f;
         buildingName = "TEMPLE";
         Debug.Log(world);
         world.startGame();
