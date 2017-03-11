@@ -132,10 +132,6 @@ public class BadiesAI : MonoBehaviour, Character
             case Portal.MonsterType.Harpy:
                 currentState = MonsterState.AttackBuildings;
                 originalState = currentState;
-                foreach (Renderer renderer in renderers)
-                {
-                    renderer.material.SetColor("_Color", new Color(0, 0, 1));
-                }
                 break;
         }
 
@@ -381,9 +377,15 @@ public class BadiesAI : MonoBehaviour, Character
         else target = sT;
  
         Vector3 offset = target - transform.position;
-        
+
+        //harpies are ranges and should stand back more
+        int distance = 5;
+        if(monsterType == Portal.MonsterType.Harpy)
+        {
+            distance = 10;
+        }
         //don't spin in circles
-        if (offset.magnitude > 5)
+        if (offset.magnitude > distance)
         {
             NavMeshPath path = new NavMeshPath();
             agent.CalculatePath(target, path);
@@ -441,8 +443,10 @@ public class BadiesAI : MonoBehaviour, Character
     {
         if (victim != null)
         {
-
-            transform.rotation = Quaternion.LookRotation(victim.transform.position - transform.position);
+            float y = transform.position.y;
+            Vector3 victimPos = victim.transform.position;
+            victimPos.y = y;
+            transform.rotation = Quaternion.LookRotation(victimPos - transform.position);
             currentVictim = victim;
             animator.SetBool("Attacking", true);
             return true;
@@ -469,7 +473,7 @@ public class BadiesAI : MonoBehaviour, Character
             //die animation here
             animator.enabled = false;
 
-            StartCoroutine(WaitToDestroy(0.7f));
+            StartCoroutine(WaitToDestroy(4));
             resources.removeBaddie();
         }
     }
