@@ -129,7 +129,7 @@ public class BadiesAI : MonoBehaviour, Character
                 originalState = currentState;
 
                 break;
-            case Portal.MonsterType.Monster2:
+            case Portal.MonsterType.Harpy:
                 currentState = MonsterState.AttackBuildings;
                 originalState = currentState;
                 foreach (Renderer renderer in renderers)
