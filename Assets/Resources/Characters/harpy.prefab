@@ -3911,7 +3911,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debug: 0
-  strength: 5
+  strength: 20
   health: 100
   totalHealth: 100
   rotationSpeed: 6
