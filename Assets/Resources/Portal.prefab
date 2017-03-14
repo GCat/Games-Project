@@ -773,8 +773,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1202590423550394}
   m_LocalRotation: {x: -0, y: 0.70995927, z: -0, w: 0.70424277}
-  m_LocalPosition: {x: -97.813, y: 1.83, z: 31.651}
-  m_LocalScale: {x: 7.25255, y: 3.6262748, z: 3.6262748}
+  m_LocalPosition: {x: -98.7, y: 4.1, z: 20.2}
+  m_LocalScale: {x: 17.261337, y: 8.630664, z: 8.630664}
   m_Children:
   - {fileID: 4050100237852904}
   - {fileID: 4825022829646916}
@@ -1269,11 +1269,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c6e4de0e97e3bb4f86abf2162ae2b7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Waves:
+  - monsters: 000000000100000002000000
+    waveTime: 30
+  - monsters: 0000000000000000010000000100000001000000
+    waveTime: 30
+  - monsters: 000000000000000000000000000000000000000000000000
+    waveTime: 60
+  - monsters: 0200000002000000020000000200000002000000
+    waveTime: 60
+  - monsters: 00000000010000000200000000000000010000000200000000000000010000000200000000000000
+    waveTime: 71.8
   spawnPos: {fileID: 1552852297756788}
   monsterTypes:
   - {fileID: 1830059517110030, guid: d27d199e890e0f44ba28c100c8b40d55, type: 2}
   - {fileID: 1944568527468440, guid: 41663deb42f81fa4cbdb56b983585257, type: 2}
-  - {fileID: 1830059517110030, guid: d27d199e890e0f44ba28c100c8b40d55, type: 2}
+  - {fileID: 1454130615011182, guid: 45c41ec318340254f9e812a2a0cc50f3, type: 2}
+  delayStart: 60
 --- !u!114 &114731457494940228
 MonoBehaviour:
   m_ObjectHideFlags: 1

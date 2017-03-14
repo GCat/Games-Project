@@ -53,6 +53,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
     private GameObject temple;
     private bool alive = true;
     public bool humanHeld = false;
+    public bool droppedOnZone = false;
 
     // Components
     public AudioClip sacrificeClip;
@@ -78,6 +79,11 @@ public class Agent : MonoBehaviour, Character, Grabbable
     //public CharacterController controller;
     private NavMeshAgent agent;
     private HumanState currentState = HumanState.Wandering;
+
+    //public bool[] rallySlotsFree = new bool[5];
+    //public Vector3[] rallySlots = new Vector3[5];
+    private Vector3 rallyZoneCentre;
+    //private RallyPoint rallypoint;
 
     private Vector3 wanderPoint = Vector3.zero;
     private LineRenderer lineRenderer;
@@ -112,6 +118,8 @@ public class Agent : MonoBehaviour, Character, Grabbable
         lineRenderer = GetComponent<LineRenderer>();
         tR = resources.getTopRight();
         bL = resources.getBottomLeft();
+
+       
     }
 
     // Update is called once per frame
@@ -157,6 +165,12 @@ public class Agent : MonoBehaviour, Character, Grabbable
                     {
                         if (resources.aboveBoard(transform.position))
                         {
+                            if ((transform.position.y < 0.5) && droppedOnZone)
+                            {
+                                agent.enabled = true;
+                                currentState = HumanState.Defending;
+                                break;
+                            }
                             if (transform.position.y < 0.5)
                             {
                                 agent.enabled = true;
@@ -168,6 +182,27 @@ public class Agent : MonoBehaviour, Character, Grabbable
                             sacrifice();
                         }
                     }
+                    break;
+
+                case HumanState.Defending:
+                    if (resources.baddies > 0)
+                    {
+                        closestEnemy = findClosestEnemy();
+                        if (Vector3.Distance(closestEnemy.transform.position, rallyZoneCentre) < 25.0f)
+                        {
+                            attack();
+                        }
+                    }
+                    /*else
+                    {
+                        for (int i = 0; i < rallySlots.Length; i++)
+                        {
+                            if (!rallySlotsFree[i])
+                            {
+                                walkTo(rallySlots[i]);
+                            }
+                        }
+                    }*/               
                     break;
             }
         }
@@ -360,6 +395,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
         rb.useGravity = false;
         GetComponent<Collider>().enabled = false;
         humanHeld = true;
+        droppedOnZone = false;
     }
 
     public void release(Vector3 vel)
@@ -437,6 +473,13 @@ public class Agent : MonoBehaviour, Character, Grabbable
         {
             setOutline();
         }
+        if (other.gameObject.name == "rally zone collider")
+        {
+            droppedOnZone = true;
+            rallyZoneCentre = other.gameObject.transform.position;
+            //rallypoint = other.transform.parent.GetComponent<RallyPoint>();
+            //rallySlots = rallypoint.getRallySlots();
+        }
     }
     private void OnTriggerExit(Collider other)
     {
@@ -446,5 +489,5 @@ public class Agent : MonoBehaviour, Character, Grabbable
         }
     }
 
-    
+
 }

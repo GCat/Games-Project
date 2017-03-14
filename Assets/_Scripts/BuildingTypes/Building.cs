@@ -20,6 +20,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
     public bool canBeGrabbed = true;
     protected Renderer[] child_materials;
     protected Shader outlineShader;
+    private GameObject ExplosionEffect;
 
 
     public abstract bool canBuy();
@@ -36,6 +37,8 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
 
         if (health <= 0)
         {
+            GameObject explosion = GameObject.Instantiate(ExplosionEffect, transform);
+            Destroy(explosion, 1.5f);
             die();
         }else if(health <= (0.2 * totalHealth))
         {
@@ -57,6 +60,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         boxSize.y = 1f;
         child_materials = GetComponentsInChildren<Renderer>();
         outlineShader = Shader.Find("Toon/Basic Outline");
+        ExplosionEffect = Resources.Load("Explosion") as GameObject;
     }
 
     //return true if within bounds & not above another building
