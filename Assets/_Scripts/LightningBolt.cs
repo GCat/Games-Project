@@ -78,17 +78,18 @@ public class LightningBolt : MonoBehaviour, Grabbable {
 
     void OnCollisionEnter(Collision col)
     {
-        if (col.gameObject.name == "Ground") {
+        if (col.gameObject.tag == "Ground") {
             res.removeFaith(fCost);
             source.Play();
             int layerMask = 1 << 11;
             ContactPoint hit = col.contacts[0];
             rend.enabled = false;
+            GetComponent<Collider>().enabled = false;
             Collider[] damageZone = Physics.OverlapSphere(hit.point, damageRadius, layerMask);
           
             GameObject resource = Resources.Load("Bolt flash") as GameObject;
             flash = GameObject.Instantiate(resource, hit.point, Quaternion.identity);
-            Destroy(flash.gameObject, 1.0f);
+            Destroy(flash.gameObject, 0.2f);
 
             for (int i=0; i < damageZone.Length; i++)
             {
@@ -100,7 +101,8 @@ public class LightningBolt : MonoBehaviour, Grabbable {
                 }
 
             }
-            Destroy(gameObject, 2.0f);
+            Destroy(gameObject, 0.1f);
+            
         }
     }
 

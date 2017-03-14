@@ -41,7 +41,7 @@ public class Portal : MonoBehaviour {
         {
             return;
         } 
-        if(Time.time > startTime + delayStart && !started)
+        if(Time.time > startTime + delayStart && !started && temple.GetComponent<Temple>().isPlaced())
         {
             started = true;
             StartCoroutine(spawnWaves());
