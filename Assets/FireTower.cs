@@ -209,7 +209,7 @@ public class FireTower : Building, Grabbable
 
     public override void die()
     {
-        Destroy(gameObject);
+        Destroy(gameObject, 0.5f);
     }
 
     public override void activate()
