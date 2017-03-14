@@ -89,7 +89,7 @@ public class LightningBolt : MonoBehaviour, Grabbable {
           
             GameObject resource = Resources.Load("Bolt flash") as GameObject;
             flash = GameObject.Instantiate(resource, hit.point, Quaternion.identity);
-            Destroy(flash.gameObject, 0.2f);
+            Destroy(flash.gameObject, 0.5f);
 
             for (int i=0; i < damageZone.Length; i++)
             {
