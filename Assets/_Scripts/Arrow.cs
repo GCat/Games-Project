@@ -31,7 +31,7 @@ public class Arrow : MonoBehaviour {
             {
                 enemyPos = new Vector3(target.transform.position.x, 1.5f, target.transform.position.z);
 
-                if (Vector3.Distance(transform.position, enemyPos) < 0.3f)
+                if (Vector3.Distance(transform.position, enemyPos) < 0.8f)
                 {
                     if (!damageDone)
                     {
@@ -46,7 +46,7 @@ public class Arrow : MonoBehaviour {
                             Debug.Log("arrow cannot damage something without health");
                         }
                     }
-                    Destroy(gameObject,1.5f);
+                    Destroy(gameObject,0);
                 }
                 else
                 {

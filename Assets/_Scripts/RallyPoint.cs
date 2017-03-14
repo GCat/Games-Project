@@ -8,18 +8,21 @@ public class RallyPoint : Building, Grabbable {
     private int fCost = 0;
 
     GameObject rangeHighlight;
+    GameObject rallyZone;
+    SphereCollider rallyZoneCollider;
     private float radius = 25.0f;
 
     public float timer1;
     private float StartTime1;
     private float placementTime = 0;
-
-
+    
     bool active = false;
     public bool held = false;
     private bool badplacement = false;
     bool grabbedOnce = false;
     bool humanIsHeld = false;
+    //public bool[] rallySlotsFree = new bool[5];
+    //public Vector3[] rallySlots = new Vector3[5];
 
     public override void changeTextColour(Color colour)
     {
@@ -40,6 +43,11 @@ public class RallyPoint : Building, Grabbable {
         rangeHighlight.GetComponent<Renderer>().enabled = true;
         rangeHighlight.SetActive(false);
         InvokeRepeating("HumanHeld", .1f, .1f);
+
+        /*for (int i = 0; i < rallySlotsFree.Length; i++)
+        {
+            rallySlotsFree[i] = true;
+        }*/
     }
 
     // Update is called once per frame
@@ -90,7 +98,10 @@ public class RallyPoint : Building, Grabbable {
         GetComponent<Rigidbody>().useGravity = false;
         GetComponent<Rigidbody>().isKinematic = true;
         GetComponent<Collider>().enabled = false;
-
+        if (rallyZone != null)
+        {
+            destroyRallyZone();
+        }
     }
 
     public override void create_building()
@@ -133,8 +144,7 @@ public class RallyPoint : Building, Grabbable {
         timer1 = 0f;
         StartTime1 = Time.time;
         hideRange();
-
-        
+        createRallyZone();        
     }
 
 
@@ -188,7 +198,46 @@ public class RallyPoint : Building, Grabbable {
         }
     }
 
+    public void createRallyZone()
+    {
+        rallyZone = new GameObject();
+        rallyZone.name = "rally zone collider";
+        rallyZone.transform.SetParent(gameObject.transform);
+        rallyZoneCollider = rallyZone.AddComponent<SphereCollider>();
+        rallyZoneCollider.radius = 12.5f;
+        rallyZoneCollider.transform.position = transform.position;
+        rallyZoneCollider.isTrigger = true;
 
+        /*Vector3 humanLocation;
+        humanLocation = new Vector3(transform.position.x, transform.position.y, transform.position.z + 12.5f);
+        for (int i = 0; i < rallySlots.Length ; i++)
+        {
+            rallySlots[i] = rotateAroundPivot(humanLocation, transform.position, new Vector3(0, (360 / 5), 0));
+        }*/
+    }
+
+    public void destroyRallyZone()
+    {
+        Destroy(rallyZone);
+    }
+
+    Vector3 rotateAroundPivot(Vector3 point, Vector3 pivot, Vector3 angles)
+    {
+        Vector3 dir = point - pivot;
+        dir = Quaternion.Euler(angles) * dir;
+        point = dir + pivot;
+        return point;
+    }
+
+    /*public Vector3[] getRallySlots()
+    {
+        return rallySlots;
+    }
+
+    public bool[] gettRallySlotsFree()
+    {
+        return rallySlotsFree;
+    }*/
 }
 
 /*

@@ -14,7 +14,7 @@ public class GameBoard : MonoBehaviour {
     private Bounds b;
     // Use this for initialization
     void Start () {
-        b = GetComponent<MeshRenderer>().bounds;
+        b = GetComponent<Collider>().bounds;
         tR = b.max;
         bL = b.min;
 	}

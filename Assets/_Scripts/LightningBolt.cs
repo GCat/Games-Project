@@ -6,7 +6,7 @@ using UnityEngine;
 public class LightningBolt : MonoBehaviour, Grabbable {
 
     public bool held = false;
-    public int fCost = 100;
+    public int fCost = 10;
     public float damage = 50f;
     public float damageRadius = 30f;
     GameObject highlight = null;
@@ -14,19 +14,28 @@ public class LightningBolt : MonoBehaviour, Grabbable {
     protected Renderer rend;
     protected Shader outlineShader;
     public ResourceCounter res;
+    private AudioSource source;
 
     // Use this for initialization
     void Start () {
         outlineShader = Shader.Find("Toon/Basic Outline");
         rend = GetComponent<Renderer>();
         res = GameObject.FindGameObjectWithTag("Tablet").GetComponent<ResourceCounter>();
+        source = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
     void Update () {
 		
 	}
-
+    public bool canBuy()
+    {
+        Debug.Log(fCost);
+        Debug.Log(res.faith);
+        Debug.Log(res.faith > fCost);
+        if (res.faith > fCost) return true;
+        else return false;
+    }
     public void removeOutline()
     {
 
@@ -71,28 +80,27 @@ public class LightningBolt : MonoBehaviour, Grabbable {
     {
         if (col.gameObject.name == "Ground") {
             res.removeFaith(fCost);
+            source.Play();
             int layerMask = 1 << 11;
             ContactPoint hit = col.contacts[0];
-            Destroy(this.gameObject);
+            rend.enabled = false;
             Collider[] damageZone = Physics.OverlapSphere(hit.point, damageRadius, layerMask);
           
             GameObject resource = Resources.Load("Bolt flash") as GameObject;
             flash = GameObject.Instantiate(resource, hit.point, Quaternion.identity);
-            Destroy(flash.gameObject, 0.06f);
+            Destroy(flash.gameObject, 1.0f);
 
-            int i = 0;
-            while (i < damageZone.Length)
+            for (int i=0; i < damageZone.Length; i++)
             {
-                HealthManager victimHealth = damageZone[i].GetComponent<HealthManager>();
+                HealthManager victimHealth = damageZone[i].gameObject.GetComponent<HealthManager>();
                 //we can probably do something cleaner than comparing name - maybe some enums for different character types
-                if (victimHealth != null && damageZone[i].name == "badie")
+                if (victimHealth != null)
                 {
                     victimHealth.decrementHealth(damage);
-                } else {
-                    //can't damage something without health -- in this case that's fine
                 }
-                i++;
+
             }
+            Destroy(gameObject, 2.0f);
         }
     }
 

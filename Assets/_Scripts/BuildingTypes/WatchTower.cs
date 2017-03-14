@@ -77,10 +77,16 @@ public class WatchTower : Building, Grabbable
             if (highlight != null)
             {
                 highlightCheck();
+                showRange();
             }
-            else if (transform.position.y > 0.1f)
+            else if (transform.position.y > 0f)
             {
                 createHighlight();
+                showRange();
+            }
+            else
+            {
+                hideRange();
             }
         }
         else if (badplacement)
@@ -238,6 +244,14 @@ public class WatchTower : Building, Grabbable
         if (other.gameObject.tag == "Hand" && grabbedOnce)
         {
             showRange();
+        }
+    }
+    new void OnTriggerExit(Collider other)
+    {
+        base.OnTriggerExit(other);
+        if (other.gameObject.tag == "Hand")
+        {
+            hideRange();
         }
     }
 
