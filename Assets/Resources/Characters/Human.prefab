@@ -979,8 +979,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013033331268}
   m_LocalRotation: {x: -0.0006412557, y: -0.22017331, z: -0.0009570377, w: 0.9754601}
-  m_LocalPosition: {x: -54.026608, y: 25.579226, z: -50.678658}
-  m_LocalScale: {x: 8.000003, y: 8.000002, z: 8}
+  m_LocalPosition: {x: -7.678833, y: 0, z: 19.587662}
+  m_LocalScale: {x: 12, y: 12, z: 12}
   m_Children:
   - {fileID: 4000014266301270}
   - {fileID: 4000011023761816}
@@ -1408,6 +1408,9 @@ MonoBehaviour:
   speed: 3
   gravity: 9.81
   weapon_strength: 0
+  debug: 0
+  humanHeld: 0
+  droppedOnZone: 0
   sacrificeClip: {fileID: 8300000, guid: 7ee549d8486b14948aa187fb09f1dde4, type: 3}
   anim: {fileID: 111000010165483130}
   fighterType: 0
