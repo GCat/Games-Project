@@ -176,7 +176,14 @@ public class FireTower : Building, Grabbable
 
     }
 
+    void OnDestroy()
+    {
+        if (rangeHighlight != null)
+        {
+            DestroyImmediate(rangeHighlight);
+        }
 
+    }
 
 
     public override string getName()

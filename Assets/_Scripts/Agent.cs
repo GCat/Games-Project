@@ -93,6 +93,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
 
     private Vector3 bL;
     private Vector3 tR;
+    private float rallyZoneRadius = 10;
 
     public enum HumanState { Fighting, Wandering, Grabbed, Falling, Defending };
 
@@ -187,11 +188,30 @@ public class Agent : MonoBehaviour, Character, Grabbable
                 case HumanState.Defending:
                     if (resources.baddies > 0)
                     {
-                        closestEnemy = findClosestEnemy();
-                        if (Vector3.Distance(closestEnemy.transform.position, rallyZoneCentre) < 25.0f)
+                       
+                        if(closestEnemy == null)
+                        {
+                            if(Vector3.Distance(transform.position, rallyZoneCentre) > rallyZoneRadius)
+                            {
+                                walkTo(rallyZoneCentre);
+                            }else
+                            {
+                                closestEnemy = findClosestEnemy();
+                                if (Vector3.Distance(closestEnemy.transform.position, rallyZoneCentre) < rallyZoneRadius)
+                                {
+                                    attack();
+                                }
+                            }
+
+                        }else
                         {
                             attack();
                         }
+
+
+                    }else
+                    {
+                        walkTo(rallyZoneCentre);
                     }
                     /*else
                     {
@@ -202,7 +222,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
                                 walkTo(rallySlots[i]);
                             }
                         }
-                    }*/               
+                    }*/
                     break;
             }
         }
@@ -473,10 +493,14 @@ public class Agent : MonoBehaviour, Character, Grabbable
         {
             setOutline();
         }
-        if (other.gameObject.name == "rally zone collider")
+        if (other.gameObject.tag == "RallyPoint" && currentState == HumanState.Falling)
         {
+            SphereCollider rallyZone = other as SphereCollider;
+            rallyZoneRadius = rallyZone.radius;
             droppedOnZone = true;
             rallyZoneCentre = other.gameObject.transform.position;
+           
+            closestEnemy = null;
             //rallypoint = other.transform.parent.GetComponent<RallyPoint>();
             //rallySlots = rallypoint.getRallySlots();
         }

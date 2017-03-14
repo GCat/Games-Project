@@ -27,6 +27,7 @@ TagManager:
   - Table
   - Turret
   - WallSegment
+  - RallyPoint
   layers:
   - Default
   - TransparentFX
