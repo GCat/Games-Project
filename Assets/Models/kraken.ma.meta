@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: b7a56ceb7e4756b43a92796507a29d65
-timeCreated: 1489488876
+guid: a2518095abcd6f04494b191fdd525c60
+timeCreated: 1489490791
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -106,9 +106,7 @@ ModelImporter:
     4300004: flag
     4300006: kraken
     7400000: Take 001
-    7400002: Attack
     9500000: //RootNode
-    11100000: //RootNode
     13700000: kraken
   materials:
     importMaterials: 1
@@ -128,245 +126,9 @@ ModelImporter:
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
-    animationWrapMode: 3
+    animationWrapMode: 0
     extraExposedTransformPaths: []
-    clipAnimations:
-    - serializedVersion: 16
-      name: Take 001
-      takeName: Take 001
-      firstFrame: 1
-      lastFrame: 120
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask:
-      - path: 
-        weight: 1
-      - path: flag
-        weight: 1
-      - path: flag/flag 1
-        weight: 1
-      - path: flag/wood_of_flag
-        weight: 1
-      - path: kraken
-        weight: 1
-      - path: kraken/middleKraken
-        weight: 1
-      - path: kraken/middleKraken/back_left
-        weight: 1
-      - path: kraken/middleKraken/back_left/joint16
-        weight: 1
-      - path: kraken/middleKraken/back_left/joint16/joint17
-        weight: 1
-      - path: kraken/middleKraken/back_left/joint16/joint17/joint18
-        weight: 1
-      - path: kraken/middleKraken/back_left/joint16/joint17/joint18/joint19
-        weight: 1
-      - path: kraken/middleKraken/back_left/joint16/joint17/joint18/joint19/joint20
-        weight: 1
-      - path: kraken/middleKraken/back_left/joint16/joint17/joint18/joint19/joint20/joint21
-        weight: 1
-      - path: kraken/middleKraken/back_right
-        weight: 1
-      - path: kraken/middleKraken/back_right/joint22
-        weight: 1
-      - path: kraken/middleKraken/back_right/joint22/joint23
-        weight: 1
-      - path: kraken/middleKraken/back_right/joint22/joint23/joint24
-        weight: 1
-      - path: kraken/middleKraken/back_right/joint22/joint23/joint24/joint25
-        weight: 1
-      - path: kraken/middleKraken/back_right/joint22/joint23/joint24/joint25/joint26
-        weight: 1
-      - path: kraken/middleKraken/back_right/joint22/joint23/joint24/joint25/joint26/joint27
-        weight: 1
-      - path: kraken/middleKraken/front_left
-        weight: 1
-      - path: kraken/middleKraken/front_left/joint6
-        weight: 1
-      - path: kraken/middleKraken/front_left/joint6/joint7
-        weight: 1
-      - path: kraken/middleKraken/front_left/joint6/joint7/joint8
-        weight: 1
-      - path: kraken/middleKraken/front_left/joint6/joint7/joint8/joint9
-        weight: 1
-      - path: kraken/middleKraken/front_left/joint6/joint7/joint8/joint9/joint10
-        weight: 1
-      - path: kraken/middleKraken/front_right
-        weight: 1
-      - path: kraken/middleKraken/front_right/joint1
-        weight: 1
-      - path: kraken/middleKraken/front_right/joint1/joint2
-        weight: 1
-      - path: kraken/middleKraken/front_right/joint1/joint2/joint3
-        weight: 1
-      - path: kraken/middleKraken/front_right/joint1/joint2/joint3/joint4
-        weight: 1
-      - path: kraken/middleKraken/front_right/joint1/joint2/joint3/joint4/joint5
-        weight: 1
-      - path: kraken/middleKraken/left
-        weight: 1
-      - path: kraken/middleKraken/left/joint11
-        weight: 1
-      - path: kraken/middleKraken/left/joint11/joint12
-        weight: 1
-      - path: kraken/middleKraken/left/joint11/joint12/joint13
-        weight: 1
-      - path: kraken/middleKraken/left/joint11/joint12/joint13/joint14
-        weight: 1
-      - path: kraken/middleKraken/left/joint11/joint12/joint13/joint14/joint15
-        weight: 1
-      - path: kraken/middleKraken/right
-        weight: 1
-      - path: kraken/middleKraken/right/joint28
-        weight: 1
-      - path: kraken/middleKraken/right/joint28/joint29
-        weight: 1
-      - path: kraken/middleKraken/right/joint28/joint29/joint30
-        weight: 1
-      - path: kraken/middleKraken/right/joint28/joint29/joint30/joint31
-        weight: 1
-      - path: kraken/middleKraken/right/joint28/joint29/joint30/joint31/joint32
-        weight: 1
-      - path: krakenPond
-        weight: 1
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: Attack
-      takeName: Take 001
-      firstFrame: 1
-      lastFrame: 45
-      wrapMode: 4
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 1
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask:
-      - path: 
-        weight: 1
-      - path: flag
-        weight: 1
-      - path: flag/flag 1
-        weight: 1
-      - path: flag/wood_of_flag
-        weight: 1
-      - path: kraken
-        weight: 1
-      - path: kraken/middleKraken
-        weight: 1
-      - path: kraken/middleKraken/back_left
-        weight: 1
-      - path: kraken/middleKraken/back_left/joint16
-        weight: 1
-      - path: kraken/middleKraken/back_left/joint16/joint17
-        weight: 1
-      - path: kraken/middleKraken/back_left/joint16/joint17/joint18
-        weight: 1
-      - path: kraken/middleKraken/back_left/joint16/joint17/joint18/joint19
-        weight: 1
-      - path: kraken/middleKraken/back_left/joint16/joint17/joint18/joint19/joint20
-        weight: 1
-      - path: kraken/middleKraken/back_left/joint16/joint17/joint18/joint19/joint20/joint21
-        weight: 1
-      - path: kraken/middleKraken/back_right
-        weight: 1
-      - path: kraken/middleKraken/back_right/joint22
-        weight: 1
-      - path: kraken/middleKraken/back_right/joint22/joint23
-        weight: 1
-      - path: kraken/middleKraken/back_right/joint22/joint23/joint24
-        weight: 1
-      - path: kraken/middleKraken/back_right/joint22/joint23/joint24/joint25
-        weight: 1
-      - path: kraken/middleKraken/back_right/joint22/joint23/joint24/joint25/joint26
-        weight: 1
-      - path: kraken/middleKraken/back_right/joint22/joint23/joint24/joint25/joint26/joint27
-        weight: 1
-      - path: kraken/middleKraken/front_left
-        weight: 1
-      - path: kraken/middleKraken/front_left/joint6
-        weight: 1
-      - path: kraken/middleKraken/front_left/joint6/joint7
-        weight: 1
-      - path: kraken/middleKraken/front_left/joint6/joint7/joint8
-        weight: 1
-      - path: kraken/middleKraken/front_left/joint6/joint7/joint8/joint9
-        weight: 1
-      - path: kraken/middleKraken/front_left/joint6/joint7/joint8/joint9/joint10
-        weight: 1
-      - path: kraken/middleKraken/front_right
-        weight: 1
-      - path: kraken/middleKraken/front_right/joint1
-        weight: 1
-      - path: kraken/middleKraken/front_right/joint1/joint2
-        weight: 1
-      - path: kraken/middleKraken/front_right/joint1/joint2/joint3
-        weight: 1
-      - path: kraken/middleKraken/front_right/joint1/joint2/joint3/joint4
-        weight: 1
-      - path: kraken/middleKraken/front_right/joint1/joint2/joint3/joint4/joint5
-        weight: 1
-      - path: kraken/middleKraken/left
-        weight: 1
-      - path: kraken/middleKraken/left/joint11
-        weight: 1
-      - path: kraken/middleKraken/left/joint11/joint12
-        weight: 1
-      - path: kraken/middleKraken/left/joint11/joint12/joint13
-        weight: 1
-      - path: kraken/middleKraken/left/joint11/joint12/joint13/joint14
-        weight: 1
-      - path: kraken/middleKraken/left/joint11/joint12/joint13/joint14/joint15
-        weight: 1
-      - path: kraken/middleKraken/right
-        weight: 1
-      - path: kraken/middleKraken/right/joint28
-        weight: 1
-      - path: kraken/middleKraken/right/joint28/joint29
-        weight: 1
-      - path: kraken/middleKraken/right/joint28/joint29/joint30
-        weight: 1
-      - path: kraken/middleKraken/right/joint28/joint29/joint30/joint31
-        weight: 1
-      - path: kraken/middleKraken/right/joint28/joint29/joint30/joint31/joint32
-        weight: 1
-      - path: krakenPond
-        weight: 1
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
+    clipAnimations: []
     isReadable: 1
   meshes:
     lODScreenPercentages: []
@@ -405,10 +167,10 @@ ModelImporter:
     rootMotionBoneName: 
     rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
-    hasExtraRoot: 1
+    hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 1
+  animationType: 2
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
