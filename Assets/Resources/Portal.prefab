@@ -773,8 +773,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1202590423550394}
   m_LocalRotation: {x: -0, y: 0.70995927, z: -0, w: 0.70424277}
-  m_LocalPosition: {x: -98.7, y: 4.1, z: 20.2}
-  m_LocalScale: {x: 17.261337, y: 8.630664, z: 8.630664}
+  m_LocalPosition: {x: -98.7, y: 5.8, z: 20.2}
+  m_LocalScale: {x: 24, y: 12, z: 12}
   m_Children:
   - {fileID: 4050100237852904}
   - {fileID: 4825022829646916}
@@ -1285,7 +1285,7 @@ MonoBehaviour:
   - {fileID: 1830059517110030, guid: d27d199e890e0f44ba28c100c8b40d55, type: 2}
   - {fileID: 1944568527468440, guid: 41663deb42f81fa4cbdb56b983585257, type: 2}
   - {fileID: 1454130615011182, guid: 45c41ec318340254f9e812a2a0cc50f3, type: 2}
-  delayStart: 60
+  delayStart: 10
 --- !u!114 &114731457494940228
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1319,7 +1319,7 @@ ParticleSystem:
   m_GameObject: {fileID: 1983860544026312}
   serializedVersion: 5
   lengthInSec: 0.28
-  simulationSpeed: 1
+  speed: 1
   looping: 1
   prewarm: 0
   playOnAwake: 1
@@ -3956,7 +3956,7 @@ ParticleSystem:
   m_GameObject: {fileID: 1394648185065624}
   serializedVersion: 5
   lengthInSec: 0.28
-  simulationSpeed: 1
+  speed: 1
   looping: 1
   prewarm: 0
   playOnAwake: 1
