@@ -50,7 +50,6 @@ public class WatchTower : Building, Grabbable
 
     void Start()
     {
-
         pre = Resources.Load("Arrow_Regular") as GameObject;
         infoText = createInfoText("FaithCost");
         setInfoText(infoText, faithCost);

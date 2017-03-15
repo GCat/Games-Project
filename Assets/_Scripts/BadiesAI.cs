@@ -243,6 +243,8 @@ public class BadiesAI : MonoBehaviour, Character
                 GameObject spit = Instantiate(projectile, transform.position, transform.rotation);
                 Vector3 direction = Vector3.Normalize(currentVictim.transform.position - transform.position)*15;
                 spit.GetComponent<Rigidbody>().velocity = direction;
+                Physics.IgnoreCollision(GetComponent<Collider>(), spit.GetComponent<Collider>());
+
             }
             victimHealth.decrementHealth(strength);
         }
@@ -512,6 +514,7 @@ public class BadiesAI : MonoBehaviour, Character
         infoText.transform.SetParent(gameObject.transform);
         debugText = infoText.GetComponent<TextMesh>();
         debugText.text = "";
+        infoText.SetActive(false);
     }
 
     private GameObject findClosestEnemy(string tag)

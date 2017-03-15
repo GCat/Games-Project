@@ -54,12 +54,12 @@ public class Portal : MonoBehaviour {
         yield return new WaitForSeconds(delayStart);
         foreach (Wave wave in Waves)
         {
+            asource.Play();
             //spawn each monster with a 1 second delay
-            foreach(MonsterType monsterType in wave.monsters)
+            foreach (MonsterType monsterType in wave.monsters)
             {
                 GameObject monster = GameObject.Instantiate(monsterTypes[(int)monsterType], pos, Quaternion.identity);
                 monster.GetComponent<BadiesAI>().spawn(monsterType);
-                asource.Play();
                 yield return new WaitForSeconds(2);
             }
             resourceCounter.beginCountDown(wave.waveTime);
