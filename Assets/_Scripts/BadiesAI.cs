@@ -85,6 +85,8 @@ public class BadiesAI : MonoBehaviour, Character
     private LineRenderer lineRenderer;
     private Renderer[] renderers;
 
+    private Collider[] ragdoll;
+
     private GameObject currentVictim;
     enum MonsterState { AttackTemple, AttackHumans, AttackBuildings, Idle, PathBlocked };
 
@@ -100,6 +102,11 @@ public class BadiesAI : MonoBehaviour, Character
         createInfoText();
         infoTextOri = infoText.transform.rotation;
         lineRenderer = GetComponent<LineRenderer>();
+        ragdoll = GetComponentsInChildren<Collider>();
+        foreach(Collider collider in ragdoll)
+        {
+            collider.enabled = false;
+        }
     }
 
     //can we make the spawn type an enum please xoxo
@@ -419,23 +426,9 @@ public class BadiesAI : MonoBehaviour, Character
 
     private void reachedTarget()
     {
-        switch (currentState)
+        if (currentState != MonsterState.Idle)
         {
-            case MonsterState.AttackTemple:
                 attack(closestEnemy);
-                break;
-            case MonsterState.AttackHumans:
-                attack(closestEnemy);
-                break;
-            case MonsterState.AttackBuildings:
-                attack(closestEnemy);
-                break;
-            case MonsterState.PathBlocked:
-                attack(closestEnemy);
-                break;
-            case MonsterState.Idle:
-
-                break;
         }
     }
 
@@ -446,7 +439,7 @@ public class BadiesAI : MonoBehaviour, Character
             float y = transform.position.y;
             Vector3 victimPos = victim.transform.position;
             victimPos.y = y;
-            transform.rotation = Quaternion.LookRotation(victimPos - transform.position);
+            //transform.rotation = Quaternion.LookRotation(victimPos - transform.position);
             currentVictim = victim;
             animator.SetBool("Attacking", true);
             return true;
@@ -472,7 +465,10 @@ public class BadiesAI : MonoBehaviour, Character
             alive = false;
             //die animation here
             animator.enabled = false;
-
+            foreach (Collider collider in ragdoll)
+            {
+                collider.enabled = false;
+            }
             StartCoroutine(WaitToDestroy(4));
             resources.removeBaddie();
         }
