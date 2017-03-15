@@ -93,7 +93,12 @@ public class BadiesAI : MonoBehaviour, Character
     MonsterState currentState = MonsterState.AttackTemple;
     MonsterState prevState;
     MonsterState originalState;
+
+
+    //mystery variable - sales tax? saint? street? state?
     private Vector3 sT;
+
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -385,12 +390,7 @@ public class BadiesAI : MonoBehaviour, Character
  
         Vector3 offset = target - transform.position;
 
-        //harpies are ranges and should stand back more
-        int distance = 5;
-        if(monsterType == Portal.MonsterType.Harpy)
-        {
-            distance = 10;
-        }
+        float distance = agent.stoppingDistance + 2;
         //don't spin in circles
         if (offset.magnitude > distance)
         {
