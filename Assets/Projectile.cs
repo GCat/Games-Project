@@ -4,18 +4,25 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour {
 
+    //the thing that shot this
+    public GameObject parent = null;
+
+    public float destroyDelay = 0;
 	// Use this for initialization
 	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
+
+    }
+
+    // Update is called once per frame
+    void Update () {
 		
 	}
 
     void OnCollisionEnter(Collision other)
     {
-        Destroy(gameObject);
+        if (other.gameObject != parent)
+        {
+            Destroy(gameObject, destroyDelay);
+        }
     }
 }

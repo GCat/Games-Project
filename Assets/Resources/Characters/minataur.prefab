@@ -3143,6 +3143,7 @@ MonoBehaviour:
   totalHealth: 100
   rotationSpeed: 6
   alive: 0
+  projectile: {fileID: 0}
   animator: {fileID: 95682869262057802}
   startMarker: {x: 0, y: 0, z: 0}
   endMarker: {x: 0, y: 0, z: 0}
@@ -3772,7 +3773,7 @@ NavMeshAgent:
   m_Acceleration: 3
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 0
+  m_StoppingDistance: 2
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1

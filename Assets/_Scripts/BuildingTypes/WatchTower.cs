@@ -8,7 +8,8 @@ public class WatchTower : Building, Grabbable
 
     public AudioClip build;
     public AudioClip destroy;
-
+    public float arrowDamage = 5;
+    float arrowSpeed = 30;
     GameObject rangeHighlight;
 
     public string buildingName;
@@ -127,7 +128,6 @@ public class WatchTower : Building, Grabbable
         {
             if (currentTarget != null)
             {
-                Debug.Log("Firing arrow");
                 throwArrow(currentTarget);
             }
             yield return new WaitForSeconds(2);
@@ -149,8 +149,24 @@ public class WatchTower : Building, Grabbable
         {
             Vector3 pos = transform.TransformPoint(GetComponent<BoxCollider>().center);
             pos.y = 10f;
-            GameObject c = GameObject.Instantiate(pre, pos, Quaternion.LookRotation(victim.transform.position)) as GameObject;
-            ((Arrow)(c.GetComponent(typeof(Arrow)))).attack(victim);
+            Vector3 direction = Vector3.Normalize(victim.transform.position - pos) * arrowSpeed;
+            GameObject arrow = GameObject.Instantiate(pre, pos, Quaternion.LookRotation(direction)) as GameObject;
+            arrow.GetComponent<Projectile>().parent = gameObject;
+            arrow.GetComponent<Rigidbody>().velocity = direction;
+            Physics.IgnoreCollision(GetComponent<Collider>(), arrow.GetComponent<Collider>());
+            float travelTime = Vector3.Distance(victim.transform.position, pos) / arrowSpeed;
+            StartCoroutine(WaitToDamage(travelTime, arrowDamage, currentTarget));
+        }
+    }
+
+
+    IEnumerator WaitToDamage(float waitTime,float damage, GameObject victim)
+    {
+        yield return new WaitForSeconds(waitTime);
+        HealthManager victimHealth = victim.GetComponent<HealthManager>();
+        if (victimHealth != null)
+        {
+            victimHealth.decrementHealth(damage);
         }
     }
 
