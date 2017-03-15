@@ -9,7 +9,10 @@ public class ResourceCounter : MonoBehaviour, Grabbable
     public Dictionary<string, GameObject[]> resource_nodes;
     private GameBoard ground;
     //The text displayed on the tablet
-    public Text text;
+    public Slider faithSlider;
+    public Slider healthSlider;
+    private Temple temple;
+
     public int faith = 0;
     private int population = 0;
     private int iron = 0;
@@ -39,7 +42,8 @@ public class ResourceCounter : MonoBehaviour, Grabbable
         ground = GameObject.FindGameObjectWithTag("Ground").GetComponent<GameBoard>();
         resource_nodes.Add("Forest", forests);
         resource_nodes.Add("Iron", ironNode);
-
+        temple = GameObject.FindGameObjectWithTag("Temple").GetComponent<Temple>();
+        healthSlider.maxValue = temple.totalHealth;
     }
 
     // Update is called once per frame : 
@@ -57,7 +61,9 @@ public class ResourceCounter : MonoBehaviour, Grabbable
             iron -= 20 * armourMult;
             armourMult *= 2;
         }
-        setResourceText();
+        //setResourceText();
+        faithSlider.value = faith;
+        healthSlider.value = temple.health;
     }
 
     public void setResourceText()
@@ -72,7 +78,7 @@ public class ResourceCounter : MonoBehaviour, Grabbable
         resourceText += "Population: " + population.ToString() + "\n";
         //resourceText += "Sword Level: " + swords.ToString() + "\n";
         //resourceText += "Armour Level: " + armour.ToString() + "\n";
-        text.text = resourceText;
+        //text.text = resourceText;
     }
 
 
