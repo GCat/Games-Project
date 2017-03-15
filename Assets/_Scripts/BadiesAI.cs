@@ -48,9 +48,12 @@ public class BadiesAI : MonoBehaviour, Character
     GameObject infoText;
     Quaternion infoTextOri;
     Quaternion healthBarOri;
+    TextMesh debugText;
     private float speed = 7.0f;
     public float rotationSpeed = 6.0f;
     public bool alive = false;
+
+    public GameObject projectile;
 
     // Components
     private Rigidbody rb;
@@ -92,7 +95,7 @@ public class BadiesAI : MonoBehaviour, Character
 
     MonsterState currentState = MonsterState.AttackTemple;
     MonsterState prevState;
-    MonsterState originalState;
+    MonsterState defaultState;
 
 
     //mystery variable - sales tax? saint? street? state?
@@ -112,6 +115,7 @@ public class BadiesAI : MonoBehaviour, Character
         {
             collider.enabled = false;
         }
+        GetComponent<Collider>().enabled = true;
     }
 
     //can we make the spawn type an enum please xoxo
@@ -121,9 +125,7 @@ public class BadiesAI : MonoBehaviour, Character
 
         rb = GetComponent<Rigidbody>();
         closestEnemy = null;
-
         monsterType = type;
-
         temple = GameObject.FindGameObjectWithTag("Temple");
         alive = true;
         Debug.Log(string.Format("Spawn at: {0} with Type: {1}", transform.position, monsterType));
@@ -132,18 +134,16 @@ public class BadiesAI : MonoBehaviour, Character
         {
             case Portal.MonsterType.Monster:
                 currentState = MonsterState.AttackTemple;
-                originalState = currentState;
-
-               
+                defaultState = currentState;
                 break;
             case Portal.MonsterType.Minataur:
                 currentState = MonsterState.AttackHumans;
-                originalState = currentState;
-
+                defaultState = currentState;
                 break;
             case Portal.MonsterType.Harpy:
+                projectile = Resources.Load("Projectile") as GameObject;
                 currentState = MonsterState.AttackBuildings;
-                originalState = currentState;
+                defaultState = currentState;
                 break;
         }
 
@@ -157,17 +157,16 @@ public class BadiesAI : MonoBehaviour, Character
     {
         healthBar.transform.rotation = healthBarOri;
         infoText.transform.rotation = infoTextOri;
+        debugText.text = currentState.ToString();
         if (alive)
         {
-
-
 
             switch (currentState)
             {
                 case MonsterState.AttackTemple:
-                    if (originalState == MonsterState.AttackHumans && resources.getPop() > 0)
+                    if (defaultState == MonsterState.AttackHumans && resources.getPop() > 0)
                     {
-                        currentState = originalState;
+                        currentState = defaultState;
                     }
                     else
                     {
@@ -178,13 +177,12 @@ public class BadiesAI : MonoBehaviour, Character
                 case MonsterState.AttackHumans:
                     if (resources.getPop() > 0)
                     {
-                        showPath();
-                        humanAttack();
+                        attackHumans();
                     }
                     else currentState = MonsterState.AttackBuildings;
                     break;
                 case MonsterState.AttackBuildings:
-                    buildingAttack();
+                    attackBuildings();
                     break;
                 case MonsterState.PathBlocked:
                     destroyObstacle();
@@ -193,6 +191,17 @@ public class BadiesAI : MonoBehaviour, Character
                     break;
             }
         }
+    }
+
+    //checks whether agent has reached a point -- takes stopping distance into account
+    private bool atDestination(Vector3 target)
+    {
+        //ignore height if harpy
+        if(monsterType == Portal.MonsterType.Harpy)
+        {
+            target.y = transform.position.y;
+        }
+        return Vector3.Distance(target, transform.position) < (agent.stoppingDistance + 2);
     }
 
     private GameObject findObstacles()
@@ -229,6 +238,12 @@ public class BadiesAI : MonoBehaviour, Character
         HealthManager victimHealth = currentVictim.GetComponent<HealthManager>();
         if (victimHealth != null)
         {
+            if(monsterType == Portal.MonsterType.Harpy)
+            {
+                GameObject spit = Instantiate(projectile, transform.position, transform.rotation);
+                Vector3 direction = Vector3.Normalize(currentVictim.transform.position - transform.position)*15;
+                spit.GetComponent<Rigidbody>().velocity = direction;
+            }
             victimHealth.decrementHealth(strength);
         }
         else
@@ -325,7 +340,7 @@ public class BadiesAI : MonoBehaviour, Character
     }
 
 
-    private void buildingAttack()
+    private void attackBuildings()
     {
         // for now attack towers
         if (closestEnemy != null)
@@ -348,24 +363,25 @@ public class BadiesAI : MonoBehaviour, Character
         }
 
     }
-    private void humanAttack()
+    private void attackHumans()
     {
-
-        if (closestEnemy != null)
+        //get new target if needed
+        if(closestEnemy == null)
         {
-            if (Mathf.Abs(closestEnemy.transform.position.y) > 5.0f)
-            {
-                closestEnemy = null;
-                changeEnemy();
-            }
-            else
-                walkTowards(closestEnemy.GetComponent<Collider>().ClosestPointOnBounds(transform.position));
-        }
-        else
-        {
+            debugText.text += "\n finding new enemy";
             changeEnemy();
             closestEnemy = findClosestEnemy("Human");
         }
+        //if there are no humans, go attack buildings
+        if(closestEnemy == null)
+        {
+            debugText.text += "\n no enemies, attacking buildings";
+            currentState = MonsterState.AttackBuildings;
+            return;
+        }
+        //otherwise walk towards target or attack if close
+        walkTowards(closestEnemy.GetComponent<Collider>().ClosestPointOnBounds(transform.position));
+
     }
 
     private void walkTowards(Vector3 target)
@@ -387,13 +403,10 @@ public class BadiesAI : MonoBehaviour, Character
             
         }
         else target = sT;
- 
-        Vector3 offset = target - transform.position;
-
-        float distance = agent.stoppingDistance + 2;
         //don't spin in circles
-        if (offset.magnitude > distance)
+        if (!atDestination(target))
         {
+            debugText.text += "\n walking towards target";
             NavMeshPath path = new NavMeshPath();
             agent.CalculatePath(target, path);
             if (path.status != NavMeshPathStatus.PathComplete)
@@ -413,6 +426,7 @@ public class BadiesAI : MonoBehaviour, Character
             {
                 agent.destination = target;
                 showPath();
+                Vector3 offset = target - transform.position;
                 offset.y = transform.position.y;
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(offset), Time.deltaTime * rotationSpeed);
                 animator.SetBool("Walking", true);
@@ -420,6 +434,7 @@ public class BadiesAI : MonoBehaviour, Character
         }
         else
         {
+            debugText.text += "\n reached target";
             reachedTarget();
         }
     }
@@ -495,7 +510,8 @@ public class BadiesAI : MonoBehaviour, Character
         infoText.transform.localRotation = gameObject.transform.localRotation;
         infoText.transform.Rotate(new Vector3(0, -90, 0));
         infoText.transform.SetParent(gameObject.transform);
-        infoText.GetComponent<TextMesh>().text = "rawr :3";
+        debugText = infoText.GetComponent<TextMesh>();
+        debugText.text = "";
     }
 
     private GameObject findClosestEnemy(string tag)
@@ -508,15 +524,15 @@ public class BadiesAI : MonoBehaviour, Character
         Vector3 position = transform.position;
         if (humans.Length > 0)
         {
-            foreach (GameObject badie in humans)
+            foreach (GameObject human in humans)
             {
-                if (Mathf.Abs(badie.transform.position.y) > 5.0f) continue;
-                Vector3 diff = badie.transform.position - position;
+                if (Mathf.Abs(human.transform.position.y) > 5.0f) continue;
+                Vector3 diff = human.transform.position - position;
                 float current_distance = diff.sqrMagnitude;
                 if (current_distance < distance)
                 {
                     distance = current_distance;
-                    closest = badie;
+                    closest = human;
                 }
             }
         }

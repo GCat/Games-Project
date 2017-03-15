@@ -18,9 +18,6 @@ public class WatchTower : Building, Grabbable
     bool active = false;
     public bool held = false;
 
-    public float timer1;
-    private float StartTime1;
-
     private bool badplacement = false;
     private float placementTime = 0;
 
@@ -29,6 +26,7 @@ public class WatchTower : Building, Grabbable
     bool grabbedOnce = false;
 
     private GameObject infoText;
+    private GameObject currentTarget;
 
     float getHealth()
     {
@@ -71,7 +69,6 @@ public class WatchTower : Building, Grabbable
     void Update()
     {
         rangeHighlight.transform.position = new Vector3(gameObject.transform.position.x, 0.1f, gameObject.transform.position.z);
-
         if (held)
         {
             if (highlight != null)
@@ -101,15 +98,10 @@ public class WatchTower : Building, Grabbable
 
             if (resourceCounter.baddies > 0)
             {
-                if (target != null)
-                {
-                    attack(target);
-                }
-                else
+                if(currentTarget == null)
                 {
                     acquireTarget();
                 }
-
             }
         }
     }
@@ -120,27 +112,26 @@ public class WatchTower : Building, Grabbable
         List<Collider> hitColliders = new List<Collider>(Physics.OverlapSphere(transform.position, radius, attackMask));
         if (hitColliders.Count > 0)
         {
-            target = hitColliders[0].gameObject;
+            Debug.Log("Acquired target");
+            currentTarget = hitColliders[0].gameObject;
             return true;
         }
 
         return false;
     }
 
-    //fire an arrow at a target
-    bool attack(GameObject victim)
+    private IEnumerator attack()
     {
-        if (victim != null)
+
+        while (true)
         {
-            timer1 = Time.time - StartTime1;
-            if (timer1 >= 3)
+            if (currentTarget != null)
             {
-                throwArrow(victim);
-                StartTime1 = Time.time;
-                return true;
+                Debug.Log("Firing arrow");
+                throwArrow(currentTarget);
             }
+            yield return new WaitForSeconds(2);
         }
-        return false;
     }
 
     void OnDestroy()
@@ -186,9 +177,6 @@ public class WatchTower : Building, Grabbable
 
     }
 
-
-
-
     public override string getName()
     {
         return buildingName;
@@ -217,16 +205,13 @@ public class WatchTower : Building, Grabbable
 
     public override void activate()
     {
-        //when do you call create buiding for towers ? -- cost does not work 
         active = true;
         if (highlight != null) Destroy(highlight);
         highlight = null;
         held = false;
         buildingName = "TOWER";
-        timer1 = 0f;
-        StartTime1 = Time.time;
         hideRange();
-
+        StartCoroutine(attack());
     }
 
     public override void deactivate()

@@ -238,7 +238,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
             showPath();
             //controller.Move(offset * Time.deltaTime);
             //don't spin in circles
-            if (offset.magnitude > 2)
+            if (!atDestination(target))
             {
                 offset.y = transform.position.y;
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(offset), Time.deltaTime * rotationspeed);
@@ -248,9 +248,16 @@ public class Agent : MonoBehaviour, Character, Grabbable
 
     }
 
+
+    //checks whether agent has reached a point -- takes stopping distance into account
+    private bool atDestination(Vector3 target)
+    {
+        return Vector3.Distance(target, transform.position) < (agent.stoppingDistance + 2);
+    }
+
     private void wander()
     {
-        if (wanderPoint == Vector3.zero || Vector3.Distance(transform.position, wanderPoint) < 5)
+        if (wanderPoint == Vector3.zero || atDestination(wanderPoint))
         {
             wanderPoint = findNewTarget();
         }
@@ -324,14 +331,21 @@ public class Agent : MonoBehaviour, Character, Grabbable
         {
             closestEnemy = findClosestEnemy();
         }
-
-        if (Vector3.Distance(transform.position, closestEnemy.transform.position) < 3.0f)
+        if (closestEnemy == null)
+        {
+            currentState = HumanState.Wandering;
+            anim.Play("walk");
+            return;
+        }
+        if (atDestination(closestEnemy.transform.position))
         {
             if (!attack(closestEnemy))
             {
 
                 closestEnemy = null;
                 currentState = HumanState.Wandering;
+                anim.Play("walk");
+                return;
             }
         }
         else
@@ -353,12 +367,15 @@ public class Agent : MonoBehaviour, Character, Grabbable
         {
             foreach (GameObject badie in badies)
             {
-                Vector3 diff = badie.transform.position - position;
-                float current_distance = diff.sqrMagnitude;
-                if (current_distance < distance)
+                if (badie.GetComponent<BadiesAI>().monsterType != Portal.MonsterType.Harpy)
                 {
-                    distance = current_distance;
-                    closest = badie;
+                    Vector3 diff = badie.transform.position - position;
+                    float current_distance = diff.sqrMagnitude;
+                    if (current_distance < distance)
+                    {
+                        distance = current_distance;
+                        closest = badie;
+                    }
                 }
             }
         }
