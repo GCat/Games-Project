@@ -25,7 +25,6 @@ public class Portal : MonoBehaviour {
 
     private float startTime;
     bool started = false;
-
     MonsterType currentType = 0;
 
     void Start () {
@@ -41,7 +40,7 @@ public class Portal : MonoBehaviour {
         {
             return;
         } 
-        if(Time.time > startTime + delayStart && !started && temple.GetComponent<Temple>().isPlaced())
+        if(!started && temple.GetComponent<Temple>().isPlaced())
         {
             started = true;
             StartCoroutine(spawnWaves());
@@ -51,6 +50,8 @@ public class Portal : MonoBehaviour {
 
     IEnumerator spawnWaves()
     {
+        resourceCounter.beginCountDown(delayStart);
+        yield return new WaitForSeconds(delayStart);
         foreach (Wave wave in Waves)
         {
             //spawn each monster with a 1 second delay
@@ -61,6 +62,7 @@ public class Portal : MonoBehaviour {
                 asource.Play();
                 yield return new WaitForSeconds(2);
             }
+            resourceCounter.beginCountDown(wave.waveTime);
             Debug.Log("Waiting for " + wave.waveTime + " seconds");
             yield return new WaitForSeconds(wave.waveTime);
         }

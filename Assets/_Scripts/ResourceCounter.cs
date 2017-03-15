@@ -11,7 +11,12 @@ public class ResourceCounter : MonoBehaviour, Grabbable
     //The text displayed on the tablet
     public Slider faithSlider;
     public Slider healthSlider;
+    public Slider waveSlider;
+
     private Temple temple;
+    private Portal portal;
+
+    private int timeToNextWave = 30;
 
     public int faith = 0;
     private int population = 0;
@@ -44,6 +49,8 @@ public class ResourceCounter : MonoBehaviour, Grabbable
         resource_nodes.Add("Iron", ironNode);
         temple = GameObject.FindGameObjectWithTag("Temple").GetComponent<Temple>();
         healthSlider.maxValue = temple.totalHealth;
+        portal = GameObject.FindGameObjectWithTag("Portal").GetComponent<Portal>();
+        waveSlider.maxValue = portal.delayStart;
     }
 
     // Update is called once per frame : 
@@ -81,6 +88,22 @@ public class ResourceCounter : MonoBehaviour, Grabbable
         //text.text = resourceText;
     }
 
+    public void beginCountDown(float timeInSeconds)
+    {
+        StartCoroutine(updateWaveTime(timeInSeconds));
+    }
+
+    private IEnumerator updateWaveTime(float timeInSeconds)
+    {
+        Debug.Log("counting down from" + timeInSeconds);
+        waveSlider.maxValue = timeInSeconds;
+        for (int timeLeft = (int)timeInSeconds; timeLeft > 0; timeLeft--) {
+            waveSlider.value = timeLeft;
+            yield return new WaitForSeconds(1);
+        }
+
+        
+    }
 
     //background baseline faith generation
     public void defaultFaithGen()
