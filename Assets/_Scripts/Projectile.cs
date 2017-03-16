@@ -22,6 +22,7 @@ public class Projectile : MonoBehaviour {
     {
         if (other.gameObject != parent)
         {
+            GetComponent<Rigidbody>().isKinematic = true;
             Destroy(gameObject, destroyDelay);
         }
     }

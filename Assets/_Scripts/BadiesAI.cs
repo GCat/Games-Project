@@ -205,18 +205,19 @@ public class BadiesAI : MonoBehaviour, Character
         TextMesh text = damageIndicator.GetComponent<TextMesh>();
         text.text = damage.ToString();
         text.color = Color.red;
- 
+        Destroy(damageIndicator, 1);
         for (float f = 1f; f >= 0; f -= 0.01f)
         {
-            Color c = text.color;
-            c.a = f;
-            text.color = c;
-            damageIndicator.transform.Translate(new Vector3(0, 0.1f, 0));
-            damageIndicator.transform.LookAt(-cameraPos);
-
-            yield return null;
+            if (damageIndicator != null)
+            {
+                Color c = text.color;
+                c.a = f;
+                text.color = c;
+                damageIndicator.transform.Translate(new Vector3(0, 0.1f, 0));
+                damageIndicator.transform.LookAt(-cameraPos);
+                yield return null;
+            }
         }
-        GameObject.Destroy(damageIndicator);
     }
     //checks whether agent has reached a point -- takes stopping distance into account
     private bool atDestination(Vector3 target)
@@ -516,7 +517,8 @@ public class BadiesAI : MonoBehaviour, Character
             {
                 collider.enabled = false;
             }
-            StartCoroutine(WaitToDestroy(4));
+            gameObject.tag = "Untagged";
+            StartCoroutine(WaitToDestroy(1));
             resources.removeBaddie();
         }
     }
