@@ -114,6 +114,9 @@ public class FireTower : Building, Grabbable
                     }
                 }
 
+            }else
+            {
+                fireStream.SetActive(false);
             }
         }
     }
