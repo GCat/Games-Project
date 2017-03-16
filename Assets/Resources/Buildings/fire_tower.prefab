@@ -124,7 +124,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1394772636151304
 GameObject:
   m_ObjectHideFlags: 0
@@ -994,6 +994,7 @@ MonoBehaviour:
   fireDamagePerSecond: 5
   buildingName: 
   target: {fileID: 0}
+  radius: 20
   held: 0
   fireStream: {fileID: 1335213082906890}
 --- !u!120 &120518207163346196

@@ -104,8 +104,14 @@ public class FireTower : Building, Grabbable
                     acquireTarget();
                 }else
                 {
-                    fireStream.SetActive(true);
-                    fireStream.transform.LookAt(currentTarget.transform.position);
+                    if (Vector3.Distance(currentTarget.transform.position, transform.position) < radius)
+                    {
+                        fireStream.SetActive(true);
+                        fireStream.transform.LookAt(currentTarget.transform.position);
+                    }else
+                    {
+                        fireStream.SetActive(false);
+                    }
                 }
 
             }
@@ -138,11 +144,8 @@ public class FireTower : Building, Grabbable
                 {
                     targetHealth.decrementHealth(fireDamagePerSecond);
                 }
-            }else
-            {
-                fireStream.SetActive(false);
             }
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(1);
         }
     }
 
