@@ -48,11 +48,11 @@ public class BadiesAI : MonoBehaviour, Character
     GameObject infoText;
     Quaternion infoTextOri;
     Quaternion healthBarOri;
+    GameObject damageText;
     TextMesh debugText;
-    private float speed = 7.0f;
     public float rotationSpeed = 6.0f;
     public bool alive = false;
-
+    Vector3 cameraPos;
     public GameObject projectile;
 
     // Components
@@ -104,6 +104,7 @@ public class BadiesAI : MonoBehaviour, Character
 
     void Start()
     {
+        cameraPos = GameObject.FindWithTag("MainCamera").transform.position;
         agent = GetComponent<NavMeshAgent>();
         createHealthBar();
         healthBarOri = healthBar.transform.rotation;
@@ -116,6 +117,8 @@ public class BadiesAI : MonoBehaviour, Character
             collider.enabled = false;
         }
         GetComponent<Collider>().enabled = true;
+        damageText = Resources.Load("Info_Text") as GameObject;
+
     }
 
     //can we make the spawn type an enum please xoxo
@@ -193,6 +196,25 @@ public class BadiesAI : MonoBehaviour, Character
         }
     }
 
+    public IEnumerator DamageText(int damage)
+    {
+        GameObject damageIndicator = GameObject.Instantiate(damageText, transform.position, Quaternion.identity) as GameObject;
+        TextMesh text = damageIndicator.GetComponent<TextMesh>();
+        text.text = damage.ToString();
+        text.color = Color.red;
+ 
+        for (float f = 1f; f >= 0; f -= 0.01f)
+        {
+            Color c = text.color;
+            c.a = f;
+            text.color = c;
+            damageIndicator.transform.Translate(new Vector3(0, 0.1f, 0));
+            damageIndicator.transform.LookAt(-cameraPos);
+
+            yield return null;
+        }
+        GameObject.Destroy(damageIndicator);
+    }
     //checks whether agent has reached a point -- takes stopping distance into account
     private bool atDestination(Vector3 target)
     {
@@ -473,6 +495,7 @@ public class BadiesAI : MonoBehaviour, Character
     public void decrementHealth(float damage)
     {
         health -= damage;
+        StartCoroutine(DamageText((int)damage));
         float scale = (health / totalHealth);
         float characterScale = gameObject.transform.localScale.x;
         healthBar.transform.localScale = new Vector3(0.1f / characterScale, scale / characterScale, 0.1f / characterScale);

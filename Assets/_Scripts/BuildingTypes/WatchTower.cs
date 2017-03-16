@@ -162,10 +162,13 @@ public class WatchTower : Building, Grabbable
     IEnumerator WaitToDamage(float waitTime,float damage, GameObject victim)
     {
         yield return new WaitForSeconds(waitTime);
-        HealthManager victimHealth = victim.GetComponent<HealthManager>();
-        if (victimHealth != null)
+        if (victim != null)
         {
-            victimHealth.decrementHealth(damage);
+            HealthManager victimHealth = victim.GetComponent<HealthManager>();
+            if (victimHealth != null)
+            {
+                victimHealth.decrementHealth(damage);
+            }
         }
     }
 
