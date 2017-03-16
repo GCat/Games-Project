@@ -158,7 +158,10 @@ public class BadiesAI : MonoBehaviour, Character
 
     void Update()
     {
-        healthBar.transform.rotation = healthBarOri;
+        if (healthBar != null)
+        {
+            healthBar.transform.rotation = healthBarOri;
+        }
         infoText.transform.rotation = infoTextOri;
         debugText.text = currentState.ToString();
         if (alive)
@@ -498,10 +501,14 @@ public class BadiesAI : MonoBehaviour, Character
         StartCoroutine(DamageText((int)damage));
         float scale = (health / totalHealth);
         float characterScale = gameObject.transform.localScale.x;
-        healthBar.transform.localScale = new Vector3(0.1f / characterScale, scale / characterScale, 0.1f / characterScale);
-        if (scale != 0) healthBar.GetComponent<Renderer>().material.SetColor("_Color", new Color(1.0f - scale, scale, 0));
+        if (healthBar != null)
+        {
+            healthBar.transform.localScale = new Vector3(0.1f / characterScale, scale / characterScale, 0.1f / characterScale);
+            if (scale != 0) healthBar.GetComponent<Renderer>().material.SetColor("_Color", new Color(1.0f - scale, scale, 0));
+        }
         if (health <= 0 && alive == true)
         {
+            Destroy(healthBar);
             alive = false;
             //die animation here
             animator.enabled = false;
