@@ -125,7 +125,7 @@ public class WatchTower : Building, Grabbable
 
         while (true)
         {
-            if (currentTarget != null)
+            if (currentTarget != null && Vector3.Distance(transform.position, currentTarget.transform.position) < radius)
             {
                 throwArrow(currentTarget);
             }

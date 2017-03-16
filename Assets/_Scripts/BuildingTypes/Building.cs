@@ -59,7 +59,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         resourceGainText = createInfoText("Info_Text");
         boxSize = GetComponent<BoxCollider>().bounds.size / 2;
         boxSize.y = 1f;
-        child_materials = GetComponentsInChildren<Renderer>();
+        child_materials = GetComponentsInChildren<Renderer>(false);
         outlineShader = Shader.Find("Toon/Basic Outline");
         ExplosionEffect = Resources.Load("Explosion") as GameObject;
         if(ExplosionEffect != null)

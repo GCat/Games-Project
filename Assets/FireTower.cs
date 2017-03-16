@@ -8,29 +8,24 @@ public class FireTower : Building, Grabbable
 
     public AudioClip build;
     public AudioClip destroy;
-    public LineRenderer linerenderer;
-    public GameObject mirror;
-    public float damage_per_second = 5;
+    public float fireDamagePerSecond = 5;
     GameObject rangeHighlight;
-
     public string buildingName;
     public GameObject target;
-    private float radius = 15.0f;
+    public float radius = 25.0f;
 
     bool active = false;
     public bool held = false;
-
-    public float timer1;
-    private float StartTime1;
 
     private bool badplacement = false;
     private float placementTime = 0;
 
     int attackMask = 1 << 11;
-    GameObject pre;
     bool grabbedOnce = false;
 
     private GameObject infoText;
+    private GameObject currentTarget;
+    public GameObject fireStream;
 
     float getHealth()
     {
@@ -53,8 +48,9 @@ public class FireTower : Building, Grabbable
 
     void Start()
     {
-
-        pre = Resources.Load("Arrow_Regular") as GameObject;
+        Vector3 pos = transform.position;
+        pos.y += 5;
+        fireStream.SetActive(false);
         infoText = createInfoText("FaithCost");
         setInfoText(infoText, faithCost);
 
@@ -73,12 +69,21 @@ public class FireTower : Building, Grabbable
     void Update()
     {
         rangeHighlight.transform.position = new Vector3(gameObject.transform.position.x, 0.1f, gameObject.transform.position.z);
-
         if (held)
         {
             if (highlight != null)
             {
                 highlightCheck();
+                showRange();
+            }
+            else if (transform.position.y > 0f)
+            {
+                createHighlight();
+                showRange();
+            }
+            else
+            {
+                hideRange();
             }
         }
         else if (badplacement)
@@ -93,13 +98,14 @@ public class FireTower : Building, Grabbable
 
             if (resourceCounter.baddies > 0)
             {
-                if (target != null)
+                if (currentTarget == null)
                 {
-                    attack(target);
-                }
-                else
-                {
+                    fireStream.SetActive(false);
                     acquireTarget();
+                }else
+                {
+                    fireStream.SetActive(true);
+                    fireStream.transform.LookAt(currentTarget.transform.position);
                 }
 
             }
@@ -112,45 +118,41 @@ public class FireTower : Building, Grabbable
         List<Collider> hitColliders = new List<Collider>(Physics.OverlapSphere(transform.position, radius, attackMask));
         if (hitColliders.Count > 0)
         {
-            target = hitColliders[0].gameObject;
+            Debug.Log("Acquired target");
+            currentTarget = hitColliders[0].gameObject;
             return true;
         }
-        else
-        {
-            linerenderer.SetPositions(new Vector3[0]);
-        }
 
         return false;
     }
 
-    //fire an arrow at a target
-    bool attack(GameObject victim)
+    private IEnumerator attack()
     {
-        if (victim != null)
+
+        while (true)
         {
-            Vector3[] line = new Vector3[2];
-            line[0] = mirror.transform.position;
-            line[1] = victim.transform.position;
-            linerenderer.SetPositions(line);
-            victim.GetComponent<HealthManager>().decrementHealth(damage_per_second * Time.deltaTime);
+            if (currentTarget != null && Vector3.Distance(currentTarget.transform.position, transform.position) < radius)
+            {
+                HealthManager targetHealth = currentTarget.GetComponent<HealthManager>();
+                if (targetHealth != null)
+                {
+                    targetHealth.decrementHealth(fireDamagePerSecond);
+                }
+            }else
+            {
+                fireStream.SetActive(false);
+            }
+            yield return new WaitForSeconds(2);
         }
-        else
-        {
-            linerenderer.SetPositions(new Vector3[0]);
-        }
-        return false;
     }
 
-
-    void throwArrow(GameObject victim)
+    void OnDestroy()
     {
-        if (victim != null)
+        if (rangeHighlight != null)
         {
-            Vector3 pos = transform.TransformPoint(GetComponent<BoxCollider>().center);
-            pos.y = 10f;
-            GameObject c = GameObject.Instantiate(pre, pos, Quaternion.LookRotation(victim.transform.position)) as GameObject;
-            ((Arrow)(c.GetComponent(typeof(Arrow)))).attack(victim);
+            DestroyImmediate(rangeHighlight);
         }
+
     }
 
     public void grab()
@@ -175,16 +177,6 @@ public class FireTower : Building, Grabbable
         GetComponent<Collider>().enabled = false;
 
     }
-
-    void OnDestroy()
-    {
-        if (rangeHighlight != null)
-        {
-            DestroyImmediate(rangeHighlight);
-        }
-
-    }
-
 
     public override string getName()
     {
@@ -214,16 +206,13 @@ public class FireTower : Building, Grabbable
 
     public override void activate()
     {
-        //when do you call create buiding for towers ? -- cost does not work 
         active = true;
         if (highlight != null) Destroy(highlight);
         highlight = null;
         held = false;
         buildingName = "TOWER";
-        timer1 = 0f;
-        StartTime1 = Time.time;
         hideRange();
-
+        StartCoroutine(attack());
     }
 
     public override void deactivate()
@@ -249,6 +238,14 @@ public class FireTower : Building, Grabbable
         if (other.gameObject.tag == "Hand" && grabbedOnce)
         {
             showRange();
+        }
+    }
+    new void OnTriggerExit(Collider other)
+    {
+        base.OnTriggerExit(other);
+        if (other.gameObject.tag == "Hand")
+        {
+            hideRange();
         }
     }
 
