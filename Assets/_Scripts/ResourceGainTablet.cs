@@ -12,6 +12,7 @@ public class ResourceGainTablet : MonoBehaviour {
     void Start()
     {
         head = GameObject.FindGameObjectWithTag("MainCamera");
+
     }
     void Update()
     {

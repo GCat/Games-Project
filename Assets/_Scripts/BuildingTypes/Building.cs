@@ -186,10 +186,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         Vector3 actualSize = dims.size;
         GameObject newText = GameObject.Instantiate(Resources.Load(prefab)) as GameObject;
         newText.transform.position = gameObject.transform.position;
-        newText.transform.localScale *= 2;
         newText.transform.Translate(new Vector3(0, actualSize.y * 1.3f, 0));
-        newText.transform.localRotation = gameObject.transform.localRotation;
-        //newText.transform.Rotate(new Vector3(0, -90, 0));
         newText.transform.SetParent(gameObject.transform);
         newText.SetActive(false);
         return newText;

@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 23503913169644808}
   - component: {fileID: 114183550233989000}
   m_Layer: 0
-  m_Name: ResourceGainTablet
+  m_Name: FaithCostTablet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
