@@ -238,7 +238,7 @@ GameObject:
   - component: {fileID: 4965472718832640}
   - component: {fileID: 23461047636035326}
   - component: {fileID: 65868299563514010}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: Temple_silhouette
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -482,7 +482,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1854053128695484}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 15.156914, y: 0, z: -31.114342}
+  m_LocalPosition: {x: 17.699999, y: 0.1, z: -15.524428}
   m_LocalScale: {x: 0.9258762, y: 0.92587566, z: 0.92587566}
   m_Children:
   - {fileID: 4940415183122876}
@@ -1034,7 +1034,7 @@ BoxCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1854053128695484}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 30.040293, y: 0.9311193, z: 22.482199}

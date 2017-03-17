@@ -1528,7 +1528,8 @@ MonoBehaviour:
   tablet: {fileID: 0}
   bought: 0
   faithCost: 20
-  highlight: {fileID: 0}
+  highlight_template: {fileID: 1000014151132444, guid: 9ce11e1184020ef48b53a30972b2d673,
+    type: 2}
   canBeGrabbed: 1
   build: {fileID: 0}
   destroy: {fileID: 0}

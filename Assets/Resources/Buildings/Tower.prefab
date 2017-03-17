@@ -194,7 +194,8 @@ MonoBehaviour:
   tablet: {fileID: 0}
   bought: 0
   faithCost: 15
-  highlight: {fileID: 0}
+  highlight_template: {fileID: 1496738986511838, guid: fb5396ac9d23c6645bf227ad14e3d692,
+    type: 2}
   canBeGrabbed: 1
   arrowClip: {fileID: 8300000, guid: 2c55dfe771c1d174bb9d4896cc2e02f1, type: 3}
   arrowDamage: 10

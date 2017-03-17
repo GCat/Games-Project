@@ -33,10 +33,14 @@ Material:
         m_Texture: {fileID: 2800000, guid: 348fa4d278c53ad4dacd07df1e63a248, type: 3}
         m_Scale: {x: 1, y: 1}
 <<<<<<< refs/remotes/origin/master
+<<<<<<< refs/remotes/origin/master
         m_Offset: {x: 0, y: 0.9135305}
 =======
         m_Offset: {x: 0, y: 2.408436}
 >>>>>>> higlight fun
+=======
+        m_Offset: {x: 0, y: 3.0295672}
+>>>>>>> green silhouettes on buildings
     - first:
         name: _MainTex2
       second:
