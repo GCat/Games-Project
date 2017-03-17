@@ -29,6 +29,8 @@ TagManager:
   - WallSegment
   - RallyPoint
   - Portal
+  - Niet
+
   layers:
   - Default
   - TransparentFX
