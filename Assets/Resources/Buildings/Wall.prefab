@@ -1463,6 +1463,7 @@ MonoBehaviour:
   resourceCounter: {fileID: 0}
   tablet: {fileID: 0}
   bought: 0
+  faithCost: 10
   highlight: {fileID: 0}
   canBeGrabbed: 1
   cost_per_meter: 10

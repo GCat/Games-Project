@@ -56,10 +56,10 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         }
         else Debug.Log("Tablet not found");
         createHealthBar();
-        resourceGainText = createInfoText("Info_Text");
+        resourceGainText = createInfoText("ResourceGainTablet");
         boxSize = GetComponent<BoxCollider>().bounds.size / 2;
         boxSize.y = 1f;
-        child_materials = GetComponentsInChildren<Renderer>();
+        child_materials = GetComponentsInChildren<Renderer>(false);
         outlineShader = Shader.Find("Toon/Basic Outline");
         ExplosionEffect = Resources.Load("Explosion") as GameObject;
         if(ExplosionEffect != null)
@@ -75,14 +75,14 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         float x = transform.position.x;
         float z = transform.position.z;
 
-        int layerMask = (1 << 10 | 1<<15);
+        int layerMask = (1 << 10);
         if (resourceCounter.withinBounds(transform.position))
         {
-            GetComponent<Collider>().enabled = true;
             if (Physics.CheckBox(new Vector3(x, 0, z), boxSize, Quaternion.LookRotation(Vector3.forward), layerMask))
             {
                 return false;
             }
+            GetComponent<Collider>().enabled = true;
             return true;
         }
         return false;
@@ -163,14 +163,13 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         Vector3 startLocation = resourceText.transform.position;
         cameraPos.y = startLocation.y;
         resourceText.transform.LookAt(2*startLocation - cameraPos);
-        resourceText.GetComponent<TextMesh>().text = "+" + value.ToString() + " " + resource;
+        resourceText.transform.Rotate(new Vector3(0, 90, 0));
+        //resourceText.GetComponent<TextMesh>().text = "+" + value.ToString() + " " + resource;
+        resourceText.GetComponent<ResourceGainTablet>().setText("+" + value.ToString());
         Color c;
         resourceText.SetActive(true);
         for (float f = 1f; f >= 0; f -= 0.01f)
         {
-            c = resourceText.GetComponent<TextMesh>().color;
-            c.a = f;
-            resourceText.GetComponent<TextMesh>().color = c;
             resourceText.transform.Translate(new Vector3(0, 0.1f, 0));
             yield return null;
         }
@@ -205,7 +204,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         newText.transform.localScale *= 2;
         newText.transform.Translate(new Vector3(0, actualSize.y * 1.3f, 0));
         newText.transform.localRotation = gameObject.transform.localRotation;
-        newText.transform.Rotate(new Vector3(0, -90, 0));
+        //newText.transform.Rotate(new Vector3(0, -90, 0));
         newText.transform.SetParent(gameObject.transform);
         newText.SetActive(false);
         return newText;
@@ -232,8 +231,8 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
             {
                 highlight.transform.rotation = Quaternion.LookRotation(Vector3.forward);
             }
-            int layerMask = 1 << 10 | 1<<15;
-            if (Physics.CheckBox(new Vector3(Mathf.Floor(transform.position.x), 0, Mathf.Floor(transform.position.z)), boxSize,gameObject.transform.rotation, layerMask))
+            int layerMask = 1 << 10;
+            if (Physics.CheckBox(new Vector3(transform.position.x, 0, transform.position.z), boxSize,gameObject.transform.rotation, layerMask))
                 highlight.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
             else
                 highlight.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
