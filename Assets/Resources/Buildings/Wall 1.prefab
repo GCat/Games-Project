@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 65024212219374802}
   - component: {fileID: 23141790472199802}
   m_Layer: 0
-  m_Name: Wall_silhouette
+  m_Name: Wall 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
