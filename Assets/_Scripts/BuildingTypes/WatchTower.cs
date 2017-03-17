@@ -26,7 +26,6 @@ public class WatchTower : Building, Grabbable
     GameObject pre;
     bool grabbedOnce = false;
 
-    private GameObject infoText;
     private GameObject currentTarget;
 
     float getHealth()
@@ -40,19 +39,9 @@ public class WatchTower : Building, Grabbable
 
     }
 
-    public override void changeTextColour(Color colour)
-    {
-        if (infoText)
-        {
-            infoText.GetComponent<TextMesh>().GetComponent<Renderer>().material.SetColor("_Color", colour);
-        }
-    }
-
     void Start()
     {
         pre = Resources.Load("Arrow_Regular") as GameObject;
-        infoText = createInfoText("FaithCost");
-        setInfoText(infoText, faithCost);
 
         rangeHighlight = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         rangeHighlight.GetComponent<Renderer>().material.SetColor("_Color", new Color(0.0f,0.6f,0.0f,0.2f));
@@ -178,7 +167,6 @@ public class WatchTower : Building, Grabbable
         grabbedOnce = true;
         held = true;
         badplacement = false;
-        Destroy(infoText);
 
         // Deactivate  collider and gravity
         if (highlight != null)

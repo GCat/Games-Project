@@ -8,15 +8,12 @@ public class Wall : Building, Grabbable {
     public int cost_per_meter = 10;
     public bool held = false;
     private bool badplacement = false;
-    private GameObject infoText;
 
     private Transform turretB= null;
     private Transform turretA=null;
     private Transform wallSegment=null;
     public float adjustRange = 15.0f;
     void Start () {
-        infoText = createInfoText("FaithCost");
-        setInfoText(infoText, cost_per_meter);
     }
 	
 	// Update is called once per frame
@@ -39,10 +36,6 @@ public class Wall : Building, Grabbable {
         return "Wall";
     }
 
-    public override void changeTextColour(Color colour)
-    {
-        infoText.GetComponent<TextMesh>().GetComponent<Renderer>().material.SetColor("_Color", colour);
-    }
 
     public override Vector3 getLocation()
     {
@@ -93,7 +86,6 @@ public class Wall : Building, Grabbable {
     public void grab()
     {
         // Deactivate  collider and gravity
-        Destroy(infoText);
         if (highlight != null)
         {
             DestroyImmediate(highlight);

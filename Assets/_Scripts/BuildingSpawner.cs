@@ -7,6 +7,7 @@ public class BuildingSpawner : MonoBehaviour {
     public GameObject buildingToSpawn;
     public ResourceCounter resources;
     public GameObject imgCanvas;
+    public ResourceGainTablet resourceCost;
     private int buildingCost;
     private int buildingMask = (1 << 10) | (1 << 14);
 	// Use this for initialization
@@ -16,6 +17,8 @@ public class BuildingSpawner : MonoBehaviour {
         resources = GameObject.FindGameObjectWithTag("Tablet").GetComponent<ResourceCounter>();
         imgCanvas = transform.GetChild(0).gameObject;
         imgCanvas.SetActive(false);
+        resourceCost.setText(buildingCost.ToString());
+        resourceCost.activateThis();
         GameObject building = Instantiate(buildingToSpawn, transform.position, Quaternion.identity);
         Building bScript = building.GetComponent<Building>();
         if(bScript != null)
@@ -42,10 +45,12 @@ public class BuildingSpawner : MonoBehaviour {
         if (resources.faith < buildingCost)
         {
             imgCanvas.SetActive(true);
+            resourceCost.text.color = Color.red;
         }
         else
         {
             imgCanvas.SetActive(false);
+            resourceCost.text.color = Color.black;
             if (Physics.OverlapSphere(transform.position, 8.0f, buildingMask).Length == 0)
             {
                 GameObject building = Instantiate(buildingToSpawn, transform.position, Quaternion.identity);
