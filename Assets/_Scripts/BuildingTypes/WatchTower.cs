@@ -133,6 +133,15 @@ public class WatchTower : Building, Grabbable
         }
     }
 
+    void OnDestroy()
+    {
+        if(rangeHighlight != null)
+        {
+            DestroyImmediate(rangeHighlight);
+        }
+
+    }
+
     void throwArrow(GameObject victim)
     {
         if (victim != null)
@@ -261,10 +270,5 @@ public class WatchTower : Building, Grabbable
     {
         base.release(vel);
         hideRange();
-    }
-
-    void OnDestroy()
-    {
-        if (rangeHighlight != null) DestroyImmediate(rangeHighlight);
     }
 }

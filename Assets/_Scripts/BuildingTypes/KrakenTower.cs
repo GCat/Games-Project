@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class KrakenTower : Building, Grabbable {
+public class KrakenTower : Building, Grabbable
+{
 
     public AudioClip build;
     public AudioClip destroy;
@@ -38,7 +39,7 @@ public class KrakenTower : Building, Grabbable {
     //never goes in here 
     public override void create_building()
     {
-            
+
     }
 
     public override void changeTextColour(Color colour)
@@ -145,7 +146,7 @@ public class KrakenTower : Building, Grabbable {
         }
         else
         {
-            
+
         }
         return false;
     }
@@ -247,6 +248,7 @@ public class KrakenTower : Building, Grabbable {
         base.release(vel);
         hideRange();
     }
+
     void OnDestroy()
     {
         if (rangeHighlight != null) DestroyImmediate(rangeHighlight);
