@@ -205,7 +205,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
     {
         if (resourceCounter.withinBounds(transform.position))
         {
-            highlight.GetComponent<Renderer>().enabled = true;
+            highlight.GetComponentInChildren<Renderer>().enabled = true;
             highlight.transform.position = new Vector3(transform.position.x, 0.1f,transform.position.z);
 
             float yRot = gameObject.transform.eulerAngles.y;
@@ -220,16 +220,16 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
             int layerMask = 1 << 10;
             if (Physics.CheckBox(new Vector3(transform.position.x, 0, transform.position.z), boxSize, gameObject.transform.rotation, layerMask))
             {
-                highlight.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
+                highlight.GetComponentInChildren<Renderer>().material.SetColor("_Color", Color.red);
             }
             else
             {
-                highlight.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
+                highlight.GetComponentInChildren<Renderer>().material.SetColor("_Color", Color.green);
             }
         }
         else
         {
-            highlight.GetComponent<Renderer>().enabled = false;
+            highlight.GetComponentInChildren<Renderer>().enabled = false;
         }
     }
 
@@ -251,14 +251,14 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         {
             highlight = GameObject.CreatePrimitive(PrimitiveType.Cube);
             highlight.transform.localScale = new Vector3(boxSize.x * 2.0f, 0.1f, boxSize.z * 2.0f);
-            highlight.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
+            highlight.GetComponentInChildren<Renderer>().material.SetColor("_Color", Color.green);
         }
         highlight.SetActive(true);
         highlight.transform.position = new Vector3(transform.position.x , 0.1f, transform.position.z);
         highlight.transform.rotation = transform.rotation;
 
         highlight.GetComponent<Collider>().isTrigger = true;
-        highlight.GetComponent<Renderer>().enabled = false;
+        highlight.GetComponentInChildren<Renderer>().enabled = false;
     }
 
     public abstract void die();

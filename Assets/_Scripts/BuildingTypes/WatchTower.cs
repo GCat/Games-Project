@@ -220,8 +220,7 @@ public class WatchTower : Building, Grabbable
     {
         resourceCounter.removeFaith(faithCost);
         active = true;
-        if (highlight != null) Destroy(highlight);
-        highlight = null;
+        if (highlight != null) highlightDestroy();
         held = false;
         buildingName = "TOWER";
         hideRange();
