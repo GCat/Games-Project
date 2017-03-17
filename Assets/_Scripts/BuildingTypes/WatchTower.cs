@@ -142,7 +142,7 @@ public class WatchTower : Building, Grabbable
         if (victim != null)
         {
             Vector3 pos = transform.TransformPoint(GetComponent<BoxCollider>().center);
-            pos.y = 10f;
+            pos.y += 10f;
             Vector3 direction = Vector3.Normalize(victim.transform.position - pos) * arrowSpeed;
             GameObject arrow = GameObject.Instantiate(pre, pos, Quaternion.LookRotation(direction)) as GameObject;
             arrow.GetComponent<Projectile>().parent = gameObject;
