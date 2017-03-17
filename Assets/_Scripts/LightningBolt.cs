@@ -55,13 +55,13 @@ public class LightningBolt : MonoBehaviour, Grabbable {
 
 
         // highlight where object wiould place if falling straight down
-        Material mat = Resources.Load("Materials/highlight.mat") as Material;
+        /*Material mat = Resources.Load("Materials/highlight.mat") as Material;
         highlight = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
         highlight.GetComponent<Renderer>().material = mat;
         highlight.transform.localScale = new Vector3(GetComponent<Collider>().bounds.size.x, 0.1f, GetComponent<Collider>().bounds.size.z);
         highlight.transform.position = new Vector3(transform.position.x, 0.1f, transform.position.z);
         highlight.GetComponent<Collider>().enabled = false;
-        highlight.GetComponent<Renderer>().enabled = false;
+        highlight.GetComponent<Renderer>().enabled = false;*/
 
         GetComponent<Rigidbody>().useGravity = false;
         GetComponent<Rigidbody>().isKinematic = true;
@@ -74,6 +74,12 @@ public class LightningBolt : MonoBehaviour, Grabbable {
         GetComponent<Rigidbody>().isKinematic = false;
         GetComponent<Collider>().enabled = true;
         GetComponent<Rigidbody>().velocity = vel;
+
+        Vector3 releasedPoint = transform.position;
+        Vector3 predictedPoint = releasedPoint + vel * Time.deltaTime;
+        Vector3 straightLinePath = predictedPoint - releasedPoint;
+        Quaternion rotation = Quaternion.LookRotation(straightLinePath);
+        transform.rotation = rotation;
     }
 
     void OnCollisionEnter(Collision col)
