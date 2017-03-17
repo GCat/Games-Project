@@ -12,7 +12,7 @@ public class BuildingSpawner : MonoBehaviour {
     private int buildingMask = (1 << 10) | (1 << 14);
 	// Use this for initialization
 	void Start () {
-        InvokeRepeating("spawnBuilding", .1f, 5);
+        InvokeRepeating("spawnBuilding", .1f, 1f);
         if (buildingCost == 0) buildingCost = 20;
         resources = GameObject.FindGameObjectWithTag("Tablet").GetComponent<ResourceCounter>();
         imgCanvas = transform.GetChild(0).gameObject;

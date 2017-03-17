@@ -56,7 +56,6 @@ public abstract class ResourceBuilding : Building, Grabbable
     {
         if (!bought && (resourceCounter.faith >= faithCost))
         {
-            resourceCounter.removeFaith(faithCost);
             bought = true;
             return true;
         }
@@ -66,6 +65,7 @@ public abstract class ResourceBuilding : Building, Grabbable
     //Don't need this 
     public override void activate()
     {
+        resourceCounter.removeFaith(faithCost);
         create_building();
         held = false;
         highlightDestroy();

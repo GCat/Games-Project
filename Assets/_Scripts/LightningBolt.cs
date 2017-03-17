@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LightningBolt : MonoBehaviour, Grabbable {
+public class LightningBolt : Tool, Grabbable {
 
     public bool held = false;
     public int fCost = 10;
@@ -30,9 +30,6 @@ public class LightningBolt : MonoBehaviour, Grabbable {
 	}
     public bool canBuy()
     {
-        Debug.Log(fCost);
-        Debug.Log(res.faith);
-        Debug.Log(res.faith > fCost);
         if (res.faith > fCost) return true;
         else return false;
     }
@@ -55,13 +52,13 @@ public class LightningBolt : MonoBehaviour, Grabbable {
 
 
         // highlight where object wiould place if falling straight down
-        Material mat = Resources.Load("Materials/highlight.mat") as Material;
+        /*Material mat = Resources.Load("Materials/highlight.mat") as Material;
         highlight = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
         highlight.GetComponent<Renderer>().material = mat;
         highlight.transform.localScale = new Vector3(GetComponent<Collider>().bounds.size.x, 0.1f, GetComponent<Collider>().bounds.size.z);
         highlight.transform.position = new Vector3(transform.position.x, 0.1f, transform.position.z);
         highlight.GetComponent<Collider>().enabled = false;
-        highlight.GetComponent<Renderer>().enabled = false;
+        highlight.GetComponent<Renderer>().enabled = false;*/
 
         GetComponent<Rigidbody>().useGravity = false;
         GetComponent<Rigidbody>().isKinematic = true;
@@ -74,6 +71,12 @@ public class LightningBolt : MonoBehaviour, Grabbable {
         GetComponent<Rigidbody>().isKinematic = false;
         GetComponent<Collider>().enabled = true;
         GetComponent<Rigidbody>().velocity = vel;
+
+        Vector3 releasedPoint = transform.position;
+        Vector3 predictedPoint = releasedPoint + vel * Time.deltaTime;
+        Vector3 straightLinePath = predictedPoint - releasedPoint;
+        Quaternion rotation = Quaternion.LookRotation(straightLinePath);
+        transform.rotation = rotation;
     }
 
     void OnCollisionEnter(Collision col)

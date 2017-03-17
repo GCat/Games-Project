@@ -28,7 +28,8 @@ public class ResourceCounter : MonoBehaviour, Grabbable
     private int armour = 0;
     private int swordMult = 1;
     private int armourMult = 1;
-    public int baddies = 0;
+    //number of each baddie type
+    private int[] baddies = new int[4];
 
     private bool gameStarted;
 
@@ -37,6 +38,12 @@ public class ResourceCounter : MonoBehaviour, Grabbable
     {
         resource_nodes = new Dictionary<string, GameObject[]>();
         gameStarted = false;
+        baddies = new int[4];
+        Debug.Log(baddies.Length);
+        for (int i = 0; i < baddies.Length; i++)
+        {
+            baddies[i] = 0;
+        }
     }
 
     // Use this for initialization
@@ -81,7 +88,6 @@ public class ResourceCounter : MonoBehaviour, Grabbable
         //resourceText += "Wood: " + wood.ToString() + "\n";
         //resourceText += "Stone: " + stone.ToString() + "\n";
         //resourceText += "Iron: " + iron.ToString() + "\n";
-        resourceText += "Monsters: " + baddies.ToString() + "\n";
         resourceText += "Population: " + population.ToString() + "\n";
         //resourceText += "Sword Level: " + swords.ToString() + "\n";
         //resourceText += "Armour Level: " + armour.ToString() + "\n";
@@ -101,8 +107,6 @@ public class ResourceCounter : MonoBehaviour, Grabbable
             waveSlider.value = timeLeft;
             yield return new WaitForSeconds(1);
         }
-
-        
     }
 
     //background baseline faith generation
@@ -183,13 +187,13 @@ public class ResourceCounter : MonoBehaviour, Grabbable
     {
         population++;
     }
-    public void addBaddie()
+    public void addBaddie(Portal.MonsterType type)
     {
-        baddies++;
+        baddies[(int)type]++;
     }
-    public void removeBaddie()
+    public void removeBaddie(Portal.MonsterType type)
     {
-        baddies--;
+        baddies[(int)type]--;
     }
     public void removePop()
     {
@@ -236,6 +240,20 @@ public class ResourceCounter : MonoBehaviour, Grabbable
         }
     }
 
+    //get the number of ground based baddies
+    public int getGroundBaddies()
+    {
+        return baddies[1] + baddies[0];
+    }
+    public int getBaddies()
+    {
+        int count = 0;
+        foreach(int c in baddies)
+        {
+            count += c;
+        }
+        return count;
+    }
     public void grab()
     {
       
@@ -256,6 +274,7 @@ public class ResourceCounter : MonoBehaviour, Grabbable
 
 
     }
+
     public bool aboveBoard(Vector3 p)
     {
         return ground.dynamicAboveBoard(p);

@@ -245,10 +245,6 @@ public class Hand : MonoBehaviour {
             {
                 return;
             }
-            if (building != null)
-            {
-                building.transform.parent = null;
-            }
             if (!resources.hasGameStarted() && closest.tag != "Temple") return;
         }
 
@@ -263,6 +259,7 @@ public class Hand : MonoBehaviour {
             {
                 if (buildingS.canBuy() || buildingS.bought)
                 {
+                    buildingS.transform.parent = null;
                     holding = true;
                     Grabbable placeable = heldObject.GetComponent<Grabbable>();
 
@@ -270,30 +267,43 @@ public class Hand : MonoBehaviour {
                     {
                         placeable.grab();
                         snapToHand(heldObject);
+                        heldObject.transform.parent = transform;
                     }
                     else
                     {
                         Debug.Log("This object is not placeable", heldObject);
                     }
-                    heldObject.transform.parent = transform;
+                    
                 }
+                else heldObject = null;
 
             }
             else
             {
                 holding = true;
-                Grabbable placeable = heldObject.GetComponent<Grabbable>();
+                LightningBolt placeable = heldObject.GetComponent<LightningBolt>();
 
                 if (placeable != null)
                 {
-                    placeable.grab();
-                    snapToHand(heldObject);
+                    if (placeable.canBuy())
+                    {
+                        placeable.grab();
+                        snapToHand(heldObject);
+                        heldObject.transform.parent = transform;
+                    }
+                    else heldObject = null;
                 }
                 else
                 {
-                    Debug.Log("This object is not placeable", heldObject);
+                    Grabbable human = heldObject.GetComponent<Grabbable>();
+                    if (human != null)
+                    {
+                        human.grab();
+                        snapToHand(heldObject);
+                        heldObject.transform.parent = transform;
+                    }
+                    else Debug.Log("This object is not placeable", heldObject);
                 }
-                heldObject.transform.parent = transform;
             }                
         }
         else
@@ -324,6 +334,7 @@ public class Hand : MonoBehaviour {
                 if(building.canPlace() && (building.bought || building.canBuy()))
                 {
                     snapToGrid(heldObject);
+                    building.source.Play();
                     building.activate();
                     building.removeOutline();
                 }

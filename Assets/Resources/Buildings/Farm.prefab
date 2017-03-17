@@ -1520,6 +1520,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8142bda846b95244583c060afd1c9433, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buildClip: {fileID: 8300000, guid: 0f6a9c7d024f3144690add1c060e8ed0, type: 3}
+  source: {fileID: 0}
   totalHealth: 100
   health: 100
   resourceCounter: {fileID: 0}

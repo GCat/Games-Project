@@ -3,6 +3,8 @@ using System.Collections;
 using System;
 
 public abstract class Building : MonoBehaviour, HealthManager{ // this should also be placeable hence the grab and release will be written once
+    public AudioClip buildClip;
+    public AudioSource source;
     public abstract string getName();
     public abstract Vector3 getLocation();
     public abstract void create_building();
@@ -64,6 +66,11 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         {
             Debug.Log("Effect loaded");
         }
+        source = gameObject.AddComponent<AudioSource>() as AudioSource;
+        //source.rolloffMode = AudioRolloffMode.Linear;
+        source.volume = 0.7f;
+        //source.spatialBlend = 0.1f;
+        source.clip = buildClip;
     }
 
     //return true if within bounds & not above another building
