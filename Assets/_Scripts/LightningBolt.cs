@@ -6,7 +6,7 @@ using UnityEngine;
 public class LightningBolt : Tool {
 
     public bool held = false;
-    public int fCost = 10;
+    public int fCost;
     public float damage = 50f;
     public float damageRadius = 30f;
     GameObject highlight = null;
@@ -15,6 +15,7 @@ public class LightningBolt : Tool {
     protected Shader outlineShader;
     public ResourceCounter res;
     private AudioSource source;
+    private bool exploded = false;
 
     // Use this for initialization
     void Start () {
@@ -81,7 +82,8 @@ public class LightningBolt : Tool {
 
     void OnCollisionEnter(Collision col)
     {
-        if (col.gameObject.tag == "Ground") {
+        if (col.gameObject.tag == "Ground" && !exploded) {
+            exploded = true;
             res.removeFaith(fCost);
             source.Play();
             int layerMask = 1 << 11;
@@ -104,6 +106,7 @@ public class LightningBolt : Tool {
                 }
 
             }
+            Physics.IgnoreCollision(GetComponent<Collider>(), col.collider);
             Destroy(gameObject, 0.1f);
             
         }
