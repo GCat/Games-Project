@@ -280,16 +280,17 @@ public class Hand : MonoBehaviour {
             }
             else
             {
-                holding = true;
-                LightningBolt placeable = heldObject.GetComponent<LightningBolt>();
+                
+                Tool tool = heldObject.GetComponent<Tool>();
 
-                if (placeable != null)
+                if (tool != null)
                 {
-                    if (placeable.canBuy())
+                    if (tool.canBuy())
                     {
-                        placeable.grab();
+                        tool.grab();
                         snapToHand(heldObject);
                         heldObject.transform.parent = transform;
+                        holding = true;
                     }
                     else heldObject = null;
                 }
@@ -301,6 +302,7 @@ public class Hand : MonoBehaviour {
                         human.grab();
                         snapToHand(heldObject);
                         heldObject.transform.parent = transform;
+                        holding = true;
                     }
                     else Debug.Log("This object is not placeable", heldObject);
                 }
@@ -354,18 +356,8 @@ public class Hand : MonoBehaviour {
             }
             else
             {
-                LightningBolt light = heldObject.GetComponent<LightningBolt>();
-                if (light != null)
-                {
-                    if (light.canBuy()) {
-                        throwObject(heldObject);
-                        Debug.Log("LIGHTINGBOLT! ");
-                    }
-                    else DestroyImmediate(heldObject);
-
-                }
-                else
-                    throwObject(heldObject);
+                
+                throwObject(heldObject);
             }
 
             heldObject = null;

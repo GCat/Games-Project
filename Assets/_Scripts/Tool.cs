@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Tool : MonoBehaviour
+public abstract class Tool : MonoBehaviour, Grabbable
 {
 
     private Quaternion rotation;
@@ -13,14 +13,12 @@ public abstract class Tool : MonoBehaviour
         rotation = transform.rotation;
     }
 
-    // Update is called once per frame
-    void Update()
+    public bool canBuy()
     {
-
+        return true;
     }
+    public abstract void grab();
 
-    void LateUpdate()
-    {
-        //transform.rotation = rotation;
-    }
+    //function to be called when released from hand
+    public abstract void release(Vector3 vel);
 }

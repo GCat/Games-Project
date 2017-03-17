@@ -101,7 +101,6 @@ public class ResourceCounter : MonoBehaviour, Grabbable
 
     private IEnumerator updateWaveTime(float timeInSeconds)
     {
-        Debug.Log("counting down from" + timeInSeconds);
         waveSlider.maxValue = timeInSeconds;
         for (int timeLeft = (int)timeInSeconds; timeLeft > 0; timeLeft--) {
             waveSlider.value = timeLeft;
