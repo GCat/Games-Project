@@ -37,6 +37,8 @@ public class BuildingSpawner : MonoBehaviour {
                 Debug.LogError("OBJECT THAT IS NOT BUILDING OR LIGHTNING BOLT PLACED ON SPAWNER");
             }
         }
+        resourceCost.setText(buildingCost.ToString());
+        resourceCost.activateThis();
         DestroyImmediate(building);
     }
 
