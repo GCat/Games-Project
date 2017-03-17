@@ -9,7 +9,15 @@ public class ResourceCounter : MonoBehaviour, Grabbable
     public Dictionary<string, GameObject[]> resource_nodes;
     private GameBoard ground;
     //The text displayed on the tablet
-    public Text text;
+    public Slider faithSlider;
+    public Slider healthSlider;
+    public Slider waveSlider;
+
+    private Temple temple;
+    private Portal portal;
+
+    private int timeToNextWave = 30;
+
     public int faith = 0;
     private int population = 0;
     private int iron = 0;
@@ -39,7 +47,10 @@ public class ResourceCounter : MonoBehaviour, Grabbable
         ground = GameObject.FindGameObjectWithTag("Ground").GetComponent<GameBoard>();
         resource_nodes.Add("Forest", forests);
         resource_nodes.Add("Iron", ironNode);
-
+        temple = GameObject.FindGameObjectWithTag("Temple").GetComponent<Temple>();
+        healthSlider.maxValue = temple.totalHealth;
+        portal = GameObject.FindGameObjectWithTag("Portal").GetComponent<Portal>();
+        waveSlider.maxValue = portal.delayStart;
     }
 
     // Update is called once per frame : 
@@ -57,7 +68,9 @@ public class ResourceCounter : MonoBehaviour, Grabbable
             iron -= 20 * armourMult;
             armourMult *= 2;
         }
-        setResourceText();
+        //setResourceText();
+        faithSlider.value = faith;
+        healthSlider.value = temple.health;
     }
 
     public void setResourceText()
@@ -72,9 +85,25 @@ public class ResourceCounter : MonoBehaviour, Grabbable
         resourceText += "Population: " + population.ToString() + "\n";
         //resourceText += "Sword Level: " + swords.ToString() + "\n";
         //resourceText += "Armour Level: " + armour.ToString() + "\n";
-        text.text = resourceText;
+        //text.text = resourceText;
     }
 
+    public void beginCountDown(float timeInSeconds)
+    {
+        StartCoroutine(updateWaveTime(timeInSeconds));
+    }
+
+    private IEnumerator updateWaveTime(float timeInSeconds)
+    {
+        Debug.Log("counting down from" + timeInSeconds);
+        waveSlider.maxValue = timeInSeconds;
+        for (int timeLeft = (int)timeInSeconds; timeLeft > 0; timeLeft--) {
+            waveSlider.value = timeLeft;
+            yield return new WaitForSeconds(1);
+        }
+
+        
+    }
 
     //background baseline faith generation
     public void defaultFaithGen()

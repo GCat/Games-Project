@@ -27,7 +27,10 @@ TagManager:
   - Table
   - Turret
   - WallSegment
+  - RallyPoint
+  - Portal
   - Niet
+
   layers:
   - Default
   - TransparentFX

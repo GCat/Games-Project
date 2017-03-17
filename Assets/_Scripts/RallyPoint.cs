@@ -201,7 +201,7 @@ public class RallyPoint : Building, Grabbable {
     public void createRallyZone()
     {
         rallyZone = new GameObject();
-        rallyZone.name = "rally zone collider";
+        rallyZone.tag = "RallyPoint";
         rallyZone.transform.SetParent(gameObject.transform);
         rallyZoneCollider = rallyZone.AddComponent<SphereCollider>();
         rallyZoneCollider.radius = 12.5f;
