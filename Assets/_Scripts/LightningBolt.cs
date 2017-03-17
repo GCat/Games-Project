@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LightningBolt : MonoBehaviour, Grabbable {
+public class LightningBolt : Tool, Grabbable {
 
     public bool held = false;
     public int fCost = 10;

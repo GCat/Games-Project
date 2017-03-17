@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Swatter : MonoBehaviour, Grabbable {
+public class Swatter : Tool, Grabbable {
 
     public bool held = false;
     private bool enemyHit = false;
