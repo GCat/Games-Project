@@ -33,7 +33,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         float scale = (health / totalHealth);
         float buildingScale = gameObject.transform.localScale.x;
         healthBar.transform.localScale = new Vector3(1.0f / buildingScale, 10.0f * scale / buildingScale, 1.0f / buildingScale);
-        if (scale != 0) healthBar.GetComponent<Renderer>().material.SetColor("_Color", new Color(1.0f - scale, scale, 0));
+        if (scale > 0) healthBar.GetComponent<Renderer>().material.SetColor("_Color", new Color(1.0f - scale, scale, 0));
 
         if (health <= 0)
         {
@@ -166,7 +166,6 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         resourceText.transform.Rotate(new Vector3(0, 90, 0));
         //resourceText.GetComponent<TextMesh>().text = "+" + value.ToString() + " " + resource;
         resourceText.GetComponent<ResourceGainTablet>().setText("+" + value.ToString());
-        Color c;
         resourceText.SetActive(true);
         for (float f = 1f; f >= 0; f -= 0.01f)
         {
