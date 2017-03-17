@@ -25,7 +25,6 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
 
 
     public abstract bool canBuy();
-    public abstract void changeTextColour(Color colour);
 
     public void decrementHealth(float damage)
     {
@@ -130,12 +129,10 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
             if ((resourceCounter.hasGameStarted() && (faithCost <= resourceCounter.getFaith())) || gameObject.tag == "Temple")
             {
                 setOutline();
-                changeTextColour(Color.green);
             }
             else
             {
                 setWarning();
-                changeTextColour(Color.red);
             }
         }
     }
@@ -144,7 +141,6 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         if (other.gameObject.tag == "Hand")
         {
             removeOutline();
-            changeTextColour(Color.white);
         }
     }
 
@@ -161,18 +157,14 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
 
     public IEnumerator ResourceGainText(int value,string resource)
     {
-        Vector3 cameraPos = GameObject.FindWithTag("MainCamera").transform.position;
         GameObject resourceText = GameObject.Instantiate(resourceGainText,resourceGainText.transform) as GameObject;
         resourceText.transform.parent = gameObject.transform;
         Vector2 randPos = UnityEngine.Random.insideUnitCircle*5.0f;
         resourceText.transform.Translate(new Vector3(randPos.x,-2.0f,randPos.y*2.0f));
         Vector3 startLocation = resourceText.transform.position;
-        cameraPos.y = startLocation.y;
-        resourceText.transform.LookAt(2*startLocation - cameraPos);
-        resourceText.transform.Rotate(new Vector3(0, 90, 0));
         //resourceText.GetComponent<TextMesh>().text = "+" + value.ToString() + " " + resource;
         resourceText.GetComponent<ResourceGainTablet>().setText("+" + value.ToString());
-        resourceText.SetActive(true);
+        resourceText.GetComponent<ResourceGainTablet>().activateThis();
         for (float f = 1f; f >= 0; f -= 0.01f)
         {
             resourceText.transform.Translate(new Vector3(0, 0.1f, 0));
@@ -180,12 +172,6 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         }
         resourceText.SetActive(false);
         GameObject.Destroy(resourceText);
-    }
-
-    public void setInfoText(GameObject infoText, int faithCost)
-    {
-        infoText.GetComponent<TextMesh>().text = "  " + faithCost.ToString();
-        infoText.SetActive(true);
     }
 
     public void createHealthBar()
@@ -206,10 +192,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         Vector3 actualSize = dims.size;
         GameObject newText = GameObject.Instantiate(Resources.Load(prefab)) as GameObject;
         newText.transform.position = gameObject.transform.position;
-        newText.transform.localScale *= 2;
         newText.transform.Translate(new Vector3(0, actualSize.y * 1.3f, 0));
-        newText.transform.localRotation = gameObject.transform.localRotation;
-        //newText.transform.Rotate(new Vector3(0, -90, 0));
         newText.transform.SetParent(gameObject.transform);
         newText.SetActive(false);
         return newText;

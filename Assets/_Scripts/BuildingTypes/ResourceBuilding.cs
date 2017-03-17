@@ -8,10 +8,9 @@ public abstract class ResourceBuilding : Building, Grabbable
     public AudioClip destroy;
     public string buildingName;
     public bool on_game_board = false;
-    public bool held =false;
+    public bool held = false;
     public string required_resource_tag = "None";
-    public  GameObject resource_node;
-    GameObject buildingCostText;
+    public GameObject resource_node;
 
     private float placementTime;
 
@@ -37,17 +36,6 @@ public abstract class ResourceBuilding : Building, Grabbable
     {
         //boxSize = GetComponent<BoxCollider>().bounds.size / 2;
         //boxSize.y = 0.01f;
-        buildingCostText = createInfoText("FaithCost");
-        setInfoText(buildingCostText, faithCost);
-    }
-
-    public override void changeTextColour(Color colour)
-    {
-        if (buildingCostText)
-        {
-            buildingCostText.GetComponent<TextMesh>().GetComponent<Renderer>().material.SetColor("_Color", colour);
-        }
-        
     }
 
 
@@ -85,17 +73,13 @@ public abstract class ResourceBuilding : Building, Grabbable
 
     //Don't need this
     public override void deactivate()
-    {  
+    {
     }
 
     public void grab()
     {
         held = true;
-        if (this.tag != "Temple")
-        {
-            Destroy(buildingCostText);
-        }
-        
+
         // Deactivate  collider and gravity
         if (highlight != null)
         {
@@ -156,6 +140,6 @@ public abstract class ResourceBuilding : Building, Grabbable
     {
         base.release(vel);
         held = false;
-        
+
     }
 }

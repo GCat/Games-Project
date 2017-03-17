@@ -20,8 +20,7 @@ public class House : Building, Grabbable
     private Vector3 boxSize;
     Material matEmpty;
     Material matInval;
-
-    GameObject infoText;
+    
     //Constructor of a House
     //capacity = number of humans a house can hold; location = location of a house
 
@@ -59,15 +58,6 @@ public class House : Building, Grabbable
         }
 
 
-    }
-
-
-    public override void changeTextColour(Color colour)
-    {
-        if (infoText)
-        {
-            infoText.GetComponent<TextMesh>().GetComponent<Renderer>().material.SetColor("_Color", colour);
-        }
     }
 
     void Start()
@@ -119,7 +109,6 @@ public class House : Building, Grabbable
     {
         badplacement = false;
         held = true;
-        Destroy(infoText);
 
         // Deactivate  collider and gravity
         if (highlight != null)

@@ -28,8 +28,7 @@ public class KrakenTower : Building, Grabbable
 
     int attackMask = 1 << 11;
     bool grabbedOnce = false;
-
-    private GameObject infoText;
+    
 
     float getHealth()
     {
@@ -42,18 +41,9 @@ public class KrakenTower : Building, Grabbable
 
     }
 
-    public override void changeTextColour(Color colour)
-    {
-        if (infoText)
-        {
-            infoText.GetComponent<TextMesh>().GetComponent<Renderer>().material.SetColor("_Color", colour);
-        }
-    }
 
     void Start()
     {
-        infoText = createInfoText("FaithCost");
-        setInfoText(infoText, faithCost);
 
         rangeHighlight = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         rangeHighlight.GetComponent<Renderer>().material.SetColor("_Color", new Color(0.0f, 0.6f, 0.0f, 0.2f));
@@ -157,7 +147,6 @@ public class KrakenTower : Building, Grabbable
         grabbedOnce = true;
         held = true;
         badplacement = false;
-        Destroy(infoText);
 
         // Deactivate  collider and gravity
         if (highlight != null)
