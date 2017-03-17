@@ -44,6 +44,7 @@ public class BadiesAI : MonoBehaviour, Character
     public float strength = 1.0f;
     public float health = 100.0f;
     public float totalHealth = 100.0f;
+    public int faithValue;
     GameObject healthBar;
     GameObject infoText;
     Quaternion infoTextOri;
@@ -124,8 +125,6 @@ public class BadiesAI : MonoBehaviour, Character
     //can we make the spawn type an enum please xoxo
     public void spawn(Portal.MonsterType type)
     {
-
-
         rb = GetComponent<Rigidbody>();
         closestEnemy = null;
         monsterType = type;
@@ -199,12 +198,14 @@ public class BadiesAI : MonoBehaviour, Character
         }
     }
 
-    public IEnumerator DamageText(int damage)
+    public IEnumerator DamageText(int damage, Color color, float scale = 1)
     {
         GameObject damageIndicator = GameObject.Instantiate(damageText, transform.position, Quaternion.identity) as GameObject;
         TextMesh text = damageIndicator.GetComponent<TextMesh>();
+        damageIndicator.transform.localScale *= scale;
         text.text = damage.ToString();
-        text.color = Color.red;
+        text.color = color;
+        text.characterSize *= scale;
         Destroy(damageIndicator, 1);
         for (float f = 1f; f >= 0; f -= 0.01f)
         {
@@ -499,7 +500,7 @@ public class BadiesAI : MonoBehaviour, Character
     public void decrementHealth(float damage)
     {
         health -= damage;
-        StartCoroutine(DamageText((int)damage));
+        StartCoroutine(DamageText((int)damage, Color.red));
         float scale = (health / totalHealth);
         float characterScale = gameObject.transform.localScale.x;
         if (healthBar != null)
@@ -510,6 +511,8 @@ public class BadiesAI : MonoBehaviour, Character
         if (health <= 0 && alive == true)
         {
             Destroy(healthBar);
+            StartCoroutine(DamageText((int)faithValue, Color.magenta, 2.0f));
+            resources.addFaith(faithValue);
             alive = false;
             //die animation here
             animator.enabled = false;

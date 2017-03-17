@@ -3141,6 +3141,7 @@ MonoBehaviour:
   strength: 10
   health: 100
   totalHealth: 100
+  faithValue: 8
   rotationSpeed: 6
   alive: 0
   projectile: {fileID: 0}

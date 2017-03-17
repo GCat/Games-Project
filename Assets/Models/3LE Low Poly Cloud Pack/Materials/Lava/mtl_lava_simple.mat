@@ -32,11 +32,7 @@ Material:
       second:
         m_Texture: {fileID: 2800000, guid: 348fa4d278c53ad4dacd07df1e63a248, type: 3}
         m_Scale: {x: 1, y: 1}
-<<<<<<< refs/remotes/origin/master
-        m_Offset: {x: 0, y: 38.926754}
-=======
-        m_Offset: {x: 0, y: 4.1601524}
->>>>>>> green silhouettes on buildings
+        m_Offset: {x: 0, y: 77.61496}
     - first:
         name: _MainTex2
       second:
