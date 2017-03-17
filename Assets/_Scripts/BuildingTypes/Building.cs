@@ -13,7 +13,6 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
     GameObject healthBar;
     GameObject resourceGainText;
     public bool bought = false;
-
     public int faithCost;
     protected Vector3 boxSize;
     public GameObject highlight;
@@ -194,13 +193,8 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
 
     public void highlightCheck()
     {
-        if (resourceCounter.aboveBoard(transform.position))
+        if (resourceCounter.withinBounds(transform.position))
         {
-            if (transform.position.y < 0.1f)
-            {
-                highlightDestroy();
-                return;
-            }
             highlight.GetComponent<Renderer>().enabled = true;
             highlight.transform.position = new Vector3(transform.position.x, 0.1f,transform.position.z);
             float yRot = gameObject.transform.eulerAngles.y;
