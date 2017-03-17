@@ -122,14 +122,6 @@ public class KrakenTower : Building, Grabbable {
         return false;
     }
 
-    private void OnDestroy()
-    {
-        if(rangeHighlight != null)
-        {
-            DestroyImmediate(rangeHighlight);
-        }
-    }
-
     private void playForwards()
     {
         anim["Attack"].speed = 1.0f;
@@ -255,13 +247,8 @@ public class KrakenTower : Building, Grabbable {
         base.release(vel);
         hideRange();
     }
-<<<<<<< HEAD:Assets/FireTower.cs
-
     void OnDestroy()
     {
         if (rangeHighlight != null) DestroyImmediate(rangeHighlight);
     }
 }
-=======
-}
->>>>>>> origin/master:Assets/_Scripts/BuildingTypes/KrakenTower.cs
