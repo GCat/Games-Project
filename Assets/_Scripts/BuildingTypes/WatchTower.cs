@@ -142,12 +142,13 @@ public class WatchTower : Building, Grabbable
         if (victim != null)
         {
             Vector3 pos = transform.TransformPoint(GetComponent<BoxCollider>().center);
-            pos.y = 10f;
+            pos.y += 5f;
             Vector3 direction = Vector3.Normalize(victim.transform.position - pos) * arrowSpeed;
             GameObject arrow = GameObject.Instantiate(pre, pos, Quaternion.LookRotation(direction)) as GameObject;
             arrow.GetComponent<Projectile>().parent = gameObject;
             arrow.GetComponent<Rigidbody>().velocity = direction;
             Physics.IgnoreCollision(GetComponent<Collider>(), arrow.GetComponent<Collider>());
+           
             float travelTime = Vector3.Distance(victim.transform.position, pos) / arrowSpeed;
             StartCoroutine(WaitToDamage(travelTime, arrowDamage, currentTarget));
             arrowSource.Play();
@@ -219,8 +220,7 @@ public class WatchTower : Building, Grabbable
     {
         resourceCounter.removeFaith(faithCost);
         active = true;
-        if (highlight != null) Destroy(highlight);
-        highlight = null;
+        if (highlight != null) highlightDestroy();
         held = false;
         buildingName = "TOWER";
         hideRange();

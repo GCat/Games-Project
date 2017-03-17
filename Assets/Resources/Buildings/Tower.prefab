@@ -56,7 +56,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000064598565702}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 24.275387, y: -8.5580495e-18, z: 6.1990237}
+  m_LocalPosition: {x: 30.31224, y: 0, z: -48.93982}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 4775093912679974}
@@ -139,8 +139,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.8094583, y: 5.0346875, z: 1.9764619}
-  m_Center: {x: -0.028345108, y: 2.4906065, z: -0.13707685}
+  m_Size: {x: 1.6956496, y: 4.7829967, z: 1.716699}
+  m_Center: {x: 0.028559685, y: 2.4262702, z: -0.1256237}
 --- !u!95 &95266239275184546
 Animator:
   serializedVersion: 3
@@ -194,7 +194,8 @@ MonoBehaviour:
   tablet: {fileID: 0}
   bought: 0
   faithCost: 15
-  highlight: {fileID: 0}
+  highlight_template: {fileID: 1496738986511838, guid: fb5396ac9d23c6645bf227ad14e3d692,
+    type: 2}
   canBeGrabbed: 1
   arrowClip: {fileID: 8300000, guid: 2c55dfe771c1d174bb9d4896cc2e02f1, type: 3}
   arrowDamage: 10

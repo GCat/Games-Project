@@ -8,14 +8,13 @@ public class House : Building, Grabbable
 
     public AudioClip build;
     public AudioClip destroy;
-
+    public GameObject humanSpawn;
     public ParticleSystem smokeEffect;
     public int capacity = 5;      //size of house: bigger house => bigger capacity
     public int inhabitants = 0;        //human counter
     public int foodCost = 10;
     public bool active = false;
     public bool held = false;
-    private bool badplacement = false;
     private float placementTime = 0;
     private Vector3 boxSize;
     Material matEmpty;
@@ -49,15 +48,6 @@ public class House : Building, Grabbable
                 highlightCheck();
             }
         }
-        else if (badplacement)
-        {
-            if (Time.time - placementTime > 5.0f)
-            {
-                DestroyObject(gameObject);
-            }
-        }
-
-
     }
 
     void Start()
@@ -71,17 +61,16 @@ public class House : Building, Grabbable
     // Spawning a human 
     private IEnumerator spawnHuman()
     {
-        for (int i = 0; i < capacity; i++)
+        while (active)
         {
-            yield return new WaitForSeconds(5);
-            Vector3 humanLocation;
+            yield return new WaitForSeconds(15f);
+            Vector3 humanLocation = humanSpawn.transform.position;
             humanLocation = new Vector3(transform.position.x, transform.position.y, transform.position.z + 10);
             NavMeshHit hit;
-            if (NavMesh.SamplePosition(humanLocation, out hit, 20.0f, NavMesh.AllAreas))
+            if (NavMesh.SamplePosition(humanLocation, out hit, 30.0f, NavMesh.AllAreas))
             {
+                Debug.Log("Spawning a human");
                 Instantiate(Resources.Load("Characters/Human"), hit.position, Quaternion.identity);
-                resourceCounter.removeFood(foodCost);
-                inhabitants++;
                 StartCoroutine(ResourceGainText(1, "Chap"));
             }
             else
@@ -96,8 +85,8 @@ public class House : Building, Grabbable
         StartCoroutine(spawnHuman());
         //when do you call create buiding for towers ? -- cost does not work 
         active = true;
-        if (highlight != null) Destroy(highlight);
-        highlight = null;
+        if (highlight != null) highlightDestroy();
+        //highlight = null;
         held = false;
         //ResourceGainText(1, "Chap");
     }
@@ -107,7 +96,6 @@ public class House : Building, Grabbable
     }
     public void grab()
     {
-        badplacement = false;
         held = true;
 
         // Deactivate  collider and gravity
@@ -139,7 +127,6 @@ public class House : Building, Grabbable
         {
             if (Physics.CheckBox(new Vector3(Mathf.Floor(x), 0, Mathf.Floor(z)), boxSize, Quaternion.LookRotation(Vector3.forward), layerMask))
             {
-                badplacement = true;
                 held = false;
                 placementTime = Time.time;
                 GetComponent<Collider>().enabled = false;

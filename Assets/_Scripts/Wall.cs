@@ -7,7 +7,6 @@ public class Wall : Building, Grabbable {
 	// Use this for initialization
     public int cost_per_meter = 10;
     public bool held = false;
-    private bool badplacement = false;
 
     private Transform turretB= null;
     private Transform turretA=null;
@@ -24,10 +23,6 @@ public class Wall : Building, Grabbable {
             {
                 highlightCheck();
             }
-        }
-        else if(badplacement)
-        {
-            DestroyObject(gameObject);
         }
     }
 
@@ -66,8 +61,8 @@ public class Wall : Building, Grabbable {
     public override void create_building()
     {
        // WALL SNAPPING WITH EACH OTHER CODE HERE I FAILED MISERABLY
-
     }
+
     //Don't need this 
     public override void activate()
     {
