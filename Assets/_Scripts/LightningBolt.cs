@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LightningBolt : Tool, Grabbable {
+public class LightningBolt : Tool {
 
     public bool held = false;
     public int fCost = 10;
@@ -28,7 +28,7 @@ public class LightningBolt : Tool, Grabbable {
     void Update () {
 		
 	}
-    public bool canBuy()
+    public new bool canBuy()
     {
         if (res.faith > fCost) return true;
         else return false;
@@ -45,7 +45,7 @@ public class LightningBolt : Tool, Grabbable {
         rend.material.SetColor("_OutlineColor", Color.blue);
     }
 
-    public void grab()
+    public override void grab()
     {
         held = true;
         // Deactivate collider and gravity
@@ -65,7 +65,7 @@ public class LightningBolt : Tool, Grabbable {
         GetComponent<Collider>().enabled = false;
 
     }
-    public void release(Vector3 vel)
+    public override void release(Vector3 vel)
     {
         GetComponent<Rigidbody>().useGravity = true;
         GetComponent<Rigidbody>().isKinematic = false;

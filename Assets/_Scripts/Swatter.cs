@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Swatter : Tool, Grabbable {
+public class Swatter : Tool {
 
     public bool held = false;
     private bool enemyHit = false;
@@ -23,7 +23,7 @@ public class Swatter : Tool, Grabbable {
 
     }
 
-    public void grab()
+    public override void grab()
     {
         held = true;
         GetComponent<Rigidbody>().useGravity = false;
@@ -31,7 +31,7 @@ public class Swatter : Tool, Grabbable {
         GetComponent<Collider>().enabled = false;
     }
 
-    public void release(Vector3 vel)
+    public override void release(Vector3 vel)
     {
         GetComponent<Rigidbody>().isKinematic = false;
         GetComponent<Collider>().enabled = true;
