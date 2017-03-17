@@ -8,12 +8,11 @@ public abstract class ResourceBuilding : Building, Grabbable
     public AudioClip destroy;
     public string buildingName;
     public bool on_game_board = false;
-    public bool held = false;
+    public bool held =false;
     public string required_resource_tag = "None";
     public  GameObject resource_node;
     GameObject buildingCostText;
 
-    private bool badplacement = false;
     private float placementTime;
 
     public abstract void incrementResource();
@@ -38,7 +37,6 @@ public abstract class ResourceBuilding : Building, Grabbable
     {
         //boxSize = GetComponent<BoxCollider>().bounds.size / 2;
         //boxSize.y = 0.01f;
-        badplacement = false;
         buildingCostText = createInfoText("FaithCost");
         setInfoText(buildingCostText, faithCost);
     }
@@ -62,18 +60,7 @@ public abstract class ResourceBuilding : Building, Grabbable
             {
                 highlightCheck();
             }
-            else if (transform.position.y > 0f)
-            {
-                createHighlight();
-            }
-        }else if (badplacement)
-        {
-            if (Time.time - placementTime > 5.0f)
-            {
-                DestroyObject(gameObject);
-            }
         }
-        
     }
 
     //Is there enough faith ..  to construct building
@@ -92,6 +79,8 @@ public abstract class ResourceBuilding : Building, Grabbable
     public override void activate()
     {
         create_building();
+        held = false;
+        highlightDestroy();
     }
 
     //Don't need this
@@ -102,7 +91,6 @@ public abstract class ResourceBuilding : Building, Grabbable
     public void grab()
     {
         held = true;
-        badplacement = false;
         if (this.tag != "Temple")
         {
             Destroy(buildingCostText);
@@ -164,8 +152,10 @@ public abstract class ResourceBuilding : Building, Grabbable
         return chosenResource;
     }
 
-    public bool getbp()
+    new void release(Vector3 vel)
     {
-        return badplacement;
+        base.release(vel);
+        held = false;
+        
     }
 }
