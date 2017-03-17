@@ -37,8 +37,9 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
 
         if (health <= 0)
         {
-            GameObject explosion = GameObject.Instantiate(ExplosionEffect, transform);
-            Destroy(explosion, 1.5f);
+            GameObject explosion = GameObject.Instantiate(ExplosionEffect);
+            explosion.transform.position = transform.position;
+            Destroy(explosion, 3.0f);
             die();
         }else if(health <= (0.2 * totalHealth))
         {
@@ -58,9 +59,13 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         resourceGainText = createInfoText("ResourceGainTablet");
         boxSize = GetComponent<BoxCollider>().bounds.size / 2;
         boxSize.y = 1f;
-        child_materials = GetComponentsInChildren<Renderer>();
+        child_materials = GetComponentsInChildren<Renderer>(false);
         outlineShader = Shader.Find("Toon/Basic Outline");
         ExplosionEffect = Resources.Load("Explosion") as GameObject;
+        if(ExplosionEffect != null)
+        {
+            Debug.Log("Effect loaded");
+        }
     }
 
     //return true if within bounds & not above another building

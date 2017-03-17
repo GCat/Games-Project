@@ -161,7 +161,7 @@ public class BodySourceView : MonoBehaviour
     private void adjustBodyParts(Kinect.Body body, GameObject bodyObject)
     {
 
-        headCamera.transform.position = player_objects[Kinect.JointType.Head].transform.position;
+        headCamera.transform.position = Vector3.Slerp(headCamera.transform.position, player_objects[Kinect.JointType.Head].transform.position, Time.deltaTime * 10.0f);
         right_hand.transform.position = Vector3.Slerp(right_hand.transform.position, player_objects[Kinect.JointType.HandRight].transform.position, Time.deltaTime * 10.0f);
         left_hand.transform.position = Vector3.Slerp(left_hand.transform.position, player_objects[Kinect.JointType.HandLeft].transform.position, Time.deltaTime * 10.0f);
 

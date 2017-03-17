@@ -79,10 +79,11 @@ public class House : Building, Grabbable
     }
 
     // Spawning a human 
-    private void spawnHuman()
+    private IEnumerator spawnHuman()
     {
-        if (inhabitants < capacity && resourceCounter.getFood() >= foodCost)
+        for (int i = 0; i < capacity; i++)
         {
+            yield return new WaitForSeconds(5);
             Vector3 humanLocation;
             humanLocation = new Vector3(transform.position.x, transform.position.y, transform.position.z + 10);
             NavMeshHit hit;
@@ -95,18 +96,13 @@ public class House : Building, Grabbable
             }
             else
                 Debug.Log("Could not spawn human");
-            }
-
-        if (inhabitants >= capacity)
-        {
-            CancelInvoke("spawnHuman");
 
         }
     }
 
     public override void activate()
     {
-        InvokeRepeating("spawnHuman", 0.5f, 10);
+        StartCoroutine(spawnHuman());
         //when do you call create buiding for towers ? -- cost does not work 
         active = true;
         if (highlight != null) Destroy(highlight);

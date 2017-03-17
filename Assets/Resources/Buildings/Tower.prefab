@@ -196,10 +196,10 @@ MonoBehaviour:
   canBeGrabbed: 1
   build: {fileID: 0}
   destroy: {fileID: 0}
+  arrowDamage: 10
   buildingName: 
   target: {fileID: 0}
   held: 0
-  timer1: 0
 --- !u!208 &208718995710538024
 NavMeshObstacle:
   m_ObjectHideFlags: 1

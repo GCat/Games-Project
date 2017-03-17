@@ -8,7 +8,8 @@ public class WatchTower : Building, Grabbable
 
     public AudioClip build;
     public AudioClip destroy;
-
+    public float arrowDamage = 5;
+    float arrowSpeed = 30;
     GameObject rangeHighlight;
 
     public string buildingName;
@@ -18,9 +19,6 @@ public class WatchTower : Building, Grabbable
     bool active = false;
     public bool held = false;
 
-    public float timer1;
-    private float StartTime1;
-
     private bool badplacement = false;
     private float placementTime = 0;
 
@@ -29,6 +27,7 @@ public class WatchTower : Building, Grabbable
     bool grabbedOnce = false;
 
     private GameObject infoText;
+    private GameObject currentTarget;
 
     float getHealth()
     {
@@ -51,7 +50,6 @@ public class WatchTower : Building, Grabbable
 
     void Start()
     {
-
         pre = Resources.Load("Arrow_Regular") as GameObject;
         infoText = createInfoText("FaithCost");
         setInfoText(infoText, faithCost);
@@ -71,7 +69,6 @@ public class WatchTower : Building, Grabbable
     void Update()
     {
         rangeHighlight.transform.position = new Vector3(gameObject.transform.position.x, 0.1f, gameObject.transform.position.z);
-
         if (held)
         {
             if (highlight != null)
@@ -101,15 +98,10 @@ public class WatchTower : Building, Grabbable
 
             if (resourceCounter.baddies > 0)
             {
-                if (target != null)
-                {
-                    attack(target);
-                }
-                else
+                if(currentTarget == null)
                 {
                     acquireTarget();
                 }
-
             }
         }
     }
@@ -120,27 +112,25 @@ public class WatchTower : Building, Grabbable
         List<Collider> hitColliders = new List<Collider>(Physics.OverlapSphere(transform.position, radius, attackMask));
         if (hitColliders.Count > 0)
         {
-            target = hitColliders[0].gameObject;
+            Debug.Log("Acquired target");
+            currentTarget = hitColliders[0].gameObject;
             return true;
         }
 
         return false;
     }
 
-    //fire an arrow at a target
-    bool attack(GameObject victim)
+    private IEnumerator attack()
     {
-        if (victim != null)
+
+        while (true)
         {
-            timer1 = Time.time - StartTime1;
-            if (timer1 >= 3)
+            if (currentTarget != null && Vector3.Distance(transform.position, currentTarget.transform.position) < radius)
             {
-                throwArrow(victim);
-                StartTime1 = Time.time;
-                return true;
+                throwArrow(currentTarget);
             }
+            yield return new WaitForSeconds(2);
         }
-        return false;
     }
 
     void OnDestroy()
@@ -158,8 +148,27 @@ public class WatchTower : Building, Grabbable
         {
             Vector3 pos = transform.TransformPoint(GetComponent<BoxCollider>().center);
             pos.y = 10f;
-            GameObject c = GameObject.Instantiate(pre, pos, Quaternion.LookRotation(victim.transform.position)) as GameObject;
-            ((Arrow)(c.GetComponent(typeof(Arrow)))).attack(victim);
+            Vector3 direction = Vector3.Normalize(victim.transform.position - pos) * arrowSpeed;
+            GameObject arrow = GameObject.Instantiate(pre, pos, Quaternion.LookRotation(direction)) as GameObject;
+            arrow.GetComponent<Projectile>().parent = gameObject;
+            arrow.GetComponent<Rigidbody>().velocity = direction;
+            Physics.IgnoreCollision(GetComponent<Collider>(), arrow.GetComponent<Collider>());
+            float travelTime = Vector3.Distance(victim.transform.position, pos) / arrowSpeed;
+            StartCoroutine(WaitToDamage(travelTime, arrowDamage, currentTarget));
+        }
+    }
+
+
+    IEnumerator WaitToDamage(float waitTime,float damage, GameObject victim)
+    {
+        yield return new WaitForSeconds(waitTime);
+        if (victim != null)
+        {
+            HealthManager victimHealth = victim.GetComponent<HealthManager>();
+            if (victimHealth != null)
+            {
+                victimHealth.decrementHealth(damage);
+            }
         }
     }
 
@@ -186,9 +195,6 @@ public class WatchTower : Building, Grabbable
 
     }
 
-
-
-
     public override string getName()
     {
         return buildingName;
@@ -212,21 +218,18 @@ public class WatchTower : Building, Grabbable
 
     public override void die()
     {
-        Destroy(gameObject);
+        Destroy(gameObject, 0.5f);
     }
 
     public override void activate()
     {
-        //when do you call create buiding for towers ? -- cost does not work 
         active = true;
         if (highlight != null) Destroy(highlight);
         highlight = null;
         held = false;
         buildingName = "TOWER";
-        timer1 = 0f;
-        StartTime1 = Time.time;
         hideRange();
-
+        StartCoroutine(attack());
     }
 
     public override void deactivate()

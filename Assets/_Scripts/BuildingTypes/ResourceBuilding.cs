@@ -20,7 +20,8 @@ public abstract class ResourceBuilding : Building, Grabbable
 
     public override void die()
     {
-        Destroy(gameObject);
+        Destroy(gameObject, 0.5f);
+
     }
 
     public override string getName()
