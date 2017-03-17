@@ -1356,11 +1356,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9388817e9db98074bb38ffa3b1789d4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buildClip: {fileID: 8300000, guid: 0f6a9c7d024f3144690add1c060e8ed0, type: 3}
+  source: {fileID: 0}
   totalHealth: 5000
   health: 5000
   resourceCounter: {fileID: 0}
   tablet: {fileID: 0}
   bought: 0
+  faithCost: 0
   highlight: {fileID: 0}
   canBeGrabbed: 1
   build: {fileID: 0}
@@ -1381,7 +1384,7 @@ ParticleSystem:
   m_GameObject: {fileID: 1285203927654384}
   serializedVersion: 5
   lengthInSec: 0.28
-  simulationSpeed: 1
+  speed: 1
   looping: 1
   prewarm: 0
   playOnAwake: 1
@@ -4018,7 +4021,7 @@ ParticleSystem:
   m_GameObject: {fileID: 1917890677157350}
   serializedVersion: 5
   lengthInSec: 0.28
-  simulationSpeed: 1
+  speed: 1
   looping: 1
   prewarm: 0
   playOnAwake: 1

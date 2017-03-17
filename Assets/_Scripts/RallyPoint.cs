@@ -23,13 +23,7 @@ public class RallyPoint : Building, Grabbable {
     bool humanIsHeld = false;
     //public bool[] rallySlotsFree = new bool[5];
     //public Vector3[] rallySlots = new Vector3[5];
-
-    public override void changeTextColour(Color colour)
-    {
-        //infoText.GetComponent<TextMesh>().GetComponent<Renderer>().material.SetColor("_Color", colour);
-    }
-
-    //private GameObject infoText;
+    
 
     // Use this for initialization
     void Start() {
@@ -84,7 +78,6 @@ public class RallyPoint : Building, Grabbable {
         grabbedOnce = true;
         held = true;
         badplacement = false;
-        //Destroy(infoText);
 
         // Deactivate  collider and gravity
         if (highlight != null)

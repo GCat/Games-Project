@@ -981,6 +981,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 815dc1c292a11e244a3bdfd82d194356, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buildClip: {fileID: 8300000, guid: 0f6a9c7d024f3144690add1c060e8ed0, type: 3}
+  source: {fileID: 0}
   totalHealth: 100
   health: 100
   resourceCounter: {fileID: 0}
@@ -1103,7 +1105,7 @@ ParticleSystem:
   m_GameObject: {fileID: 1335213082906890}
   serializedVersion: 5
   lengthInSec: 1
-  simulationSpeed: 1
+  speed: 1
   looping: 1
   prewarm: 0
   playOnAwake: 1
@@ -3740,7 +3742,7 @@ NavMeshObstacle:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1079506678861314}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
   m_Extents: {x: 0.02, y: 0.05, z: 0.02}

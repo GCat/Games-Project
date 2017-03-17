@@ -10,10 +10,8 @@ public abstract class ResourceBuilding : Building, Grabbable
     public bool on_game_board = false;
     public bool held = false;
     public string required_resource_tag = "None";
-    public  GameObject resource_node;
-    GameObject buildingCostText;
+    public GameObject resource_node;
 
-    private bool badplacement = false;
     private float placementTime;
 
     public abstract void incrementResource();
@@ -38,18 +36,6 @@ public abstract class ResourceBuilding : Building, Grabbable
     {
         //boxSize = GetComponent<BoxCollider>().bounds.size / 2;
         //boxSize.y = 0.01f;
-        badplacement = false;
-        buildingCostText = createInfoText("FaithCost");
-        setInfoText(buildingCostText, faithCost);
-    }
-
-    public override void changeTextColour(Color colour)
-    {
-        if (buildingCostText)
-        {
-            buildingCostText.GetComponent<TextMesh>().GetComponent<Renderer>().material.SetColor("_Color", colour);
-        }
-        
     }
 
 
@@ -62,18 +48,7 @@ public abstract class ResourceBuilding : Building, Grabbable
             {
                 highlightCheck();
             }
-            else if (transform.position.y > 0f)
-            {
-                createHighlight();
-            }
-        }else if (badplacement)
-        {
-            if (Time.time - placementTime > 5.0f)
-            {
-                DestroyObject(gameObject);
-            }
         }
-        
     }
 
     //Is there enough faith ..  to construct building
@@ -81,7 +56,6 @@ public abstract class ResourceBuilding : Building, Grabbable
     {
         if (!bought && (resourceCounter.faith >= faithCost))
         {
-            resourceCounter.removeFaith(faithCost);
             bought = true;
             return true;
         }
@@ -91,23 +65,21 @@ public abstract class ResourceBuilding : Building, Grabbable
     //Don't need this 
     public override void activate()
     {
+        resourceCounter.removeFaith(faithCost);
         create_building();
+        held = false;
+        highlightDestroy();
     }
 
     //Don't need this
     public override void deactivate()
-    {  
+    {
     }
 
     public void grab()
     {
         held = true;
-        badplacement = false;
-        if (this.tag != "Temple")
-        {
-            Destroy(buildingCostText);
-        }
-        
+
         // Deactivate  collider and gravity
         if (highlight != null)
         {
@@ -164,8 +136,10 @@ public abstract class ResourceBuilding : Building, Grabbable
         return chosenResource;
     }
 
-    public bool getbp()
+    new void release(Vector3 vel)
     {
-        return badplacement;
+        base.release(vel);
+        held = false;
+
     }
 }

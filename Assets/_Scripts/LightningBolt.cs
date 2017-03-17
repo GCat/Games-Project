@@ -30,9 +30,6 @@ public class LightningBolt : MonoBehaviour, Grabbable {
 	}
     public bool canBuy()
     {
-        Debug.Log(fCost);
-        Debug.Log(res.faith);
-        Debug.Log(res.faith > fCost);
         if (res.faith > fCost) return true;
         else return false;
     }
