@@ -9,6 +9,7 @@ public class Temple : ResourceBuilding
     public WorldStarter world;
     public bool placed = false;
 
+
     public override void create_building()
     {
         buildingName = "TEMPLE";
@@ -90,4 +91,5 @@ public class Temple : ResourceBuilding
         world.stopGame();
         Destroy(gameObject);
     }
+
 }
