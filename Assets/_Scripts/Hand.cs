@@ -295,7 +295,14 @@ public class Hand : MonoBehaviour {
                 }
                 else
                 {
-                    Debug.Log("This object is not placeable", heldObject);
+                    Grabbable human = heldObject.GetComponent<Grabbable>();
+                    if (human != null)
+                    {
+                        human.grab();
+                        snapToHand(heldObject);
+                        heldObject.transform.parent = transform;
+                    }
+                    else Debug.Log("This object is not placeable", heldObject);
                 }
             }                
         }
