@@ -3,6 +3,7 @@ using System.Collections;
 
 public class Farm : ResourceBuilding
 {
+
     public new void die()
     {
         Destroy(gameObject);

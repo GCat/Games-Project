@@ -17,11 +17,13 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
     public bool bought = false;
     public int faithCost;
     protected Vector3 boxSize;
-    public GameObject highlight;
+    public GameObject highlight_template;
+    protected GameObject highlight;
     public bool canBeGrabbed = true;
     protected Renderer[] child_materials;
     protected Shader outlineShader;
     private GameObject ExplosionEffect;
+    
 
 
     public abstract bool canBuy();
@@ -49,6 +51,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
 
     private void Awake()
     {
+
         tablet = GameObject.FindGameObjectWithTag("Tablet");
         if (tablet != null)
         {
@@ -204,21 +207,25 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         {
             highlight.GetComponent<Renderer>().enabled = true;
             highlight.transform.position = new Vector3(transform.position.x, 0.1f,transform.position.z);
+
             float yRot = gameObject.transform.eulerAngles.y;
             if ((yRot > 45 && yRot < 135) || (yRot > -135 && yRot < -45))
             {
                 highlight.transform.rotation = Quaternion.LookRotation(Vector3.right);
-
             }
             else
             {
                 highlight.transform.rotation = Quaternion.LookRotation(Vector3.forward);
             }
             int layerMask = 1 << 10;
-            if (Physics.CheckBox(new Vector3(transform.position.x, 0, transform.position.z), boxSize,gameObject.transform.rotation, layerMask))
+            if (Physics.CheckBox(new Vector3(transform.position.x, 0, transform.position.z), boxSize, gameObject.transform.rotation, layerMask))
+            {
                 highlight.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
+            }
             else
+            {
                 highlight.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
+            }
         }
         else
         {
@@ -228,16 +235,25 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
 
     public void highlightDestroy()
     {
-        if (highlight != null) Destroy(highlight);
+        if (highlight != null) highlight.SetActive(false);
     }
 
 
 
     public void createHighlight()
     {
-        highlight = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        highlight.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
-        highlight.transform.localScale = new Vector3(boxSize.x*2.0f, 0.1f, boxSize.z*2.0f);
+        //highlight = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        if (highlight_template != null)
+        {
+            highlight = Instantiate(highlight_template) as GameObject;
+        }
+        else
+        {
+            highlight = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            highlight.transform.localScale = new Vector3(boxSize.x * 2.0f, 0.1f, boxSize.z * 2.0f);
+            highlight.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
+        }
+        highlight.SetActive(true);
         highlight.transform.position = new Vector3(transform.position.x , 0.1f, transform.position.z);
         highlight.transform.rotation = transform.rotation;
 

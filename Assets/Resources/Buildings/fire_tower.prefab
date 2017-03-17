@@ -462,7 +462,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1079506678861314}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -35.804268, y: 0.047921896, z: 1.3671875}
+  m_LocalPosition: {x: -13.188614, y: 0.047921896, z: -35.89006}
   m_LocalScale: {x: 108.667595, y: 108.667656, z: 108.667656}
   m_Children:
   - {fileID: 4755208081583724}
@@ -989,7 +989,8 @@ MonoBehaviour:
   tablet: {fileID: 0}
   bought: 0
   faithCost: 20
-  highlight: {fileID: 0}
+  highlight_template: {fileID: 1198705378565068, guid: df7a3fa71a5afc2439e55f03b47b96a0,
+    type: 2}
   canBeGrabbed: 1
   build: {fileID: 0}
   destroy: {fileID: 0}
