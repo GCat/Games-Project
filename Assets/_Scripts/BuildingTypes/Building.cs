@@ -170,7 +170,6 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         resourceText.SetActive(true);
         for (float f = 1f; f >= 0; f -= 0.01f)
         {
-            resourceText.GetComponent<ResourceGainTablet>().setAlpha(f);
             resourceText.transform.Translate(new Vector3(0, 0.1f, 0));
             yield return null;
         }
