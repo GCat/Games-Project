@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
-public class Portal : MonoBehaviour {
+public class Portal : MonoBehaviour
+{
 
     bool active = false;
     [System.Serializable]
@@ -27,26 +29,28 @@ public class Portal : MonoBehaviour {
     bool started = false;
     MonsterType currentType = 0;
 
-    void Start () {
+    void Start()
+    {
         temple = GameObject.FindGameObjectWithTag("Temple");
         resourceCounter = GameObject.FindGameObjectWithTag("Tablet").GetComponent<ResourceCounter>();
         pos = spawnPos.transform.position;
         asource = GetComponent<AudioSource>();
         startTime = Time.time;
     }
-	
-	void Update () {
-        if(temple == null)
+
+    void Update()
+    {
+        if (temple == null)
         {
             return;
-        } 
-        if(!started && temple.GetComponent<Temple>().isPlaced())
+        }
+        if (!started && temple.GetComponent<Temple>().isPlaced())
         {
             started = true;
             StartCoroutine(spawnWaves());
         }
 
-	}
+    }
 
     IEnumerator spawnWaves()
     {
@@ -58,7 +62,15 @@ public class Portal : MonoBehaviour {
             //spawn each monster with a 1 second delay
             foreach (MonsterType monsterType in wave.monsters)
             {
-                GameObject monster = GameObject.Instantiate(monsterTypes[(int)monsterType], pos, Quaternion.identity);
+                Vector3 validSpawnLoc = pos;
+                NavMeshHit hit;
+                if (NavMesh.SamplePosition(pos, out hit, 40.0f, NavMesh.AllAreas))
+                {
+                    validSpawnLoc = hit.position;
+                }
+                else
+                    Debug.LogError("Could not spawn monster");
+                GameObject monster = GameObject.Instantiate(monsterTypes[(int)monsterType], validSpawnLoc, Quaternion.identity);
                 monster.GetComponent<BadiesAI>().spawn(monsterType);
                 yield return new WaitForSeconds(2);
             }

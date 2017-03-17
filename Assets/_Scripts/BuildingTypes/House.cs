@@ -8,7 +8,7 @@ public class House : Building, Grabbable
 
     public AudioClip build;
     public AudioClip destroy;
-
+    public GameObject humanSpawn;
     public ParticleSystem smokeEffect;
     public int capacity = 5;      //size of house: bigger house => bigger capacity
     public int inhabitants = 0;        //human counter
@@ -71,17 +71,16 @@ public class House : Building, Grabbable
     // Spawning a human 
     private IEnumerator spawnHuman()
     {
-        for (int i = 0; i < capacity; i++)
+        while (active)
         {
-            yield return new WaitForSeconds(5);
-            Vector3 humanLocation;
+            yield return new WaitForSeconds(15f);
+            Vector3 humanLocation = humanSpawn.transform.position;
             humanLocation = new Vector3(transform.position.x, transform.position.y, transform.position.z + 10);
             NavMeshHit hit;
-            if (NavMesh.SamplePosition(humanLocation, out hit, 20.0f, NavMesh.AllAreas))
+            if (NavMesh.SamplePosition(humanLocation, out hit, 30.0f, NavMesh.AllAreas))
             {
+                Debug.Log("Spawning a human");
                 Instantiate(Resources.Load("Characters/Human"), hit.position, Quaternion.identity);
-                resourceCounter.removeFood(foodCost);
-                inhabitants++;
                 StartCoroutine(ResourceGainText(1, "Chap"));
             }
             else
