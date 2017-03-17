@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class ResourceGainTablet : MonoBehaviour {
 
     public Text text;
-    public Renderer[] renderers;
     public GameObject head;
 
     void Start()
