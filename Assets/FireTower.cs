@@ -250,4 +250,9 @@ public class FireTower : Building, Grabbable
         base.release(vel);
         hideRange();
     }
+
+    void OnDestroy()
+    {
+        if (rangeHighlight != null) DestroyImmediate(rangeHighlight);
+    }
 }

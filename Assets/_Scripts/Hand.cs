@@ -250,26 +250,51 @@ public class Hand : MonoBehaviour {
                 building.transform.parent = null;
             }
             if (!resources.hasGameStarted() && closest.tag != "Temple") return;
-     
         }
 
 
         heldObject = closest;
+       
         if (heldObject != null)
         {
-            holding = true;
-            Grabbable placeable = heldObject.GetComponent<Grabbable>();
+            Building buildingS = heldObject.GetComponent<Building>();
 
-            if (placeable != null)
+            if (buildingS != null)
             {
-                placeable.grab();
-                snapToHand(heldObject);
+                if (buildingS.canBuy() || buildingS.bought)
+                {
+                    holding = true;
+                    Grabbable placeable = heldObject.GetComponent<Grabbable>();
+
+                    if (placeable != null)
+                    {
+                        placeable.grab();
+                        snapToHand(heldObject);
+                    }
+                    else
+                    {
+                        Debug.Log("This object is not placeable", heldObject);
+                    }
+                    heldObject.transform.parent = transform;
+                }
+
             }
             else
             {
-                Debug.Log("This object is not placeable", heldObject);
-            }
-            heldObject.transform.parent = transform;                
+                holding = true;
+                Grabbable placeable = heldObject.GetComponent<Grabbable>();
+
+                if (placeable != null)
+                {
+                    placeable.grab();
+                    snapToHand(heldObject);
+                }
+                else
+                {
+                    Debug.Log("This object is not placeable", heldObject);
+                }
+                heldObject.transform.parent = transform;
+            }                
         }
         else
         {

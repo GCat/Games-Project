@@ -70,14 +70,14 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         float x = transform.position.x;
         float z = transform.position.z;
 
-        int layerMask = (1 << 10 | 1<<15);
+        int layerMask = (1 << 10);
         if (resourceCounter.withinBounds(transform.position))
         {
-            GetComponent<Collider>().enabled = true;
             if (Physics.CheckBox(new Vector3(x, 0, z), boxSize, Quaternion.LookRotation(Vector3.forward), layerMask))
             {
                 return false;
             }
+            GetComponent<Collider>().enabled = true;
             return true;
         }
         return false;
@@ -227,8 +227,8 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
             {
                 highlight.transform.rotation = Quaternion.LookRotation(Vector3.forward);
             }
-            int layerMask = 1 << 10 | 1<<15;
-            if (Physics.CheckBox(new Vector3(Mathf.Floor(transform.position.x), 0, Mathf.Floor(transform.position.z)), boxSize,gameObject.transform.rotation, layerMask))
+            int layerMask = 1 << 10;
+            if (Physics.CheckBox(new Vector3(transform.position.x, 0, transform.position.z), boxSize,gameObject.transform.rotation, layerMask))
                 highlight.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
             else
                 highlight.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
