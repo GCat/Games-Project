@@ -6,8 +6,8 @@ using UnityEngine;
 public class WatchTower : Building, Grabbable
 {
 
-    public AudioClip build;
-    public AudioClip destroy;
+    public AudioClip arrowClip;
+    private AudioSource arrowSource;
     public float arrowDamage = 5;
     float arrowSpeed = 30;
     GameObject rangeHighlight;
@@ -63,6 +63,12 @@ public class WatchTower : Building, Grabbable
         rangeHighlight.GetComponent<Collider>().enabled = false;
         rangeHighlight.GetComponent<Renderer>().enabled = true;
         rangeHighlight.SetActive(false);
+
+        arrowSource = gameObject.AddComponent<AudioSource>() as AudioSource;
+        arrowSource.rolloffMode = AudioRolloffMode.Linear;
+        arrowSource.volume = 0.5f;
+        arrowSource.spatialBlend = 0.5f;
+        arrowSource.clip = arrowClip;
     }
 
 
@@ -155,6 +161,7 @@ public class WatchTower : Building, Grabbable
             Physics.IgnoreCollision(GetComponent<Collider>(), arrow.GetComponent<Collider>());
             float travelTime = Vector3.Distance(victim.transform.position, pos) / arrowSpeed;
             StartCoroutine(WaitToDamage(travelTime, arrowDamage, currentTarget));
+            arrowSource.Play();
         }
     }
 
@@ -209,7 +216,6 @@ public class WatchTower : Building, Grabbable
     {
         if (!bought && (resourceCounter.faith >= faithCost))
         {
-            resourceCounter.removeFaith(faithCost);
             bought = true;
             return true;
         }
@@ -223,6 +229,7 @@ public class WatchTower : Building, Grabbable
 
     public override void activate()
     {
+        resourceCounter.removeFaith(faithCost);
         active = true;
         if (highlight != null) Destroy(highlight);
         highlight = null;

@@ -198,7 +198,6 @@ public class FireTower : Building, Grabbable
     {
         if (!bought && (resourceCounter.faith >= faithCost))
         {
-            resourceCounter.removeFaith(faithCost);
             bought = true;
             return true;
         }
@@ -212,6 +211,7 @@ public class FireTower : Building, Grabbable
 
     public override void activate()
     {
+        resourceCounter.removeFaith(faithCost);
         active = true;
         if (highlight != null) Destroy(highlight);
         highlight = null;

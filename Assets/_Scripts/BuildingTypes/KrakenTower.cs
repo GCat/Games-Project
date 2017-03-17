@@ -191,7 +191,6 @@ public class KrakenTower : Building, Grabbable
     {
         if (!bought && (resourceCounter.faith >= faithCost))
         {
-            resourceCounter.removeFaith(faithCost);
             bought = true;
             return true;
         }
@@ -206,6 +205,7 @@ public class KrakenTower : Building, Grabbable
     public override void activate()
     {
         //when do you call create buiding for towers ? -- cost does not work 
+        resourceCounter.removeFaith(faithCost);
         active = true;
         if (highlight != null) Destroy(highlight);
         highlight = null;

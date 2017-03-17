@@ -39,7 +39,6 @@ public class Temple : ResourceBuilding
 
     public override void incrementResource()
     {
-        //if (!spawnedGarrison) spawnHumans();
         if (resourceCounter != null) StartCoroutine(ResourceGainText(resourceCounter.addFaith(),"Faith"));
     }
 
