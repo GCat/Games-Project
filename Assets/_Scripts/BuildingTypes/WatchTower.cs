@@ -55,7 +55,7 @@ public class WatchTower : Building, Grabbable
 
         arrowSource = gameObject.AddComponent<AudioSource>() as AudioSource;
         arrowSource.rolloffMode = AudioRolloffMode.Linear;
-        arrowSource.volume = 0.5f;
+        arrowSource.volume = 0.7f;
         arrowSource.spatialBlend = 0.5f;
         arrowSource.clip = arrowClip;
     }
