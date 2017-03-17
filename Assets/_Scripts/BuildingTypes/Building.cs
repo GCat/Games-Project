@@ -86,7 +86,18 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         int layerMask = (1 << 10);
         if (resourceCounter.withinBounds(transform.position))
         {
-            if (Physics.CheckBox(new Vector3(x, 0, z), boxSize, Quaternion.LookRotation(Vector3.forward), layerMask))
+            Quaternion rot;
+            float yRot = gameObject.transform.eulerAngles.y;
+            if ((yRot > 45 && yRot < 135) || (yRot > -135 && yRot < -45))
+            {
+                rot = Quaternion.LookRotation(Vector3.right);
+            }
+            else
+            {
+                rot = Quaternion.LookRotation(Vector3.forward);
+            }
+
+            if (Physics.CheckBox(new Vector3(x, 0, z), boxSize, rot, layerMask))
             {
                 return false;
             }
