@@ -644,8 +644,10 @@ MonoBehaviour:
   strength: 2
   health: 100
   totalHealth: 100
+  faithValue: 5
   rotationSpeed: 4
   alive: 0
+  projectile: {fileID: 0}
   animator: {fileID: 95793851212632952}
   startMarker: {x: 0, y: 0, z: 0}
   endMarker: {x: 0, y: 0, z: 0}
