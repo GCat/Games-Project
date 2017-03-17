@@ -20,8 +20,7 @@ public class House : Building, Grabbable
     private Vector3 boxSize;
     Material matEmpty;
     Material matInval;
-
-    GameObject infoText;
+    
     //Constructor of a House
     //capacity = number of humans a house can hold; location = location of a house
 
@@ -61,15 +60,6 @@ public class House : Building, Grabbable
 
     }
 
-
-    public override void changeTextColour(Color colour)
-    {
-        if (infoText)
-        {
-            infoText.GetComponent<TextMesh>().GetComponent<Renderer>().material.SetColor("_Color", colour);
-        }
-    }
-
     void Start()
     {
         matEmpty = Resources.Load("Materials/highlight2") as Material;
@@ -102,6 +92,7 @@ public class House : Building, Grabbable
 
     public override void activate()
     {
+        resourceCounter.removeFaith(faithCost);
         StartCoroutine(spawnHuman());
         //when do you call create buiding for towers ? -- cost does not work 
         active = true;
@@ -118,7 +109,6 @@ public class House : Building, Grabbable
     {
         badplacement = false;
         held = true;
-        Destroy(infoText);
 
         // Deactivate  collider and gravity
         if (highlight != null)
@@ -180,7 +170,6 @@ public class House : Building, Grabbable
     {
         if (!bought && (resourceCounter.faith >= faithCost))
         {
-            resourceCounter.removeFaith(faithCost);
             bought = true;
             return true;
         }
