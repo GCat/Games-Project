@@ -55,7 +55,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         }
         else Debug.Log("Tablet not found");
         createHealthBar();
-        resourceGainText = createInfoText("Info_Text");
+        resourceGainText = createInfoText("ResourceGainTablet");
         boxSize = GetComponent<BoxCollider>().bounds.size / 2;
         boxSize.y = 1f;
         child_materials = GetComponentsInChildren<Renderer>();
@@ -158,14 +158,14 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         Vector3 startLocation = resourceText.transform.position;
         cameraPos.y = startLocation.y;
         resourceText.transform.LookAt(2*startLocation - cameraPos);
-        resourceText.GetComponent<TextMesh>().text = "+" + value.ToString() + " " + resource;
+        resourceText.transform.Rotate(new Vector3(0, 90, 0));
+        //resourceText.GetComponent<TextMesh>().text = "+" + value.ToString() + " " + resource;
+        resourceText.GetComponent<ResourceGainTablet>().setText("+" + value.ToString());
         Color c;
         resourceText.SetActive(true);
         for (float f = 1f; f >= 0; f -= 0.01f)
         {
-            c = resourceText.GetComponent<TextMesh>().color;
-            c.a = f;
-            resourceText.GetComponent<TextMesh>().color = c;
+            resourceText.GetComponent<ResourceGainTablet>().setAlpha(f);
             resourceText.transform.Translate(new Vector3(0, 0.1f, 0));
             yield return null;
         }
@@ -200,7 +200,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         newText.transform.localScale *= 2;
         newText.transform.Translate(new Vector3(0, actualSize.y * 1.3f, 0));
         newText.transform.localRotation = gameObject.transform.localRotation;
-        newText.transform.Rotate(new Vector3(0, -90, 0));
+        //newText.transform.Rotate(new Vector3(0, -90, 0));
         newText.transform.SetParent(gameObject.transform);
         newText.SetActive(false);
         return newText;

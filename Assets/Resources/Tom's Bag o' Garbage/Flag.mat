@@ -6,8 +6,8 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: flat_grass
-  m_Shader: {fileID: 10606, guid: 0000000000000000f000000000000000, type: 0}
+  m_Name: Flag
+  m_Shader: {fileID: 10753, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: _EMISSION
   m_LightmapFlags: 1
   m_CustomRenderQueue: -1
@@ -48,7 +48,7 @@ Material:
     - first:
         name: _MainTex
       second:
-        m_Texture: {fileID: 2800000, guid: b336936164ff5ba4b867752c56bd5516, type: 3}
+        m_Texture: {fileID: 2800000, guid: 7fe24d1def312334ea2444a8a88df83f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - first:
@@ -69,13 +69,22 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - first:
+        name: _ToonShade
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
+    - first:
+        name: PixelSnap
+      second: 0
     - first:
         name: _BumpScale
       second: 1
     - first:
         name: _Cutoff
-      second: 0.802
+      second: 0.5
     - first:
         name: _DetailNormalMapScale
       second: 1
@@ -104,23 +113,14 @@ Material:
         name: _Parallax
       second: 0.02
     - first:
-        name: _ShadowStrength
-      second: 1
-    - first:
         name: _SmoothnessTextureChannel
       second: 0
     - first:
         name: _SpecularHighlights
       second: 1
     - first:
-        name: _SquashAmount
-      second: 1
-    - first:
         name: _SrcBlend
       second: 1
-    - first:
-        name: _TranslucencyViewDependency
-      second: 0.7
     - first:
         name: _UVSec
       second: 0
@@ -130,16 +130,7 @@ Material:
     m_Colors:
     - first:
         name: _Color
-      second: {r: 1, g: 1, b: 1, a: 1}
-    - first:
-        name: _EmissionColor
       second: {r: 0, g: 0, b: 0, a: 1}
     - first:
-        name: _TranslucencyColor
-      second: {r: 0.73, g: 0.85, b: 0.41, a: 1}
-    - first:
-        name: _TreeInstanceColor
-      second: {r: 1, g: 1, b: 1, a: 1}
-    - first:
-        name: _TreeInstanceScale
+        name: _EmissionColor
       second: {r: 1, g: 1, b: 1, a: 1}

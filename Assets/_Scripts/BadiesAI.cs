@@ -499,7 +499,7 @@ public class BadiesAI : MonoBehaviour, Character
         infoText.transform.localRotation = gameObject.transform.localRotation;
         infoText.transform.Rotate(new Vector3(0, -90, 0));
         infoText.transform.SetParent(gameObject.transform);
-        infoText.GetComponent<TextMesh>().text = "rawr :3";
+        infoText.GetComponent<TextMesh>().text = "Carlos Sucks!";
     }
 
     private GameObject findClosestEnemy(string tag)
