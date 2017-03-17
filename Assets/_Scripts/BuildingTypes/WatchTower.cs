@@ -96,7 +96,7 @@ public class WatchTower : Building, Grabbable
         else if (active)
         {
 
-            if (resourceCounter.baddies > 0)
+            if (resourceCounter.getBaddies() > 0)
             {
                 if(currentTarget == null)
                 {

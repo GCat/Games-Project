@@ -153,7 +153,7 @@ public class BadiesAI : MonoBehaviour, Character
         //maybe we want to do this regularly in case the monsters behaviour changes
         templeAttackPoint = temple.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
         resources = GameObject.FindGameObjectWithTag("Tablet").GetComponent<ResourceCounter>();
-        resources.addBaddie();
+        resources.addBaddie(type);
     }
 
     void Update()
@@ -519,7 +519,7 @@ public class BadiesAI : MonoBehaviour, Character
             }
             gameObject.tag = "Untagged";
             StartCoroutine(WaitToDestroy(1));
-            resources.removeBaddie();
+            resources.removeBaddie(monsterType);
         }
     }
 

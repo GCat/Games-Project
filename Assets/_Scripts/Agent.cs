@@ -139,7 +139,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
             switch (currentState)
             {
                 case HumanState.Wandering:
-                    if (resources.baddies > 0)
+                    if (resources.getGroundBaddies() > 0)
                     {
                         currentState = HumanState.Fighting;
                         infoText.SetActive(true);
@@ -149,7 +149,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
                     break;
 
                 case HumanState.Fighting:
-                    if (resources.baddies <= 0)
+                    if (resources.getGroundBaddies() <= 0)
                     {
                         currentState = HumanState.Wandering;
                         infoText.SetActive(false);
@@ -186,7 +186,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
                     break;
 
                 case HumanState.Defending:
-                    if (resources.baddies > 0)
+                    if (resources.getGroundBaddies() > 0)
                     {
                        
                         if(closestEnemy == null)
