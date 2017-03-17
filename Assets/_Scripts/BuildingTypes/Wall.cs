@@ -67,6 +67,8 @@ public class Wall : Building, Grabbable {
     public override void activate()
     {
         create_building();
+        if (highlight != null) highlightDestroy();
+        held = false;
     }
 
     //Don't need this

@@ -218,13 +218,21 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
                 highlight.transform.rotation = Quaternion.LookRotation(Vector3.forward);
             }
             int layerMask = 1 << 10;
+
             if (Physics.CheckBox(new Vector3(transform.position.x, 0, transform.position.z), boxSize, gameObject.transform.rotation, layerMask))
             {
-                highlight.GetComponentInChildren<Renderer>().material.SetColor("_Color", Color.red);
+                foreach (Renderer t in highlight.GetComponentsInChildren<Renderer>())
+                {
+                    t.material.SetColor("_Color", Color.red);
+                }
+               
             }
             else
             {
-                highlight.GetComponentInChildren<Renderer>().material.SetColor("_Color", Color.green);
+                foreach (Renderer t in highlight.GetComponentsInChildren<Renderer>())
+                {
+                    t.material.SetColor("_Color", Color.green);
+                }
             }
         }
         else
