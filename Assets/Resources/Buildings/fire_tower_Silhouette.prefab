@@ -118,10 +118,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4250792566671646}
   - component: {fileID: 65298204818276684}
-<<<<<<< HEAD
-  - component: {fileID: 23074126438207766}
-=======
->>>>>>> annie
   m_Layer: 0
   m_Name: fire_tower_Silhouette
   m_TagString: Untagged
@@ -407,11 +403,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1198705378565068}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-<<<<<<< HEAD
-  m_LocalPosition: {x: 37.825546, y: 0.047921896, z: -29.856083}
-=======
-  m_LocalPosition: {x: 9.623703, y: 0.047921896, z: -25.63681}
->>>>>>> annie
+  m_LocalPosition: {x: 31.561066, y: 0.047921896, z: -13.432243}
   m_LocalScale: {x: 108.667595, y: 108.667656, z: 108.667656}
   m_Children:
   - {fileID: 4286859468729622}
@@ -670,40 +662,6 @@ Transform:
   m_Father: {fileID: 4250792566671646}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-<<<<<<< HEAD
---- !u!23 &23074126438207766
-MeshRenderer:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1198705378565068}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_Materials:
-  - {fileID: 2100000, guid: 12eec570f6f5e9246837751fa01b1aed, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-=======
->>>>>>> annie
 --- !u!23 &23103504792999256
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -717,11 +675,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-<<<<<<< HEAD
   - {fileID: 2100000, guid: 12eec570f6f5e9246837751fa01b1aed, type: 2}
-=======
-  - {fileID: 2100000, guid: eadbbe0c7dedc554eb891303b5cda774, type: 2}
->>>>>>> annie
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -752,11 +706,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-<<<<<<< HEAD
   - {fileID: 2100000, guid: 12eec570f6f5e9246837751fa01b1aed, type: 2}
-=======
-  - {fileID: 2100000, guid: eadbbe0c7dedc554eb891303b5cda774, type: 2}
->>>>>>> annie
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -787,11 +737,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-<<<<<<< HEAD
   - {fileID: 2100000, guid: 12eec570f6f5e9246837751fa01b1aed, type: 2}
-=======
-  - {fileID: 2100000, guid: eadbbe0c7dedc554eb891303b5cda774, type: 2}
->>>>>>> annie
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -822,11 +768,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-<<<<<<< HEAD
   - {fileID: 2100000, guid: 12eec570f6f5e9246837751fa01b1aed, type: 2}
-=======
-  - {fileID: 2100000, guid: eadbbe0c7dedc554eb891303b5cda774, type: 2}
->>>>>>> annie
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -857,11 +799,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-<<<<<<< HEAD
   - {fileID: 2100000, guid: 12eec570f6f5e9246837751fa01b1aed, type: 2}
-=======
-  - {fileID: 2100000, guid: eadbbe0c7dedc554eb891303b5cda774, type: 2}
->>>>>>> annie
   - {fileID: 2100000, guid: 3963488f311be324f9fd7a246938e914, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -893,11 +831,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-<<<<<<< HEAD
   - {fileID: 2100000, guid: 12eec570f6f5e9246837751fa01b1aed, type: 2}
-=======
-  - {fileID: 2100000, guid: eadbbe0c7dedc554eb891303b5cda774, type: 2}
->>>>>>> annie
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
