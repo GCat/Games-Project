@@ -110,10 +110,13 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
 
     private void setOutline()
     {
-        foreach(Renderer renderer in child_materials)
+        if (canBeGrabbed)
         {
-            renderer.material.shader = outlineShader;
-            renderer.material.SetColor("_OutlineColor", Color.green);
+            foreach (Renderer renderer in child_materials)
+            {
+                renderer.material.shader = outlineShader;
+                renderer.material.SetColor("_OutlineColor", Color.green);
+            }
         }
     }
 

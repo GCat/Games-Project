@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 /* AI LOGIC EXPLANATION
  * 
@@ -118,7 +119,7 @@ public class BadiesAI : MonoBehaviour, Character
             collider.enabled = false;
         }
         GetComponent<Collider>().enabled = true;
-        damageText = Resources.Load("Info_Text") as GameObject;
+        damageText = Resources.Load("Damage Text") as GameObject;
 
     }
 
@@ -198,14 +199,12 @@ public class BadiesAI : MonoBehaviour, Character
         }
     }
 
-    public IEnumerator DamageText(int damage, Color color, float scale = 1)
+    public IEnumerator DamageText(string textString, Color color)
     {
-        GameObject damageIndicator = GameObject.Instantiate(damageText, transform.position, Quaternion.identity) as GameObject;
-        TextMesh text = damageIndicator.GetComponent<TextMesh>();
-        damageIndicator.transform.localScale *= scale;
-        text.text = damage.ToString();
+        GameObject damageIndicator = Instantiate(damageText, transform.position, Quaternion.LookRotation(transform.position - cameraPos, Vector3.up)) as GameObject;
+        Text text = damageIndicator.GetComponentInChildren<Text>();
+        text.text = textString;
         text.color = color;
-        text.characterSize *= scale;
         Destroy(damageIndicator, 1);
         for (float f = 1f; f >= 0; f -= 0.01f)
         {
@@ -215,7 +214,7 @@ public class BadiesAI : MonoBehaviour, Character
                 c.a = f;
                 text.color = c;
                 damageIndicator.transform.Translate(new Vector3(0, 0.1f, 0));
-                damageIndicator.transform.LookAt(-cameraPos);
+                damageIndicator.transform.LookAt(transform.position - cameraPos);
                 yield return null;
             }
         }
@@ -500,7 +499,7 @@ public class BadiesAI : MonoBehaviour, Character
     public void decrementHealth(float damage)
     {
         health -= damage;
-        StartCoroutine(DamageText((int)damage, Color.red));
+        StartCoroutine(DamageText("-" + damage, Color.red));
         float scale = (health / totalHealth);
         float characterScale = gameObject.transform.localScale.x;
         if (healthBar != null)
@@ -511,7 +510,7 @@ public class BadiesAI : MonoBehaviour, Character
         if (health <= 0 && alive == true)
         {
             Destroy(healthBar);
-            StartCoroutine(DamageText((int)faithValue, Color.magenta, 2.0f));
+            StartCoroutine(DamageText("+" + faithValue, Color.magenta));
             resources.addFaith(faithValue);
             alive = false;
             //die animation here
