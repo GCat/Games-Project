@@ -174,6 +174,8 @@ public class Agent : MonoBehaviour, Character, Grabbable
                             }
                             if (transform.position.y < 0.5)
                             {
+                                rb.isKinematic = true;
+                                rb.velocity = Vector3.zero;
                                 agent.enabled = true;
                                 currentState = HumanState.Wandering;
                             }
@@ -441,6 +443,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
         GetComponent<Collider>().enabled = true;
         rb.useGravity = true;
         rb.isKinematic = false;
+        rb.velocity = vel;
         humanHeld = false;
         removeOutline();
 
