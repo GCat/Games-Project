@@ -15765,7 +15765,7 @@ Prefab:
     - target: {fileID: 114687539696213070, guid: f8944127a1ee7404ca8ab160846ee099,
         type: 2}
       propertyPath: useMouse
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f8944127a1ee7404ca8ab160846ee099, type: 2}
@@ -17492,31 +17492,6 @@ Prefab:
       propertyPath: world
       value: 
       objectReference: {fileID: 1323351488}
-    - target: {fileID: 114678634798780838, guid: 2c290e998500e814cab53deb29922dd5,
-        type: 2}
-      propertyPath: totalHealth
-      value: 1000
-      objectReference: {fileID: 0}
-    - target: {fileID: 114678634798780838, guid: 2c290e998500e814cab53deb29922dd5,
-        type: 2}
-      propertyPath: health
-      value: 1000
-      objectReference: {fileID: 0}
-    - target: {fileID: 198718801097004004, guid: 2c290e998500e814cab53deb29922dd5,
-        type: 2}
-      propertyPath: LightsModule.enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 198718801097004004, guid: 2c290e998500e814cab53deb29922dd5,
-        type: 2}
-      propertyPath: randomSeed
-      value: 480448189
-      objectReference: {fileID: 0}
-    - target: {fileID: 198718801097004004, guid: 2c290e998500e814cab53deb29922dd5,
-        type: 2}
-      propertyPath: LightsModule.light
-      value: 
-      objectReference: {fileID: 1700695081}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2c290e998500e814cab53deb29922dd5, type: 2}
   m_IsPrefabParent: 0
@@ -22455,11 +22430,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1699661329}
   m_Mesh: {fileID: 4300482, guid: 7bf030504ea404040bf3e5661ed4f7ed, type: 3}
---- !u!108 &1700695081 stripped
-Light:
-  m_PrefabParentObject: {fileID: 108592208375418478, guid: 2c290e998500e814cab53deb29922dd5,
-    type: 2}
-  m_PrefabInternal: {fileID: 1303320460}
 --- !u!1 &1703605742
 GameObject:
   m_ObjectHideFlags: 0

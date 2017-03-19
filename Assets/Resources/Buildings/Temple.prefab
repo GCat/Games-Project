@@ -574,7 +574,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1692152617597316}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -23.1, y: 0.8, z: -6.2552}
+  m_LocalPosition: {x: 17.7, y: 23.6, z: -15.524428}
   m_LocalScale: {x: 0.9258762, y: 0.92587566, z: 0.92587566}
   m_Children:
   - {fileID: 4424237940863822}
@@ -1358,13 +1358,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildClip: {fileID: 8300000, guid: 0f6a9c7d024f3144690add1c060e8ed0, type: 3}
   source: {fileID: 0}
-  totalHealth: 5000
-  health: 5000
+  totalHealth: 1000
+  health: 1000
   resourceCounter: {fileID: 0}
   tablet: {fileID: 0}
   bought: 0
   faithCost: 0
-  highlight: {fileID: 0}
+  highlight_template: {fileID: 1854053128695484, guid: 889df3c9196db28408668d31c8de2dbf,
+    type: 2}
   canBeGrabbed: 1
   build: {fileID: 0}
   destroy: {fileID: 0}
@@ -6290,9 +6291,9 @@ ParticleSystem:
       type: 0
       properties: 0
   LightsModule:
-    enabled: 0
+    enabled: 1
     ratio: 0
-    light: {fileID: 0}
+    light: {fileID: 108592208375418478}
     randomDistribution: 1
     color: 1
     range: 1
