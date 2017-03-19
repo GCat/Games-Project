@@ -235,8 +235,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
                 foreach (Renderer t in highlight.GetComponentsInChildren<Renderer>())
                 {
                     t.material.SetColor("_Color", Color.red);
-                }
-               
+                }               
             }
             else
             {
@@ -244,6 +243,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
                 {
                     t.material.SetColor("_Color", Color.green);
                 }
+
             }
         }
         else
@@ -265,6 +265,10 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         if (highlight_template != null)
         {
             highlight = Instantiate(highlight_template) as GameObject;
+            foreach (Renderer t in highlight.GetComponentsInChildren<Renderer>())
+            {
+                t.material.SetColor("_Color", Color.green);
+            }
         }
         else
         {

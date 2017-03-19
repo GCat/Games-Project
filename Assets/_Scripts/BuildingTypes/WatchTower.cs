@@ -10,7 +10,7 @@ public class WatchTower : Building, Grabbable
     private AudioSource arrowSource;
     public float arrowDamage = 5;
     float arrowSpeed = 30;
-    GameObject rangeHighlight;
+    public GameObject rangeHighlight;
 
     public string buildingName;
     public GameObject target;
@@ -44,7 +44,7 @@ public class WatchTower : Building, Grabbable
         pre = Resources.Load("Arrow_Regular") as GameObject;
 
         rangeHighlight = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        rangeHighlight.GetComponent<Renderer>().material.SetColor("_Color", new Color(0.0f,0.6f,0.0f,0.2f));
+        rangeHighlight.GetComponent<Renderer>().material.SetColor("_Color", Color.yellow);
         rangeHighlight.transform.localScale = new Vector3(radius, 0.1f, radius);
         rangeHighlight.transform.position = new Vector3(gameObject.transform.position.x, 0.1f, gameObject.transform.position.z);
         rangeHighlight.transform.rotation = Quaternion.LookRotation(Vector3.forward);
