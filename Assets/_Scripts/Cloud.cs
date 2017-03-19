@@ -5,15 +5,21 @@ using UnityEngine;
 public class Cloud : MonoBehaviour {
 
     private GameObject handle;
+    public GameObject rotator;
 	// Use this for initialization
 	void Start () {
         handle = transform.FindChild("handle").gameObject;
         handle.transform.parent = null;
         transform.parent = handle.transform;
+        if(rotator != null)
+        {
+            rotator.transform.parent = null;
+        }
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
         //positions[0] = gameObject.transform.position;
         //positions[1] = handle.transform.position;
         //rope.SetPositions(positions);
@@ -24,5 +30,5 @@ public class Cloud : MonoBehaviour {
         //{
         //    transform.position = Vector3.Slerp(transform.position, horizontal, Time.deltaTime * 10.0f);
         //}
-	}
+    }
 }

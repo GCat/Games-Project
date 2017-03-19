@@ -23,7 +23,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
     protected Renderer[] child_materials;
     protected Shader outlineShader;
     private GameObject ExplosionEffect;
-    
+    private GameObject fireEffect;
 
 
     public abstract bool canBuy();
@@ -46,6 +46,9 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         }else if(health <= (0.2 * totalHealth))
         {
             setWarning();
+        }else if(health <= (0.5 * totalHealth))
+        {
+            fireEffect.SetActive(true);
         }
     }
 
@@ -65,7 +68,9 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         child_materials = GetComponentsInChildren<Renderer>(false);
         outlineShader = Shader.Find("Toon/Basic Outline");
         ExplosionEffect = Resources.Load("Explosion") as GameObject;
-        if(ExplosionEffect != null)
+        fireEffect = Instantiate(Resources.Load("Fire"), transform) as GameObject;
+        fireEffect.SetActive(false);
+        if (ExplosionEffect != null)
         {
             Debug.Log("Effect loaded");
         }

@@ -172,9 +172,8 @@ public class Agent : MonoBehaviour, Character, Grabbable
                                 currentState = HumanState.Defending;
                                 break;
                             }
-                            if (transform.position.y < 0.5)
+                            if (transform.position.y < 0.2)
                             {
-                                rb.isKinematic = true;
                                 rb.velocity = Vector3.zero;
                                 agent.enabled = true;
                                 currentState = HumanState.Wandering;

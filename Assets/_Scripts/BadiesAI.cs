@@ -520,7 +520,7 @@ public class BadiesAI : MonoBehaviour, Character
                 collider.enabled = false;
             }
             gameObject.tag = "Untagged";
-            StartCoroutine(WaitToDestroy(1));
+            StartCoroutine(WaitToDestroy(0.1f));
             resources.removeBaddie(monsterType);
         }
     }

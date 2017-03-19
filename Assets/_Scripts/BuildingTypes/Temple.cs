@@ -40,7 +40,7 @@ public class Temple : ResourceBuilding
 
     public override void incrementResource()
     {
-        if (resourceCounter != null) StartCoroutine(ResourceGainText(resourceCounter.addFaith(),"Faith"));
+        if (resourceCounter != null) StartCoroutine(ResourceGainText(resourceCounter.addFaith(5),"Faith"));
     }
 
     private void showStartOutline()

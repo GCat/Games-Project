@@ -6,13 +6,16 @@ using UnityEngine;
 public class Handle : MonoBehaviour, Grabbable {
 
     protected Shader outlineShader;
+    public bool rotationHandle = false;
     private Renderer renderer;
+    private GameObject parent;
+
 
     void Start()
     {
         renderer = GetComponent<Renderer>();
         outlineShader = Shader.Find("Toon/Basic Outline");
-   
+        parent = transform.parent.gameObject;
     }
 
     Quaternion rotation;
@@ -27,7 +30,10 @@ public class Handle : MonoBehaviour, Grabbable {
 
     public void grab()
     {
-
+        if (rotationHandle)
+        {
+            transform.parent = null;
+        }
     }
 
     public void release(Vector3 vel)
@@ -36,6 +42,11 @@ public class Handle : MonoBehaviour, Grabbable {
         {
             transform.position = new Vector3(transform.position.x, 5, transform.position.z);
 
+        }
+        if (rotationHandle)
+        {
+            transform.parent = parent.transform;
+            parent.transform.rotation = Quaternion.LookRotation(transform.position - parent.transform.position, Vector3.up);
         }
     }
 

@@ -10,6 +10,7 @@ public class House : Building, Grabbable
     public AudioClip destroy;
     public GameObject humanSpawn;
     public ParticleSystem smokeEffect;
+    public GameObject heartEffect;
     public int capacity = 5;      //size of house: bigger house => bigger capacity
     public int inhabitants = 0;        //human counter
     public int foodCost = 10;
@@ -54,6 +55,7 @@ public class House : Building, Grabbable
     {
         matEmpty = Resources.Load("Materials/highlight2") as Material;
         matInval = Resources.Load("Materials/highlight") as Material;
+        heartEffect = Resources.Load("Explosion_Lovely") as GameObject;
         boxSize = GetComponent<BoxCollider>().bounds.size / 2;
         boxSize.y = 0.01f;
     }
@@ -61,9 +63,9 @@ public class House : Building, Grabbable
     // Spawning a human 
     private IEnumerator spawnHuman()
     {
-        while (active)
+        while (true)
         {
-            yield return new WaitForSeconds(15f);
+            yield return new WaitForSeconds(15);
             Vector3 humanLocation = humanSpawn.transform.position;
             humanLocation = new Vector3(transform.position.x, transform.position.y, transform.position.z + 10);
             NavMeshHit hit;
@@ -71,6 +73,7 @@ public class House : Building, Grabbable
             {
                 Debug.Log("Spawning a human");
                 Instantiate(Resources.Load("Characters/Human"), hit.position, Quaternion.identity);
+                Instantiate(heartEffect, transform.position + 5*Vector3.up, Quaternion.identity);
                 StartCoroutine(ResourceGainText(1, "Chap"));
             }
             else

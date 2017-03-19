@@ -172,12 +172,7 @@ public class ResourceCounter : MonoBehaviour, Grabbable
         iron++;
         return 1;
     }
-    public int addFaith()
-    {
-        int toAdd = population;
-        faith += toAdd;
-        return toAdd;
-    }
+
     public void addSwords()
     {
         swords++;

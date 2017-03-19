@@ -44,7 +44,7 @@ public class BuildingSpawner : MonoBehaviour {
 
     private void spawnBuilding()
     {
-        if (resources.faith < buildingCost)
+        if (resources.faith < buildingCost || !resources.hasGameStarted())
         {
             imgCanvas.SetActive(true);
             resourceCost.text.color = Color.red;
