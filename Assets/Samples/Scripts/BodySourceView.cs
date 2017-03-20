@@ -33,6 +33,7 @@ public class BodySourceView : MonoBehaviour
     private int l_hand_open_frames = 0;
     private ulong player_id = 99;
     private Renderer renderer;
+    public GameObject Temple;
 
     //holds all the hand joint objects - palm, wrist, thumb, tip
     public Dictionary<Kinect.JointType, GameObject> player_objects = new Dictionary<Kinect.JointType, GameObject>();
@@ -76,6 +77,7 @@ public class BodySourceView : MonoBehaviour
     private void Start()
     {
         renderer = GetComponent<Renderer>();
+        Temple = GameObject.FindGameObjectWithTag("Temple");
     }
 
     void Update () 
@@ -144,6 +146,7 @@ public class BodySourceView : MonoBehaviour
                         float feetOffset = headHeight - idealHeight;
                         kinectLocation.transform.position += new Vector3(0,-feetOffset,0);
                         player_id = body.TrackingId;
+                        Temple.transform.position = new Vector3(headObject.x - 10, headObject.y -10 , headObject.z- 20 );
                     }
                 }
                 if (body.TrackingId == player_id)
