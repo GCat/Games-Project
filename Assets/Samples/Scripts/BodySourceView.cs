@@ -34,6 +34,7 @@ public class BodySourceView : MonoBehaviour
     private ulong player_id = 99;
     private Renderer renderer;
     public GameObject Temple;
+    private bool started = true;
 
     //holds all the hand joint objects - palm, wrist, thumb, tip
     public Dictionary<Kinect.JointType, GameObject> player_objects = new Dictionary<Kinect.JointType, GameObject>();
@@ -146,7 +147,7 @@ public class BodySourceView : MonoBehaviour
                         float feetOffset = headHeight - idealHeight;
                         kinectLocation.transform.position += new Vector3(0,-feetOffset,0);
                         player_id = body.TrackingId;
-                        Temple.transform.position = new Vector3(headObject.x - 10, headObject.y -10 , headObject.z- 20 );
+                        started = false;
                     }
                 }
                 if (body.TrackingId == player_id)
@@ -165,6 +166,13 @@ public class BodySourceView : MonoBehaviour
     {
 
         headCamera.transform.position = Vector3.Slerp(headCamera.transform.position, player_objects[Kinect.JointType.Head].transform.position, Time.deltaTime * 10.0f);
+
+        if (!started)
+        {
+            Temple.transform.position = player_objects[Kinect.JointType.Head].transform.position + Vector3.left*40 + Vector3.down*20;
+            started = true;
+        }
+
         right_hand.transform.position = Vector3.Slerp(right_hand.transform.position, player_objects[Kinect.JointType.HandRight].transform.position, Time.deltaTime * 10.0f);
         left_hand.transform.position = Vector3.Slerp(left_hand.transform.position, player_objects[Kinect.JointType.HandLeft].transform.position, Time.deltaTime * 10.0f);
 
