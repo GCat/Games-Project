@@ -15,7 +15,10 @@ public class Handle : MonoBehaviour, Grabbable {
     {
         renderer = GetComponent<Renderer>();
         outlineShader = Shader.Find("Toon/Basic Outline");
-        parent = transform.parent.gameObject;
+        if (transform.parent != null)
+        {
+            parent = transform.parent.gameObject;
+        }
     }
 
     Quaternion rotation;
