@@ -9,6 +9,7 @@ public class Handle : MonoBehaviour, Grabbable {
     public bool rotationHandle = false;
     private Renderer renderer;
     private GameObject parent;
+    private bool grabbed = false;
 
 
     void Start()
@@ -25,7 +26,16 @@ public class Handle : MonoBehaviour, Grabbable {
     }
     void LateUpdate()
     {
-        transform.rotation = rotation;
+        if (rotationHandle && grabbed)
+        {
+            parent.transform.rotation = Quaternion.LookRotation(transform.position - parent.transform.position, Vector3.up);
+            transform.LookAt(parent.transform.position, Vector3.up);
+        }
+
+        if(!rotationHandle)
+        {
+            transform.rotation = rotation;
+        }
     }
 
     public void grab()
@@ -33,6 +43,7 @@ public class Handle : MonoBehaviour, Grabbable {
         if (rotationHandle)
         {
             transform.parent = null;
+            grabbed = true;
         }
     }
 
@@ -45,8 +56,11 @@ public class Handle : MonoBehaviour, Grabbable {
         }
         if (rotationHandle)
         {
+            //always be 5m from cloud
+            Vector3 fromCloud = transform.position - parent.transform.position;
+            transform.position = parent.transform.position + Vector3.Normalize(fromCloud) * 10;
             transform.parent = parent.transform;
-            parent.transform.rotation = Quaternion.LookRotation(transform.position - parent.transform.position, Vector3.up);
+            grabbed = false;
         }
     }
 
