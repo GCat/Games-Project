@@ -16,10 +16,13 @@ public class Portal : MonoBehaviour
     public GameObject[] monsterTypes;
     // delay befire first spawn
 
+    private float animLength = 0.833f;
+    private float animSpeed = 1f;
     public float delayStart;
     Vector3 pos;
     AudioClip attackClip;
     AudioSource asource;
+    Animation anim;
 
 
     GameObject temple;
@@ -36,6 +39,8 @@ public class Portal : MonoBehaviour
         pos = spawnPos.transform.position;
         asource = GetComponent<AudioSource>();
         startTime = Time.time;
+        anim = GetComponentInChildren<Animation>();
+        Debug.Log(anim);
     }
 
     void Update()
@@ -55,8 +60,13 @@ public class Portal : MonoBehaviour
     IEnumerator spawnWaves()
     {
         resourceCounter.beginCountDown(delayStart);
+        
+        //coundown animation
+        animSpeed= animLength / delayStart;
+        anim["Countdown"].speed = animSpeed;
+        anim.Play("Countdown");
         yield return new WaitForSeconds(delayStart);
-        foreach (Wave wave in Waves)
+        foreach (Wave wave in Waves)    
         {
             asource.Play();
             //spawn each monster with a 1 second delay
@@ -75,7 +85,11 @@ public class Portal : MonoBehaviour
                 yield return new WaitForSeconds(2);
             }
             resourceCounter.beginCountDown(wave.waveTime);
-            Debug.Log("Waiting for " + wave.waveTime + " seconds");
+            
+            //coundown animation
+            animSpeed = animLength / wave.waveTime;
+            anim["Countdown"].speed = animSpeed;
+            anim.Play("Countdown");
             yield return new WaitForSeconds(wave.waveTime);
         }
     }
