@@ -24,6 +24,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
     protected Shader outlineShader;
     private GameObject ExplosionEffect;
     private GameObject fireEffect;
+    private int nobuildmask = (1 << 10 | 1 << 17);
 
 
     public abstract bool canBuy();
@@ -91,7 +92,6 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         float x = transform.position.x;
         float z = transform.position.z;
 
-        int layerMask = (1 << 10);
         if (resourceCounter.withinBounds(transform.position))
         {
             Quaternion rot;
@@ -105,7 +105,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
                 rot = Quaternion.LookRotation(Vector3.forward);
             }
 
-            if (Physics.CheckBox(new Vector3(x, 0, z), boxSize, rot, layerMask))
+            if (Physics.CheckBox(new Vector3(x, 0, z), boxSize, rot, nobuildmask))
             {
                 return false;
             }
@@ -240,9 +240,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
             {
                 highlight.transform.rotation = Quaternion.LookRotation(Vector3.forward);
             }
-            int layerMask = 1 << 10;
-
-            if (Physics.CheckBox(new Vector3(transform.position.x, 0, transform.position.z), boxSize, gameObject.transform.rotation, layerMask))
+            if (Physics.CheckBox(new Vector3(transform.position.x, 0, transform.position.z), boxSize, gameObject.transform.rotation, nobuildmask))
             {
                 foreach (Renderer t in highlight.GetComponentsInChildren<Renderer>())
                 {

@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4184639609339666}
   - component: {fileID: 33533675109027642}
   - component: {fileID: 23470176845834114}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: nurbsToPoly9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37,7 +37,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4061147466476770}
   - component: {fileID: 108867608296255490}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: fire (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -54,7 +54,7 @@ GameObject:
   - component: {fileID: 4729628858985840}
   - component: {fileID: 33412371543125978}
   - component: {fileID: 23847989206399492}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: nurbsToPoly1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69,7 +69,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4008337721423770}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: pSphere1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 33543428590022190}
   - component: {fileID: 23851180096687776}
   - component: {fileID: 114731457494940228}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: pPlane3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104,7 +104,7 @@ GameObject:
   - component: {fileID: 4230329808753438}
   - component: {fileID: 33066449634911324}
   - component: {fileID: 23394770940378254}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: nurbsToPoly3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -119,7 +119,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4163486643393914}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: pPlane2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -134,7 +134,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4622838798009854}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: transform6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -149,10 +149,11 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4638784060754756}
-  - component: {fileID: 135445027288647954}
   - component: {fileID: 114585129072737174}
   - component: {fileID: 82549568859925382}
-  m_Layer: 0
+  - component: {fileID: 65908404078221766}
+  - component: {fileID: 208794887392109922}
+  m_Layer: 17
   m_Name: Portal
   m_TagString: Portal
   m_Icon: {fileID: 0}
@@ -167,7 +168,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4689959995383538}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: transform3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -182,7 +183,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4201313782816026}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: transform9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -199,7 +200,7 @@ GameObject:
   - component: {fileID: 4827681225262362}
   - component: {fileID: 33510717578296316}
   - component: {fileID: 23796626300109416}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: nurbsToPoly7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -214,7 +215,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4204436670538990}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: pCube4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -229,7 +230,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4766229699129496}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: transform7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -246,7 +247,7 @@ GameObject:
   - component: {fileID: 4270262777584176}
   - component: {fileID: 33624824289852042}
   - component: {fileID: 23675121285757464}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: nurbsToPoly8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -261,7 +262,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4170272721806576}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: transform4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -276,7 +277,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4364844040326274}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: curve1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -293,7 +294,7 @@ GameObject:
   - component: {fileID: 4615773669425610}
   - component: {fileID: 33341712196943462}
   - component: {fileID: 23784550691394296}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: nurbsToPoly2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -308,7 +309,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4535217223854376}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: pCube2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -325,7 +326,7 @@ GameObject:
   - component: {fileID: 4527719325716950}
   - component: {fileID: 33017879561509044}
   - component: {fileID: 23751201573535584}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: nurbsToPoly4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -342,7 +343,7 @@ GameObject:
   - component: {fileID: 4314857682535204}
   - component: {fileID: 33976163282241006}
   - component: {fileID: 23180065858290352}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: nurbsToPoly6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -357,7 +358,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4892256163984540}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: transform2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -373,7 +374,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4711207207195466}
   - component: {fileID: 108097040050175166}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -389,7 +390,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4825022829646916}
   - component: {fileID: 95816600657508978}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: portal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -404,7 +405,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4050100237852904}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: spawnbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -419,7 +420,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4408642923395178}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: pSphere4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -436,7 +437,7 @@ GameObject:
   - component: {fileID: 4855404379465676}
   - component: {fileID: 198229234556241632}
   - component: {fileID: 199683605816327934}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: pSphere3 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -451,7 +452,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4083126034971822}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: pCube3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -466,7 +467,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4970071378674440}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: pPipe1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -481,7 +482,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4911076992770488}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: transform11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -498,7 +499,7 @@ GameObject:
   - component: {fileID: 4156113216104344}
   - component: {fileID: 23697062986646598}
   - component: {fileID: 111859226011290600}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: countdown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -513,7 +514,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4990768184192380}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: transform10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -530,7 +531,7 @@ GameObject:
   - component: {fileID: 4926113449986692}
   - component: {fileID: 33565692427335990}
   - component: {fileID: 23529295495204090}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: nurbsToPoly5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -545,7 +546,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4557410616345914}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: transform1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -560,7 +561,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4012271110703636}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: pPlane1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -576,7 +577,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4622316234084152}
   - component: {fileID: 108729144106305898}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: fire (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -591,22 +592,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4661958320362706}
-  m_Layer: 0
-  m_Name: transform8
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &1880827731306444
-GameObject:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 4731123794012380}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: transform8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -621,8 +607,23 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4733365794313936}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: pCube1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1940062797346848
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4841756971251080}
+  m_Layer: 17
+  m_Name: transform8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -636,7 +637,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4931256101660372}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: transform5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -651,7 +652,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4588287150766010}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: pSphere2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -668,7 +669,7 @@ GameObject:
   - component: {fileID: 4329315518633942}
   - component: {fileID: 198276300442397564}
   - component: {fileID: 199048015184780774}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: pSphere3 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -685,7 +686,7 @@ GameObject:
   - component: {fileID: 4830322105639296}
   - component: {fileID: 33552384339886030}
   - component: {fileID: 23088657670464252}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: pCube5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -898,7 +899,7 @@ Transform:
   m_LocalPosition: {x: 0.033, y: 0.0065000006, z: -0.0026}
   m_LocalScale: {x: 1.0000005, y: 1.0000017, z: 1.0000015}
   m_Children:
-  - {fileID: 4661958320362706}
+  - {fileID: 4841756971251080}
   m_Father: {fileID: 4825022829646916}
   m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
@@ -1029,7 +1030,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1202590423550394}
   m_LocalRotation: {x: -0, y: 0.70995927, z: -0, w: 0.70424277}
-  m_LocalPosition: {x: -98.707, y: 6.7, z: -6.6402}
+  m_LocalPosition: {x: -36.009407, y: 12.7, z: -24.2}
   m_LocalScale: {x: 27.600939, y: 13.80046, z: 13.80046}
   m_Children:
   - {fileID: 4050100237852904}
@@ -1051,7 +1052,7 @@ Transform:
   m_LocalPosition: {x: -0.03161352, y: -0.0068032155, z: -2.9802322e-10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 4329315518633942}
+  m_Father: {fileID: 4855404379465676}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4689959995383538
@@ -1091,19 +1092,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4156113216104344}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4731123794012380
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1880827731306444}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.03161352, y: -0.0068032155, z: -2.9802322e-10}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4855404379465676}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4733365794313936
@@ -1200,6 +1188,19 @@ Transform:
   m_Father: {fileID: 4825022829646916}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4841756971251080
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1940062797346848}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.03161352, y: -0.0068032155, z: -2.9802322e-10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4329315518633942}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4855404379465676
 Transform:
   m_ObjectHideFlags: 1
@@ -1210,7 +1211,7 @@ Transform:
   m_LocalPosition: {x: -0.0351, y: 0.0065, z: -0.0031999995}
   m_LocalScale: {x: 1, y: 1.000001, z: 1.000001}
   m_Children:
-  - {fileID: 4731123794012380}
+  - {fileID: 4661958320362706}
   m_Father: {fileID: 4825022829646916}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
@@ -1742,6 +1743,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1446090735734572}
   m_Mesh: {fileID: 4300010, guid: 66f78437eee671342abf180da94864a7, type: 3}
+--- !u!65 &65908404078221766
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1202590423550394}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.139389, y: 2.4361067, z: 1.3426633}
+  m_Center: {x: -0.06967561, y: 0.59062266, z: 0.258368}
 --- !u!82 &82549568859925382
 AudioSource:
   m_ObjectHideFlags: 1
@@ -1997,18 +2010,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uvAnimationRate: {x: 0, y: 0.2}
   textureName: _MainTex
---- !u!135 &135445027288647954
-SphereCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1202590423550394}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: -0.08, y: 0.53, z: 0}
 --- !u!198 &198229234556241632
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -7383,3 +7384,18 @@ ParticleSystemRenderer:
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
+--- !u!208 &208794887392109922
+NavMeshObstacle:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1202590423550394}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 1.05, y: 0.5, z: 0.6}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: -0.1, y: 0, z: 0.3}
+  m_TimeToStationary: 0.5
