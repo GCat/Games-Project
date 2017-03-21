@@ -156,9 +156,6 @@ public class BodySourceView : MonoBehaviour
                 {
                     RefreshBodyObject(body, _Bodies[body.TrackingId]);
                     adjustBodyParts(body, _Bodies[body.TrackingId]);
-                    Kinect.JointOrientation headOrientation = body.JointOrientations[Kinect.JointType.Head];
-                    Vector4 facingDirection = new Vector4(headOrientation.Orientation.X, headOrientation.Orientation.Y, headOrientation.Orientation.Z, headOrientation.Orientation.W);
-                    Debug.Log(facingDirection);
                 }
                 break;
             }

@@ -28,7 +28,7 @@ public class Hand : MonoBehaviour {
     private ResourceCounter resources;
     public Color defaultColor;
 
-    private List<Collider> onBounds;
+    private HashSet<Collider> onBounds;
 
     public bool useMouse = true;
     public bool right_hand;
@@ -54,7 +54,7 @@ public class Hand : MonoBehaviour {
 
     private void Awake()
     {
-        onBounds = new List<Collider>();
+        onBounds = new HashSet<Collider>();
     }
 
     // Use this for initialization
@@ -242,13 +242,19 @@ public class Hand : MonoBehaviour {
         {
             foreach (Collider g in onBounds)
             {
-                Vector3 diff = g.ClosestPointOnBounds(p) - p;
-                float current_distance = diff.sqrMagnitude;
-                if (current_distance < distance)
+                if (g != null)
                 {
-                    distance = current_distance;
-                    closest = g.gameObject;
+                    Vector3 diff = g.ClosestPointOnBounds(p) - p;
+                    float current_distance = diff.sqrMagnitude;
+                    if (current_distance < distance)
+                    {
+                        distance = current_distance;
+                        closest = g.gameObject;
+                    }
                 }
+            }
+            if (closest == null) {
+                return;
             }
             Building building = closest.GetComponent<Building>();
             if (building != null && building.canBeGrabbed == false) return;
