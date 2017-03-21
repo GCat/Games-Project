@@ -13,7 +13,7 @@ public class Cloud : MonoBehaviour {
         transform.parent = handle.transform;
         if(rotator != null)
         {
-            rotator.transform.parent = null;
+            //rotator.transform.parent = null;
         }
 	}
 	

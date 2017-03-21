@@ -24,7 +24,9 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
     protected Shader outlineShader;
     private GameObject ExplosionEffect;
     private GameObject fireEffect;
-
+    public Quaternion initialRotation;
+    private int nobuildmask = (1 << 10 | 1 << 17);
+    public bool held = false;
 
     public abstract bool canBuy();
 
@@ -32,11 +34,13 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
     {
         if (!healthBar.activeSelf) healthBar.SetActive(true);
         health -= damage;
-        float scale = (health / totalHealth);
-        float buildingScale = gameObject.transform.localScale.x;
-        healthBar.transform.localScale = new Vector3(1.0f / buildingScale, 10.0f * scale / buildingScale, 1.0f / buildingScale);
-        if (scale > 0) healthBar.GetComponent<Renderer>().material.SetColor("_Color", new Color(1.0f - scale, scale, 0));
-
+        if (health > 0)
+        {
+            float scale = (health / totalHealth);
+            float buildingScale = gameObject.transform.localScale.x;
+            healthBar.transform.localScale = new Vector3(1.0f / buildingScale, 10.0f * scale / buildingScale, 1.0f / buildingScale);
+            healthBar.GetComponent<Renderer>().material.SetColor("_Color", new Color(1.0f - scale, scale, 0));
+        }
         if (health <= 0)
         {
             GameObject explosion = GameObject.Instantiate(ExplosionEffect);
@@ -91,7 +95,6 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         float x = transform.position.x;
         float z = transform.position.z;
 
-        int layerMask = (1 << 10);
         if (resourceCounter.withinBounds(transform.position))
         {
             Quaternion rot;
@@ -105,7 +108,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
                 rot = Quaternion.LookRotation(Vector3.forward);
             }
 
-            if (Physics.CheckBox(new Vector3(x, 0, z), boxSize, rot, layerMask))
+            if (Physics.CheckBox(new Vector3(x, 0, z), boxSize, rot, nobuildmask))
             {
                 return false;
             }
@@ -151,7 +154,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         if (other.gameObject.tag == "Hand")
         {
 
-            if ((resourceCounter.hasGameStarted() && (faithCost <= resourceCounter.getFaith())) || gameObject.tag == "Temple")
+            if ((resourceCounter.hasGameStarted() && ((faithCost <= resourceCounter.getFaith()) || (bought))) || gameObject.tag == "Temple")
             {
                 setOutline();
             }
@@ -171,6 +174,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
 
     public void release(Vector3 vel)
     {
+        held = false;
         GetComponent<Rigidbody>().useGravity = true;
         GetComponent<Rigidbody>().isKinematic = false;
         GetComponent<Collider>().enabled = true;
@@ -179,6 +183,15 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         removeOutline();
         highlightDestroy();
 
+    }
+
+
+    void LateUpdate()
+    {
+        if (held)
+        {
+            transform.rotation = initialRotation;
+        }
     }
 
     public IEnumerator ResourceGainText(int value,string resource)
@@ -230,19 +243,8 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         {
             highlight.GetComponentInChildren<Renderer>().enabled = true;
             highlight.transform.position = new Vector3(transform.position.x, 0.1f,transform.position.z);
-
-            float yRot = gameObject.transform.eulerAngles.y;
-            if ((yRot > 45 && yRot < 135) || (yRot > -135 && yRot < -45))
-            {
-                highlight.transform.rotation = Quaternion.LookRotation(Vector3.right);
-            }
-            else
-            {
-                highlight.transform.rotation = Quaternion.LookRotation(Vector3.forward);
-            }
-            int layerMask = 1 << 10;
-
-            if (Physics.CheckBox(new Vector3(transform.position.x, 0, transform.position.z), boxSize, gameObject.transform.rotation, layerMask))
+            highlight.transform.rotation = transform.rotation;
+            if (Physics.CheckBox(new Vector3(transform.position.x, 0, transform.position.z), boxSize, gameObject.transform.rotation, nobuildmask))
             {
                 foreach (Renderer t in highlight.GetComponentsInChildren<Renderer>())
                 {

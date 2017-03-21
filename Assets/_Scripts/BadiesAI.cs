@@ -490,12 +490,12 @@ public class BadiesAI : MonoBehaviour, Character
     {
         health -= damage;
         StartCoroutine(DamageText("-" + damage, Color.red));
-        float scale = (health / totalHealth);
-        float characterScale = gameObject.transform.localScale.x;
-        if (healthBar != null)
+        if (health > 0 && healthBar != null)
         {
+            float scale = (health / totalHealth);
+            float characterScale = gameObject.transform.localScale.x;
             healthBar.transform.localScale = new Vector3(0.1f / characterScale, scale / characterScale, 0.1f / characterScale);
-            if (scale != 0) healthBar.GetComponent<Renderer>().material.SetColor("_Color", new Color(1.0f - scale, scale, 0));
+            healthBar.GetComponent<Renderer>().material.SetColor("_Color", new Color(1.0f - scale, scale, 0));
         }
         if (health <= 0 && alive == true)
         {

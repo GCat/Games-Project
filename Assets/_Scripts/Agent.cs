@@ -387,10 +387,13 @@ public class Agent : MonoBehaviour, Character, Grabbable
     public void decrementHealth(float damage)
     {
         health -= damage;
-        float scale = (health / totalHealth);
-        float characterScale = gameObject.transform.localScale.x;
-        healthBar.transform.localScale = new Vector3(0.1f / characterScale, scale / characterScale, 0.1f / characterScale);
-        if (scale != 0) healthBar.GetComponent<Renderer>().material.SetColor("_Color", new Color(1.0f - scale, scale, 0));
+        if (health > 0)
+        {
+            float scale = (health / totalHealth);
+            float characterScale = gameObject.transform.localScale.x;
+            healthBar.transform.localScale = new Vector3(0.1f / characterScale, scale / characterScale, 0.1f / characterScale);
+            healthBar.GetComponent<Renderer>().material.SetColor("_Color", new Color(1.0f - scale, scale, 0));
+        }
         if (health <= 0 && alive == true)
         {
             alive = false;

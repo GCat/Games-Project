@@ -10,7 +10,7 @@ public class Handle : MonoBehaviour, Grabbable {
     private Renderer renderer;
     private GameObject parent;
     private bool grabbed = false;
-
+    private LineRenderer lineRenderer;
 
     void Start()
     {
@@ -19,6 +19,15 @@ public class Handle : MonoBehaviour, Grabbable {
         if (transform.parent != null)
         {
             parent = transform.parent.gameObject;
+        }
+        if (rotationHandle)
+        {
+            //always be 5m from cloud
+            Vector3 fromCloud = transform.position - parent.transform.position;
+            transform.position = parent.transform.position + Vector3.Normalize(fromCloud) * 15;
+            transform.parent = parent.transform;
+            grabbed = false;
+            lineRenderer = GetComponent<LineRenderer>();
         }
     }
 
@@ -31,13 +40,19 @@ public class Handle : MonoBehaviour, Grabbable {
     {
         if (rotationHandle && grabbed)
         {
-            parent.transform.rotation = Quaternion.LookRotation(transform.position - parent.transform.position, Vector3.up);
+            Vector3 pos2d = transform.position;
+            pos2d.y = parent.transform.position.y;
+            parent.transform.rotation = Quaternion.LookRotation(pos2d - parent.transform.position, Vector3.up);
             transform.LookAt(parent.transform.position, Vector3.up);
         }
 
         if(!rotationHandle)
         {
             transform.rotation = rotation;
+        }else if (parent != null)
+        {
+            Vector3[] positions = { transform.position, parent.transform.position };
+            lineRenderer.SetPositions(positions);
         }
     }
 
@@ -61,7 +76,7 @@ public class Handle : MonoBehaviour, Grabbable {
         {
             //always be 5m from cloud
             Vector3 fromCloud = transform.position - parent.transform.position;
-            transform.position = parent.transform.position + Vector3.Normalize(fromCloud) * 10;
+            transform.position = parent.transform.position + Vector3.Normalize(fromCloud) * 15;
             transform.parent = parent.transform;
             grabbed = false;
         }
