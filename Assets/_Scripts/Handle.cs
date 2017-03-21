@@ -7,27 +7,33 @@ public class Handle : MonoBehaviour, Grabbable {
 
     protected Shader outlineShader;
     public bool rotationHandle = false;
+    public bool frontHandle = false;
     private Renderer renderer;
     private GameObject parent;
     private bool grabbed = false;
     private LineRenderer lineRenderer;
+    protected Renderer[] child_materials;
 
     void Start()
     {
         renderer = GetComponent<Renderer>();
         outlineShader = Shader.Find("Toon/Basic Outline");
+        child_materials = GetComponentsInChildren<Renderer>();
         if (transform.parent != null)
         {
             parent = transform.parent.gameObject;
         }
         if (rotationHandle)
         {
+            Vector3 pos2d = transform.position;
+            pos2d.y = parent.transform.position.y;
             //always be 5m from cloud
-            Vector3 fromCloud = transform.position - parent.transform.position;
+            Vector3 fromCloud = pos2d - parent.transform.position;
             transform.position = parent.transform.position + Vector3.Normalize(fromCloud) * 15;
             transform.parent = parent.transform;
             grabbed = false;
             lineRenderer = GetComponent<LineRenderer>();
+            transform.LookAt(parent.transform.position, Vector3.up);
         }
     }
 
@@ -42,7 +48,13 @@ public class Handle : MonoBehaviour, Grabbable {
         {
             Vector3 pos2d = transform.position;
             pos2d.y = parent.transform.position.y;
-            parent.transform.rotation = Quaternion.LookRotation(pos2d - parent.transform.position, Vector3.up);
+            if (frontHandle)
+            {
+                parent.transform.rotation = Quaternion.LookRotation(pos2d - parent.transform.position, Vector3.up);
+            }else
+            {
+                parent.transform.rotation = Quaternion.LookRotation(parent.transform.position - pos2d, Vector3.up);
+            }
             transform.LookAt(parent.transform.position, Vector3.up);
         }
 
@@ -63,6 +75,7 @@ public class Handle : MonoBehaviour, Grabbable {
             transform.parent = null;
             grabbed = true;
         }
+       
     }
 
     public void release(Vector3 vel)
@@ -75,24 +88,35 @@ public class Handle : MonoBehaviour, Grabbable {
         if (rotationHandle)
         {
             //always be 5m from cloud
-            Vector3 fromCloud = transform.position - parent.transform.position;
+            Vector3 pos2d = transform.position;
+            pos2d.y = parent.transform.position.y;
+            Vector3 fromCloud = pos2d - parent.transform.position;
             transform.position = parent.transform.position + Vector3.Normalize(fromCloud) * 15;
             transform.parent = parent.transform;
             grabbed = false;
+            transform.LookAt (parent.transform.position, Vector3.up);
+
         }
     }
 
     public void removeOutline()
     {
 
-        renderer.material.shader = Shader.Find("Diffuse");
+        foreach (Renderer renderer in child_materials)
+        {
+            renderer.material.shader = Shader.Find("Diffuse");
+            //renderer.material.SetColor("_OutlineColor", Color.green);
+        }
     }
 
     private void setOutline()
     {
 
-        renderer.material.shader = outlineShader;
-        renderer.material.SetColor("_OutlineColor", Color.green);
+        foreach (Renderer renderer in child_materials)
+        {
+            renderer.material.shader = outlineShader;
+            renderer.material.SetColor("_OutlineColor", Color.green);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
