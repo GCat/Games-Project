@@ -359,7 +359,12 @@ public class Hand : MonoBehaviour {
                     if (resources.withinBounds(heldObject.transform.position))
                     {
                         if (building.gameObject.tag != "Temple")
+                        {
+                            onBounds.Remove(heldObject.GetComponent<Collider>());
                             Destroy(heldObject);
+                        }
+                            
+
                     }
                     else
                     {
