@@ -126,6 +126,7 @@ public class FireTower : Tower
         if (!bought && (resourceCounter.faith >= faithCost))
         {
             bought = true;
+            resourceCounter.removeFaith(faithCost);
             return true;
         }
         return false;
@@ -133,7 +134,7 @@ public class FireTower : Tower
 
     public override void activate()
     {
-        resourceCounter.removeFaith(faithCost);
+        if (!bought) resourceCounter.removeFaith(faithCost);
         active = true;
         if (highlight != null) Destroy(highlight);
         highlight = null;
