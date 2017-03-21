@@ -42,12 +42,17 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
             GameObject explosion = GameObject.Instantiate(ExplosionEffect);
             explosion.transform.position = transform.position;
             Destroy(explosion, 3.0f);
+            fireEffect.SetActive(false);
             die();
         }else if(health <= (0.2 * totalHealth))
         {
             setWarning();
-        }else if(health <= (0.5 * totalHealth))
+        }else if( health <= (0.5 * totalHealth))
         {
+            if (fireEffect == null)
+            {
+                fireEffect = Instantiate(Resources.Load("Fire"), new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity) as GameObject; 
+            }
             fireEffect.SetActive(true);
         }
     }
@@ -68,8 +73,6 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         child_materials = GetComponentsInChildren<Renderer>(false);
         outlineShader = Shader.Find("Toon/Basic Outline");
         ExplosionEffect = Resources.Load("Explosion") as GameObject;
-        fireEffect = Instantiate(Resources.Load("Fire"), transform) as GameObject;
-        fireEffect.SetActive(false);
         if (ExplosionEffect != null)
         {
             Debug.Log("Effect loaded");
@@ -175,6 +178,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         GetComponent<Rigidbody>().AddForce(vel, ForceMode.VelocityChange);
         removeOutline();
         highlightDestroy();
+
     }
 
     public IEnumerator ResourceGainText(int value,string resource)
