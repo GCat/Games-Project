@@ -120,7 +120,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
         tR = resources.getTopRight();
         bL = resources.getBottomLeft();
 
-       
+
     }
 
     // Update is called once per frame
@@ -189,13 +189,14 @@ public class Agent : MonoBehaviour, Character, Grabbable
                 case HumanState.Defending:
                     if (resources.getGroundBaddies() > 0)
                     {
-                       
-                        if(closestEnemy == null)
+
+                        if (closestEnemy == null)
                         {
-                            if(Vector3.Distance(transform.position, rallyZoneCentre) > rallyZoneRadius)
+                            if (Vector3.Distance(transform.position, rallyZoneCentre) > rallyZoneRadius)
                             {
                                 walkTo(rallyZoneCentre);
-                            }else
+                            }
+                            else
                             {
                                 closestEnemy = findClosestEnemy();
                                 if (Vector3.Distance(closestEnemy.transform.position, rallyZoneCentre) < rallyZoneRadius)
@@ -204,13 +205,15 @@ public class Agent : MonoBehaviour, Character, Grabbable
                                 }
                             }
 
-                        }else
+                        }
+                        else
                         {
                             attack();
                         }
 
 
-                    }else
+                    }
+                    else
                     {
                         walkTo(rallyZoneCentre);
                     }
@@ -268,6 +271,31 @@ public class Agent : MonoBehaviour, Character, Grabbable
         }
     }
 
+    void FixedUpdate()
+    {
+        if (currentState == HumanState.Falling)
+            if (!sacrificeEntered)
+            {
+                if (resources.aboveBoard(transform.position))
+                {
+                    if ((transform.position.y < 0.5) && droppedOnZone)
+                    {
+                        agent.enabled = true;
+                        currentState = HumanState.Defending;
+                    }
+                    if (transform.position.y < 0.2)
+                    {
+                        rb.velocity = Vector3.zero;
+                        agent.enabled = true;
+                        currentState = HumanState.Wandering;
+                    }
+                }
+                else
+                {
+                    sacrifice();
+                }
+            }
+    }
 
     //generates a new point on the board to wander to
     private Vector3 findNewTarget()
@@ -521,7 +549,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
             rallyZoneRadius = rallyZone.radius;
             droppedOnZone = true;
             rallyZoneCentre = other.gameObject.transform.position;
-           
+
             closestEnemy = null;
             //rallypoint = other.transform.parent.GetComponent<RallyPoint>();
             //rallySlots = rallypoint.getRallySlots();
