@@ -82,7 +82,6 @@ public class House : Building, Grabbable
 
     public override void activate()
     {
-        resourceCounter.removeFaith(faithCost);
         StartCoroutine(spawnHuman());
         //when do you call create buiding for towers ? -- cost does not work 
         active = true;
@@ -98,7 +97,12 @@ public class House : Building, Grabbable
     public void grab()
     {
         held = true;
-        bought = true;
+        if (!bought)
+        {
+            bought = true;
+            resourceCounter.removeFaith(faithCost);
+        }
+        
 
         // Deactivate  collider and gravity
         if (highlight != null)
@@ -160,6 +164,7 @@ public class House : Building, Grabbable
         if (!bought && (resourceCounter.faith >= faithCost))
         {
             bought = true;
+            resourceCounter.removeFaith(faithCost);
             return true;
         }
         return false;

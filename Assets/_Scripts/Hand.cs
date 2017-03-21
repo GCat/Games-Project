@@ -346,6 +346,8 @@ public class Hand : MonoBehaviour {
     {
         if (holding)
         {
+            onBounds.Remove(heldObject.GetComponent<Collider>());
+
             holding = false;
             heldObject.transform.parent = null;
             Building building = heldObject.GetComponent<Building>();
@@ -365,7 +367,11 @@ public class Hand : MonoBehaviour {
                     if (resources.withinBounds(heldObject.transform.position))
                     {
                         if (building.gameObject.tag != "Temple")
+                        {
                             Destroy(heldObject);
+                        }
+                            
+
                     }
                     else
                     {

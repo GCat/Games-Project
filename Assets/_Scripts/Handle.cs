@@ -12,10 +12,14 @@ public class Handle : MonoBehaviour, Grabbable {
     private GameObject parent;
     private bool grabbed = false;
     private LineRenderer lineRenderer;
+    private Collider myCol;
+    public GameObject bSpawner;
     protected Renderer[] child_materials;
+
 
     void Start()
     {
+        myCol = GetComponent<Collider>();
         renderer = GetComponent<Renderer>();
         outlineShader = Shader.Find("Toon/Basic Outline");
         child_materials = GetComponentsInChildren<Renderer>();
@@ -75,7 +79,21 @@ public class Handle : MonoBehaviour, Grabbable {
             transform.parent = null;
             grabbed = true;
         }
-       
+        //Collider[] cols = bSpawner.GetComponentsInChildren<Collider>();
+        //spawnChange(false);
+        //if (cols.Length > 0)
+        //{
+        //    foreach (Collider c in cols)
+        //    {
+        //        if (c != myCol) c.enabled = false;
+        //    }
+        //}
+
+    }
+
+    private void spawnChange(bool spawn)
+    {
+        bSpawner.GetComponent<BuildingSpawner>().spawn = spawn;
     }
 
     public void release(Vector3 vel)
@@ -97,6 +115,16 @@ public class Handle : MonoBehaviour, Grabbable {
             transform.LookAt (parent.transform.position, Vector3.up);
 
         }
+
+        //Collider[] cols = bSpawner.GetComponentsInChildren<Collider>();
+        //if (cols.Length > 0)
+        //{
+        //    foreach (Collider c in cols)
+        //    {
+        //        if (c != myCol) c.enabled = true;
+        //    }
+        //}
+        //spawnChange(true);
     }
 
     public void removeOutline()
