@@ -10,6 +10,7 @@ public class BuildingSpawner : MonoBehaviour {
     public ResourceGainTablet resourceCost;
     private int buildingCost;
     private int buildingMask = (1 << 10) | (1 << 14);
+    public bool spawn = true;
 	// Use this for initialization
 	void Start () {
         InvokeRepeating("spawnBuilding", .1f, 1f);
@@ -53,10 +54,11 @@ public class BuildingSpawner : MonoBehaviour {
         {
             imgCanvas.SetActive(false);
             resourceCost.text.color = Color.black;
-            if (Physics.OverlapSphere(transform.position, 8.0f, buildingMask).Length == 0)
+            if (spawn && Physics.OverlapSphere(transform.position, 8.0f, buildingMask).Length == 0)
             {
                 GameObject building = Instantiate(buildingToSpawn, transform.position, Quaternion.identity);
                 building.transform.parent = transform;
+                building.GetComponent<Rigidbody>().useGravity = false;
             }
         }
 

@@ -79,7 +79,11 @@ public class Tower : Building, Grabbable {
     public void grab()
     {
         showRange();
-        bought = true;
+        if (!bought)
+        {
+            bought = true;
+            resourceCounter.removeFaith(faithCost);
+        }
         held = true;
 
         // Deactivate  collider and gravity

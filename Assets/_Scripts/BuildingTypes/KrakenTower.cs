@@ -98,6 +98,7 @@ public class KrakenTower : Tower
         if (!bought && (resourceCounter.faith >= faithCost))
         {
             bought = true;
+            resourceCounter.removeFaith(faithCost);
             return true;
         }
         return false;
@@ -108,7 +109,7 @@ public class KrakenTower : Tower
     public override void activate()
     {
         //when do you call create buiding for towers ? -- cost does not work 
-        resourceCounter.removeFaith(faithCost);
+        if (!bought) resourceCounter.removeFaith(faithCost);
         active = true;
         if (highlight != null) Destroy(highlight);
         highlight = null;

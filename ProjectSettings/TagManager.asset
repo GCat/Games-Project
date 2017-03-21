@@ -30,6 +30,7 @@ TagManager:
   - RallyPoint
   - Portal
   - Niet
+  - Spawner
   layers:
   - Default
   - TransparentFX

@@ -56,6 +56,7 @@ public abstract class ResourceBuilding : Building, Grabbable
         if (!bought && (resourceCounter.faith >= faithCost))
         {
             bought = true;
+            resourceCounter.removeFaith(faithCost);
             return true;
         }
         return false;
@@ -64,11 +65,12 @@ public abstract class ResourceBuilding : Building, Grabbable
     //Don't need this 
     public override void activate()
     {
-        resourceCounter.removeFaith(faithCost);
+        if (!bought) resourceCounter.removeFaith(faithCost);
         create_building();
         held = false;
         highlightDestroy();
     }
+
 
     //Don't need this
     public override void deactivate()
@@ -78,7 +80,11 @@ public abstract class ResourceBuilding : Building, Grabbable
     public void grab()
     {
         held = true;
-        bought = true;
+        if (!bought)
+        {
+            bought = true;
+            resourceCounter.removeFaith(faithCost);
+        }
 
         // Deactivate  collider and gravity
         if (highlight != null)
