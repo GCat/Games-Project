@@ -242,6 +242,7 @@ public class Hand : MonoBehaviour {
         {
             foreach (Collider g in onBounds)
             {
+                if (g == null) continue;
                 Vector3 diff = g.ClosestPointOnBounds(p) - p;
                 float current_distance = diff.sqrMagnitude;
                 if (current_distance < distance)
