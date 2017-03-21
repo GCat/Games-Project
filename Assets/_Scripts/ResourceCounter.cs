@@ -9,7 +9,7 @@ public class ResourceCounter : MonoBehaviour, Grabbable
     public Dictionary<string, GameObject[]> resource_nodes;
     private GameBoard ground;
     //The text displayed on the tablet
-    public Slider faithSlider;
+    public Text faithNumber;
     public Slider healthSlider;
     public Slider waveSlider;
 
@@ -76,7 +76,7 @@ public class ResourceCounter : MonoBehaviour, Grabbable
             armourMult *= 2;
         }
         //setResourceText();
-        faithSlider.value = faith;
+        faithNumber.text = faith.ToString();
         healthSlider.value = temple.health;
     }
 
