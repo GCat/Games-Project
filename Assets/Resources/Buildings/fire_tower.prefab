@@ -936,8 +936,8 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -992,11 +992,12 @@ MonoBehaviour:
   highlight_template: {fileID: 1198705378565068, guid: df7a3fa71a5afc2439e55f03b47b96a0,
     type: 2}
   canBeGrabbed: 1
+  initialRotation: {x: 0, y: 0, z: 0, w: 0}
+  held: 0
   rangeHighlight: {fileID: 0}
   radius: 20
   active: 0
   held: 0
-  grabbedOnce: 0
   currentTarget: {fileID: 0}
   attackMask: 2048
   build: {fileID: 0}
@@ -1111,7 +1112,7 @@ ParticleSystem:
   m_GameObject: {fileID: 1335213082906890}
   serializedVersion: 5
   lengthInSec: 1
-  speed: 1
+  simulationSpeed: 1
   looping: 1
   prewarm: 0
   playOnAwake: 1

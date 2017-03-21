@@ -124,8 +124,8 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -197,11 +197,12 @@ MonoBehaviour:
   highlight_template: {fileID: 1496738986511838, guid: fb5396ac9d23c6645bf227ad14e3d692,
     type: 2}
   canBeGrabbed: 1
+  initialRotation: {x: 0, y: 0, z: 0, w: 0}
+  held: 0
   rangeHighlight: {fileID: 0}
   radius: 40
   active: 0
   held: 0
-  grabbedOnce: 0
   currentTarget: {fileID: 0}
   attackMask: 2048
   arrowClip: {fileID: 8300000, guid: 2c55dfe771c1d174bb9d4896cc2e02f1, type: 3}
