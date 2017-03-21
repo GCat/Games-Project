@@ -30,7 +30,6 @@ TagManager:
   - RallyPoint
   - Portal
   - Niet
-
   layers:
   - Default
   - TransparentFX
@@ -49,7 +48,7 @@ TagManager:
   - Prop
   - Resource
   - Ground
-  - 
+  - Portal
   - 
   - 
   - 
