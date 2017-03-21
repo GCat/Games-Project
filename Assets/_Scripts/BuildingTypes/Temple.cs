@@ -18,7 +18,7 @@ public class Temple : ResourceBuilding
         tablet.SetActive(true);
         placed = true;
         spawnHumans();
-        InvokeRepeating("incrementResource", 5.0f, 5.0f); // after 10 sec call every 5
+        InvokeRepeating("incrementResource", 10.0f, 10.0f); // after 10 sec call every 5
         canBeGrabbed = false;
         CancelInvoke("showStartOutline");
         CancelInvoke("removeOutline");

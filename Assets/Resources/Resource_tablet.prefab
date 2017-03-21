@@ -141,9 +141,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a2a104d68c2a284b9f53b39f744fb31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: {fileID: 114114284980272038}
-  faith: 50
-  baddies: 0
+  faithSlider: {fileID: 0}
+  healthSlider: {fileID: 0}
+  waveSlider: {fileID: 0}
+  faith: 20
 --- !u!114 &114114284980272038
 MonoBehaviour:
   m_ObjectHideFlags: 1

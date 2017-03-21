@@ -42,9 +42,9 @@ public class BadiesAI : MonoBehaviour, Character
 
     // Badie characteristic
     public bool debug = false;
-    public float strength = 1.0f;
-    public float health = 100.0f;
-    public float totalHealth = 100.0f;
+    public float strength;
+    public float health;
+    public float totalHealth ;
     public int faithValue;
     GameObject healthBar;
     GameObject infoText;
@@ -158,7 +158,6 @@ public class BadiesAI : MonoBehaviour, Character
         debugText.text = currentState.ToString();
         if (alive)
         {
-
             switch (currentState)
             {
                 case MonsterState.AttackTemple:

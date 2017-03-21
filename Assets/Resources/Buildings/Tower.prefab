@@ -197,11 +197,17 @@ MonoBehaviour:
   highlight_template: {fileID: 1496738986511838, guid: fb5396ac9d23c6645bf227ad14e3d692,
     type: 2}
   canBeGrabbed: 1
+  rangeHighlight: {fileID: 0}
+  radius: 35
+  active: 0
+  held: 0
+  grabbedOnce: 0
+  currentTarget: {fileID: 0}
+  attackMask: 2048
   arrowClip: {fileID: 8300000, guid: 2c55dfe771c1d174bb9d4896cc2e02f1, type: 3}
   arrowDamage: 10
   buildingName: 
   target: {fileID: 0}
-  held: 0
 --- !u!208 &208718995710538024
 NavMeshObstacle:
   m_ObjectHideFlags: 1

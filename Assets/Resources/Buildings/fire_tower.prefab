@@ -988,17 +988,22 @@ MonoBehaviour:
   resourceCounter: {fileID: 0}
   tablet: {fileID: 0}
   bought: 0
-  faithCost: 20
+  faithCost: 35
   highlight_template: {fileID: 1198705378565068, guid: df7a3fa71a5afc2439e55f03b47b96a0,
     type: 2}
   canBeGrabbed: 1
+  rangeHighlight: {fileID: 0}
+  radius: 20
+  active: 0
+  held: 0
+  grabbedOnce: 0
+  currentTarget: {fileID: 0}
+  attackMask: 2048
   build: {fileID: 0}
   destroy: {fileID: 0}
-  fireDamagePerSecond: 5
+  fireDamagePerSecond: 10
   buildingName: 
   target: {fileID: 0}
-  radius: 20
-  held: 0
   fireStream: {fileID: 1335213082906890}
 --- !u!120 &120518207163346196
 LineRenderer:

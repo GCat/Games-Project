@@ -641,7 +641,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debug: 0
-  strength: 2
+  strength: 5
   health: 100
   totalHealth: 100
   faithValue: 5
@@ -649,8 +649,6 @@ MonoBehaviour:
   alive: 0
   projectile: {fileID: 0}
   animator: {fileID: 95793851212632952}
-  startMarker: {x: 0, y: 0, z: 0}
-  endMarker: {x: 0, y: 0, z: 0}
   monsterType: 0
   closestEnemy: {fileID: 0}
   buildings: []
@@ -828,7 +826,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 1830059517110030}
   m_Enabled: 1
   m_Radius: 0.5
-  m_Speed: 6
+  m_Speed: 10
   m_Acceleration: 10
   avoidancePriority: 50
   m_AngularSpeed: 120

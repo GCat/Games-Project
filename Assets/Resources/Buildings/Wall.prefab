@@ -1460,8 +1460,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildClip: {fileID: 8300000, guid: 0f6a9c7d024f3144690add1c060e8ed0, type: 3}
   source: {fileID: 0}
-  totalHealth: 100
-  health: 100
+  totalHealth: 300
+  health: 300
   resourceCounter: {fileID: 0}
   tablet: {fileID: 0}
   bought: 0

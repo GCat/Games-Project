@@ -2793,7 +2793,7 @@ MonoBehaviour:
   resourceCounter: {fileID: 0}
   tablet: {fileID: 0}
   bought: 0
-  faithCost: 10
+  faithCost: 15
   highlight_template: {fileID: 1000011474536254, guid: a46bfc19ba9886f46a82c3e3dc31cd7d,
     type: 2}
   canBeGrabbed: 1
@@ -2807,6 +2807,7 @@ MonoBehaviour:
   foodCost: 10
   active: 0
   held: 0
+  humanSpawnDelay: 30
 --- !u!198 &198221221841677044
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -2815,7 +2816,7 @@ ParticleSystem:
   m_GameObject: {fileID: 1992552206681822}
   serializedVersion: 5
   lengthInSec: 10
-  simulationSpeed: 1
+  speed: 1
   looping: 1
   prewarm: 1
   playOnAwake: 1
