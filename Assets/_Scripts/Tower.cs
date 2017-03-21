@@ -8,7 +8,6 @@ public class Tower : Building, Grabbable {
     public float radius;
     public bool active = false;
     public bool held = false;
-    public bool grabbedOnce = false;
     public GameObject currentTarget;
     public int attackMask = 1 << 11;
 
@@ -80,7 +79,7 @@ public class Tower : Building, Grabbable {
     public void grab()
     {
         showRange();
-        grabbedOnce = true;
+        bought = true;
         held = true;
 
         // Deactivate  collider and gravity
@@ -142,7 +141,7 @@ public class Tower : Building, Grabbable {
     new void OnTriggerEnter(Collider other)
     {
         base.OnTriggerEnter(other);
-        if (other.gameObject.tag == "Hand" && grabbedOnce)
+        if (other.gameObject.tag == "Hand" && bought)
         {
             showRange();
         }

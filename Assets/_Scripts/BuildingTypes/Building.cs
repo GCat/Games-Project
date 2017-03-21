@@ -34,11 +34,13 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
     {
         if (!healthBar.activeSelf) healthBar.SetActive(true);
         health -= damage;
-        float scale = (health / totalHealth);
-        float buildingScale = gameObject.transform.localScale.x;
-        healthBar.transform.localScale = new Vector3(1.0f / buildingScale, 10.0f * scale / buildingScale, 1.0f / buildingScale);
-        if (scale > 0) healthBar.GetComponent<Renderer>().material.SetColor("_Color", new Color(1.0f - scale, scale, 0));
-
+        if (health > 0)
+        {
+            float scale = (health / totalHealth);
+            float buildingScale = gameObject.transform.localScale.x;
+            healthBar.transform.localScale = new Vector3(1.0f / buildingScale, 10.0f * scale / buildingScale, 1.0f / buildingScale);
+            healthBar.GetComponent<Renderer>().material.SetColor("_Color", new Color(1.0f - scale, scale, 0));
+        }
         if (health <= 0)
         {
             GameObject explosion = GameObject.Instantiate(ExplosionEffect);
@@ -152,7 +154,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         if (other.gameObject.tag == "Hand")
         {
 
-            if ((resourceCounter.hasGameStarted() && (faithCost <= resourceCounter.getFaith())) || gameObject.tag == "Temple")
+            if ((resourceCounter.hasGameStarted() && ((faithCost <= resourceCounter.getFaith()) || (bought))) || gameObject.tag == "Temple")
             {
                 setOutline();
             }
