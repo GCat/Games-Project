@@ -259,6 +259,8 @@ public class Hand : MonoBehaviour {
             {
                 if (buildingS.canBuy() || buildingS.bought)
                 {
+                    buildingS.initialRotation = buildingS.transform.rotation;
+                    buildingS.held = true;
                     buildingS.transform.parent = null;
                     holding = true;
                     Grabbable placeable = heldObject.GetComponent<Grabbable>();
@@ -397,19 +399,6 @@ public class Hand : MonoBehaviour {
         float z = placeable.transform.position.z;
         placeable.transform.position = new Vector3(x, 0, z);
         // if we are not alowing hand rotation is this still nesesary?
-        float yRot = placeable.transform.eulerAngles.y;
-        if((yRot > 45 && yRot < 135) || (yRot > -135 && yRot < -45))
-        {
-            placeable.transform.rotation = Quaternion.LookRotation(Vector3.right);
-
-        }
-        else
-        {
-            placeable.transform.rotation = Quaternion.LookRotation(Vector3.forward);
-        }
-
-
-
     }
 
     //function called to release any physics object from the hand

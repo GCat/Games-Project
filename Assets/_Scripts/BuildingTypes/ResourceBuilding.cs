@@ -8,7 +8,6 @@ public abstract class ResourceBuilding : Building, Grabbable
     public AudioClip destroy;
     public string buildingName;
     public bool on_game_board = false;
-    public bool held = false;
     public string required_resource_tag = "None";
     public GameObject resource_node;
 

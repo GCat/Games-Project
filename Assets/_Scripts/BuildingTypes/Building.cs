@@ -24,8 +24,9 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
     protected Shader outlineShader;
     private GameObject ExplosionEffect;
     private GameObject fireEffect;
+    public Quaternion initialRotation;
     private int nobuildmask = (1 << 10 | 1 << 17);
-
+    public bool held = false;
 
     public abstract bool canBuy();
 
@@ -171,6 +172,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
 
     public void release(Vector3 vel)
     {
+        held = false;
         GetComponent<Rigidbody>().useGravity = true;
         GetComponent<Rigidbody>().isKinematic = false;
         GetComponent<Collider>().enabled = true;
@@ -179,6 +181,15 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         removeOutline();
         highlightDestroy();
 
+    }
+
+
+    void LateUpdate()
+    {
+        if (held)
+        {
+            transform.rotation = initialRotation;
+        }
     }
 
     public IEnumerator ResourceGainText(int value,string resource)
@@ -230,16 +241,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         {
             highlight.GetComponentInChildren<Renderer>().enabled = true;
             highlight.transform.position = new Vector3(transform.position.x, 0.1f,transform.position.z);
-
-            float yRot = gameObject.transform.eulerAngles.y;
-            if ((yRot > 45 && yRot < 135) || (yRot > -135 && yRot < -45))
-            {
-                highlight.transform.rotation = Quaternion.LookRotation(Vector3.right);
-            }
-            else
-            {
-                highlight.transform.rotation = Quaternion.LookRotation(Vector3.forward);
-            }
+            highlight.transform.rotation = transform.rotation;
             if (Physics.CheckBox(new Vector3(transform.position.x, 0, transform.position.z), boxSize, gameObject.transform.rotation, nobuildmask))
             {
                 foreach (Renderer t in highlight.GetComponentsInChildren<Renderer>())
