@@ -76,10 +76,6 @@ public class Wall : Building, Grabbable {
     {
     }
 
-	void onCollisionEnter(Collision collision){
-		Debug.Log("Sup");	
-	}
-
     public void grab()
     {
         // Deactivate  collider and gravity
@@ -90,7 +86,6 @@ public class Wall : Building, Grabbable {
         held = true;
         // highlight where object wiould place if falling straight down
         createHighlight();
-
         GetComponent<Rigidbody>().useGravity = false;
         GetComponent<Rigidbody>().isKinematic = true;
         GetComponent<Collider>().enabled = false;
