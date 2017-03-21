@@ -205,8 +205,8 @@ public class BadiesAI : MonoBehaviour, Character
                 Color c = text.color;
                 c.a = f;
                 text.color = c;
-                damageIndicator.transform.Translate(new Vector3(0, 0.1f, 0));        
-                damageIndicator.transform.LookAt(transform.position - cameraPos);
+                damageIndicator.transform.Translate(new Vector3(0, 0.1f, 0));
+                damageIndicator.transform.LookAt(cameraPos);
                 yield return null;
             }
         }
