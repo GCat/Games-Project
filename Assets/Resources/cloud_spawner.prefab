@@ -295,7 +295,7 @@ Transform:
   m_GameObject: {fileID: 1399337637958074}
   m_LocalRotation: {x: -0, y: 0.21990858, z: -0, w: 0.97552055}
   m_LocalPosition: {x: 0.7, y: -30.1, z: -0.6}
-  m_LocalScale: {x: 3.4882977, y: 4.8595347, z: 3.488299}
+  m_LocalScale: {x: 8, y: 10, z: 8}
   m_Children: []
   m_Father: {fileID: 4936315258676768}
   m_RootOrder: 3
@@ -347,7 +347,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1643311417326162}
   m_LocalRotation: {x: -0, y: -0.21990858, z: -0, w: 0.97552055}
-  m_LocalPosition: {x: -60.3, y: 45.1, z: -8.720161}
+  m_LocalPosition: {x: -86.6, y: 31.4, z: -32.1}
   m_LocalScale: {x: 0.44485623, y: 0.44485617, z: 0.44485617}
   m_Children:
   - {fileID: 4833527596483228}
@@ -774,7 +774,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16df8c811975ef54ca6677ff19e8dd2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildingToSpawn: {fileID: 1801555696720252, guid: 10ce0b7e17a2ab547adc092fc6fc7ee3,
+  buildingToSpawn: {fileID: 1000010810685680, guid: fe9f788ae3115b343a21720d55615ef0,
     type: 2}
   resources: {fileID: 0}
   imgCanvas: {fileID: 0}

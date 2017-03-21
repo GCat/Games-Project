@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 using System.Collections;
 
 public class Hand : MonoBehaviour {
@@ -27,6 +28,8 @@ public class Hand : MonoBehaviour {
     private ResourceCounter resources;
     public Color defaultColor;
 
+    private List<Collider> onBounds;
+
     public bool useMouse = true;
     public bool right_hand;
 
@@ -46,9 +49,16 @@ public class Hand : MonoBehaviour {
     float startTime;
     Collider heldCollider;
 
-    
-	// Use this for initialization
-	void Start () {
+    private int grabLayer = (1 << 9) | (1 << 10) | (1 << 14);
+
+
+    private void Awake()
+    {
+        onBounds = new List<Collider>();
+    }
+
+    // Use this for initialization
+    void Start () {
         held_object_times = new float[5];
         held_object_positions = new Vector3[5];
         held_object_positions[0] = Vector3.zero;
@@ -218,104 +228,105 @@ public class Hand : MonoBehaviour {
 
     }
     //checks a surrounding sphere for objects, grabs them
+
     private void grabObject()
     {
         if (holding) return;
 
 
         GameObject closest = null;
-        int layerMask = (1 << 9) | ( 1 << 10) | (1 << 14);
-        Vector3 p = grab_position.transform.position;//new Vector3(transform.position.x - 14, transform.position.y - 18, transform.position.z);
-        things = Physics.OverlapSphere(p, 4.0f, layerMask);
         float distance = Mathf.Infinity;
-        if (things.Length > 0)
+        Vector3 p = grab_position.transform.position;
+
+        if (onBounds.Count > 0)
         {
-            foreach (Collider thing in things)
+            foreach (Collider g in onBounds)
             {
-                Vector3 diff = thing.ClosestPointOnBounds(p) - p;
+                Vector3 diff = g.ClosestPointOnBounds(p) - p;
                 float current_distance = diff.sqrMagnitude;
                 if (current_distance < distance)
                 {
                     distance = current_distance;
-                    closest = thing.gameObject;
+                    closest = g.gameObject;
                 }
             }
             Building building = closest.GetComponent<Building>();
-            if (building != null && building.canBeGrabbed == false)
-            {
-                return;
-            }
+            if (building != null && building.canBeGrabbed == false) return;
             if (!resources.hasGameStarted() && closest.tag != "Temple") return;
-        }
 
+            heldObject = closest;
 
-        heldObject = closest;
-       
-        if (heldObject != null)
-        {
-            Building buildingS = heldObject.GetComponent<Building>();
-
-            if (buildingS != null)
+            if (heldObject != null)
             {
-                if (buildingS.canBuy() || buildingS.bought)
+                Building buildingS = heldObject.GetComponent<Building>();
+
+                if (buildingS != null)
                 {
+                    if (buildingS.canBuy() || buildingS.bought)
+                    {
+                        buildingS.transform.parent = null;
+                        holding = true;
+                        Grabbable placeable = heldObject.GetComponent<Grabbable>();
                     buildingS.initialRotation = buildingS.transform.rotation;
                     buildingS.held = true;
-                    buildingS.transform.parent = null;
-                    holding = true;
-                    Grabbable placeable = heldObject.GetComponent<Grabbable>();
 
-                    if (placeable != null)
-                    {
-                        placeable.grab();
-                        snapToHand(heldObject);
-                        heldObject.transform.parent = transform;
-                    }
-                    else
-                    {
-                        Debug.Log("This object is not placeable", heldObject);
-                    }
-                    
-                }
-                else heldObject = null;
+                        if (placeable != null)
+                        {
+                            placeable.grab();
+                            snapToHand(heldObject);
+                            heldObject.transform.parent = transform;
+                        }
+                        else
+                        {
+                            Debug.Log("This object is not placeable", heldObject);
+                        }
 
-            }
-            else
-            {
-                
-                Tool tool = heldObject.GetComponent<Tool>();
-
-                if (tool != null)
-                {
-                    if (tool.canBuy())
-                    {
-                        tool.grab();
-                        snapToHand(heldObject);
-                        heldObject.transform.parent = transform;
-                        holding = true;
                     }
                     else heldObject = null;
+
                 }
                 else
                 {
-                    Grabbable human = heldObject.GetComponent<Grabbable>();
-                    if (human != null)
-                    {
-                        human.grab();
-                        snapToHand(heldObject);
-                        heldObject.transform.parent = transform;
-                        holding = true;
-                    }
-                    else Debug.Log("This object is not placeable", heldObject);
-                }
-            }                
-        }
-        else
-        {
-            //Debug.Log("NOTHING TO GRAB!");
-        }
 
-        colourChange(heldObject);
+                    Tool tool = heldObject.GetComponent<Tool>();
+
+                    if (tool != null)
+                    {
+                        if (tool.canBuy())
+                        {
+                            tool.grab();
+                            snapToHand(heldObject);
+                            heldObject.transform.parent = transform;
+                            holding = true;
+                        }
+                        else heldObject = null;
+                    }
+                    else
+                    {
+                        // human or handle
+                        Grabbable human = heldObject.GetComponent<Grabbable>();
+                        if (human != null)
+                        {
+                            human.grab();
+                            snapToHand(heldObject);
+                            heldObject.transform.parent = transform;
+                            holding = true;
+                        }
+                        else Debug.Log("This object is not placeable", heldObject);
+                    }
+                }
+            }
+            else
+            {
+                //Debug.Log("NOTHING TO GRAB!");
+            }
+
+            colourChange(heldObject);
+        }
+        else return;
+
+        
+        
     }
 
     void OnDrawGizmosSelected()
@@ -420,6 +431,24 @@ public class Hand : MonoBehaviour {
         else
         {
             Debug.Log("This object is not placeable", heldObject);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        GameObject gother = other.gameObject;
+        if (gother.layer == 9 || gother.layer == 10 || gother.layer == 14)
+        {
+            onBounds.Add(other);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        GameObject gother = other.gameObject;
+        if (gother.layer == 9 || gother.layer == 10 || gother.layer == 14)
+        {
+            onBounds.Remove(other);
         }
     }
 }
