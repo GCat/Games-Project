@@ -79,6 +79,7 @@ public abstract class ResourceBuilding : Building, Grabbable
     public void grab()
     {
         held = true;
+        bought = true;
 
         // Deactivate  collider and gravity
         if (highlight != null)

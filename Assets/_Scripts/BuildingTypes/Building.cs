@@ -151,7 +151,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         if (other.gameObject.tag == "Hand")
         {
 
-            if ((resourceCounter.hasGameStarted() && (faithCost <= resourceCounter.getFaith())) || gameObject.tag == "Temple")
+            if ((resourceCounter.hasGameStarted() && ((faithCost <= resourceCounter.getFaith()) || (bought))) || gameObject.tag == "Temple")
             {
                 setOutline();
             }

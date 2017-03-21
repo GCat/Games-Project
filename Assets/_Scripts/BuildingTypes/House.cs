@@ -98,6 +98,7 @@ public class House : Building, Grabbable
     public void grab()
     {
         held = true;
+        bought = true;
 
         // Deactivate  collider and gravity
         if (highlight != null)
@@ -114,7 +115,7 @@ public class House : Building, Grabbable
 
     }
 
-    public void release(Vector3 vel)
+    new void release(Vector3 vel)
     {
 
         //Snap to grid
