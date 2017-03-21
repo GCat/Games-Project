@@ -77,10 +77,6 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         child_materials = GetComponentsInChildren<Renderer>(false);
         outlineShader = Shader.Find("Toon/Basic Outline");
         ExplosionEffect = Resources.Load("Explosion") as GameObject;
-        if (ExplosionEffect != null)
-        {
-            Debug.Log("Effect loaded");
-        }
         source = gameObject.AddComponent<AudioSource>() as AudioSource;
         //source.rolloffMode = AudioRolloffMode.Linear;
         source.volume = 0.7f;

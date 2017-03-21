@@ -232,7 +232,7 @@ public class Hand : MonoBehaviour {
     private void grabObject()
     {
         if (holding) return;
-
+        heldObject = null;
 
         GameObject closest = null;
         float distance = Mathf.Infinity;
@@ -253,9 +253,8 @@ public class Hand : MonoBehaviour {
                     }
                 }
             }
-            if (closest == null) {
-                return;
-            }
+            if (closest == null) return;
+          
             Building building = closest.GetComponent<Building>();
             if (building != null && building.canBeGrabbed == false) return;
             if (!resources.hasGameStarted() && closest.tag != "Temple") return;
@@ -273,11 +272,12 @@ public class Hand : MonoBehaviour {
                         buildingS.transform.parent = null;
                         holding = true;
                         Grabbable placeable = heldObject.GetComponent<Grabbable>();
-                    buildingS.initialRotation = buildingS.transform.rotation;
-                    buildingS.held = true;
+                        buildingS.initialRotation = buildingS.transform.rotation;
+                        buildingS.held = true;
 
                         if (placeable != null)
                         {
+                            Debug.Log("Grab BUILDING");
                             placeable.grab();
                             snapToHand(heldObject);
                             heldObject.transform.parent = transform;
@@ -304,6 +304,7 @@ public class Hand : MonoBehaviour {
                             snapToHand(heldObject);
                             heldObject.transform.parent = transform;
                             holding = true;
+                            Debug.Log("Grab TOOL");
                         }
                         else heldObject = null;
                     }
@@ -313,6 +314,7 @@ public class Hand : MonoBehaviour {
                         Grabbable human = heldObject.GetComponent<Grabbable>();
                         if (human != null)
                         {
+                            Debug.Log("Grab HANDLE OR HUMAN");
                             human.grab();
                             snapToHand(heldObject);
                             heldObject.transform.parent = transform;
@@ -335,17 +337,18 @@ public class Hand : MonoBehaviour {
         
     }
 
-    void OnDrawGizmosSelected()
+   /* void OnDrawGizmosSelected()
     {
         Vector3 p = grab_position.transform.position;//new Vector3(transform.position.x - 14, transform.position.y - 18, transform.position.z);
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(p, 5.0f);
-    }
+    }*/
 
     private void releaseObject ()
     {
         if (holding)
         {
+            Debug.Log("RELEASE");
             onBounds.Remove(heldObject.GetComponent<Collider>());
 
             holding = false;

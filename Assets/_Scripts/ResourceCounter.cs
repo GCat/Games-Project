@@ -39,7 +39,6 @@ public class ResourceCounter : MonoBehaviour, Grabbable
         resource_nodes = new Dictionary<string, GameObject[]>();
         gameStarted = false;
         baddies = new int[4];
-        Debug.Log(baddies.Length);
         for (int i = 0; i < baddies.Length; i++)
         {
             baddies[i] = 0;
