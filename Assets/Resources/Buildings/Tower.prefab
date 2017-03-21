@@ -198,7 +198,7 @@ MonoBehaviour:
     type: 2}
   canBeGrabbed: 1
   rangeHighlight: {fileID: 0}
-  radius: 35
+  radius: 40
   active: 0
   held: 0
   grabbedOnce: 0
