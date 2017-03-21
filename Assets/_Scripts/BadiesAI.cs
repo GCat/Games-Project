@@ -61,15 +61,7 @@ public class BadiesAI : MonoBehaviour, Character
     private Rigidbody rb;
     public Animator animator;
 
-    // Movement
-    public Vector3 startMarker;
-    public Vector3 endMarker;
 
-    private int maxCell;
-
-
-    // Fighting
-    public enum Fighter { Rusher, Defender, Killer, Training };
     public Portal.MonsterType monsterType;
 
     // Rusher
@@ -100,7 +92,7 @@ public class BadiesAI : MonoBehaviour, Character
     MonsterState defaultState;
 
 
-    //mystery variable - sales tax? saint? street? state?
+    // surround target position, used to decide where in teh perimeter of the building to attack
     private Vector3 sT;
 
 
@@ -370,7 +362,6 @@ public class BadiesAI : MonoBehaviour, Character
 
     private void attackBuildings()
     {
-        // for now attack towers
         if (closestEnemy != null)
         {
             if (Mathf.Abs(closestEnemy.transform.position.y) > 5.0f)
