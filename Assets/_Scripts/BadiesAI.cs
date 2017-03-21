@@ -192,7 +192,6 @@ public class BadiesAI : MonoBehaviour, Character
 
     public IEnumerator DamageText(string textString, Color color)
     {
-
         GameObject damageIndicator = Instantiate(damageText, (new Vector3(transform.position.x, transform.position.y + 5, transform.position.z)), Quaternion.LookRotation(transform.position - cameraPos, Vector3.up)) as GameObject;
         Text text = damageIndicator.GetComponentInChildren<Text>();
         text.text = textString;
