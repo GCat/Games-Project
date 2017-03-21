@@ -57,7 +57,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         }
     }
 
-    private void Awake()
+    public virtual void Awake()
     {
 
         tablet = GameObject.FindGameObjectWithTag("Tablet");
@@ -224,7 +224,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         return newText;
     }
 
-    public void highlightCheck()
+    public bool highlightCheck()
     {
         if (resourceCounter.withinBounds(transform.position))
         {
@@ -247,7 +247,8 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
                 foreach (Renderer t in highlight.GetComponentsInChildren<Renderer>())
                 {
                     t.material.SetColor("_Color", Color.red);
-                }               
+                }
+                return false;
             }
             else
             {
@@ -255,12 +256,14 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
                 {
                     t.material.SetColor("_Color", Color.green);
                 }
+                return true;
 
             }
         }
         else
         {
             highlight.GetComponentInChildren<Renderer>().enabled = false;
+            return false;
         }
     }
 

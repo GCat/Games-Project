@@ -42,9 +42,9 @@ public class BadiesAI : MonoBehaviour, Character
 
     // Badie characteristic
     public bool debug = false;
-    public float strength = 1.0f;
-    public float health = 100.0f;
-    public float totalHealth = 100.0f;
+    public float strength;
+    public float health;
+    public float totalHealth ;
     public int faithValue;
     GameObject healthBar;
     GameObject infoText;
@@ -61,15 +61,7 @@ public class BadiesAI : MonoBehaviour, Character
     private Rigidbody rb;
     public Animator animator;
 
-    // Movement
-    public Vector3 startMarker;
-    public Vector3 endMarker;
 
-    private int maxCell;
-
-
-    // Fighting
-    public enum Fighter { Rusher, Defender, Killer, Training };
     public Portal.MonsterType monsterType;
 
     // Rusher
@@ -100,7 +92,7 @@ public class BadiesAI : MonoBehaviour, Character
     MonsterState defaultState;
 
 
-    //mystery variable - sales tax? saint? street? state?
+    // surround target position, used to decide where in teh perimeter of the building to attack
     private Vector3 sT;
 
 
@@ -166,7 +158,6 @@ public class BadiesAI : MonoBehaviour, Character
         debugText.text = currentState.ToString();
         if (alive)
         {
-
             switch (currentState)
             {
                 case MonsterState.AttackTemple:
@@ -371,7 +362,6 @@ public class BadiesAI : MonoBehaviour, Character
 
     private void attackBuildings()
     {
-        // for now attack towers
         if (closestEnemy != null)
         {
             if (Mathf.Abs(closestEnemy.transform.position.y) > 5.0f)

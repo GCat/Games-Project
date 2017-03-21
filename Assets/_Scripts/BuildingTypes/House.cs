@@ -16,8 +16,8 @@ public class House : Building, Grabbable
     public int foodCost = 10;
     public bool active = false;
     public bool held = false;
+    public float humanSpawnDelay;
     private float placementTime = 0;
-    private Vector3 boxSize;
     Material matEmpty;
     Material matInval;
     
@@ -53,8 +53,6 @@ public class House : Building, Grabbable
 
     void Start()
     {
-        matEmpty = Resources.Load("Materials/highlight2") as Material;
-        matInval = Resources.Load("Materials/highlight") as Material;
         heartEffect = Resources.Load("Explosion_Lovely") as GameObject;
         boxSize = GetComponent<BoxCollider>().bounds.size / 2;
         boxSize.y = 0.01f;
@@ -65,7 +63,7 @@ public class House : Building, Grabbable
     {
         while (true)
         {
-            yield return new WaitForSeconds(15);
+            yield return new WaitForSeconds(humanSpawnDelay);
             Vector3 humanLocation = humanSpawn.transform.position;
             humanLocation = new Vector3(transform.position.x, transform.position.y, transform.position.z + 10);
             NavMeshHit hit;
