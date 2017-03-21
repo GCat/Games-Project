@@ -142,6 +142,8 @@ public class BodySourceView : MonoBehaviour
                     {
                         _Bodies[body.TrackingId] = CreateBodyObject(body.TrackingId);
                         Vector3 headObject = GetVector3FromJoint(body.Joints[Kinect.JointType.Head]);
+                        Kinect.JointOrientation headOrientation = body.JointOrientations[Kinect.JointType.Head];
+                        Debug.Log(headOrientation.Orientation);
                         float headHeight = headObject.y;
                         float idealHeight = 40;
                         float feetOffset = headHeight - idealHeight;
@@ -154,6 +156,9 @@ public class BodySourceView : MonoBehaviour
                 {
                     RefreshBodyObject(body, _Bodies[body.TrackingId]);
                     adjustBodyParts(body, _Bodies[body.TrackingId]);
+                    Kinect.JointOrientation headOrientation = body.JointOrientations[Kinect.JointType.Head];
+                    Vector4 facingDirection = new Vector4(headOrientation.Orientation.X, headOrientation.Orientation.Y, headOrientation.Orientation.Z, headOrientation.Orientation.W);
+                    Debug.Log(facingDirection);
                 }
                 break;
             }
