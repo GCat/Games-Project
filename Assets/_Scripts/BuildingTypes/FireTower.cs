@@ -3,41 +3,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FireTower : Building, Grabbable
+public class FireTower : Tower
 {
 
     public AudioClip build;
     public AudioClip destroy;
     public float fireDamagePerSecond = 5;
-    GameObject rangeHighlight;
+
     public string buildingName;
     public GameObject target;
-    public float radius = 25.0f;
 
-    bool active = false;
-    public bool held = false;
 
-    private bool badplacement = false;
-    private float placementTime = 0;
-
-    int attackMask = 1 << 11;
-    bool grabbedOnce = false;
-    
-    private GameObject currentTarget;
     public GameObject fireStream;
 
-    float getHealth()
-    {
-        return health;
-    }
+  
 
-
-    //never goes in here 
-    public override void create_building()
-    {
-
-    }
-    
 
     void Start()
     {
@@ -57,15 +37,15 @@ public class FireTower : Building, Grabbable
     }
 
 
-    void Update()
+    public override void Update()
     {
         rangeHighlight.transform.position = new Vector3(gameObject.transform.position.x, 0.1f, gameObject.transform.position.z);
         if (held)
         {
             if (highlight != null)
             {
-                highlightCheck();
-                showRange();
+                if (highlightCheck()) showRange();
+                else hideRange();
             }
             else if (transform.position.y > 0f)
             {
@@ -75,13 +55,6 @@ public class FireTower : Building, Grabbable
             else
             {
                 hideRange();
-            }
-        }
-        else if (badplacement)
-        {
-            if (Time.time - placementTime > 5.0f)
-            {
-                DestroyObject(gameObject);
             }
         }
         else if (active)
@@ -113,7 +86,7 @@ public class FireTower : Building, Grabbable
     }
 
     //find a new nearby monster to attack
-    private bool acquireTarget()
+    public override bool acquireTarget()
     {
         List<Collider> hitColliders = new List<Collider>(Physics.OverlapSphere(transform.position, radius, attackMask));
         if (hitColliders.Count > 0)
@@ -143,45 +116,9 @@ public class FireTower : Building, Grabbable
         }
     }
 
-    void OnDestroy()
-    {
-        if (rangeHighlight != null)
-        {
-            DestroyImmediate(rangeHighlight);
-        }
-
-    }
-
-    public void grab()
-    {
-        showRange();
-        grabbedOnce = true;
-        held = true;
-        badplacement = false;
-
-        // Deactivate  collider and gravity
-        if (highlight != null)
-        {
-            DestroyImmediate(highlight);
-        }
-
-        // highlight where object wiould place if falling straight down
-        createHighlight();
-
-        GetComponent<Rigidbody>().useGravity = false;
-        GetComponent<Rigidbody>().isKinematic = true;
-        GetComponent<Collider>().enabled = false;
-
-    }
-
     public override string getName()
     {
         return buildingName;
-    }
-
-    public override Vector3 getLocation()
-    {
-        return transform.position;
     }
 
     public override bool canBuy()
@@ -194,11 +131,6 @@ public class FireTower : Building, Grabbable
         return false;
     }
 
-    public override void die()
-    {
-        Destroy(gameObject, 0.5f);
-    }
-
     public override void activate()
     {
         resourceCounter.removeFaith(faithCost);
@@ -209,45 +141,5 @@ public class FireTower : Building, Grabbable
         buildingName = "TOWER";
         hideRange();
         StartCoroutine(attack());
-    }
-
-    public override void deactivate()
-    {
-        active = false;
-    }
-
-    public void showRange()
-    {
-        rangeHighlight.SetActive(true);
-
-    }
-
-    public void hideRange()
-    {
-        rangeHighlight.SetActive(false);
-
-    }
-
-    new void OnTriggerEnter(Collider other)
-    {
-        base.OnTriggerEnter(other);
-        if (other.gameObject.tag == "Hand" && grabbedOnce)
-        {
-            showRange();
-        }
-    }
-    new void OnTriggerExit(Collider other)
-    {
-        base.OnTriggerExit(other);
-        if (other.gameObject.tag == "Hand")
-        {
-            hideRange();
-        }
-    }
-
-    new void release(Vector3 vel)
-    {
-        base.release(vel);
-        hideRange();
     }
 }

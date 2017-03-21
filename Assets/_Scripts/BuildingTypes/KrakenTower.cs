@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class KrakenTower : Building, Grabbable
+public class KrakenTower : Tower
 {
 
     public AudioClip build;
@@ -10,37 +10,13 @@ public class KrakenTower : Building, Grabbable
     public LineRenderer linerenderer;
     public GameObject mirror;
     public float damage_per_second = 10;
-    GameObject rangeHighlight;
     private Animation anim;
 
     public string buildingName;
     public GameObject target;
-    private float radius = 15.0f;
 
-    bool active = false;
-    public bool held = false;
-
-    public float timer1;
-    private float StartTime1;
-
-    private bool badplacement = false;
-    private float placementTime = 0;
-
-    int attackMask = 1 << 11;
-    bool grabbedOnce = false;
     
-
-    float getHealth()
-    {
-        return health;
-    }
-
-    //never goes in here 
-    public override void create_building()
-    {
-
-    }
-
+   
 
     void Start()
     {
@@ -60,44 +36,8 @@ public class KrakenTower : Building, Grabbable
     }
 
 
-    void Update()
-    {
-        rangeHighlight.transform.position = new Vector3(gameObject.transform.position.x, 0.1f, gameObject.transform.position.z);
-
-        if (held)
-        {
-            if (highlight != null)
-            {
-                highlightCheck();
-            }
-        }
-        else if (badplacement)
-        {
-            if (Time.time - placementTime > 5.0f)
-            {
-                DestroyObject(gameObject);
-            }
-        }
-        else if (active)
-        {
-
-            if (resourceCounter.getBaddies() > 0)
-            {
-                if (target != null)
-                {
-                    attack(target);
-                }
-                else
-                {
-                    acquireTarget();
-                }
-
-            }
-        }
-    }
-
     //find a new nearby monster to attack
-    private bool acquireTarget()
+    public override bool acquireTarget()
     {
         List<Collider> hitColliders = new List<Collider>(Physics.OverlapSphere(transform.position, radius, attackMask));
         if (hitColliders.Count > 0)
@@ -126,54 +66,31 @@ public class KrakenTower : Building, Grabbable
         anim.Play("Attack");
     }
 
-    //Activate animator
-    bool attack(GameObject victim)
+
+    private IEnumerator attack()
     {
-        if (victim != null)
-        {
-            playForwards();
-            playBackwards();
-        }
-        else
-        {
 
+        while (true)
+        {
+            if (currentTarget != null && Vector3.Distance(currentTarget.transform.position, transform.position) < radius)
+            {
+                HealthManager targetHealth = currentTarget.GetComponent<HealthManager>();
+                if (targetHealth != null)
+                {
+                    playForwards();
+                    targetHealth.decrementHealth(damage_per_second);
+                    playBackwards();
+                }
+            }
+            yield return new WaitForSeconds(1);
         }
-        return false;
     }
-
-    public void grab()
-    {
-        showRange();
-        grabbedOnce = true;
-        held = true;
-        badplacement = false;
-
-        // Deactivate  collider and gravity
-        if (highlight != null)
-        {
-            DestroyImmediate(highlight);
-        }
-
-        // highlight where object wiould place if falling straight down
-        createHighlight();
-
-        GetComponent<Rigidbody>().useGravity = false;
-        GetComponent<Rigidbody>().isKinematic = true;
-        GetComponent<Collider>().enabled = false;
-
-    }
-
 
 
 
     public override string getName()
     {
         return buildingName;
-    }
-
-    public override Vector3 getLocation()
-    {
-        return transform.position;
     }
 
     public override bool canBuy()
@@ -186,10 +103,7 @@ public class KrakenTower : Building, Grabbable
         return false;
     }
 
-    public override void die()
-    {
-        Destroy(gameObject);
-    }
+ 
 
     public override void activate()
     {
@@ -200,46 +114,8 @@ public class KrakenTower : Building, Grabbable
         highlight = null;
         held = false;
         buildingName = "TOWER";
-        timer1 = 0f;
-        StartTime1 = Time.time;
         hideRange();
+        StartCoroutine(attack());
 
-    }
-
-    public override void deactivate()
-    {
-        active = false;
-    }
-
-    public void showRange()
-    {
-        rangeHighlight.SetActive(true);
-
-    }
-
-    public void hideRange()
-    {
-        rangeHighlight.SetActive(false);
-
-    }
-
-    new void OnTriggerEnter(Collider other)
-    {
-        base.OnTriggerEnter(other);
-        if (other.gameObject.tag == "Hand" && grabbedOnce)
-        {
-            showRange();
-        }
-    }
-
-    new void release(Vector3 vel)
-    {
-        base.release(vel);
-        hideRange();
-    }
-
-    void OnDestroy()
-    {
-        if (rangeHighlight != null) DestroyImmediate(rangeHighlight);
     }
 }
