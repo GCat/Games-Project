@@ -20,7 +20,7 @@ public class BuildingSpawner : MonoBehaviour {
         imgCanvas.SetActive(false);
         resourceCost.setText(buildingCost.ToString());
         resourceCost.activateThis();
-        GameObject building = Instantiate(buildingToSpawn, transform.position, Quaternion.identity);
+        GameObject building = Instantiate(buildingToSpawn, transform.position, transform.rotation);
         Building bScript = building.GetComponent<Building>();
         if(bScript != null)
         {
@@ -56,7 +56,7 @@ public class BuildingSpawner : MonoBehaviour {
             resourceCost.text.color = Color.black;
             if (spawn && Physics.OverlapSphere(transform.position, 8.0f, buildingMask).Length == 0)
             {
-                GameObject building = Instantiate(buildingToSpawn, transform.position, Quaternion.identity);
+                GameObject building = Instantiate(buildingToSpawn, transform.position, transform.rotation);
                 building.transform.parent = transform;
                 building.GetComponent<Rigidbody>().useGravity = false;
             }
