@@ -110,6 +110,10 @@ public class BadiesAI : MonoBehaviour, Character
         {
             collider.enabled = false;
         }
+        foreach(Rigidbody rb in GetComponentsInChildren<Rigidbody>())
+        {
+            rb.isKinematic = true;
+        }
         GetComponent<Collider>().enabled = true;
         damageText = Resources.Load("Damage Text") as GameObject;
 
