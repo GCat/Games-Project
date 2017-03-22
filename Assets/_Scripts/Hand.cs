@@ -76,7 +76,7 @@ public class Hand : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        velocity = transform.position - lastPosition;
+        velocity = (transform.position - lastPosition) / Time.deltaTime;
         lastPosition = transform.position;
         // MOUSE TESTING
         if (useMouse)
@@ -240,8 +240,8 @@ public class Hand : MonoBehaviour {
         GameObject closest = null;
         float distance = Mathf.Infinity;
         Vector3 p = grab_position.transform.position;
-
-        if(velocity.magnitude > 2)
+        Debug.Log(velocity);
+        if(velocity.magnitude > 100)
         {
             return;
         }
@@ -467,7 +467,7 @@ public class Hand : MonoBehaviour {
         {
             //slap baddies
             HealthManager healthManager = gother.GetComponent<HealthManager>();
-            if(healthManager != null && velocity.magnitude > 2)
+            if(healthManager != null && velocity.magnitude > 100)
             {
                 int seed = Random.Range(0, hitSounds.Length);
                 audioSource.clip = hitSounds[seed];
