@@ -11,14 +11,16 @@ public class Hand : MonoBehaviour {
 
     private bool change = false;
 
-
+    private Vector3 lastPosition;
+    private Vector3 velocity;
     GameObject heldObject;
 
     GameObject heldScaffold;
     Scaffold heldScaffoldScript;
 
     public Collider[] things;
-
+    public AudioClip[] hitSounds;
+    public AudioSource audioSource;
     public GameObject close_hand;
     public GameObject open_hand;
     public GameObject grab_position;
@@ -69,12 +71,13 @@ public class Hand : MonoBehaviour {
         resources = GameObject.FindGameObjectWithTag("Tablet").GetComponent<ResourceCounter>();
         if (kinect_view == null) useMouse = true;
         defaultColor = renderer_open.material.GetColor("_Color");
+        lastPosition = transform.position;
     }
 
     // Update is called once per frame
     void Update () {
-   
-
+        velocity = transform.position - lastPosition;
+        lastPosition = transform.position;
         // MOUSE TESTING
         if (useMouse)
         {
@@ -237,6 +240,11 @@ public class Hand : MonoBehaviour {
         GameObject closest = null;
         float distance = Mathf.Infinity;
         Vector3 p = grab_position.transform.position;
+
+        if(velocity.magnitude > 2)
+        {
+            return;
+        }
 
         if (onBounds.Count > 0)
         {
@@ -455,6 +463,17 @@ public class Hand : MonoBehaviour {
         if (gother.layer == 9 || gother.layer == 10 || gother.layer == 14 && !holding)
         {
             onBounds.Add(other);
+        }else if(gother.layer == 11)
+        {
+            //slap baddies
+            HealthManager healthManager = gother.GetComponent<HealthManager>();
+            if(healthManager != null && velocity.magnitude > 2)
+            {
+                int seed = Random.Range(0, hitSounds.Length);
+                audioSource.clip = hitSounds[seed];
+                audioSource.Play();
+                healthManager.decrementHealth(1);
+            }
         }
     }
 
