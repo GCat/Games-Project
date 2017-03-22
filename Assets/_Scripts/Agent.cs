@@ -427,6 +427,8 @@ public class Agent : MonoBehaviour, Character, Grabbable
             alive = false;
             anim.Play("diehard");
             StartCoroutine(WaitToDestroy(2.0f));
+            GameObject ghost = Instantiate(Resources.Load("Spooky_Explosion") as GameObject, transform.position, Quaternion.identity);
+            Destroy(ghost, 1f);
         }
     }
 

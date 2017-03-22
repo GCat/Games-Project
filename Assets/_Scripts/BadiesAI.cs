@@ -509,6 +509,8 @@ public class BadiesAI : MonoBehaviour, Character
             {
                 collider.enabled = false;
             }
+            GameObject ghost = Instantiate(Resources.Load("Spooky_Explosion") as GameObject, transform.position, Quaternion.identity);
+            Destroy(ghost, 3f);
             gameObject.tag = "Untagged";
             StartCoroutine(WaitToDestroy(0.1f));
             resources.removeBaddie(monsterType);

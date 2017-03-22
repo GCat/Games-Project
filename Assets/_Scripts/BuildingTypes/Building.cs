@@ -55,7 +55,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         {
             if (fireEffect == null)
             {
-                fireEffect = Instantiate(Resources.Load("Fire"), new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity) as GameObject;
+                fireEffect = Instantiate(Resources.Load("Fire"), new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.LookRotation(Vector3.forward, Vector3.up)) as GameObject;
                 ParticleSystem.ShapeModule[] shapes = fireEffect.GetComponentsInChildren<ParticleSystem.ShapeModule>();
                 
                 for(int i=0; i < shapes.Length; i++)
