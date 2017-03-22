@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VR;
 
 public class GameBoard : MonoBehaviour {
 
@@ -21,7 +22,11 @@ public class GameBoard : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            InputTracking.Recenter();
+        }
+
 	}
 
     public static bool withinBounds(Vector3 position)
