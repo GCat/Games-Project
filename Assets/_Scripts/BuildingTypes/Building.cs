@@ -21,6 +21,8 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
     protected GameObject highlight;
     public bool canBeGrabbed = true;
     protected Renderer[] child_materials;
+    protected Shader[] original_materials;
+
     protected Shader outlineShader;
     private GameObject ExplosionEffect;
     private GameObject fireEffect;
@@ -92,6 +94,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         boxSize = GetComponent<BoxCollider>().bounds.size / 2;
         boxSize.y = 1f;
         child_materials = GetComponentsInChildren<Renderer>(false);
+        original_materials = new Shader[child_materials.Length];
         outlineShader = Shader.Find("Toon/Basic Outline");
         ExplosionEffect = Resources.Load("Explosion") as GameObject;
         source = gameObject.AddComponent<AudioSource>() as AudioSource;
@@ -99,6 +102,10 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         source.volume = 0.7f;
         //source.spatialBlend = 0.1f;
         source.clip = buildClip;
+        for (int i = 0; i < child_materials.Length; i++)
+        {
+            original_materials[i] = child_materials[i].material.shader;
+        }
     }
 
     //return true if within bounds & not above another building
@@ -136,30 +143,30 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
     {
         if (canBeGrabbed)
         {
-            foreach (Renderer renderer in child_materials)
+            for (int i=0; i < child_materials.Length; i++)
             {
-                renderer.material.shader = outlineShader;
-                renderer.material.SetColor("_OutlineColor", Color.green);
+                child_materials[i].material.shader = outlineShader;
+                child_materials[i].material.SetColor("_OutlineColor", Color.green);
             }
         }
     }
 
     private void setWarning()
     {
-        foreach (Renderer renderer in child_materials)
+        for (int i = 0; i < child_materials.Length; i++)
         {
-            renderer.material.shader = outlineShader;
-            renderer.material.SetColor("_OutlineColor", Color.red);
+            child_materials[i].material.shader = outlineShader;
+            child_materials[i].material.SetColor("_OutlineColor", Color.red);
         }
-        
+
     }
 
     public void removeOutline()
     {
-        foreach (Renderer renderer in child_materials)
+        for (int i = 0; i < child_materials.Length; i++)
         {
-            renderer.material.shader = Shader.Find("Diffuse");
-            //renderer.material.SetColor("_OutlineColor", Color.green);
+            child_materials[i].material.shader = original_materials[i];
+
         }
     }
     public void OnTriggerEnter(Collider other)

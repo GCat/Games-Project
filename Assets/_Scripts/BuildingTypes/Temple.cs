@@ -45,11 +45,11 @@ public class Temple : ResourceBuilding
 
     private void showStartOutline()
     {
-        foreach (Renderer renderer in child_materials)
+        for (int i = 0; i < child_materials.Length; i++)
         {
-            renderer.material.shader = outlineShader;
-            renderer.material.SetColor("_OutlineColor", Color.yellow);
-        }   
+            child_materials[i].material.shader = outlineShader;
+            child_materials[i].material.SetColor("_OutlineColor", Color.yellow);
+        }
     }
 
     void spawnHumans()
