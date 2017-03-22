@@ -118,7 +118,7 @@ GameObject:
   - component: {fileID: 4049017430771932}
   - component: {fileID: 95284703843987776}
   - component: {fileID: 65420350296434070}
-  m_Layer: 10
+  m_Layer: 18
   m_Name: turret_b
   m_TagString: Turret
   m_Icon: {fileID: 0}
@@ -285,7 +285,7 @@ GameObject:
   - component: {fileID: 4438326224536636}
   - component: {fileID: 95804235395629864}
   - component: {fileID: 65426624409181150}
-  m_Layer: 10
+  m_Layer: 18
   m_Name: turret_a
   m_TagString: Turret
   m_Icon: {fileID: 0}
@@ -663,7 +663,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010810685680}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.965332, y: 0, z: 14.808083}
+  m_LocalPosition: {x: 30.839005, y: 0, z: 23.095383}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4672694764092034}

@@ -452,7 +452,7 @@ public class Hand : MonoBehaviour {
     private void OnTriggerEnter(Collider other)
     {
         GameObject gother = other.gameObject;
-        if (gother.layer == 9 || gother.layer == 10 || gother.layer == 14)
+        if (gother.layer == 9 || gother.layer == 10 || gother.layer == 14 && !holding)
         {
             onBounds.Add(other);
         }
@@ -461,7 +461,7 @@ public class Hand : MonoBehaviour {
     private void OnTriggerExit(Collider other)
     {
         GameObject gother = other.gameObject;
-        if (gother.layer == 9 || gother.layer == 10 || gother.layer == 14)
+        if (gother.layer == 9 || gother.layer == 10 || gother.layer == 14 && !holding)
         {
             onBounds.Remove(other);
         }
