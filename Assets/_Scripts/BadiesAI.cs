@@ -446,7 +446,16 @@ public class BadiesAI : MonoBehaviour, Character
                 showPath();
                 Vector3 offset = target - transform.position;
                 offset.y = transform.position.y;
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(offset), Time.deltaTime * rotationSpeed);
+                if (sT == Vector3.zero)
+                {
+                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(offset), Time.deltaTime * rotationSpeed);
+                }
+                else
+                {
+                    offset = closestEnemy.transform.position - transform.position;
+                    offset.y = transform.position.y;
+                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(offset), Time.deltaTime * rotationSpeed);
+                }
                 animator.SetBool("Walking", true);
             }
         }
