@@ -33,6 +33,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
     public void decrementHealth(float damage)
     {
         if (!healthBar.activeSelf) healthBar.SetActive(true);
+        StartCoroutine(lockBuilding(5));
         health -= damage;
         if (health > 0)
         {
@@ -67,6 +68,16 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         }
     }
 
+
+    IEnumerator lockBuilding(float waitTime)
+    {
+        canBeGrabbed = false;
+        yield return new WaitForSeconds(waitTime);
+        if (GetComponent<Temple>() == null)
+        {
+            canBeGrabbed = true;
+        }
+    }
     public virtual void Awake()
     {
 
