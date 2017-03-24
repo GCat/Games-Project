@@ -446,6 +446,10 @@ public class Hand : MonoBehaviour {
         float x = placeable.transform.position.x;
         float z = placeable.transform.position.z;
         placeable.transform.position = new Vector3(x, 0, z);
+        if(placeable.GetComponent<Wall>() == null)
+        {
+            placeable.transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
+        }
         // if we are not alowing hand rotation is this still nesesary?
     }
 

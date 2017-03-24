@@ -59,7 +59,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
     public AudioClip sacrificeClip;
     private Rigidbody rb;
     public Animation anim;
-
+    public AudioClip[] attackClips;
 
     // God interactions
     private bool sacrificeEntered = false;
@@ -493,6 +493,8 @@ public class Agent : MonoBehaviour, Character, Grabbable
                 if (victimHealth != null)
                 {
                     victimHealth.decrementHealth(strength);
+                    AudioSource source = GetComponent<AudioSource>();
+                    source.PlayOneShot(getAttackSound(), 0.1f);
                 }
                 else
                 {
@@ -505,6 +507,11 @@ public class Agent : MonoBehaviour, Character, Grabbable
         return false;
     }
 
+
+    private AudioClip getAttackSound()
+    {
+        return attackClips[UnityEngine.Random.Range(0, attackClips.Length)];
+    }
 
     public void activate()
     {

@@ -1413,6 +1413,9 @@ MonoBehaviour:
   droppedOnZone: 0
   sacrificeClip: {fileID: 8300000, guid: 7ee549d8486b14948aa187fb09f1dde4, type: 3}
   anim: {fileID: 111000010165483130}
+  attackClips:
+  - {fileID: 8300000, guid: 5b9b4bf60a02af546b10be7471b1dccf, type: 3}
+  - {fileID: 8300000, guid: 55c3b96d86f676a419f3e42c76d237a9, type: 3}
   fighterType: 0
   active: 1
 --- !u!120 &120789721897379206
