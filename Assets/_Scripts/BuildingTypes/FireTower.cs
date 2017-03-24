@@ -16,8 +16,6 @@ public class FireTower : Tower
 
     public GameObject fireStream;
 
-  
-
 
     void Start()
     {
@@ -59,11 +57,11 @@ public class FireTower : Tower
         }
         else if (active)
         {
-
             if (resourceCounter.getBaddies() > 0)
             {
                 if (currentTarget == null)
                 {
+                    attackSource.Stop();
                     fireStream.SetActive(false);
                     acquireTarget();
                 }else
@@ -75,6 +73,7 @@ public class FireTower : Tower
                     }else
                     {
                         fireStream.SetActive(false);
+                        attackSource.Stop();
                     }
                 }
 
@@ -93,6 +92,7 @@ public class FireTower : Tower
         {
             Debug.Log("Acquired target");
             currentTarget = hitColliders[0].gameObject;
+            attackSource.Play();
             return true;
         }
 

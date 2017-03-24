@@ -376,9 +376,12 @@ public class Hand : MonoBehaviour {
 
             if(building != null)
             {
+               
                 if(building.canPlace() && (building.bought || building.canBuy()))
                 {
+                    //this is why the building had a grabbable interface :p - this should be there ;)
                     snapToGrid(heldObject);
+                    building.source.clip = building.buildClip;
                     building.source.Play();
                     building.activate();
                     building.removeOutline();

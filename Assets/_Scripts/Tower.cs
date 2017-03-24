@@ -11,8 +11,8 @@ public class Tower : Building, Grabbable {
     public GameObject currentTarget;
     public int attackMask = 1 << 11;
     protected bool activated = false;
-
-
+    protected AudioSource attackSource;
+    public AudioClip attackClip;
     float getHealth()
     {
         return health;
@@ -20,7 +20,8 @@ public class Tower : Building, Grabbable {
 
     public override void Awake()
     {
-
+        attackSource = gameObject.AddComponent<AudioSource>() as AudioSource;
+        attackSource.clip = attackClip;
         base.Awake();
         rangeHighlight = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         rangeHighlight.GetComponent<Renderer>().material.SetColor("_Color", Color.yellow);
