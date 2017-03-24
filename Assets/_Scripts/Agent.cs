@@ -335,7 +335,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
             Debug.Log(transform.position);
             AudioSource source = GetComponent<AudioSource>();
             source.PlayOneShot(sacrificeClip, 0.5f);
-            resources.addFaith(128);
+            resources.addFaith(15);
             sacrificeEntered = true;
             anim.Play("diehard");
             StartCoroutine(WaitToDestroy(2.1f));
