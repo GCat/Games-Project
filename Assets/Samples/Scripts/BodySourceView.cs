@@ -27,6 +27,8 @@ public class BodySourceView : MonoBehaviour
     public bool leftHandClosed = false;
     public bool rightHandTracked = false;
     public bool leftHandTracked = false;
+    private float rightHandVelocity = 0;
+    private float leftHandVelocity = 0;
     private int r_hand_closed_frames = 0;
     private int r_hand_open_frames = 0;
     private int l_hand_closed_frames = 0;
@@ -178,7 +180,8 @@ public class BodySourceView : MonoBehaviour
             Temple.transform.position = player_objects[Kinect.JointType.Head].transform.position + Vector3.left*40 + Vector3.down*20;
             started = true;
         }
-
+        rightHandVelocity = (player_objects[Kinect.JointType.HandRight].transform.position - right_hand.transform.position).magnitude / Time.deltaTime;
+        leftHandVelocity = (player_objects[Kinect.JointType.HandLeft].transform.position - left_hand.transform.position).magnitude / Time.deltaTime;
         right_hand.transform.position = Vector3.Slerp(right_hand.transform.position, player_objects[Kinect.JointType.HandRight].transform.position, Time.deltaTime * 10.0f);
         left_hand.transform.position = Vector3.Slerp(left_hand.transform.position, player_objects[Kinect.JointType.HandLeft].transform.position, Time.deltaTime * 10.0f);
 
@@ -322,8 +325,16 @@ public class BodySourceView : MonoBehaviour
     //takes the tracking context of the hand and returns the number of continuous frames required to make a state change
     private int getTrackingFrames(bool rightHand)
     {
+        int speedAdjust = 0;
         if (rightHand)
         {
+            
+            if(rightHandVelocity > 500)
+            {
+                Debug.Log("gotta go fast");
+                speedAdjust = 10;
+
+            }
             switch (rightHandContext)
             {
                 case TrackingContext.Medium:
@@ -331,10 +342,16 @@ public class BodySourceView : MonoBehaviour
                 case TrackingContext.Fast:
                     return tracking_frames / 2;
                 case TrackingContext.Slow:
-                    return tracking_frames * 2;
+                    return tracking_frames * 2 + speedAdjust;
             }
         }else
         {
+            if (leftHandVelocity > 500)
+            {
+                Debug.Log("gotta go fast");
+                speedAdjust = 10;
+
+            }
             switch (leftHandContext)
             {
                 case TrackingContext.Medium:
@@ -342,7 +359,7 @@ public class BodySourceView : MonoBehaviour
                 case TrackingContext.Fast:
                     return tracking_frames / 2;
                 case TrackingContext.Slow:
-                    return tracking_frames * 2;
+                    return tracking_frames * 2 + speedAdjust;
             }
         }
         return tracking_frames;
