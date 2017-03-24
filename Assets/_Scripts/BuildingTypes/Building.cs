@@ -290,7 +290,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         }
     }
 
-    public void highlightDestroy()
+    public virtual void highlightDestroy()
     {
         if (highlight != null) highlight.SetActive(false);
     }

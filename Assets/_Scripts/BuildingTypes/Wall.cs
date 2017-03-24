@@ -62,6 +62,16 @@ public class Wall : Building, Grabbable
         return this.gameObject.transform.position;
     }
 
+    public override void highlightDestroy()
+    {
+        if (turretHighlightA != null)
+        {
+            turretHighlightA.SetActive(false);
+            turretHighlightB.SetActive(false);
+            highlight.SetActive(false);
+        }
+    }
+
     public override bool canBuy()
     {
         if (!bought && (resourceCounter.faith >= faithCost()))
@@ -80,7 +90,9 @@ public class Wall : Building, Grabbable
 
     public override void die()
     {
-        Destroy(gameObject);
+        Destroy(turretHighlightA);
+        Destroy(turretHighlightB);
+        Destroy(gameObject);  
     }
 
     private void create_turretHighlight()
@@ -151,12 +163,21 @@ public class Wall : Building, Grabbable
         wallSegment.transform.position = midPoint + Vector3.up * (height / 2);
         wallSegment.transform.localScale = new Vector3(wallSegment.transform.localScale.x, wallSegment.transform.localScale.y, (pointB - pointA).magnitude);
         wallSegment.transform.LookAt(pointB + Vector3.up * (height / 2));
-        BoxCollider wallCollider = wallSegment.GetComponent<BoxCollider>();
-        //wallCollider.size = new Vector3(wallCollider.size.x, wallCollider.size.y, 10 + (pointB - pointA).magnitude);
-        wallCollider.transform.rotation = wallSegment.transform.rotation;
-        wallCollider.size = wallSegment.GetComponent<Renderer>().bounds.size;
+        BoxCollider wallCollider = this.GetComponent<BoxCollider>();
+        BoxCollider turretCollider = turretA.GetComponent<BoxCollider>();
         NavMeshObstacle obstacle = GetComponent<NavMeshObstacle>();
-        obstacle.size = new Vector3(obstacle.size.x, obstacle.size.y, 10 + (pointB - pointA).magnitude);
+
+        //size
+        wallCollider.size = new Vector3(wallCollider.size.x, wallCollider.size.y, wallCollider.size.z + 2);
+        obstacle.size = new Vector3(wallCollider.size.x, wallCollider.size.y, wallCollider.size.z + 2);
+        wallCollider.center = new Vector3(wallCollider.center.x, wallCollider.center.y, wallCollider.size.z / 2);
+        obstacle.center = new Vector3(obstacle.center.x, obstacle.center.y, obstacle.center.z /2);
+        
+        //rotation
+        Vector3 targetDir = turretB.transform.position - pointB;
+        float angle = Vector3.Angle(targetDir, transform.forward);
+        wallCollider.transform.rotation = Quaternion.Euler(wallCollider.transform.rotation.x, wallCollider.transform.rotation.y, wallCollider.transform.rotation.z + angle);
+        obstacle.transform.rotation = Quaternion.Euler(wallCollider.transform.rotation.x, wallCollider.transform.rotation.y, wallCollider.transform.rotation.z + angle);
     }
 
     //Don't need this
