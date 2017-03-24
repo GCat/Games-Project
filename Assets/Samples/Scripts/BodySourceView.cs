@@ -5,7 +5,7 @@ using Kinect = Windows.Kinect;
 using System.IO;
 using UnityEngine.VR;
 
-public class BodySourceView : MonoBehaviour 
+public class BodySourceView : MonoBehaviour
 {
     public Material BoneMaterial;
     public GameObject BodySourceManager;
@@ -27,6 +27,8 @@ public class BodySourceView : MonoBehaviour
     public bool leftHandClosed = false;
     public bool rightHandTracked = false;
     public bool leftHandTracked = false;
+    private float rightHandVelocity = 0;
+    private float leftHandVelocity = 0;
     private int r_hand_closed_frames = 0;
     private int r_hand_open_frames = 0;
     private int l_hand_closed_frames = 0;
@@ -35,6 +37,10 @@ public class BodySourceView : MonoBehaviour
     private Renderer renderer;
     public GameObject Temple;
     private bool started = true;
+    private TrackingContext leftHandContext = TrackingContext.Medium;
+    private TrackingContext rightHandContext = TrackingContext.Medium;
+
+    public enum TrackingContext {Slow, Medium, Fast };
 
     //holds all the hand joint objects - palm, wrist, thumb, tip
     public Dictionary<Kinect.JointType, GameObject> player_objects = new Dictionary<Kinect.JointType, GameObject>();
@@ -174,7 +180,8 @@ public class BodySourceView : MonoBehaviour
             Temple.transform.position = player_objects[Kinect.JointType.Head].transform.position + Vector3.left*40 + Vector3.down*20;
             started = true;
         }
-
+        rightHandVelocity = (player_objects[Kinect.JointType.HandRight].transform.position - right_hand.transform.position).magnitude / Time.deltaTime;
+        leftHandVelocity = (player_objects[Kinect.JointType.HandLeft].transform.position - left_hand.transform.position).magnitude / Time.deltaTime;
         right_hand.transform.position = Vector3.Slerp(right_hand.transform.position, player_objects[Kinect.JointType.HandRight].transform.position, Time.deltaTime * 10.0f);
         left_hand.transform.position = Vector3.Slerp(left_hand.transform.position, player_objects[Kinect.JointType.HandLeft].transform.position, Time.deltaTime * 10.0f);
 
@@ -242,7 +249,7 @@ public class BodySourceView : MonoBehaviour
         if (body.HandRightState == Windows.Kinect.HandState.Closed)
         {
             r_hand_closed_frames++;
-            if (r_hand_closed_frames > tracking_frames || body.HandRightConfidence == Kinect.TrackingConfidence.High)
+            if (r_hand_closed_frames > getTrackingFrames(true) || body.HandRightConfidence == Kinect.TrackingConfidence.High)
             {
                 rightHandClosed = true;
                 r_hand_open_frames = 0;
@@ -253,7 +260,7 @@ public class BodySourceView : MonoBehaviour
         else
         {
             r_hand_open_frames++;
-            if (r_hand_open_frames > tracking_frames || body.HandRightConfidence == Kinect.TrackingConfidence.High)
+            if (r_hand_open_frames > getTrackingFrames(true) || body.HandRightConfidence == Kinect.TrackingConfidence.High)
             {
                 rightHandClosed = false;
                 r_hand_closed_frames = 0;
@@ -265,7 +272,7 @@ public class BodySourceView : MonoBehaviour
         if (body.HandLeftState == Windows.Kinect.HandState.Closed)
         {
             l_hand_closed_frames++;
-            if (l_hand_closed_frames > tracking_frames || body.HandLeftConfidence == Kinect.TrackingConfidence.High)
+            if (l_hand_closed_frames > getTrackingFrames(false) || body.HandLeftConfidence == Kinect.TrackingConfidence.High)
             {
                 leftHandClosed = true;
                 l_hand_open_frames = 0;
@@ -275,7 +282,7 @@ public class BodySourceView : MonoBehaviour
         else
         {
             l_hand_open_frames++;
-            if (l_hand_open_frames > tracking_frames || body.HandLeftConfidence == Kinect.TrackingConfidence.High)
+            if (l_hand_open_frames > getTrackingFrames(false) || body.HandLeftConfidence == Kinect.TrackingConfidence.High)
             {
                 leftHandClosed = false;
                 l_hand_closed_frames = 0;
@@ -314,6 +321,61 @@ public class BodySourceView : MonoBehaviour
         Vector3 l_handVector = player_objects[Kinect.JointType.HandTipLeft].transform.position - player_objects[Kinect.JointType.HandLeft].transform.position;
         Gizmos.DrawLine(player_objects[Kinect.JointType.HandRight].transform.position, player_objects[Kinect.JointType.HandTipRight].transform.position);
     }
+
+    //takes the tracking context of the hand and returns the number of continuous frames required to make a state change
+    private int getTrackingFrames(bool rightHand)
+    {
+        int speedAdjust = 0;
+        if (rightHand)
+        {
+            
+            if(rightHandVelocity > 500)
+            {
+
+                speedAdjust = 10;
+
+            }
+            switch (rightHandContext)
+            {
+                case TrackingContext.Medium:
+                    return tracking_frames;
+                case TrackingContext.Fast:
+                    return tracking_frames / 2;
+                case TrackingContext.Slow:
+                    return tracking_frames * 2 + speedAdjust;
+            }
+        }else
+        {
+            if (leftHandVelocity > 500)
+            {
+                speedAdjust = 10;
+
+            }
+            switch (leftHandContext)
+            {
+                case TrackingContext.Medium:
+                    return tracking_frames;
+                case TrackingContext.Fast:
+                    return tracking_frames / 2;
+                case TrackingContext.Slow:
+                    return tracking_frames * 2 + speedAdjust;
+            }
+        }
+        return tracking_frames;
+    }
+
+    public void setTrackingContext(TrackingContext newContext, bool rightHand)
+    {
+        if (rightHand)
+        {
+            rightHandContext = newContext;
+        }else
+        {
+            leftHandContext = newContext;
+        }
+    }
+
+
     private GameObject CreateBodyObject(ulong id)
     {
         GameObject body = startBody;

@@ -99,6 +99,8 @@ public class Hand : MonoBehaviour {
             if (hand == HandStatus.Open)
             {
                 releaseObject();
+                //reset the tracking context
+                kinect_view.setTrackingContext(BodySourceView.TrackingContext.Medium, right_hand);
             }
             else
             {
@@ -289,6 +291,7 @@ public class Hand : MonoBehaviour {
                             placeable.grab();
                             snapToHand(heldObject);
                             heldObject.transform.parent = transform;
+                            kinect_view.setTrackingContext(BodySourceView.TrackingContext.Slow, right_hand);
                         }
                         else
                         {
@@ -327,6 +330,14 @@ public class Hand : MonoBehaviour {
                             snapToHand(heldObject);
                             heldObject.transform.parent = transform;
                             holding = true;
+                            //slow tracking if using a handle, fast if human
+                            if(heldObject.GetComponent<Handle>() != null)
+                            {
+                                kinect_view.setTrackingContext(BodySourceView.TrackingContext.Slow, right_hand);
+                            }else
+                            {
+                                kinect_view.setTrackingContext(BodySourceView.TrackingContext.Fast, right_hand);
+                            }
                         }
                         else Debug.Log("This object is not placeable", heldObject);
                     }
@@ -365,9 +376,12 @@ public class Hand : MonoBehaviour {
 
             if(building != null)
             {
+               
                 if(building.canPlace() && (building.bought || building.canBuy()))
                 {
+                    //this is why the building had a grabbable interface :p - this should be there ;)
                     snapToGrid(heldObject);
+                    building.source.clip = building.buildClip;
                     building.source.Play();
                     building.activate();
                     building.removeOutline();
@@ -432,6 +446,10 @@ public class Hand : MonoBehaviour {
         float x = placeable.transform.position.x;
         float z = placeable.transform.position.z;
         placeable.transform.position = new Vector3(x, 0, z);
+        if(placeable.GetComponent<Wall>() == null)
+        {
+            placeable.transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
+        }
         // if we are not alowing hand rotation is this still nesesary?
     }
 
@@ -460,6 +478,9 @@ public class Hand : MonoBehaviour {
     private void OnTriggerEnter(Collider other)
     {
         GameObject gother = other.gameObject;
+
+        Debug.Log(gother);
+
         if (gother.layer == 9 || gother.layer == 10 || gother.layer == 14 && !holding)
         {
             onBounds.Add(other);
@@ -476,7 +497,14 @@ public class Hand : MonoBehaviour {
             }
         }
     }
-
+    private void OnTriggerStay(Collider other)
+    {
+        GameObject gother = other.gameObject;
+        if (gother.layer == 9 || gother.layer == 10 || gother.layer == 14 && !holding)
+        {
+            onBounds.Add(other);
+        }
+    }
     private void OnTriggerExit(Collider other)
     {
         GameObject gother = other.gameObject;

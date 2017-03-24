@@ -1000,6 +1000,7 @@ MonoBehaviour:
   held: 0
   currentTarget: {fileID: 0}
   attackMask: 2048
+  attackClip: {fileID: 8300000, guid: f6f489b172fe13d4990b4354eba2d772, type: 3}
   build: {fileID: 0}
   destroy: {fileID: 0}
   fireDamagePerSecond: 10
