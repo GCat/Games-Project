@@ -331,7 +331,7 @@ public class BodySourceView : MonoBehaviour
             
             if(rightHandVelocity > 500)
             {
-                Debug.Log("gotta go fast");
+
                 speedAdjust = 10;
 
             }
@@ -348,7 +348,6 @@ public class BodySourceView : MonoBehaviour
         {
             if (leftHandVelocity > 500)
             {
-                Debug.Log("gotta go fast");
                 speedAdjust = 10;
 
             }

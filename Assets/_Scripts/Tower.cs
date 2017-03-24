@@ -10,6 +10,7 @@ public class Tower : Building, Grabbable {
     public bool held = false;
     public GameObject currentTarget;
     public int attackMask = 1 << 11;
+    protected bool activated = false;
 
 
     float getHealth()

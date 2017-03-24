@@ -368,7 +368,7 @@ public class Hand : MonoBehaviour {
         if (holding)
         {
             Debug.Log("RELEASE");
-            //onBounds.Remove(heldObject.GetComponent<Collider>());
+            onBounds.Remove(heldObject.GetComponent<Collider>());
 
             holding = false;
             heldObject.transform.parent = null;
@@ -487,7 +487,14 @@ public class Hand : MonoBehaviour {
             }
         }
     }
-
+    private void OnTriggerStay(Collider other)
+    {
+        GameObject gother = other.gameObject;
+        if (gother.layer == 9 || gother.layer == 10 || gother.layer == 14 && !holding)
+        {
+            onBounds.Add(other);
+        }
+    }
     private void OnTriggerExit(Collider other)
     {
         GameObject gother = other.gameObject;

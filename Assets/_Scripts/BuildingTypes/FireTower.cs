@@ -141,6 +141,10 @@ public class FireTower : Tower
         held = false;
         buildingName = "TOWER";
         hideRange();
-        StartCoroutine(attack());
+        if (!activated)
+        {
+            StartCoroutine(attack());
+            activated = true;
+        }
     }
 }
