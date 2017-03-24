@@ -99,6 +99,8 @@ public class Hand : MonoBehaviour {
             if (hand == HandStatus.Open)
             {
                 releaseObject();
+                //reset the tracking context
+                kinect_view.setTrackingContext(BodySourceView.TrackingContext.Medium, right_hand);
             }
             else
             {
@@ -289,6 +291,7 @@ public class Hand : MonoBehaviour {
                             placeable.grab();
                             snapToHand(heldObject);
                             heldObject.transform.parent = transform;
+                            kinect_view.setTrackingContext(BodySourceView.TrackingContext.Slow, right_hand);
                         }
                         else
                         {
@@ -327,6 +330,14 @@ public class Hand : MonoBehaviour {
                             snapToHand(heldObject);
                             heldObject.transform.parent = transform;
                             holding = true;
+                            //slow tracking if using a handle, fast if human
+                            if(heldObject.GetComponent<Handle>() != null)
+                            {
+                                kinect_view.setTrackingContext(BodySourceView.TrackingContext.Slow, right_hand);
+                            }else
+                            {
+                                kinect_view.setTrackingContext(BodySourceView.TrackingContext.Fast, right_hand);
+                            }
                         }
                         else Debug.Log("This object is not placeable", heldObject);
                     }
@@ -357,7 +368,7 @@ public class Hand : MonoBehaviour {
         if (holding)
         {
             Debug.Log("RELEASE");
-            onBounds.Remove(heldObject.GetComponent<Collider>());
+            //onBounds.Remove(heldObject.GetComponent<Collider>());
 
             holding = false;
             heldObject.transform.parent = null;
