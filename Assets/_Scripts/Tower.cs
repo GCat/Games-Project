@@ -7,7 +7,6 @@ public class Tower : Building, Grabbable {
     public GameObject rangeHighlight;
     public float radius;
     public bool active = false;
-    public bool held = false;
     public GameObject currentTarget;
     public int attackMask = 1 << 11;
     protected bool activated = false;

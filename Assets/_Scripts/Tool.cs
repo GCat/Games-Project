@@ -6,6 +6,7 @@ public abstract class Tool : MonoBehaviour, Grabbable
 {
 
     private Quaternion rotation;
+    public bool held = false;
 
     // Use this for initialization
     void Start()

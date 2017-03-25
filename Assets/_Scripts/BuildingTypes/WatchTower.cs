@@ -10,8 +10,6 @@ public class WatchTower : Tower
     private AudioSource arrowSource;
     public float arrowDamage = 5;
     float arrowSpeed = 30;
-    
-
     public string buildingName;
     public GameObject target;
    

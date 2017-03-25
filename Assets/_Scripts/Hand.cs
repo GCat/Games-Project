@@ -325,7 +325,6 @@ public class Hand : MonoBehaviour {
     {
         if (holding)
         {
-            Debug.Log("RELEASE");
             onBounds.Remove(heldObject.GetComponent<Collider>());
 
             holding = false;
@@ -422,10 +421,6 @@ public class Hand : MonoBehaviour {
         {
             placeable.release(velocity);
 
-        }
-        else
-        {
-            Debug.Log("This object is not placeable", heldObject);
         }
     }
 

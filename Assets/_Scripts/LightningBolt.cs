@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class LightningBolt : Tool {
-
-    public bool held = false;
     public int fCost;
     public float damage = 50f;
     public float damageRadius = 30f;
@@ -50,18 +48,6 @@ public class LightningBolt : Tool {
     public override void grab()
     {
         held = true;
-        // Deactivate collider and gravity
-
-
-        // highlight where object wiould place if falling straight down
-        /*Material mat = Resources.Load("Materials/highlight.mat") as Material;
-        highlight = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-        highlight.GetComponent<Renderer>().material = mat;
-        highlight.transform.localScale = new Vector3(GetComponent<Collider>().bounds.size.x, 0.1f, GetComponent<Collider>().bounds.size.z);
-        highlight.transform.position = new Vector3(transform.position.x, 0.1f, transform.position.z);
-        highlight.GetComponent<Collider>().enabled = false;
-        highlight.GetComponent<Renderer>().enabled = false;*/
-
         GetComponent<Rigidbody>().useGravity = false;
         GetComponent<Rigidbody>().isKinematic = true;
         GetComponent<Collider>().enabled = false;

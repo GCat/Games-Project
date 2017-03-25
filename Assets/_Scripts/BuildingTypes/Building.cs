@@ -92,7 +92,10 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         {
             resourceCounter = (ResourceCounter)tablet.GetComponent<ResourceCounter>();
         }
-        else Debug.Log("Tablet not found");
+        else
+        {
+            Debug.Log("Tablet not found");
+        }
         createHealthBar();
         resourceGainText = createInfoText("ResourceGainTablet");
         boxSize = GetComponent<BoxCollider>().bounds.size / 2;
@@ -202,7 +205,6 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         GetComponent<Rigidbody>().useGravity = true;
         GetComponent<Rigidbody>().isKinematic = false;
         GetComponent<Collider>().enabled = true;
-        Debug.Log("Resource Building vel:" + vel);
         GetComponent<Rigidbody>().AddForce(vel, ForceMode.VelocityChange);
         removeOutline();
         highlightDestroy();

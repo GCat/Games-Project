@@ -15,7 +15,6 @@ public class House : Building, Grabbable
     public int inhabitants = 0;        //human counter
     public int foodCost = 10;
     public bool active = false;
-    public bool held = false;
     public float humanSpawnDelay;
     private float placementTime = 0;
     Material matEmpty;

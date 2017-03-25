@@ -13,7 +13,6 @@ public class Temple : ResourceBuilding
     public override void create_building()
     {
         buildingName = "TEMPLE";
-        Debug.Log(world);
         world.startGame();
         tablet.SetActive(true);
         placed = true;
@@ -68,8 +67,6 @@ public class Temple : ResourceBuilding
                 {
                     Instantiate(Resources.Load("Characters/Human"), hit.position, Quaternion.identity);
                 }
-                else
-                    Debug.Log("Could not spawn human");
             }
             humanLocation = rotateAroundPivot(humanLocation, myLocation, new Vector3(0, (360 / 5), 0));
         }

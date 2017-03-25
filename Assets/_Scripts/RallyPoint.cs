@@ -17,7 +17,6 @@ public class RallyPoint : Building, Grabbable {
     private float placementTime = 0;
     
     bool active = false;
-    public bool held = false;
     private bool badplacement = false;
     bool grabbedOnce = false;
     bool humanIsHeld = false;

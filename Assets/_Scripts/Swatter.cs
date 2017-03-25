@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Swatter : Tool {
-
-    public bool held = false;
     private bool enemyHit = false;
     private float damage = 2.5f;
     private GameObject ExplosionEffect;

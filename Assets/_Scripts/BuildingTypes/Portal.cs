@@ -14,7 +14,6 @@ public class Portal : MonoBehaviour
     public Wave[] Waves;
     public GameObject spawnPos;
     public GameObject[] monsterTypes;
-    // delay befire first spawn
 
     private float animLength = 0.833f;
     private float animSpeed = 1f;
@@ -40,7 +39,6 @@ public class Portal : MonoBehaviour
         asource = GetComponent<AudioSource>();
         startTime = Time.time;
         anim = GetComponentInChildren<Animation>();
-        Debug.Log(anim);
     }
 
     void Update()
@@ -58,9 +56,7 @@ public class Portal : MonoBehaviour
     }
 
     IEnumerator spawnWaves()
-    {
-        resourceCounter.beginCountDown(delayStart);
-        
+    {     
         //coundown animation
         animSpeed= animLength / delayStart;
         anim["Countdown"].speed = animSpeed;
@@ -79,13 +75,13 @@ public class Portal : MonoBehaviour
                     validSpawnLoc = hit.position;
                 }
                 else
+                {
                     Debug.LogError("Could not spawn monster");
+                }             
                 GameObject monster = GameObject.Instantiate(monsterTypes[(int)monsterType], validSpawnLoc, Quaternion.identity);
                 monster.GetComponent<BadiesAI>().spawn(monsterType);
                 yield return new WaitForSeconds(2);
-            }
-            resourceCounter.beginCountDown(wave.waveTime);
-            
+            }          
             //coundown animation
             animSpeed = animLength / wave.waveTime;
             anim["Countdown"].speed = animSpeed;
