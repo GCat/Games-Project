@@ -18,21 +18,17 @@ public abstract class Monster : Character
      */
 
     // Badie characteristic
-    public bool debug = false;
     public float strength;
     public float health;
     public float totalHealth;
     public int faithValue;
     GameObject healthBar;
-    GameObject infoText;
-    Quaternion infoTextOri;
     Quaternion healthBarOri;
     GameObject damageText;
-    TextMesh debugText;
     public float rotationSpeed = 6.0f;
     public bool alive = false;
     Vector3 cameraPos;
-    public GameObject projectile;
+    private bool combatEngaged = false;
 
     // Components
     private Rigidbody rb;
@@ -46,11 +42,11 @@ public abstract class Monster : Character
     private Vector3 templeAttackPoint; // nearest bound on temple
 
     // Killer
-    public GameObject closestEnemy;
-    public GameObject[] buildings;
+    protected GameObject closestEnemy;
+    protected GameObject[] buildings;
 
-    private ResourceCounter resources;
-    public NavMeshAgent agent;
+    protected ResourceCounter resources;
+    protected NavMeshAgent agent;
 
     //the nearest position on the navmesh to the desired target point
     private Vector3 nextBestTarget;
@@ -59,7 +55,7 @@ public abstract class Monster : Character
 
     private Collider[] ragdoll;
 
-    private GameObject currentVictim;
+    protected GameObject currentVictim;
     enum MonsterState { AttackTemple, AttackHumans, AttackBuildings, Idle, PathBlocked };
 
     MonsterState currentState = MonsterState.AttackTemple;
@@ -74,14 +70,9 @@ public abstract class Monster : Character
     void Start()
     {
         cameraPos = GameObject.FindWithTag("MainCamera").transform.position;
-        if (agent == null)
-        {
-            agent = GetComponent<NavMeshAgent>();
-        }
+        agent = GetComponent<NavMeshAgent>();
         createHealthBar();
         healthBarOri = healthBar.transform.rotation;
-        createInfoText();
-        infoTextOri = infoText.transform.rotation;
         lineRenderer = GetComponent<LineRenderer>();
         ragdoll = GetComponentsInChildren<Collider>();
         foreach (Collider collider in ragdoll)
@@ -98,35 +89,17 @@ public abstract class Monster : Character
     }
 
     //can we make the spawn type an enum please xoxo
-    public void spawn(Portal.MonsterType type)
+    public virtual void spawn()
     {
         rb = GetComponent<Rigidbody>();
         closestEnemy = null;
-        monsterType = type;
         temple = GameObject.FindGameObjectWithTag("Temple");
         alive = true;
         Debug.Log(string.Format("Spawn at: {0} with Type: {1}", transform.position, monsterType));
         renderers = GetComponentsInChildren<Renderer>();
-        switch (type)
-        {
-            case Portal.MonsterType.Monster:
-                currentState = MonsterState.AttackTemple;
-                defaultState = currentState;
-                break;
-            case Portal.MonsterType.Minataur:
-                currentState = MonsterState.AttackHumans;
-                defaultState = currentState;
-                break;
-            case Portal.MonsterType.Harpy:
-                projectile = Resources.Load("Projectile") as GameObject;
-                currentState = MonsterState.AttackBuildings;
-                defaultState = currentState;
-                break;
-        }
-        //maybe we want to do this regularly in case the monsters behaviour changes
         templeAttackPoint = temple.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
         resources = GameObject.FindGameObjectWithTag("Tablet").GetComponent<ResourceCounter>();
-        resources.addBaddie(type);
+        resources.addBaddie(monsterType);
     }
 
     void Update()
@@ -135,8 +108,8 @@ public abstract class Monster : Character
         {
             healthBar.transform.rotation = healthBarOri;
         }
-        infoText.transform.rotation = infoTextOri;
-        debugText.text = currentState.ToString();
+
+
         if (alive)
         {
             switch (currentState)
@@ -195,21 +168,17 @@ public abstract class Monster : Character
     //badies response to an attacker
     public void aggro(GameObject attacker)
     {
-        if (attacker.GetComponent<Agent>() != null)
+        if (attacker.GetComponent<Agent>() != null && !combatEngaged)
         {
             currentState = MonsterState.AttackHumans;
             closestEnemy = attacker;
+            StartCoroutine(CombatLock(3));
         }
     }
     //checks whether agent has reached a point -- takes stopping distance into account
-    private bool atDestination(Vector3 target)
+    protected virtual bool atDestination(Vector3 target)
     {
-        //ignore height if harpy
-        if (monsterType == Portal.MonsterType.Harpy)
-        {
-            target.y = transform.position.y;
-        }
-        return Vector3.Distance(target, transform.position) < (agent.stoppingDistance + 2);
+        return Vector3.Distance(target, transform.position) < (agent.stoppingDistance + 3);
     }
 
     private GameObject findObstacles()
@@ -234,32 +203,6 @@ public abstract class Monster : Character
             }
         }
         return closestEnemy;
-    }
-
-    protected override void hit()
-    {
-        if (currentVictim == null)
-        {
-            Debug.Log("No current victim");
-            return;
-        }
-        HealthManager victimHealth = currentVictim.GetComponent<HealthManager>();
-        if (victimHealth != null)
-        {
-            if (monsterType == Portal.MonsterType.Harpy)
-            {
-                GameObject spit = Instantiate(projectile, transform.position, transform.rotation);
-                Vector3 direction = Vector3.Normalize(currentVictim.transform.position - transform.position) * 15;
-                spit.GetComponent<Rigidbody>().velocity = direction;
-                Physics.IgnoreCollision(GetComponent<Collider>(), spit.GetComponent<Collider>());
-
-            }
-            victimHealth.decrementHealth(strength);
-        }
-        else
-        {
-            Debug.LogError("Trying to attack something that doesn not have health");
-        }
     }
 
     private Vector3 getClosestPointToTarget(Vector3 target)
@@ -320,14 +263,6 @@ public abstract class Monster : Character
         }
         return target;
     }
-    private void showPath()
-    {
-        if (agent.hasPath && debug)
-        {
-            lineRenderer.SetPositions(agent.path.corners);
-        }
-
-    }
 
     private void destroyObstacle()
     {
@@ -377,14 +312,12 @@ public abstract class Monster : Character
         //get new target if needed
         if (closestEnemy == null)
         {
-            debugText.text += "\n finding new enemy";
             changeEnemy();
             closestEnemy = findClosestEnemy("Human");
         }
         //if there are no humans, go attack buildings
         if (closestEnemy == null)
         {
-            debugText.text += "\n no enemies, attacking buildings";
             currentState = MonsterState.AttackBuildings;
             return;
         }
@@ -392,7 +325,12 @@ public abstract class Monster : Character
         walkTowards(closestEnemy.GetComponent<Collider>().ClosestPointOnBounds(transform.position));
 
     }
-
+    IEnumerator CombatLock(float time)
+    {
+        combatEngaged = true;
+        yield return new WaitForSeconds(time);
+        combatEngaged = false;
+    }
     private void walkTowards(Vector3 target)
     {
         if (target != nextBestTarget)
@@ -415,7 +353,6 @@ public abstract class Monster : Character
         //don't spin in circles
         if (!atDestination(target))
         {
-            debugText.text += "\n walking towards target";
             NavMeshPath path = new NavMeshPath();
             agent.CalculatePath(target, path);
             if (path.status != NavMeshPathStatus.PathComplete)
@@ -434,7 +371,6 @@ public abstract class Monster : Character
             else
             {
                 agent.destination = target;
-                showPath();
                 Vector3 offset = target - transform.position;
                 offset.y = transform.position.y;
                 if (sT == Vector3.zero)
@@ -443,16 +379,18 @@ public abstract class Monster : Character
                 }
                 else
                 {
-                    offset = closestEnemy.transform.position - transform.position;
-                    offset.y = transform.position.y;
-                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(offset), Time.deltaTime * rotationSpeed);
+                    if (closestEnemy != null)
+                    {
+                        offset = closestEnemy.transform.position - transform.position;
+                        offset.y = transform.position.y;
+                        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(offset), Time.deltaTime * rotationSpeed);
+                    }
                 }
                 animator.SetBool("Walking", true);
             }
         }
         else
         {
-            debugText.text += "\n reached target";
             reachedTarget();
         }
     }
@@ -525,22 +463,6 @@ public abstract class Monster : Character
         healthBar.transform.position = gameObject.GetComponent<Collider>().transform.position;
         healthBar.transform.Translate(new Vector3(0, 0, dims.size.y * -1.0f));
         healthBar.transform.SetParent(gameObject.transform);
-    }
-
-    public void createInfoText()
-    {
-        Bounds dims = gameObject.GetComponent<Collider>().bounds;
-        Vector3 actualSize = dims.size;
-        infoText = GameObject.Instantiate(Resources.Load("Info_Text")) as GameObject;
-        infoText.transform.position = gameObject.transform.position;
-        infoText.transform.localScale *= 2;
-        infoText.transform.Translate(new Vector3(0, actualSize.y * 1.4f, 0));
-        infoText.transform.localRotation = gameObject.transform.localRotation;
-        infoText.transform.Rotate(new Vector3(0, -90, 0));
-        infoText.transform.SetParent(gameObject.transform);
-        debugText = infoText.GetComponent<TextMesh>();
-        debugText.text = "";
-        infoText.SetActive(false);
     }
 
     private GameObject findClosestEnemy(string tag)
