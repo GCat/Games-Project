@@ -79,7 +79,7 @@ public class Portal : MonoBehaviour
                     Debug.LogError("Could not spawn monster");
                 }             
                 GameObject monster = GameObject.Instantiate(monsterTypes[(int)monsterType], validSpawnLoc, Quaternion.identity);
-                monster.GetComponent<BadiesAI>().spawn(monsterType);
+                monster.GetComponent<Monster>().spawn(monsterType);
                 yield return new WaitForSeconds(2);
             }          
             //coundown animation

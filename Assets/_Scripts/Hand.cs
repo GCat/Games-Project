@@ -314,13 +314,6 @@ public class Hand : MonoBehaviour {
 
     }
 
-    /* void OnDrawGizmosSelected()
-     {
-         Vector3 p = grab_position.transform.position;//new Vector3(transform.position.x - 14, transform.position.y - 18, transform.position.z);
-         Gizmos.color = Color.red;
-         Gizmos.DrawSphere(p, 5.0f);
-     }*/
-
     private void releaseObject ()
     {
         if (holding)
@@ -352,8 +345,6 @@ public class Hand : MonoBehaviour {
                         {
                             Destroy(heldObject);
                         }
-                            
-
                     }
                     else
                     {
@@ -366,9 +357,7 @@ public class Hand : MonoBehaviour {
                 
                 throwObject(heldObject);
             }
-
             heldObject = null;
-
         }
 
     }

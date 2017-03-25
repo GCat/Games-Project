@@ -35,7 +35,7 @@ using UnityEngine.AI;
 
 
 
-public class Agent : MonoBehaviour, Character, Grabbable
+public class Agent : Character, Grabbable
 {
     // Human characteristics
     public float health = 100.0f;
@@ -313,7 +313,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
     }
     //locks this chap in combat for some period of time, so they don't change target
     //also aggros the enemy
-    IEnumerator CombatLock(float time, BadiesAI opponent)
+    IEnumerator CombatLock(float time, Monster opponent)
     {
         combatEngaged = true;
         opponent.aggro(gameObject);
@@ -378,7 +378,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
         {
             foreach (GameObject badie in badies)
             {
-                if (badie.GetComponent<BadiesAI>().monsterType != Portal.MonsterType.Harpy)
+                if (badie.GetComponent<Monster>().monsterType != Portal.MonsterType.Harpy)
                 {
                     Vector3 diff = badie.transform.position - position;
                     float current_distance = diff.sqrMagnitude;
@@ -394,7 +394,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
         return closest;
     }
 
-    public void decrementHealth(float damage)
+    public override void decrementHealth(float damage)
     {
         health -= damage;
         if (health > 0)
@@ -475,7 +475,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
                     victimHealth.decrementHealth(strength);
                     AudioSource source = GetComponent<AudioSource>();
                     source.PlayOneShot(getAttackSound(), 0.1f);
-                    StartCoroutine(CombatLock(2, victim.GetComponent<BadiesAI>()));
+                    StartCoroutine(CombatLock(2, victim.GetComponent<Monster>()));
                 }
                 else
                 {
@@ -553,7 +553,8 @@ public class Agent : MonoBehaviour, Character, Grabbable
         }
     }
 
-    public void hit()
+    protected override void hit()
     {
     }
+
 }

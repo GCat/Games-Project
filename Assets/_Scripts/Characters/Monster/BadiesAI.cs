@@ -5,31 +5,8 @@ using System.Threading;
 using UnityEngine.AI;
 using UnityEngine.UI;
 
-/* AI LOGIC EXPLANATION
- * 
- * --Rushers COMPLETED
- * Search fastest path to temple using A*
- * When found move a node at a time
- * If buildings in the way destroy building
- * When temple in range attack 
- * 
- * --Defenders COMPLETED
- * Go towards temple same way as rushers
- * Once on temple range 
- * If humans or watch towers nears attack them to protect rusher
- * If nothing near attack temple
- * 
- * 
- * --Killers
- * Search for nearest human 
- * Go to its position (not sure how this will be done yet)
- * Attack it
- * When dead look for next human
- * If no humans remain either go for watch towers or go for temple 
- * 
- */
 
-public class BadiesAI : MonoBehaviour, Character
+public abstract class Monster : Character
 {
 
     /* Three type of badies will exist
@@ -67,8 +44,6 @@ public class BadiesAI : MonoBehaviour, Character
     // Rusher
     private GameObject temple;
     private Vector3 templeAttackPoint; // nearest bound on temple
-
-
 
     // Killer
     public GameObject closestEnemy;
@@ -148,7 +123,6 @@ public class BadiesAI : MonoBehaviour, Character
                 defaultState = currentState;
                 break;
         }
-
         //maybe we want to do this regularly in case the monsters behaviour changes
         templeAttackPoint = temple.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
         resources = GameObject.FindGameObjectWithTag("Tablet").GetComponent<ResourceCounter>();
@@ -262,7 +236,7 @@ public class BadiesAI : MonoBehaviour, Character
         return closestEnemy;
     }
 
-    public void hit()
+    protected override void hit()
     {
         if (currentVictim == null)
         {
@@ -512,7 +486,7 @@ public class BadiesAI : MonoBehaviour, Character
         }
     }
 
-    public void decrementHealth(float damage)
+    public override void decrementHealth(float damage)
     {
         health -= damage;
         StartCoroutine(DamageText("-" + damage, Color.red));

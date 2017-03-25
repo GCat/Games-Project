@@ -1462,8 +1462,8 @@ GameObject:
   - component: {fileID: 95543238732232444}
   - component: {fileID: 54874444117271170}
   - component: {fileID: 195977242281064242}
-  - component: {fileID: 114687508485705436}
   - component: {fileID: 136753348396529578}
+  - component: {fileID: 114750386002733048}
   m_Layer: 11
   m_Name: minataur
   m_TagString: Badies
@@ -3084,7 +3084,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114687508485705436
+--- !u!114 &114750386002733048
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -3092,7 +3092,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1944568527468440}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a64dd27b23a609b44b3950081cae6889, type: 3}
+  m_Script: {fileID: 11500000, guid: bef738fd152f5f441a32ede2e38262a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   debug: 0
@@ -3104,7 +3104,7 @@ MonoBehaviour:
   alive: 0
   projectile: {fileID: 0}
   animator: {fileID: 95543238732232444}
-  monsterType: 0
+  monsterType: 1
   closestEnemy: {fileID: 0}
   buildings: []
   agent: {fileID: 0}
