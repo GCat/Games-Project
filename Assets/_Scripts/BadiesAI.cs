@@ -75,7 +75,7 @@ public class BadiesAI : MonoBehaviour, Character
     public GameObject[] buildings;
 
     private ResourceCounter resources;
-    private NavMeshAgent agent;
+    public NavMeshAgent agent;
 
     //the nearest position on the navmesh to the desired target point
     private Vector3 nextBestTarget;
@@ -99,7 +99,10 @@ public class BadiesAI : MonoBehaviour, Character
     void Start()
     {
         cameraPos = GameObject.FindWithTag("MainCamera").transform.position;
-        agent = GetComponent<NavMeshAgent>();
+        if (agent == null)
+        {
+            agent = GetComponent<NavMeshAgent>();
+        }
         createHealthBar();
         healthBarOri = healthBar.transform.rotation;
         createInfoText();
