@@ -3,8 +3,10 @@ using System.Collections;
 using System;
 
 public abstract class Building : MonoBehaviour, Grabbable, HealthManager{ // this should also be placeable hence the grab and release will be written once
+    public AudioSource audioSource;
     public AudioClip buildClip;
-    public AudioSource source;
+    public AudioClip destroy;
+
     public abstract string getName();
     public abstract Vector3 getLocation();
     public abstract void create_building();
@@ -86,7 +88,7 @@ public abstract class Building : MonoBehaviour, Grabbable, HealthManager{ // thi
     }
     public virtual void Awake()
     {
-
+        audioSource = gameObject.AddComponent<AudioSource>();
         tablet = GameObject.FindGameObjectWithTag("Tablet");
         if (tablet != null)
         {
@@ -104,9 +106,7 @@ public abstract class Building : MonoBehaviour, Grabbable, HealthManager{ // thi
         original_materials = new Shader[child_materials.Length];
         outlineShader = Shader.Find("Toon/Basic Outline");
         ExplosionEffect = Resources.Load("Explosion") as GameObject;
-        source = gameObject.AddComponent<AudioSource>() as AudioSource;
-        source.volume = 0.7f;
-        source.clip = buildClip;
+        audioSource.PlayOneShot(buildClip, 0.7f);
         for (int i = 0; i < child_materials.Length; i++)
         {
             original_materials[i] = child_materials[i].material.shader;

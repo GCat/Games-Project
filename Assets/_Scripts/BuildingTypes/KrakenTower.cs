@@ -4,16 +4,10 @@ using UnityEngine;
 
 public class KrakenTower : Tower
 {
-
-    public AudioClip build;
-    public AudioClip destroy;
-    public LineRenderer linerenderer;
-    public GameObject mirror;
     public float damage_per_second = 10;
     private Animation anim;
-
-    public string buildingName;
     public GameObject target;
+    public string buildingName;
 
 
     void Start()
@@ -26,17 +20,6 @@ public class KrakenTower : Tower
     //find a new nearby monster to attack
     public override bool acquireTarget()
     {
-        List<Collider> hitColliders = new List<Collider>(Physics.OverlapSphere(transform.position, radius, attackMask));
-        if (hitColliders.Count > 0)
-        {
-            target = hitColliders[0].gameObject;
-            return true;
-        }
-        else
-        {
-            linerenderer.SetPositions(new Vector3[0]);
-        }
-
         return false;
     }
 
@@ -56,7 +39,6 @@ public class KrakenTower : Tower
 
     private IEnumerator attack()
     {
-
         while (true)
         {
             if (currentTarget != null && Vector3.Distance(currentTarget.transform.position, transform.position) < radius)
@@ -77,17 +59,11 @@ public class KrakenTower : Tower
 
     public override string getName()
     {
-        return buildingName;
+        return "";
     }
 
     public override bool canBuy()
     {
-        if (!bought && (resourceCounter.faith >= faithCost))
-        {
-            bought = true;
-            resourceCounter.removeFaith(faithCost);
-            return true;
-        }
         return false;
     }
 
@@ -95,15 +71,5 @@ public class KrakenTower : Tower
 
     public override void activate()
     {
-        //when do you call create buiding for towers ? -- cost does not work 
-        if (!bought) resourceCounter.removeFaith(faithCost);
-        active = true;
-        if (highlight != null) Destroy(highlight);
-        highlight = null;
-        held = false;
-        buildingName = "TOWER";
-        hideRange();
-        StartCoroutine(attack());
-
     }
 }

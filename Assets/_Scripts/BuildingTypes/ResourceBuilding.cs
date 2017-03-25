@@ -3,9 +3,7 @@ using System.Collections;
 using System;
 
 public abstract class ResourceBuilding : Building, Grabbable
-{
-    public AudioClip build;
-    public AudioClip destroy;
+{ 
     public string buildingName;
     public bool on_game_board = false;
     public string required_resource_tag = "None";

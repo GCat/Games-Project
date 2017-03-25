@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Tower : Building, Grabbable {
-
+    public AudioClip attackClip;
     public GameObject rangeHighlight;
+    public GameObject currentTarget;
+
     public float radius;
     public bool active = false;
-    public GameObject currentTarget;
+
     public int attackMask = 1 << 11;
     protected bool activated = false;
-    protected AudioSource attackSource;
-    public AudioClip attackClip;
+
     float getHealth()
     {
         return health;
@@ -19,9 +20,8 @@ public class Tower : Building, Grabbable {
 
     public override void Awake()
     {
-        attackSource = gameObject.AddComponent<AudioSource>() as AudioSource;
-        attackSource.clip = attackClip;
         base.Awake();
+        audioSource.PlayOneShot(attackClip);
         createRangeHighlight();
     }
 

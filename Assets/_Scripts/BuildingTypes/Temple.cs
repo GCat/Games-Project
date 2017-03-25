@@ -9,7 +9,6 @@ public class Temple : ResourceBuilding
     public WorldStarter world;
     public bool placed = false;
 
-
     public override void create_building()
     {
         buildingName = "TEMPLE";

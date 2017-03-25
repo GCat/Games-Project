@@ -5,15 +5,10 @@ using UnityEngine;
 
 public class FireTower : Tower
 {
-
-    public AudioClip build;
-    public AudioClip destroy;
     public float fireDamagePerSecond = 5;
-
     public string buildingName;
     public GameObject target;
     public GameObject fireStream;
-
 
     void Start()
     {
@@ -49,7 +44,7 @@ public class FireTower : Tower
             {
                 if (currentTarget == null)
                 {
-                    attackSource.Stop();
+                    audioSource.Stop();
                     fireStream.SetActive(false);
                     acquireTarget();
                 }else
@@ -61,7 +56,7 @@ public class FireTower : Tower
                     }else
                     {
                         fireStream.SetActive(false);
-                        attackSource.Stop();
+                        audioSource.Stop();
                     }
                 }
 
@@ -79,7 +74,7 @@ public class FireTower : Tower
         if (hitColliders.Count > 0)
         {
             currentTarget = hitColliders[0].gameObject;
-            attackSource.Play();
+            audioSource.Play();
             return true;
         }
 

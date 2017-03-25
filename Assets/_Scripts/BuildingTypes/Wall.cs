@@ -13,8 +13,7 @@ public class Wall : Building, Grabbable
     public GameObject turretB = null;
     public GameObject turretA = null;
     public GameObject wallSegment = null;
-    private Vector3 originalScale;
-    private Quaternion originalRotation;
+
     private GameObject turretHighlightA;
     private GameObject turretHighlightB;
     private Vector3 initialTurretA;
@@ -22,9 +21,7 @@ public class Wall : Building, Grabbable
 
     void Start()
     {
-        originalScale = wallSegment.transform.localScale;
-        originalRotation = wallSegment.transform.rotation;
-        create_turretHighlight();
+        createTurretHighlight();
         initialTurretA = new Vector3(10000,10000, 10000);
         initialTurretB = new Vector3(10000, 10000, 10000);
     }
@@ -100,7 +97,7 @@ public class Wall : Building, Grabbable
         Destroy(gameObject);  
     }
 
-    private void create_turretHighlight()
+    private void createTurretHighlight()
     {
         turretHighlightA = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         turretHighlightA.GetComponent<Renderer>().material.SetColor("_Color", Color.yellow);
@@ -114,21 +111,14 @@ public class Wall : Building, Grabbable
         turretHighlightB = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         turretHighlightB.GetComponent<Renderer>().material.SetColor("_Color", Color.yellow);
         turretHighlightB.transform.localScale = new Vector3(turretRadius, 0.1f, turretRadius);
-        turretHighlightB.transform.position = new Vector3(turretB.transform.position.x, 0.1f, turretB.transform.position.z);
         turretHighlightB.transform.rotation = Quaternion.LookRotation(Vector3.forward);
         turretHighlightB.GetComponent<Collider>().enabled = false;
         turretHighlightB.GetComponent<Renderer>().enabled = true;
         turretHighlightB.SetActive(false);
     }
 
-    public override void create_building()
-    {
-    }
-
-    //Don't need this 
     public override void activate()
     {
-        create_building();
         if (highlight != null) highlightDestroy();
         held = false;
         int buildingLayer = 1 << 18;
@@ -183,8 +173,10 @@ public class Wall : Building, Grabbable
     {
         turretA.transform.position = initialTurretA;
         turretB.transform.position = initialTurretB;
+
         float height = wallSegment.transform.localScale.y;
         Vector3 midPoint = turretA.transform.position + (turretB.transform.position - turretA.transform.position) / 2f;
+
         wallSegment.transform.position = new Vector3(midPoint.x, height / 2, midPoint.z);
         wallSegment.transform.localScale = new Vector3(wallSegment.transform.localScale.x, wallSegment.transform.localScale.y, (turretB.transform.position - turretA.transform.position).magnitude);
         wallSegment.transform.LookAt(turretB.transform.position + Vector3.up * (height / 2));
@@ -224,4 +216,7 @@ public class Wall : Building, Grabbable
     {
     }
 
+    public override void create_building()
+    {
+    }
 }
