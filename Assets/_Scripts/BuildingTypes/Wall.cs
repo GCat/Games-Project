@@ -19,12 +19,17 @@ public class Wall : Building, Grabbable
     public float adjustRange = 15.0f;
     private GameObject turretHighlightA;
     private GameObject turretHighlightB;
+    private Vector3 initialTurretA;
+    private Vector3 initialTurretB;
 
     void Start()
     {
         originalScale = wallSegment.transform.localScale;
         originalRotation = wallSegment.transform.rotation;
-        create_turretHighlight();   
+        create_turretHighlight();
+        initialTurretA = new Vector3(10000,10000, 10000);
+        initialTurretB = new Vector3(10000, 10000, 10000);
+
     }
 
     // Update is called once per frame
@@ -136,8 +141,10 @@ public class Wall : Building, Grabbable
             if (collider.gameObject.tag == "Turret" && collider.gameObject != turretA && collider.gameObject != turretB)
             {
                 Debug.Log("Joining wall segments");
+                initialTurretB = turretB.transform.position;
+                initialTurretA = turretA.transform.position;
                 turretA.transform.position = collider.transform.position;
-                turretA.transform.rotation = collider.transform.rotation;
+                turretA.transform.rotation = collider.transform.rotation;    
                 alignWall(turretB.transform.position, turretA.transform.position);
             }
         }
@@ -146,6 +153,8 @@ public class Wall : Building, Grabbable
             if (collider.gameObject.tag == "Turret" && collider.gameObject != turretA && collider.gameObject != turretB)
             {
                 Debug.Log("Joining wall segments");
+                initialTurretA = turretA.transform.position;
+                initialTurretB = turretB.transform.position;
                 turretB.transform.position = collider.transform.position;
                 turretB.transform.rotation = collider.transform.rotation;
                 alignWall(turretA.transform.position, collider.transform.position);
@@ -178,8 +187,25 @@ public class Wall : Building, Grabbable
     {
     }
 
+    private void resetWall()
+    {
+        turretA.transform.position = initialTurretA;
+        turretB.transform.position = initialTurretB;
+        float height = wallSegment.transform.localScale.y;
+        Vector3 midPoint = turretA.transform.position + (turretB.transform.position - turretA.transform.position) / 2f;
+        wallSegment.transform.position = new Vector3(midPoint.x, height / 2, midPoint.z);
+        wallSegment.transform.localScale = new Vector3(wallSegment.transform.localScale.x, wallSegment.transform.localScale.y, (turretB.transform.position - turretA.transform.position).magnitude);
+        wallSegment.transform.LookAt(turretB.transform.position + Vector3.up * (height / 2));
+    }
+
     public void grab()
     {
+        //if I have already placed the wall once 
+        if (initialTurretA != new Vector3(10000, 10000, 10000))
+        {
+            resetWall();
+        }
+
         turretA.SetActive(true);
         turretB.SetActive(true);
         // Deactivate  collider and gravity
