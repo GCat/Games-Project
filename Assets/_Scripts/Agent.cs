@@ -279,7 +279,6 @@ public class Agent : MonoBehaviour, Character, Grabbable
         }
         else
         {
-            Debug.Log("Could not calculate a new wander target");
             return transform.position;
         }
     }
@@ -292,16 +291,11 @@ public class Agent : MonoBehaviour, Character, Grabbable
         }
 
     }
-    public void hit()
-    {
-        Debug.Log("hit");
-    }
 
     void sacrifice()
     {
         if (!sacrificeEntered)
         {
-            Debug.Log(transform.position);
             AudioSource source = GetComponent<AudioSource>();
             source.PlayOneShot(sacrificeClip, 0.5f);
             resources.addFaith(15);
@@ -442,12 +436,10 @@ public class Agent : MonoBehaviour, Character, Grabbable
         infoText.transform.Rotate(new Vector3(0, -90, 0));
         infoText.transform.SetParent(gameObject.transform);
         infoText.SetActive(false);
-        //infoText.GetComponent<TextMesh>().text = currentState.ToString();
     }
 
     public void grab()
     {
-        Debug.Log("Human Grabbed");
         agent.enabled = false;
         currentState = HumanState.Grabbed;
         rb.isKinematic = true;
@@ -561,5 +553,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
         }
     }
 
-
+    public void hit()
+    {
+    }
 }

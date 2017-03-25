@@ -8,7 +8,6 @@ public class Wall : Building, Grabbable
 
     // Use this for initialization
     public int cost_per_meter = 10;
-    public bool held = false;
     public float turretRadius = 20f;
 
     public GameObject turretB = null;
@@ -148,7 +147,6 @@ public class Wall : Building, Grabbable
         {
             if (collider.gameObject.tag == "Turret" && collider.gameObject != turretA && collider.gameObject != turretB)
             {
-                Debug.Log("Joining wall segments");
                 initialTurretB = turretB.transform.position;
                 initialTurretA = turretA.transform.position;
                 turretA.transform.position = collider.transform.position;
@@ -160,7 +158,6 @@ public class Wall : Building, Grabbable
         {
             if (collider.gameObject.tag == "Turret" && collider.gameObject != turretA && collider.gameObject != turretB)
             {
-                Debug.Log("Joining wall segments");
                 initialTurretA = turretA.transform.position;
                 initialTurretB = turretB.transform.position;
                 turretB.transform.position = collider.transform.position;

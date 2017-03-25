@@ -14,7 +14,7 @@ public class WorldStarter : MonoBehaviour {
 	}
 
 	public void startGame(){
-        Debug.Log("Game started");
+
     }
 
     public void stopGame(){

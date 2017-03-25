@@ -15,8 +15,6 @@ public class KrakenTower : Tower
     public string buildingName;
     public GameObject target;
 
-    
-   
 
     void Start()
     {

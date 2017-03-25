@@ -242,7 +242,6 @@ public class Hand : MonoBehaviour {
         GameObject closest = null;
         float distance = Mathf.Infinity;
         Vector3 p = grab_position.transform.position;
-        Debug.Log(velocity);
         if(velocity.magnitude > 100)
         {
             return;
@@ -287,17 +286,11 @@ public class Hand : MonoBehaviour {
 
                         if (placeable != null)
                         {
-                            Debug.Log("Grab BUILDING");
                             placeable.grab();
                             snapToHand(heldObject);
                             heldObject.transform.parent = transform;
                             kinect_view.setTrackingContext(BodySourceView.TrackingContext.Slow, right_hand);
                         }
-                        else
-                        {
-                            Debug.Log("This object is not placeable", heldObject);
-                        }
-
                     }
                     else heldObject = null;
 
@@ -315,7 +308,6 @@ public class Hand : MonoBehaviour {
                             snapToHand(heldObject);
                             heldObject.transform.parent = transform;
                             holding = true;
-                            Debug.Log("Grab TOOL");
                         }
                         else heldObject = null;
                     }
@@ -325,7 +317,6 @@ public class Hand : MonoBehaviour {
                         Grabbable human = heldObject.GetComponent<Grabbable>();
                         if (human != null)
                         {
-                            Debug.Log("Grab HANDLE OR HUMAN");
                             human.grab();
                             snapToHand(heldObject);
                             heldObject.transform.parent = transform;
@@ -339,15 +330,9 @@ public class Hand : MonoBehaviour {
                                 kinect_view.setTrackingContext(BodySourceView.TrackingContext.Fast, right_hand);
                             }
                         }
-                        else Debug.Log("This object is not placeable", heldObject);
                     }
                 }
             }
-            else
-            {
-                //Debug.Log("NOTHING TO GRAB!");
-            }
-
             colourChange(heldObject);
         }
         else return;
@@ -367,7 +352,6 @@ public class Hand : MonoBehaviour {
     {
         if (holding)
         {
-            Debug.Log("RELEASE");
             onBounds.Remove(heldObject.GetComponent<Collider>());
 
             holding = false;
@@ -468,10 +452,6 @@ public class Hand : MonoBehaviour {
         {
             placeable.release(velocity);
 
-        }
-        else
-        {
-            Debug.Log("This object is not placeable", heldObject);
         }
     }
 

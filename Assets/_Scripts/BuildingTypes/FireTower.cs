@@ -12,8 +12,6 @@ public class FireTower : Tower
 
     public string buildingName;
     public GameObject target;
-
-
     public GameObject fireStream;
 
 
@@ -90,7 +88,6 @@ public class FireTower : Tower
         List<Collider> hitColliders = new List<Collider>(Physics.OverlapSphere(transform.position, radius, attackMask));
         if (hitColliders.Count > 0)
         {
-            Debug.Log("Acquired target");
             currentTarget = hitColliders[0].gameObject;
             attackSource.Play();
             return true;

@@ -56,7 +56,6 @@ public class ResourceCounter : MonoBehaviour, Grabbable
         temple = GameObject.FindGameObjectWithTag("Temple").GetComponent<Temple>();
         healthSlider.maxValue = temple.totalHealth;
         portal = GameObject.FindGameObjectWithTag("Portal").GetComponent<Portal>();
-        waveSlider.maxValue = portal.delayStart;
     }
 
     // Update is called once per frame : 
@@ -91,20 +90,6 @@ public class ResourceCounter : MonoBehaviour, Grabbable
         //resourceText += "Sword Level: " + swords.ToString() + "\n";
         //resourceText += "Armour Level: " + armour.ToString() + "\n";
         //text.text = resourceText;
-    }
-
-    public void beginCountDown(float timeInSeconds)
-    {
-        StartCoroutine(updateWaveTime(timeInSeconds));
-    }
-
-    private IEnumerator updateWaveTime(float timeInSeconds)
-    {
-        waveSlider.maxValue = timeInSeconds;
-        for (int timeLeft = (int)timeInSeconds; timeLeft > 0; timeLeft--) {
-            waveSlider.value = timeLeft;
-            yield return new WaitForSeconds(1);
-        }
     }
 
     //background baseline faith generation
