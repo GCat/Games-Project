@@ -93,30 +93,6 @@ public class House : Building, Grabbable
     {
         active = false;
     }
-    public void grab()
-    {
-        held = true;
-        if (!bought)
-        {
-            bought = true;
-            resourceCounter.removeFaith(faithCost);
-        }
-        
-
-        // Deactivate  collider and gravity
-        if (highlight != null)
-        {
-            DestroyImmediate(highlight);
-        }
-
-        // highlight where object wiould place if falling straight down
-        createHighlight();
-
-        GetComponent<Rigidbody>().useGravity = false;
-        GetComponent<Rigidbody>().isKinematic = true;
-        GetComponent<Collider>().enabled = false;
-
-    }
 
     new void release(Vector3 vel)
     {

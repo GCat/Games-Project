@@ -2,7 +2,7 @@
 using System.Collections;
 using System;
 
-public abstract class Building : MonoBehaviour, HealthManager{ // this should also be placeable hence the grab and release will be written once
+public abstract class Building : MonoBehaviour, Grabbable, HealthManager{ // this should also be placeable hence the grab and release will be written once
     public AudioClip buildClip;
     public AudioSource source;
     public abstract string getName();
@@ -325,8 +325,34 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
     }
 
     public abstract void die();
-
-    //do we still need these functions
     public abstract void activate();  
     public abstract void deactivate();
+
+    void Grabbable.grab()
+    {
+        //If tower then do stuff with rangehighlight
+        if (GetComponent<Tower>() != null)
+        {
+            GetComponent<Tower>().showRange();
+        }
+
+        held = true;
+
+        //Already placed the object once so should not charge you
+        if (!bought)
+        {
+            bought = true;
+            resourceCounter.removeFaith(faithCost);
+        }
+
+        createHighlight();
+        GetComponent<Rigidbody>().useGravity = false;
+        GetComponent<Rigidbody>().isKinematic = true;
+        GetComponent<Collider>().enabled = false;
+    }
+
+    void Grabbable.release(Vector3 vel)
+    {
+        throw new NotImplementedException();
+    }
 }

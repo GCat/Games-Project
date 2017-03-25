@@ -79,15 +79,6 @@ public class Handle : MonoBehaviour, Grabbable {
             transform.parent = null;
             grabbed = true;
         }
-        //Collider[] cols = bSpawner.GetComponentsInChildren<Collider>();
-        //spawnChange(false);
-        //if (cols.Length > 0)
-        //{
-        //    foreach (Collider c in cols)
-        //    {
-        //        if (c != myCol) c.enabled = false;
-        //    }
-        //}
 
     }
 

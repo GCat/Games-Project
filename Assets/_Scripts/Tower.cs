@@ -77,31 +77,6 @@ public class Tower : Building, Grabbable {
         return true;
     }
 
-    public void grab()
-    {
-        showRange();
-        if (!bought)
-        {
-            bought = true;
-            resourceCounter.removeFaith(faithCost);
-        }
-        held = true;
-
-        // Deactivate  collider and gravity
-        if (highlight != null)
-        {
-            DestroyImmediate(highlight);
-        }
-
-        // highlight where object wiould place if falling straight down
-        createHighlight();
-
-        GetComponent<Rigidbody>().useGravity = false;
-        GetComponent<Rigidbody>().isKinematic = true;
-        GetComponent<Collider>().enabled = false;
-
-    }
-
     //function should be overriden by child
     public override string getName()
     {
