@@ -35,11 +35,14 @@ class Minotaur : Monster
     private void damageInRadius(float radius)
     {
         int layerMask = 1 << 9;
+        layerMask |= 1 << 10;
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, radius);
         foreach(Collider collider in hitColliders)
         {
+
+
             HealthManager health = collider.GetComponent<HealthManager>();
-            if(health != null)
+            if(health != null && collider.GetComponent<Monster>() == null)
             {
                 health.decrementHealth(strength);
             }

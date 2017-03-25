@@ -56,11 +56,12 @@ public abstract class Monster : Character
     private Collider[] ragdoll;
 
     protected GameObject currentVictim;
-    enum MonsterState { AttackTemple, AttackHumans, AttackBuildings, Idle, PathBlocked };
+
+    public enum MonsterState { AttackTemple, AttackHumans, AttackBuildings, Idle, PathBlocked };
 
     MonsterState currentState = MonsterState.AttackTemple;
     MonsterState prevState;
-    MonsterState defaultState;
+    public MonsterState defaultState;
 
 
     // surround target position, used to decide where in teh perimeter of the building to attack
@@ -85,7 +86,6 @@ public abstract class Monster : Character
         }
         GetComponent<Collider>().enabled = true;
         damageText = Resources.Load("Damage Text") as GameObject;
-
     }
 
     //can we make the spawn type an enum please xoxo
@@ -100,6 +100,7 @@ public abstract class Monster : Character
         templeAttackPoint = temple.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
         resources = GameObject.FindGameObjectWithTag("Tablet").GetComponent<ResourceCounter>();
         resources.addBaddie(monsterType);
+        currentState = defaultState;
     }
 
     void Update()

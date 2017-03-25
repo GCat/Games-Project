@@ -3910,19 +3910,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7527a29099222c4f9591c623f38429b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debug: 0
   strength: 20
   health: 80
   totalHealth: 80
   faithValue: 8
   rotationSpeed: 6
   alive: 0
-  projectile: {fileID: 0}
   animator: {fileID: 95799764848813428}
   monsterType: 2
-  closestEnemy: {fileID: 0}
-  buildings: []
-  agent: {fileID: 0}
+  defaultState: 2
+  projectile: {fileID: 0}
 --- !u!120 &120399408677774282
 LineRenderer:
   m_ObjectHideFlags: 1
