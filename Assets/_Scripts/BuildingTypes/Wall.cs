@@ -46,6 +46,9 @@ public class Wall : Building, Grabbable
                 {
                     highlight.SetActive(true);
                     showTurretHighlight();
+
+
+
                 }
                 else
                 {
