@@ -247,8 +247,6 @@ public class Hand : MonoBehaviour {
         if (holding) return;
         heldObject = null;
 
-        Vector3 p = grab_position.transform.position;
-        Debug.Log(velocity);
         if(velocity.magnitude > 100)
         {
             return;

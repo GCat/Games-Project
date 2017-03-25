@@ -49,7 +49,10 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
             GameObject explosion = GameObject.Instantiate(ExplosionEffect);
             explosion.transform.position = transform.position;
             Destroy(explosion, 3.0f);
-            fireEffect.SetActive(false);
+            if (fireEffect != null)
+            {
+                fireEffect.SetActive(false);
+            }
             die();
         }else if(health <= (0.2 * totalHealth))
         {
