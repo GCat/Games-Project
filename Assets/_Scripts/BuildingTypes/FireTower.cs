@@ -20,16 +20,6 @@ public class FireTower : Tower
         Vector3 pos = transform.position;
         pos.y += 5;
         fireStream.SetActive(false);
-
-        rangeHighlight = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        rangeHighlight.GetComponent<Renderer>().material.SetColor("_Color", Color.yellow);
-        rangeHighlight.transform.localScale = new Vector3(radius, 0.1f, radius);
-        rangeHighlight.transform.position = new Vector3(gameObject.transform.position.x, 0.1f, gameObject.transform.position.z);
-        rangeHighlight.transform.rotation = Quaternion.LookRotation(Vector3.forward);
-
-        rangeHighlight.GetComponent<Collider>().enabled = false;
-        rangeHighlight.GetComponent<Renderer>().enabled = true;
-        rangeHighlight.SetActive(false);
     }
 
 

@@ -22,6 +22,11 @@ public class Tower : Building, Grabbable {
         attackSource = gameObject.AddComponent<AudioSource>() as AudioSource;
         attackSource.clip = attackClip;
         base.Awake();
+        createRangeHighlight();
+    }
+
+    protected void createRangeHighlight()
+    {
         rangeHighlight = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         rangeHighlight.GetComponent<Renderer>().material.SetColor("_Color", Color.yellow);
         rangeHighlight.transform.localScale = new Vector3(radius, 0.1f, radius);
@@ -31,7 +36,6 @@ public class Tower : Building, Grabbable {
         rangeHighlight.GetComponent<Collider>().enabled = false;
         rangeHighlight.GetComponent<Renderer>().enabled = true;
         rangeHighlight.SetActive(false);
-
     }
 
     // Update is called once per frame

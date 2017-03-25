@@ -105,9 +105,7 @@ public abstract class Building : MonoBehaviour, Grabbable, HealthManager{ // thi
         outlineShader = Shader.Find("Toon/Basic Outline");
         ExplosionEffect = Resources.Load("Explosion") as GameObject;
         source = gameObject.AddComponent<AudioSource>() as AudioSource;
-        //source.rolloffMode = AudioRolloffMode.Linear;
         source.volume = 0.7f;
-        //source.spatialBlend = 0.1f;
         source.clip = buildClip;
         for (int i = 0; i < child_materials.Length; i++)
         {
