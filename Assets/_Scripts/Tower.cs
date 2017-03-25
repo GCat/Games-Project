@@ -13,11 +13,6 @@ public class Tower : Building, Grabbable {
     public int attackMask = 1 << 11;
     protected bool activated = false;
 
-    float getHealth()
-    {
-        return health;
-    }
-
     public override void Awake()
     {
         base.Awake();
@@ -111,7 +106,6 @@ public class Tower : Building, Grabbable {
 
     }
 
-    //never goes in here 
     public override void create_building()
     {
 

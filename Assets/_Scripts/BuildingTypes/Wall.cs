@@ -34,21 +34,12 @@ public class Wall : Building, Grabbable
         {
             if (highlight != null)
             {
-                if (highlightCheck())
-                {
-                    highlight.SetActive(true);
-                    showTurretHighlight();
-                }
-                else
-                {
-                    highlight.SetActive(false);
-                    hideTurretHighlight();
-                }
+                if (highlightCheck()) showTurretHighlight();
+                else hideTurretHighlight();
             }
             else
             {
                 hideTurretHighlight();
-                highlight.SetActive(false);
             }
         }
     }

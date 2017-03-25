@@ -212,7 +212,6 @@ public abstract class Building : MonoBehaviour, Grabbable, HealthManager{ // thi
         Vector2 randPos = UnityEngine.Random.insideUnitCircle*5.0f;
         resourceText.transform.Translate(new Vector3(randPos.x,-2.0f,randPos.y*2.0f));
         Vector3 startLocation = resourceText.transform.position;
-        //resourceText.GetComponent<TextMesh>().text = "+" + value.ToString() + " " + resource;
         resourceText.GetComponent<ResourceGainTablet>().setText("+" + value.ToString());
         resourceText.GetComponent<ResourceGainTablet>().activateThis();
         for (float f = 1f; f >= 0; f -= 0.01f)
@@ -252,7 +251,7 @@ public abstract class Building : MonoBehaviour, Grabbable, HealthManager{ // thi
     {
         if (resourceCounter.withinBounds(transform.position))
         {
-            highlight.GetComponentInChildren<Renderer>().enabled = true;
+            highlight.SetActive(true);
             highlight.transform.position = new Vector3(transform.position.x, 0.1f,transform.position.z);
             highlight.transform.rotation = transform.rotation;
             if (Physics.CheckBox(new Vector3(transform.position.x, 0, transform.position.z), boxSize, gameObject.transform.rotation, nobuildmask))
@@ -275,7 +274,7 @@ public abstract class Building : MonoBehaviour, Grabbable, HealthManager{ // thi
         }
         else
         {
-            highlight.GetComponentInChildren<Renderer>().enabled = false;
+            highlight.SetActive(false);
             return false;
         }
     }
@@ -308,7 +307,6 @@ public abstract class Building : MonoBehaviour, Grabbable, HealthManager{ // thi
         highlight.transform.rotation = transform.rotation;
 
         highlight.GetComponent<Collider>().isTrigger = true;
-        highlight.GetComponentInChildren<Renderer>().enabled = false;
     }
 
     public void grab() 
