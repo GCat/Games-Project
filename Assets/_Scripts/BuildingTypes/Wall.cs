@@ -42,17 +42,22 @@ public class Wall : Building, Grabbable
         {
             if (highlight != null)
             {
-                highlightCheck();
-                showTurretHighlight();
+                if (highlightCheck())
+                {
+                    highlight.SetActive(true);
+                    showTurretHighlight();
+                }
+                else
+                {
+                    highlight.SetActive(false);
+                    hideTurretHighlight();
+                }
             }
             else
             {
                 hideTurretHighlight();
+                highlight.SetActive(false);
             }
-        }
-        else
-        {
-            hideTurretHighlight();
         }
     }
 
@@ -206,8 +211,6 @@ public class Wall : Building, Grabbable
             resetWall();
         }
 
-        turretA.SetActive(true);
-        turretB.SetActive(true);
         // Deactivate  collider and gravity
         if (highlight != null)
         {
@@ -216,6 +219,8 @@ public class Wall : Building, Grabbable
         held = true;
         // highlight where object wiould place if falling straight down
         createHighlight();
+        turretA.SetActive(true);
+        turretB.SetActive(true);
         GetComponent<Rigidbody>().useGravity = false;
         GetComponent<Rigidbody>().isKinematic = true;
         GetComponent<Collider>().enabled = false;
