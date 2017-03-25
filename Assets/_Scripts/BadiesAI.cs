@@ -75,7 +75,7 @@ public class BadiesAI : MonoBehaviour, Character
     public GameObject[] buildings;
 
     private ResourceCounter resources;
-    private NavMeshAgent agent;
+    public NavMeshAgent agent;
 
     //the nearest position on the navmesh to the desired target point
     private Vector3 nextBestTarget;
@@ -99,7 +99,10 @@ public class BadiesAI : MonoBehaviour, Character
     void Start()
     {
         cameraPos = GameObject.FindWithTag("MainCamera").transform.position;
-        agent = GetComponent<NavMeshAgent>();
+        if (agent == null)
+        {
+            agent = GetComponent<NavMeshAgent>();
+        }
         createHealthBar();
         healthBarOri = healthBar.transform.rotation;
         createInfoText();
@@ -212,6 +215,16 @@ public class BadiesAI : MonoBehaviour, Character
                 damageIndicator.transform.LookAt(cameraPos);
                 yield return null;
             }
+        }
+    }
+
+    //badies response to an attacker
+    public void aggro(GameObject attacker)
+    {
+        if(attacker.GetComponent<Agent>() != null)
+        {
+            currentState = MonsterState.AttackHumans;
+            closestEnemy = attacker;
         }
     }
     //checks whether agent has reached a point -- takes stopping distance into account

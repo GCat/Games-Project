@@ -14,6 +14,7 @@ public class LightningBolt : Tool {
     protected Renderer rend;
     protected Shader outlineShader;
     public ResourceCounter res;
+    public AudioClip zap;
     private AudioSource source;
     private bool exploded = false;
 
@@ -94,8 +95,8 @@ public class LightningBolt : Tool {
           
             GameObject resource = Resources.Load("Bolt flash") as GameObject;
             flash = GameObject.Instantiate(resource, hit.point, Quaternion.identity);
-            Destroy(flash.gameObject, 0.5f);
-
+            Destroy(flash.gameObject, 2f);
+            source.PlayOneShot(zap, 0.8f);
             for (int i=0; i < damageZone.Length; i++)
             {
                 HealthManager victimHealth = damageZone[i].gameObject.GetComponent<HealthManager>();
@@ -107,7 +108,7 @@ public class LightningBolt : Tool {
 
             }
             Physics.IgnoreCollision(GetComponent<Collider>(), col.collider);
-            Destroy(gameObject, 0.1f);
+            Destroy(gameObject, 0.3f);
             
         }
     }

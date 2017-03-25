@@ -45,10 +45,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
     GameObject infoText;
     Quaternion infoTextOri;
     public float strength = 10.0f;
-    public float speed = 2.0f;
-    private float rotationspeed = 5.0f;
     public float gravity = 9.81F;
-    public float weapon_strength;
     public bool debug = false;
     private GameObject temple;
     private bool alive = true;
@@ -79,9 +76,6 @@ public class Agent : MonoBehaviour, Character, Grabbable
     //public CharacterController controller;
     private NavMeshAgent agent;
     private HumanState currentState = HumanState.Wandering;
-
-    //public bool[] rallySlotsFree = new bool[5];
-    //public Vector3[] rallySlots = new Vector3[5];
     private Vector3 rallyZoneCentre;
     //private RallyPoint rallypoint;
 
@@ -94,6 +88,9 @@ public class Agent : MonoBehaviour, Character, Grabbable
     private Vector3 bL;
     private Vector3 tR;
     private float rallyZoneRadius = 10;
+    
+    //determines if this chap is in a fight 
+    private bool combatEngaged = false;
 
     public enum HumanState { Fighting, Wandering, Grabbed, Falling, Defending };
 
@@ -119,8 +116,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
         lineRenderer = GetComponent<LineRenderer>();
         tR = resources.getTopRight();
         bL = resources.getBottomLeft();
-
-
+        StartCoroutine(acquireTargets());
     }
 
     // Update is called once per frame
@@ -190,43 +186,16 @@ public class Agent : MonoBehaviour, Character, Grabbable
                     if (resources.getGroundBaddies() > 0)
                     {
 
-                        if (closestEnemy == null)
-                        {
-                            if (Vector3.Distance(transform.position, rallyZoneCentre) > rallyZoneRadius)
-                            {
-                                walkTo(rallyZoneCentre);
-                            }
-                            else
-                            {
-                                closestEnemy = findClosestEnemy();
-                                if (Vector3.Distance(closestEnemy.transform.position, rallyZoneCentre) < rallyZoneRadius)
-                                {
-                                    attack();
-                                }
-                            }
-
-                        }
-                        else
-                        {
-                            attack();
-                        }
-
-
+                        //if (closestEnemy == null || !combatEngaged)
+                        //{
+                        //    closestEnemy = findClosestEnemy();
+                        //}
+                        attack();
                     }
                     else
                     {
                         walkTo(rallyZoneCentre);
                     }
-                    /*else
-                    {
-                        for (int i = 0; i < rallySlots.Length; i++)
-                        {
-                            if (!rallySlotsFree[i])
-                            {
-                                walkTo(rallySlots[i]);
-                            }
-                        }
-                    }*/
                     break;
             }
         }
@@ -245,7 +214,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
             if (!atDestination(target))
             {
                 offset.y = transform.position.y;
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(offset), Time.deltaTime * rotationspeed);
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(offset), Time.deltaTime * 10f);
             }
             anim.Play("walk");
         }
@@ -298,7 +267,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
     }
 
     //generates a new point on the board to wander to
-    private Vector3 findNewTarget()
+    private Vector3 findNewTarget() 
     {
         float randX = UnityEngine.Random.Range(bL.x, tR.x);
         float randZ = UnityEngine.Random.Range(bL.z, tR.z);
@@ -348,6 +317,15 @@ public class Agent : MonoBehaviour, Character, Grabbable
         resources.removePop();
         GameObject.Destroy(gameObject);
     }
+    //locks this chap in combat for some period of time, so they don't change target
+    //also aggros the enemy
+    IEnumerator CombatLock(float time, BadiesAI opponent)
+    {
+        combatEngaged = true;
+        opponent.aggro(gameObject);
+        yield return new WaitForSeconds(time);
+        combatEngaged = false;
+    }
 
     private void moveStraightToTarget(GameObject target)
     {
@@ -356,10 +334,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
 
     private void attack()
     {
-        if (closestEnemy == null)
-        {
-            closestEnemy = findClosestEnemy();
-        }
+        //always find closest enemy unless otherwise engaged
         if (closestEnemy == null)
         {
             currentState = HumanState.Wandering;
@@ -383,6 +358,19 @@ public class Agent : MonoBehaviour, Character, Grabbable
         }
 
     }
+
+    IEnumerator acquireTargets()
+    {
+        while (active)
+        {
+            if (!combatEngaged && resources.getGroundBaddies() > 0)
+            {
+                closestEnemy = findClosestEnemy();
+            }
+            yield return new WaitForSeconds(1);
+        }
+    }
+
 
 
     private GameObject findClosestEnemy()
@@ -495,6 +483,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
                     victimHealth.decrementHealth(strength);
                     AudioSource source = GetComponent<AudioSource>();
                     source.PlayOneShot(getAttackSound(), 0.1f);
+                    StartCoroutine(CombatLock(2, victim.GetComponent<BadiesAI>()));
                 }
                 else
                 {

@@ -1405,9 +1405,7 @@ MonoBehaviour:
   health: 100
   totalHealth: 100
   strength: 10
-  speed: 3
   gravity: 9.81
-  weapon_strength: 0
   debug: 0
   humanHeld: 0
   droppedOnZone: 0
@@ -1870,7 +1868,7 @@ NavMeshAgent:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013033331268}
   m_Enabled: 1
-  m_Radius: 0.15
+  m_Radius: 0.1
   m_Speed: 5
   m_Acceleration: 8
   avoidancePriority: 50

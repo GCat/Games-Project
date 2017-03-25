@@ -479,7 +479,7 @@ public class Hand : MonoBehaviour {
     {
         GameObject gother = other.gameObject;
 
-        Debug.Log(gother);
+
 
         if (gother.layer == 9 || gother.layer == 10 || gother.layer == 14 && !holding)
         {
