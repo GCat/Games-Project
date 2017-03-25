@@ -307,3 +307,4 @@ MonoBehaviour:
   damage: 50
   damageRadius: 30
   res: {fileID: 0}
+  zap: {fileID: 8300000, guid: 2ba0fc330cd63314aa844a3076e2785a, type: 3}
