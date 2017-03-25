@@ -136,9 +136,9 @@ public class Wall : Building, Grabbable
             if (collider.gameObject.tag == "Turret" && collider.gameObject != turretA && collider.gameObject != turretB)
             {
                 Debug.Log("Joining wall segments");
-                turretA.SetActive(false);
-                alignWall(turretB.transform.position, collider.transform.position);
                 turretA.transform.position = collider.transform.position;
+                turretA.transform.rotation = collider.transform.rotation;
+                alignWall(turretB.transform.position, turretA.transform.position);
             }
         }
         foreach (Collider collider in turretBPoints)
@@ -146,9 +146,9 @@ public class Wall : Building, Grabbable
             if (collider.gameObject.tag == "Turret" && collider.gameObject != turretA && collider.gameObject != turretB)
             {
                 Debug.Log("Joining wall segments");
-                turretB.SetActive(false);
-                alignWall(turretA.transform.position, collider.transform.position);
                 turretB.transform.position = collider.transform.position;
+                turretB.transform.rotation = collider.transform.rotation;
+                alignWall(turretA.transform.position, collider.transform.position);
 
             }
         }
@@ -158,26 +158,19 @@ public class Wall : Building, Grabbable
     //point = turret pos
     private void alignWall(Vector3 pointA, Vector3 pointB)
     {
-        Vector3 midPoint = pointA + (pointB - pointA) / 2f;
+        Vector3 midPoint = pointA + (pointB - pointA) /2f; 
         float height = wallSegment.transform.localScale.y;
-        wallSegment.transform.position = midPoint + Vector3.up * (height / 2);
+
+        wallSegment.transform.position = new Vector3(midPoint.x, height/2, midPoint.z);    
         wallSegment.transform.localScale = new Vector3(wallSegment.transform.localScale.x, wallSegment.transform.localScale.y, (pointB - pointA).magnitude);
-        wallSegment.transform.LookAt(pointB + Vector3.up * (height / 2));
+        wallSegment.transform.LookAt(pointB + Vector3.up*(height/2));
+
         BoxCollider wallCollider = this.GetComponent<BoxCollider>();
-        BoxCollider turretCollider = turretA.GetComponent<BoxCollider>();
         NavMeshObstacle obstacle = GetComponent<NavMeshObstacle>();
 
-        //size
-        wallCollider.size = new Vector3(wallCollider.size.x, wallCollider.size.y, wallCollider.size.z + 2);
-        obstacle.size = new Vector3(wallCollider.size.x, wallCollider.size.y, wallCollider.size.z + 2);
-        wallCollider.center = new Vector3(wallCollider.center.x, wallCollider.center.y, wallCollider.size.z / 2);
-        obstacle.center = new Vector3(obstacle.center.x, obstacle.center.y, obstacle.center.z /2);
-        
-        //rotation
-        Vector3 targetDir = turretB.transform.position - pointB;
-        float angle = Vector3.Angle(targetDir, transform.forward);
-        wallCollider.transform.rotation = Quaternion.Euler(wallCollider.transform.rotation.x, wallCollider.transform.rotation.y, wallCollider.transform.rotation.z + angle);
-        obstacle.transform.rotation = Quaternion.Euler(wallCollider.transform.rotation.x, wallCollider.transform.rotation.y, wallCollider.transform.rotation.z + angle);
+        obstacle.size = new Vector3(obstacle.size.x, obstacle.size.y, 1+(pointB - pointA).magnitude);
+        wallCollider.center = wallSegment.transform.localPosition;
+        obstacle.center = wallSegment.transform.localPosition;  
     }
 
     //Don't need this
