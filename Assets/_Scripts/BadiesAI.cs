@@ -214,6 +214,16 @@ public class BadiesAI : MonoBehaviour, Character
             }
         }
     }
+
+    //badies response to an attacker
+    public void aggro(GameObject attacker)
+    {
+        if(attacker.GetComponent<Agent>() != null)
+        {
+            currentState = MonsterState.AttackHumans;
+            closestEnemy = attacker;
+        }
+    }
     //checks whether agent has reached a point -- takes stopping distance into account
     private bool atDestination(Vector3 target)
     {

@@ -117,8 +117,6 @@ public class Agent : MonoBehaviour, Character, Grabbable
         tR = resources.getTopRight();
         bL = resources.getBottomLeft();
         StartCoroutine(acquireTargets());
-
-
     }
 
     // Update is called once per frame
@@ -320,9 +318,11 @@ public class Agent : MonoBehaviour, Character, Grabbable
         GameObject.Destroy(gameObject);
     }
     //locks this chap in combat for some period of time, so they don't change target
-    IEnumerator CombatLock(float time)
+    //also aggros the enemy
+    IEnumerator CombatLock(float time, BadiesAI opponent)
     {
         combatEngaged = true;
+        opponent.aggro(gameObject);
         yield return new WaitForSeconds(time);
         combatEngaged = false;
     }
@@ -483,7 +483,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
                     victimHealth.decrementHealth(strength);
                     AudioSource source = GetComponent<AudioSource>();
                     source.PlayOneShot(getAttackSound(), 0.1f);
-                    StartCoroutine(CombatLock(2));
+                    StartCoroutine(CombatLock(2, victim.GetComponent<BadiesAI>()));
                 }
                 else
                 {
