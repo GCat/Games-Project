@@ -135,7 +135,13 @@ public class Tower : Building, Grabbable {
         }
     }
 
-    new void release(Vector3 vel)
+    void Grabbable.grab() 
+    {
+        base.grab();
+        showRange();
+    }
+
+    void Grabbable.release(Vector3 vel)
     {
         base.release(vel);
         hideRange();

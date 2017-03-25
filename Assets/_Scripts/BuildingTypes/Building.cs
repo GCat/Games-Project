@@ -31,6 +31,9 @@ public abstract class Building : MonoBehaviour, Grabbable, HealthManager{ // thi
     public bool held = false;
 
     public abstract bool canBuy();
+    public abstract void die();
+    public abstract void activate();
+    public abstract void deactivate();
 
     public void decrementHealth(float damage)
     {
@@ -196,19 +199,6 @@ public abstract class Building : MonoBehaviour, Grabbable, HealthManager{ // thi
         }
     }
 
-    public void release(Vector3 vel)
-    {
-        held = false;
-        GetComponent<Rigidbody>().useGravity = true;
-        GetComponent<Rigidbody>().isKinematic = false;
-        GetComponent<Collider>().enabled = true;
-        GetComponent<Rigidbody>().AddForce(vel, ForceMode.VelocityChange);
-        removeOutline();
-        highlightDestroy();
-
-    }
-
-
     void LateUpdate()
     {
         if (held)
@@ -301,7 +291,6 @@ public abstract class Building : MonoBehaviour, Grabbable, HealthManager{ // thi
 
     public void createHighlight()
     {
-        //highlight = GameObject.CreatePrimitive(PrimitiveType.Cube);
         if (highlight_template != null)
         {
             highlight = Instantiate(highlight_template) as GameObject;
@@ -324,20 +313,9 @@ public abstract class Building : MonoBehaviour, Grabbable, HealthManager{ // thi
         highlight.GetComponentInChildren<Renderer>().enabled = false;
     }
 
-    public abstract void die();
-    public abstract void activate();  
-    public abstract void deactivate();
-
-    void Grabbable.grab()
+    public void grab() 
     {
-        //If tower then do stuff with rangehighlight
-        if (GetComponent<Tower>() != null)
-        {
-            GetComponent<Tower>().showRange();
-        }
-
         held = true;
-
         //Already placed the object once so should not charge you
         if (!bought)
         {
@@ -351,8 +329,14 @@ public abstract class Building : MonoBehaviour, Grabbable, HealthManager{ // thi
         GetComponent<Collider>().enabled = false;
     }
 
-    void Grabbable.release(Vector3 vel)
+    public void release(Vector3 vel)
     {
-        throw new NotImplementedException();
+        held = false;
+        GetComponent<Rigidbody>().useGravity = true;
+        GetComponent<Rigidbody>().isKinematic = false;
+        GetComponent<Collider>().enabled = true;
+        GetComponent<Rigidbody>().AddForce(vel, ForceMode.VelocityChange);
+        removeOutline();
+        highlightDestroy();
     }
 }
