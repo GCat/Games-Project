@@ -44,7 +44,7 @@ public class BadiesAI : MonoBehaviour, Character
     public bool debug = false;
     public float strength;
     public float health;
-    public float totalHealth ;
+    public float totalHealth;
     public int faithValue;
     GameObject healthBar;
     GameObject infoText;
@@ -113,7 +113,7 @@ public class BadiesAI : MonoBehaviour, Character
         {
             collider.enabled = false;
         }
-        foreach(Rigidbody rb in GetComponentsInChildren<Rigidbody>())
+        foreach (Rigidbody rb in GetComponentsInChildren<Rigidbody>())
         {
             rb.isKinematic = true;
         }
@@ -211,7 +211,7 @@ public class BadiesAI : MonoBehaviour, Character
                 Color c = text.color;
                 c.a = f;
                 text.color = c;
-                damageIndicator.transform.Translate(new Vector3(0, 0.1f, 0));        
+                damageIndicator.transform.Translate(new Vector3(0, 0.1f, 0));
                 damageIndicator.transform.LookAt(cameraPos);
                 yield return null;
             }
@@ -221,7 +221,7 @@ public class BadiesAI : MonoBehaviour, Character
     //badies response to an attacker
     public void aggro(GameObject attacker)
     {
-        if(attacker.GetComponent<Agent>() != null)
+        if (attacker.GetComponent<Agent>() != null)
         {
             currentState = MonsterState.AttackHumans;
             closestEnemy = attacker;

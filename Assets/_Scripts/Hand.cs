@@ -46,7 +46,7 @@ public class Hand : MonoBehaviour {
     private float[] held_object_times;
 
 
-
+    public enum PropType { Building, Human, Tool, Handle, None};
     float rotationTimer;
     float startTime;
     Collider heldCollider;
@@ -195,32 +195,6 @@ public class Hand : MonoBehaviour {
         
     }
 
-    public GameObject getClosestGrab()
-    {
-        GameObject closest = null;
-        int layerMask = (1 << 9) | (1 << 10) | (1 << 14);
-        Vector3 p = grab_position.transform.position;//new Vector3(transform.position.x - 14, transform.position.y - 18, transform.position.z);
-        things = Physics.OverlapSphere(p, 4.0f, layerMask);
-        float distance = Mathf.Infinity;
-        if (things.Length > 0)
-        {
-            foreach (Collider thing in things)
-            {
-                Vector3 diff = thing.ClosestPointOnBounds(p) - p;
-                float current_distance = diff.sqrMagnitude;
-                if (current_distance < distance)
-                {
-                    distance = current_distance;
-                    closest = thing.gameObject;
-                }
-            }
-           
-        }
-        return closest;
-
-    }
-
-
     public void closeHand()
     {
         open_hand.SetActive(false);
@@ -232,22 +206,12 @@ public class Hand : MonoBehaviour {
         }
 
     }
-    //checks a surrounding sphere for objects, grabs them
 
-    private void grabObject()
+    private GameObject getClosestObject()
     {
-        if (holding) return;
-        heldObject = null;
-
         GameObject closest = null;
-        float distance = Mathf.Infinity;
         Vector3 p = grab_position.transform.position;
-        Debug.Log(velocity);
-        if(velocity.magnitude > 100)
-        {
-            return;
-        }
-
+        float distance = Mathf.Infinity;
         if (onBounds.Count > 0)
         {
             foreach (Collider g in onBounds)
@@ -263,105 +227,101 @@ public class Hand : MonoBehaviour {
                     }
                 }
             }
-            if (closest == null) return;
-          
-            Building building = closest.GetComponent<Building>();
-            if (building != null && building.canBeGrabbed == false) return;
-            if (!resources.hasGameStarted() && closest.tag != "Temple") return;
+        }
+        return closest;
+    }
 
-            heldObject = closest;
+    private PropType getPropType(GameObject prop)
+    {
+        if (prop.GetComponent<Building>() != null) return PropType.Building;
+        if (prop.GetComponent<Agent>() != null) return PropType.Human;
+        if (prop.GetComponent<Tool>() != null) return PropType.Tool;
+        if (prop.GetComponent<Handle>() != null) return PropType.Handle;
 
-            if (heldObject != null)
-            {
-                Building buildingS = heldObject.GetComponent<Building>();
+        return PropType.None;
+    }
 
-                if (buildingS != null)
+    //checks a surrounding sphere for objects, grabs them
+    private void grabObject()
+    {
+        if (holding) return;
+        heldObject = null;
+
+        Vector3 p = grab_position.transform.position;
+        Debug.Log(velocity);
+        if(velocity.magnitude > 100)
+        {
+            return;
+        }
+
+        GameObject grabTarget = getClosestObject();
+        if (grabTarget == null ) return;
+
+        PropType propType = getPropType(grabTarget);
+        switch (propType)
+        {
+            case PropType.Building:
+                Building building = grabTarget.GetComponent<Building>();
+                if (!building.canBeGrabbed || (!resources.hasGameStarted() && grabTarget.tag != "Temple")) return;
+                if (building.canBuy() || building.bought)
                 {
-                    if (buildingS.canBuy() || buildingS.bought)
-                    {
-                        buildingS.transform.parent = null;
-                        holding = true;
-                        Grabbable placeable = heldObject.GetComponent<Grabbable>();
-                        buildingS.initialRotation = buildingS.transform.rotation;
-                        buildingS.held = true;
-
-                        if (placeable != null)
-                        {
-                            Debug.Log("Grab BUILDING");
-                            placeable.grab();
-                            snapToHand(heldObject);
-                            heldObject.transform.parent = transform;
-                            kinect_view.setTrackingContext(BodySourceView.TrackingContext.Slow, right_hand);
-                        }
-                        else
-                        {
-                            Debug.Log("This object is not placeable", heldObject);
-                        }
-
-                    }
-                    else heldObject = null;
-
+                    heldObject = grabTarget;
+                    building.transform.parent = null;
+                    holding = true;
+                    building.initialRotation = building.transform.rotation;
+                    building.held = true;
+                    Debug.Log("Grab BUILDING");
+                    building.GetComponent<Grabbable>().grab();
+                    snapToHand(grabTarget);
+                    heldObject.transform.parent = transform;
+                    kinect_view.setTrackingContext(BodySourceView.TrackingContext.Slow, right_hand);
+                }
+                break;
+            case PropType.Tool:
+                Tool tool = grabTarget.GetComponent<Tool>();
+                if (tool.canBuy())
+                {
+                    heldObject = grabTarget;
+                    snapToHand(heldObject);
+                    grabTarget.transform.parent = transform;
+                    holding = true;
                 }
                 else
                 {
-
-                    Tool tool = heldObject.GetComponent<Tool>();
-
-                    if (tool != null)
-                    {
-                        if (tool.canBuy())
-                        {
-                            tool.grab();
-                            snapToHand(heldObject);
-                            heldObject.transform.parent = transform;
-                            holding = true;
-                            Debug.Log("Grab TOOL");
-                        }
-                        else heldObject = null;
-                    }
-                    else
-                    {
-                        // human or handle
-                        Grabbable human = heldObject.GetComponent<Grabbable>();
-                        if (human != null)
-                        {
-                            Debug.Log("Grab HANDLE OR HUMAN");
-                            human.grab();
-                            snapToHand(heldObject);
-                            heldObject.transform.parent = transform;
-                            holding = true;
-                            //slow tracking if using a handle, fast if human
-                            if(heldObject.GetComponent<Handle>() != null)
-                            {
-                                kinect_view.setTrackingContext(BodySourceView.TrackingContext.Slow, right_hand);
-                            }else
-                            {
-                                kinect_view.setTrackingContext(BodySourceView.TrackingContext.Fast, right_hand);
-                            }
-                        }
-                        else Debug.Log("This object is not placeable", heldObject);
-                    }
+                    heldObject = null;
                 }
-            }
-            else
-            {
-                //Debug.Log("NOTHING TO GRAB!");
-            }
-
-            colourChange(heldObject);
+                break;
+            case PropType.Human:
+                Grabbable human = grabTarget.GetComponent<Grabbable>();
+                heldObject = grabTarget;
+                human.grab();
+                snapToHand(grabTarget);
+                grabTarget.transform.parent = transform;
+                holding = true;
+                kinect_view.setTrackingContext(BodySourceView.TrackingContext.Fast, right_hand);
+                break;
+            case PropType.Handle:
+                Grabbable handle = grabTarget.GetComponent<Grabbable>();
+                heldObject = grabTarget;
+                handle.grab();
+                snapToHand(grabTarget);
+                heldObject.transform.parent = transform;
+                holding = true;
+                kinect_view.setTrackingContext(BodySourceView.TrackingContext.Slow, right_hand);
+                break;
+            case PropType.None:
+                return;
         }
-        else return;
+        colourChange(grabTarget);
 
-        
-        
     }
 
-   /* void OnDrawGizmosSelected()
-    {
-        Vector3 p = grab_position.transform.position;//new Vector3(transform.position.x - 14, transform.position.y - 18, transform.position.z);
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(p, 5.0f);
-    }*/
+    /* void OnDrawGizmosSelected()
+     {
+         Vector3 p = grab_position.transform.position;//new Vector3(transform.position.x - 14, transform.position.y - 18, transform.position.z);
+         Gizmos.color = Color.red;
+         Gizmos.DrawSphere(p, 5.0f);
+     }*/
 
     private void releaseObject ()
     {
@@ -432,12 +392,8 @@ public class Hand : MonoBehaviour {
     //function called to snap object to palm 
     private void snapToHand(GameObject placeable)
     {
-        float x = gameObject.transform.position.x;
-        float y = gameObject.transform.position.y;
-        float z = gameObject.transform.position.z;
-       
          // might need to change the positions slightly to make it nicer looking
-        placeable.transform.position = new Vector3(x, y, z);
+        placeable.transform.position = gameObject.transform.position;
     }
 
     //function called to place an object neatly on the game board
