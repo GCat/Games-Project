@@ -37,8 +37,6 @@ public class LightningBolt : Tool {
     void OnCollisionEnter(Collision col)
     {
         if (col.gameObject.tag == "Ground") {
-            //look at this because im pretty sure we call the canbuy function --> pay 2ice ??? 
-            resourceCounter.removeFaith(faithCost);
             int layerMask = 1 << 11;
             ContactPoint hit = col.contacts[0];
             renderer.enabled = false;
