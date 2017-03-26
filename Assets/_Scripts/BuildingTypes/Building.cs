@@ -334,8 +334,8 @@ public abstract class Building : MonoBehaviour, Grabbable, HealthManager{ // thi
         removeOutline();
         highlightDestroy();
     }
-
-    public bool canBuy()
+    
+     public bool canBuy()
     {
         if (!bought && (resourceCounter.faith >= faithCost))
         {
