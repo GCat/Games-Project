@@ -9,12 +9,12 @@ class Minotaur : Monster
     private ParticleSystem smokeEffect;
 
     //can we make the spawn type an enum please xoxo
-    public override void spawn()
+    void Awake()
     {
-        GameObject smoke = Instantiate(Resources.Load("Explosion") as GameObject, transform);
+        GameObject smoke = Instantiate(Resources.Load("Explosion") as GameObject, transform.position, Quaternion.identity);
+        smoke.transform.parent = transform;
         smokeEffect = smoke.GetComponent<ParticleSystem>();
         smokeEffect.Stop();
-        base.spawn();
     }
 
     protected override void hit()
@@ -27,6 +27,7 @@ class Minotaur : Monster
         damageInRadius(5f);
         smokeEffect.Play();
     }
+
     protected override bool atDestination(Vector3 target)
     {
         return Vector3.Distance(target, transform.position) < (agent.stoppingDistance + 5);

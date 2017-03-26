@@ -3102,7 +3102,7 @@ MonoBehaviour:
   rotationSpeed: 8
   alive: 0
   animator: {fileID: 95543238732232444}
-  monsterType: 1
+  monsterType: 0
   defaultState: 1
 --- !u!135 &135612776534938136
 SphereCollider:

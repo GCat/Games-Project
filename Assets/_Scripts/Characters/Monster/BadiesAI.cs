@@ -22,8 +22,7 @@ public abstract class Monster : Character
     public float health;
     public float totalHealth;
     public int faithValue;
-    GameObject healthBar;
-    Quaternion healthBarOri;
+
     GameObject damageText;
     public float rotationSpeed = 6.0f;
     public bool alive = false;
@@ -45,8 +44,6 @@ public abstract class Monster : Character
     protected GameObject closestEnemy;
     protected GameObject[] buildings;
 
-    protected ResourceCounter resources;
-    protected NavMeshAgent agent;
 
     //the nearest position on the navmesh to the desired target point
     private Vector3 nextBestTarget;
@@ -86,11 +83,6 @@ public abstract class Monster : Character
         }
         GetComponent<Collider>().enabled = true;
         damageText = Resources.Load("Damage Text") as GameObject;
-    }
-
-    //can we make the spawn type an enum please xoxo
-    public virtual void spawn()
-    {
         rb = GetComponent<Rigidbody>();
         closestEnemy = null;
         temple = GameObject.FindGameObjectWithTag("Temple");
@@ -109,7 +101,6 @@ public abstract class Monster : Character
         {
             healthBar.transform.rotation = healthBarOri;
         }
-
 
         if (alive)
         {
@@ -176,11 +167,7 @@ public abstract class Monster : Character
             StartCoroutine(CombatLock(3));
         }
     }
-    //checks whether agent has reached a point -- takes stopping distance into account
-    protected virtual bool atDestination(Vector3 target)
-    {
-        return Vector3.Distance(target, transform.position) < (agent.stoppingDistance + 3);
-    }
+
 
     private GameObject findObstacles()
     {
@@ -371,7 +358,7 @@ public abstract class Monster : Character
             }
             else
             {
-                agent.destination = target;
+                setDestination(target);
                 Vector3 offset = target - transform.position;
                 offset.y = transform.position.y;
                 if (sT == Vector3.zero)
@@ -456,15 +443,7 @@ public abstract class Monster : Character
         }
     }
 
-    public void createHealthBar()
-    {
-        Bounds dims = gameObject.GetComponent<Collider>().bounds;
-        Vector3 actualSize = dims.size;
-        healthBar = GameObject.Instantiate(Resources.Load("CharacterHealthBar")) as GameObject;
-        healthBar.transform.position = gameObject.GetComponent<Collider>().transform.position;
-        healthBar.transform.Translate(new Vector3(0, 0, dims.size.y * -1.0f));
-        healthBar.transform.SetParent(gameObject.transform);
-    }
+
 
     private GameObject findClosestEnemy(string tag)
     {

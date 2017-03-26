@@ -40,10 +40,7 @@ public class Agent : Character, Grabbable
     // Human characteristics
     public float health = 100.0f;
     public float totalHealth = 100.0f;
-    GameObject healthBar;
-    Quaternion healthBarOri;
-    GameObject infoText;
-    Quaternion infoTextOri;
+
     public float strength = 10.0f;
     public float gravity = 9.81F;
     public bool debug = false;
@@ -69,12 +66,8 @@ public class Agent : Character, Grabbable
     private GameObject closestEnemy;
     private int maxCell;
     private float dis2Enemy = 0;
-
-    private ResourceCounter resources;
-
     public bool active = true;
     //public CharacterController controller;
-    private NavMeshAgent agent;
     private HumanState currentState = HumanState.Wandering;
     private Vector3 rallyZoneCentre;
     //private RallyPoint rallypoint;
@@ -185,11 +178,6 @@ public class Agent : Character, Grabbable
                 case HumanState.Defending:
                     if (resources.getGroundBaddies() > 0)
                     {
-
-                        //if (closestEnemy == null || !combatEngaged)
-                        //{
-                        //    closestEnemy = findClosestEnemy();
-                        //}
                         attack();
                     }
                     else
@@ -207,7 +195,7 @@ public class Agent : Character, Grabbable
         Vector3 offset = target - transform.position;
         if (offset.magnitude > 0.1f)
         {
-            agent.destination = target;
+            setDestination(target);
             showPath();
             //controller.Move(offset * Time.deltaTime);
             //don't spin in circles
@@ -219,13 +207,6 @@ public class Agent : Character, Grabbable
             anim.Play("walk");
         }
 
-    }
-
-
-    //checks whether agent has reached a point -- takes stopping distance into account
-    private bool atDestination(Vector3 target)
-    {
-        return Vector3.Distance(target, transform.position) < (agent.stoppingDistance + 2);
     }
 
     private void wander()
@@ -414,29 +395,7 @@ public class Agent : Character, Grabbable
         }
     }
 
-    public void createHealthBar()
-    {
-        Bounds dims = gameObject.GetComponent<Collider>().bounds;
-        Vector3 actualSize = dims.size;
-        healthBar = GameObject.Instantiate(Resources.Load("CharacterHealthBar")) as GameObject;
-        healthBar.transform.position = gameObject.GetComponent<Collider>().transform.position;
-        healthBar.transform.Translate(new Vector3(0, 0, dims.size.y * -1.0f));
-        healthBar.transform.SetParent(gameObject.transform);
-    }
 
-    public void createInfoText()
-    {
-        Bounds dims = gameObject.GetComponent<Collider>().bounds;
-        Vector3 actualSize = dims.size;
-        infoText = GameObject.Instantiate(Resources.Load("AttackSprite")) as GameObject;
-        infoText.transform.position = gameObject.transform.position;
-        infoText.transform.localScale *= 2;
-        infoText.transform.Translate(new Vector3(0, actualSize.y * 1.4f, 0));
-        infoText.transform.localRotation = gameObject.transform.localRotation;
-        infoText.transform.Rotate(new Vector3(0, -90, 0));
-        infoText.transform.SetParent(gameObject.transform);
-        infoText.SetActive(false);
-    }
 
     public void grab()
     {

@@ -8,13 +8,6 @@ class Harpy : Monster
 {
     public GameObject projectile;
 
-    //can we make the spawn type an enum please xoxo
-    public override void spawn()
-    {
-        
-        base.spawn();
-    }
-
     protected override void hit()
     {
         if (currentVictim == null)

@@ -6,12 +6,6 @@ using UnityEngine;
 
 class Golem : Monster
 {
-    //can we make the spawn type an enum please xoxo
-    public override void spawn()
-    {
-        base.spawn();
-    }
-
     protected override void hit()
     {
         if (currentVictim == null)
