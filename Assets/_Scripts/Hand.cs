@@ -15,8 +15,6 @@ public class Hand : MonoBehaviour {
     private Vector3 velocity;
     GameObject heldObject;
 
-    GameObject heldScaffold;
-    Scaffold heldScaffoldScript;
 
     public Collider[] things;
     public AudioClip[] hitSounds;
@@ -38,10 +36,6 @@ public class Hand : MonoBehaviour {
     public bool wasKinematic = false;
     public bool usedGravity = false;
 
-
-
-    BuildingType[] buildings = { BuildingType.FARM, BuildingType.HOUSE, BuildingType.IRONMINE, BuildingType.LUMBERYARD, BuildingType.QUARRY, BuildingType.TOWER };
-    int buildingType;
     private Vector3[] held_object_positions;
     private float[] held_object_times;
 
@@ -314,13 +308,6 @@ public class Hand : MonoBehaviour {
 
     }
 
-    /* void OnDrawGizmosSelected()
-     {
-         Vector3 p = grab_position.transform.position;//new Vector3(transform.position.x - 14, transform.position.y - 18, transform.position.z);
-         Gizmos.color = Color.red;
-         Gizmos.DrawSphere(p, 5.0f);
-     }*/
-
     private void releaseObject ()
     {
         if (holding)
@@ -338,8 +325,8 @@ public class Hand : MonoBehaviour {
                 {
                     //this is why the building had a grabbable interface :p - this should be there ;)
                     snapToGrid(heldObject);
-                    building.source.clip = building.buildClip;
-                    building.source.Play();
+                    building.audioSource.clip = building.buildClip;
+                    building.audioSource.Play();
                     building.activate();
                     building.removeOutline();
                 }
@@ -352,8 +339,6 @@ public class Hand : MonoBehaviour {
                         {
                             Destroy(heldObject);
                         }
-                            
-
                     }
                     else
                     {
@@ -366,9 +351,7 @@ public class Hand : MonoBehaviour {
                 
                 throwObject(heldObject);
             }
-
             heldObject = null;
-
         }
 
     }
@@ -426,10 +409,8 @@ public class Hand : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other == null) return;
         GameObject gother = other.gameObject;
-
-
-
         if (gother.layer == 9 || gother.layer == 10 || gother.layer == 14 && !holding)
         {
             onBounds.Add(other);
@@ -440,14 +421,14 @@ public class Hand : MonoBehaviour {
             if(healthManager != null && velocity.magnitude > 100)
             {
                 int seed = Random.Range(0, hitSounds.Length);
-                audioSource.clip = hitSounds[seed];
-                audioSource.Play();
+                audioSource.PlayOneShot(hitSounds[seed], 0.9f);
                 healthManager.decrementHealth(1);
             }
         }
     }
     private void OnTriggerStay(Collider other)
     {
+        if (other == null) return;
         GameObject gother = other.gameObject;
         if (gother.layer == 9 || gother.layer == 10 || gother.layer == 14 && !holding)
         {
@@ -456,6 +437,7 @@ public class Hand : MonoBehaviour {
     }
     private void OnTriggerExit(Collider other)
     {
+        if (other == null) return;
         GameObject gother = other.gameObject;
         if (gother.layer == 9 || gother.layer == 10 || gother.layer == 14 && !holding)
         {

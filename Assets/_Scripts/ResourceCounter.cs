@@ -234,7 +234,6 @@ public class ResourceCounter : MonoBehaviour, Grabbable
     }
     public void grab()
     {
-      
         // Deactivate  collider and gravity
         GetComponent<Rigidbody>().useGravity = false;
         GetComponent<Rigidbody>().isKinematic = true;

@@ -35,15 +35,12 @@ using UnityEngine.AI;
 
 
 
-public class Agent : MonoBehaviour, Character, Grabbable
+public class Agent : Character, Grabbable
 {
     // Human characteristics
     public float health = 100.0f;
     public float totalHealth = 100.0f;
-    GameObject healthBar;
-    Quaternion healthBarOri;
-    GameObject infoText;
-    Quaternion infoTextOri;
+
     public float strength = 10.0f;
     public float gravity = 9.81F;
     public bool debug = false;
@@ -69,12 +66,8 @@ public class Agent : MonoBehaviour, Character, Grabbable
     private GameObject closestEnemy;
     private int maxCell;
     private float dis2Enemy = 0;
-
-    private ResourceCounter resources;
-
     public bool active = true;
     //public CharacterController controller;
-    private NavMeshAgent agent;
     private HumanState currentState = HumanState.Wandering;
     private Vector3 rallyZoneCentre;
     //private RallyPoint rallypoint;
@@ -185,11 +178,6 @@ public class Agent : MonoBehaviour, Character, Grabbable
                 case HumanState.Defending:
                     if (resources.getGroundBaddies() > 0)
                     {
-
-                        //if (closestEnemy == null || !combatEngaged)
-                        //{
-                        //    closestEnemy = findClosestEnemy();
-                        //}
                         attack();
                     }
                     else
@@ -207,7 +195,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
         Vector3 offset = target - transform.position;
         if (offset.magnitude > 0.1f)
         {
-            agent.destination = target;
+            setDestination(target);
             showPath();
             //controller.Move(offset * Time.deltaTime);
             //don't spin in circles
@@ -219,13 +207,6 @@ public class Agent : MonoBehaviour, Character, Grabbable
             anim.Play("walk");
         }
 
-    }
-
-
-    //checks whether agent has reached a point -- takes stopping distance into account
-    private bool atDestination(Vector3 target)
-    {
-        return Vector3.Distance(target, transform.position) < (agent.stoppingDistance + 2);
     }
 
     private void wander()
@@ -313,7 +294,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
     }
     //locks this chap in combat for some period of time, so they don't change target
     //also aggros the enemy
-    IEnumerator CombatLock(float time, BadiesAI opponent)
+    IEnumerator CombatLock(float time, Monster opponent)
     {
         combatEngaged = true;
         opponent.aggro(gameObject);
@@ -378,7 +359,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
         {
             foreach (GameObject badie in badies)
             {
-                if (badie.GetComponent<BadiesAI>().monsterType != Portal.MonsterType.Harpy)
+                if (badie.GetComponent<Monster>().monsterType != Portal.MonsterType.Harpy)
                 {
                     Vector3 diff = badie.transform.position - position;
                     float current_distance = diff.sqrMagnitude;
@@ -394,7 +375,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
         return closest;
     }
 
-    public void decrementHealth(float damage)
+    public override void decrementHealth(float damage)
     {
         health -= damage;
         if (health > 0)
@@ -414,29 +395,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
         }
     }
 
-    public void createHealthBar()
-    {
-        Bounds dims = gameObject.GetComponent<Collider>().bounds;
-        Vector3 actualSize = dims.size;
-        healthBar = GameObject.Instantiate(Resources.Load("CharacterHealthBar")) as GameObject;
-        healthBar.transform.position = gameObject.GetComponent<Collider>().transform.position;
-        healthBar.transform.Translate(new Vector3(0, 0, dims.size.y * -1.0f));
-        healthBar.transform.SetParent(gameObject.transform);
-    }
 
-    public void createInfoText()
-    {
-        Bounds dims = gameObject.GetComponent<Collider>().bounds;
-        Vector3 actualSize = dims.size;
-        infoText = GameObject.Instantiate(Resources.Load("AttackSprite")) as GameObject;
-        infoText.transform.position = gameObject.transform.position;
-        infoText.transform.localScale *= 2;
-        infoText.transform.Translate(new Vector3(0, actualSize.y * 1.4f, 0));
-        infoText.transform.localRotation = gameObject.transform.localRotation;
-        infoText.transform.Rotate(new Vector3(0, -90, 0));
-        infoText.transform.SetParent(gameObject.transform);
-        infoText.SetActive(false);
-    }
 
     public void grab()
     {
@@ -444,7 +403,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
         currentState = HumanState.Grabbed;
         rb.isKinematic = true;
         rb.useGravity = false;
-        GetComponent<Collider>().enabled = false;
+        //GetComponent<Collider>().enabled = false;
         humanHeld = true;
         droppedOnZone = false;
     }
@@ -475,7 +434,7 @@ public class Agent : MonoBehaviour, Character, Grabbable
                     victimHealth.decrementHealth(strength);
                     AudioSource source = GetComponent<AudioSource>();
                     source.PlayOneShot(getAttackSound(), 0.1f);
-                    StartCoroutine(CombatLock(2, victim.GetComponent<BadiesAI>()));
+                    StartCoroutine(CombatLock(2, victim.GetComponent<Monster>()));
                 }
                 else
                 {
@@ -553,7 +512,8 @@ public class Agent : MonoBehaviour, Character, Grabbable
         }
     }
 
-    public void hit()
+    protected override void hit()
     {
     }
+
 }

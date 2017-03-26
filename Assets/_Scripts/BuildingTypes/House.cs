@@ -5,24 +5,12 @@ using UnityEngine.AI;
 
 public class House : Building, Grabbable
 {
-
-    public AudioClip build;
-    public AudioClip destroy;
     public GameObject humanSpawn;
-    public ParticleSystem smokeEffect;
     public GameObject heartEffect;
-    public int capacity = 5;      //size of house: bigger house => bigger capacity
-    public int inhabitants = 0;        //human counter
-    public int foodCost = 10;
-    public bool active = false;
+    public ParticleSystem smokeEffect;   
     public float humanSpawnDelay;
-    private float placementTime = 0;
     Material matEmpty;
     Material matInval;
-    
-    //Constructor of a House
-    //capacity = number of humans a house can hold; location = location of a house
-
 
     public override string getName()
     {
@@ -82,41 +70,13 @@ public class House : Building, Grabbable
     public override void activate()
     {
         StartCoroutine(spawnHuman());
-        //when do you call create buiding for towers ? -- cost does not work 
-        active = true;
+
         if (highlight != null) highlightDestroy();
         //highlight = null;
         held = false;
         //ResourceGainText(1, "Chap");
     }
-    public override void deactivate()
-    {
-        active = false;
-    }
-    public void grab()
-    {
-        held = true;
-        if (!bought)
-        {
-            bought = true;
-            resourceCounter.removeFaith(faithCost);
-        }
-        
 
-        // Deactivate  collider and gravity
-        if (highlight != null)
-        {
-            DestroyImmediate(highlight);
-        }
-
-        // highlight where object wiould place if falling straight down
-        createHighlight();
-
-        GetComponent<Rigidbody>().useGravity = false;
-        GetComponent<Rigidbody>().isKinematic = true;
-        GetComponent<Collider>().enabled = false;
-
-    }
 
     new void release(Vector3 vel)
     {
@@ -133,7 +93,6 @@ public class House : Building, Grabbable
             if (Physics.CheckBox(new Vector3(Mathf.Floor(x), 0, Mathf.Floor(z)), boxSize, Quaternion.LookRotation(Vector3.forward), layerMask))
             {
                 held = false;
-                placementTime = Time.time;
                 GetComponent<Collider>().enabled = false;
                 highlightDestroy();
             }
@@ -158,18 +117,11 @@ public class House : Building, Grabbable
         Destroy(gameObject);
     }
 
-    public override bool canBuy()
+    public override void create_building()
     {
-        if (!bought && (resourceCounter.faith >= faithCost))
-        {
-            bought = true;
-            resourceCounter.removeFaith(faithCost);
-            return true;
-        }
-        return false;
     }
 
-    public override void create_building()
+    public override void deactivate()
     {
     }
 }

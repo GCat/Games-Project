@@ -5,14 +5,14 @@ using UnityEngine;
 public class HealthBar : MonoBehaviour {
 
     public float health;
-    ResourceBuilding building;
+    Building building;
     House house;
     bool isHouse = false;
     public float totalHealth;
 
     // Use this for initialization
     void Start () {
-        building = gameObject.transform.parent.GetComponent<ResourceBuilding>();
+        building = gameObject.transform.parent.GetComponent<Building>();
         if (building == null)
         {
             house = gameObject.transform.parent.GetComponent<House>();
