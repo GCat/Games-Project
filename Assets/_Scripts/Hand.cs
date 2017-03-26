@@ -423,8 +423,7 @@ public class Hand : MonoBehaviour {
             if(healthManager != null && velocity.magnitude > 100)
             {
                 int seed = Random.Range(0, hitSounds.Length);
-                audioSource.clip = hitSounds[seed];
-                audioSource.Play();
+                audioSource.PlayOneShot(hitSounds[seed], 0.9f);
                 healthManager.decrementHealth(1);
             }
         }

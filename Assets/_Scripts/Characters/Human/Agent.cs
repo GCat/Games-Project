@@ -403,7 +403,7 @@ public class Agent : Character, Grabbable
         currentState = HumanState.Grabbed;
         rb.isKinematic = true;
         rb.useGravity = false;
-        GetComponent<Collider>().enabled = false;
+        //GetComponent<Collider>().enabled = false;
         humanHeld = true;
         droppedOnZone = false;
     }

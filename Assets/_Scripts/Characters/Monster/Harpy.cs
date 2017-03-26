@@ -8,6 +8,12 @@ class Harpy : Monster
 {
     public GameObject projectile;
 
+    void Awake()
+    {
+        projectile = Resources.Load("Projectile") as GameObject;
+    }
+
+
     protected override void hit()
     {
         if (currentVictim == null)
