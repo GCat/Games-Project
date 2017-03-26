@@ -32,7 +32,6 @@ public abstract class Building : MonoBehaviour, Grabbable, HealthManager{ // thi
     private int nobuildmask = (1 << 10 | 1 << 17);
     public bool held = false;
 
-    public abstract bool canBuy();
     public abstract void die();
     public abstract void activate();
     public abstract void deactivate();
@@ -335,4 +334,16 @@ public abstract class Building : MonoBehaviour, Grabbable, HealthManager{ // thi
         removeOutline();
         highlightDestroy();
     }
+
+    public bool canBuy()
+    {
+        if (!bought && (resourceCounter.faith >= faithCost))
+        {
+            bought = true;
+            resourceCounter.removeFaith(faithCost);
+            return true;
+        }
+        return false;
+    }
+
 }

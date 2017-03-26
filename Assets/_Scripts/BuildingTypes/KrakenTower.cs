@@ -62,13 +62,6 @@ public class KrakenTower : Tower
         return "";
     }
 
-    public override bool canBuy()
-    {
-        return false;
-    }
-
- 
-
     public override void activate()
     {
     }

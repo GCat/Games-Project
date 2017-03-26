@@ -32,46 +32,46 @@ public class Tower : Building, Grabbable {
         rangeHighlight.GetComponent<Renderer>().enabled = true;
         rangeHighlight.SetActive(false);
     }
+    virtual public void updateHighlight()
+    {
+        if (highlight != null)
+        {
+            if (highlightCheck()) showRange();
+            else hideRange();
+        }
+        else if (transform.position.y > 0f)
+        {
+            createHighlight();
+            showRange();
+        }
+        else
+        {
+            hideRange();
+        }
+    }
+
+    //override this to have the correct tower sequence
+    virtual public void activeTower()
+    {
+        if (resourceCounter.getBaddies() > 0)
+        {
+            if (currentTarget == null)
+            {
+                acquireTarget();
+            }
+        }
+    }
+
 
     // Update is called once per frame
     virtual public void Update () {
         rangeHighlight.transform.position = new Vector3(gameObject.transform.position.x, 0.1f, gameObject.transform.position.z);
-        if (held)
-        {
-            if (highlight != null)
-            {
-                if (highlightCheck()) showRange();
-                else hideRange();
-            }
-            else if (transform.position.y > 0f)
-            {
-                createHighlight();
-                showRange();
-            }
-            else
-            {
-                hideRange();
-            }
-        }
-        else if (active)
-        {
-
-            if (resourceCounter.getBaddies() > 0)
-            {
-                if (currentTarget == null)
-                {
-                    acquireTarget();
-                }
-            }
-        }
+        if (held) updateHighlight();
+        else if (active) activeTower();         
     }
 
     // different towers can aquire targets differently
     public virtual bool acquireTarget()
-    {
-        return true;
-    }
-    public override bool canBuy()
     {
         return true;
     }

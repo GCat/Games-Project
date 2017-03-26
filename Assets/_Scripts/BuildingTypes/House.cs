@@ -117,17 +117,6 @@ public class House : Building, Grabbable
         Destroy(gameObject);
     }
 
-    public override bool canBuy()
-    {
-        if (!bought && (resourceCounter.faith >= faithCost))
-        {
-            bought = true;
-            resourceCounter.removeFaith(faithCost);
-            return true;
-        }
-        return false;
-    }
-
     public override void create_building()
     {
     }

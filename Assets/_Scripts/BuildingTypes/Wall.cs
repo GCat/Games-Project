@@ -65,17 +65,6 @@ public class Wall : Building, Grabbable
         }
     }
 
-    public override bool canBuy()
-    {
-        if (!bought && (resourceCounter.faith >= faithCost()))
-        {
-            bought = true;
-            resourceCounter.removeFaith(faithCost());
-            return true;
-        }
-        return false;
-    }
-
     private new int faithCost()
     {
         return cost_per_meter;

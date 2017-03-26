@@ -4,55 +4,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class LightningBolt : Tool {
-    public int fCost;
-    public float damage = 50f;
-    public float damageRadius = 30f;
-    GameObject highlight = null;
-    GameObject flash;
-    protected Renderer rend;
-    protected Shader outlineShader;
-    public ResourceCounter res;
-    public AudioClip zap;
-    private AudioSource source;
-    private bool exploded = false;
+
+    GameObject flash;    
 
     // Use this for initialization
     void Start () {
         outlineShader = Shader.Find("Toon/Basic Outline");
-        rend = GetComponent<Renderer>();
-        res = GameObject.FindGameObjectWithTag("Tablet").GetComponent<ResourceCounter>();
-        source = GetComponent<AudioSource>();
+        renderer = GetComponent<Renderer>();   
     }
 
-    // Update is called once per frame
-    void Update () {
-		
-	}
-    public new bool canBuy()
-    {
-        if (res.faith > fCost) return true;
-        else return false;
-    }
-    public void removeOutline()
-    {
-
-        rend.material.shader = Shader.Find("Diffuse");
-    }
-
-    private void setOutline()
-    {
-        rend.material.shader = outlineShader;
-        rend.material.SetColor("_OutlineColor", Color.blue);
-    }
-
-    public override void grab()
-    {
-        held = true;
-        GetComponent<Rigidbody>().useGravity = false;
-        GetComponent<Rigidbody>().isKinematic = true;
-        GetComponent<Collider>().enabled = false;
-
-    }
     public override void release(Vector3 vel)
     {
         GetComponent<Rigidbody>().useGravity = true;
@@ -67,22 +27,28 @@ public class LightningBolt : Tool {
         transform.rotation = rotation;
     }
 
+    private void playDestructionEffect(ContactPoint hit)
+    {
+        GameObject resource = Resources.Load("Bolt flash") as GameObject;
+        flash = GameObject.Instantiate(resource, hit.point, Quaternion.identity);
+        Destroy(flash.gameObject, 2f);
+    }
+
     void OnCollisionEnter(Collision col)
     {
-        if (col.gameObject.tag == "Ground" && !exploded) {
-            exploded = true;
-            res.removeFaith(fCost);
-            source.Play();
+        if (col.gameObject.tag == "Ground") {
+            //look at this because im pretty sure we call the canbuy function --> pay 2ice ??? 
+            resourceCounter.removeFaith(faithCost);
             int layerMask = 1 << 11;
             ContactPoint hit = col.contacts[0];
-            rend.enabled = false;
+            renderer.enabled = false;
             GetComponent<Collider>().enabled = false;
             Collider[] damageZone = Physics.OverlapSphere(hit.point, damageRadius, layerMask);
-          
-            GameObject resource = Resources.Load("Bolt flash") as GameObject;
-            flash = GameObject.Instantiate(resource, hit.point, Quaternion.identity);
-            Destroy(flash.gameObject, 2f);
-            source.PlayOneShot(zap, 0.8f);
+
+            playDestructionEffect(hit);
+            audioSource.PlayOneShot(powerClip, 0.8f);
+
+            //Remove Health from monsters in damageZone
             for (int i=0; i < damageZone.Length; i++)
             {
                 HealthManager victimHealth = damageZone[i].gameObject.GetComponent<HealthManager>();
@@ -94,26 +60,12 @@ public class LightningBolt : Tool {
 
             }
             Physics.IgnoreCollision(GetComponent<Collider>(), col.collider);
-            Destroy(gameObject, 0.3f);
-            
+
+            Destroy(gameObject, 0.3f);      
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.tag == "Hand")
-        {
-            setOutline();
-        }
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.tag == "Hand")
-        {
-            removeOutline();
-        }
-    }
-
+ 
     public void activate()
     {
         throw new NotImplementedException();

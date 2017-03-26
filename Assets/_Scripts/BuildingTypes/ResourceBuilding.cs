@@ -48,18 +48,6 @@ public abstract class ResourceBuilding : Building, Grabbable
         }
     }
 
-    //Is there enough faith ..  to construct building
-    public override bool canBuy()
-    {
-        if (!bought && (resourceCounter.faith >= faithCost))
-        {
-            bought = true;
-            resourceCounter.removeFaith(faithCost);
-            return true;
-        }
-        return false;
-    }
-
     //Don't need this 
     public override void activate()
     {
