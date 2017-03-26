@@ -111,16 +111,6 @@ public class RallyPoint : Building, Grabbable {
         return transform.position;
     }
 
-    public override bool canBuy()
-    {
-        if (resourceCounter.faith >= fCost)
-        {
-            resourceCounter.removeFaith(fCost);
-            return true;
-        }
-        return false;
-    }
-
     public override void die()
     {
         Destroy(gameObject);

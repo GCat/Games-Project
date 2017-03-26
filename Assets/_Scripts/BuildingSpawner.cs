@@ -31,7 +31,7 @@ public class BuildingSpawner : MonoBehaviour {
             LightningBolt light = building.GetComponent<LightningBolt>();
             if(light != null)
             {
-                buildingCost = light.fCost;
+                buildingCost = light.faithCost;
             }
             else
             {

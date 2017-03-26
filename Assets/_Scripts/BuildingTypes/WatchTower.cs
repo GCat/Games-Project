@@ -84,17 +84,6 @@ public class WatchTower : Tower
         }
     }
 
-    public override bool canBuy()
-    {
-        if (!bought && (resourceCounter.faith >= faithCost))
-        {
-            bought = true;
-            resourceCounter.removeFaith(faithCost);
-            return true;
-        }
-        return false;
-    }
-
     public override string getName()
     {
         return buildingName;

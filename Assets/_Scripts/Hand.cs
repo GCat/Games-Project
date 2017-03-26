@@ -15,8 +15,6 @@ public class Hand : MonoBehaviour {
     private Vector3 velocity;
     GameObject heldObject;
 
-    GameObject heldScaffold;
-    Scaffold heldScaffoldScript;
 
     public Collider[] things;
     public AudioClip[] hitSounds;
@@ -38,10 +36,6 @@ public class Hand : MonoBehaviour {
     public bool wasKinematic = false;
     public bool usedGravity = false;
 
-
-
-    BuildingType[] buildings = { BuildingType.FARM, BuildingType.HOUSE, BuildingType.IRONMINE, BuildingType.LUMBERYARD, BuildingType.QUARRY, BuildingType.TOWER };
-    int buildingType;
     private Vector3[] held_object_positions;
     private float[] held_object_times;
 
@@ -331,8 +325,8 @@ public class Hand : MonoBehaviour {
                 {
                     //this is why the building had a grabbable interface :p - this should be there ;)
                     snapToGrid(heldObject);
-                    building.source.clip = building.buildClip;
-                    building.source.Play();
+                    building.audioSource.clip = building.buildClip;
+                    building.audioSource.Play();
                     building.activate();
                     building.removeOutline();
                 }
@@ -437,6 +431,7 @@ public class Hand : MonoBehaviour {
     }
     private void OnTriggerStay(Collider other)
     {
+        if (other == null) return;
         GameObject gother = other.gameObject;
         if (gother.layer == 9 || gother.layer == 10 || gother.layer == 14 && !holding)
         {

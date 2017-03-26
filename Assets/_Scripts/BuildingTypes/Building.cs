@@ -2,9 +2,11 @@
 using System.Collections;
 using System;
 
-public abstract class Building : MonoBehaviour, HealthManager{ // this should also be placeable hence the grab and release will be written once
+public abstract class Building : MonoBehaviour, Grabbable, HealthManager{ // this should also be placeable hence the grab and release will be written once
+    public AudioSource audioSource;
     public AudioClip buildClip;
-    public AudioSource source;
+    public AudioClip destroy;
+
     public abstract string getName();
     public abstract Vector3 getLocation();
     public abstract void create_building();
@@ -30,7 +32,9 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
     private int nobuildmask = (1 << 10 | 1 << 17);
     public bool held = false;
 
-    public abstract bool canBuy();
+    public abstract void die();
+    public abstract void activate();
+    public abstract void deactivate();
 
     public void decrementHealth(float damage)
     {
@@ -86,7 +90,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
     }
     public virtual void Awake()
     {
-
+        audioSource = gameObject.AddComponent<AudioSource>();
         tablet = GameObject.FindGameObjectWithTag("Tablet");
         if (tablet != null)
         {
@@ -104,11 +108,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         original_materials = new Shader[child_materials.Length];
         outlineShader = Shader.Find("Toon/Basic Outline");
         ExplosionEffect = Resources.Load("Explosion") as GameObject;
-        source = gameObject.AddComponent<AudioSource>() as AudioSource;
-        //source.rolloffMode = AudioRolloffMode.Linear;
-        source.volume = 0.7f;
-        //source.spatialBlend = 0.1f;
-        source.clip = buildClip;
+        audioSource.PlayOneShot(buildClip, 0.7f);
         for (int i = 0; i < child_materials.Length; i++)
         {
             original_materials[i] = child_materials[i].material.shader;
@@ -199,19 +199,6 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         }
     }
 
-    public void release(Vector3 vel)
-    {
-        held = false;
-        GetComponent<Rigidbody>().useGravity = true;
-        GetComponent<Rigidbody>().isKinematic = false;
-        GetComponent<Collider>().enabled = true;
-        GetComponent<Rigidbody>().AddForce(vel, ForceMode.VelocityChange);
-        removeOutline();
-        highlightDestroy();
-
-    }
-
-
     void LateUpdate()
     {
         if (held)
@@ -227,7 +214,6 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         Vector2 randPos = UnityEngine.Random.insideUnitCircle*5.0f;
         resourceText.transform.Translate(new Vector3(randPos.x,-2.0f,randPos.y*2.0f));
         Vector3 startLocation = resourceText.transform.position;
-        //resourceText.GetComponent<TextMesh>().text = "+" + value.ToString() + " " + resource;
         resourceText.GetComponent<ResourceGainTablet>().setText("+" + value.ToString());
         resourceText.GetComponent<ResourceGainTablet>().activateThis();
         for (float f = 1f; f >= 0; f -= 0.01f)
@@ -267,7 +253,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
     {
         if (resourceCounter.withinBounds(transform.position))
         {
-            highlight.GetComponentInChildren<Renderer>().enabled = true;
+            highlight.SetActive(true);
             highlight.transform.position = new Vector3(transform.position.x, 0.1f,transform.position.z);
             highlight.transform.rotation = transform.rotation;
             if (Physics.CheckBox(new Vector3(transform.position.x, 0, transform.position.z), boxSize, gameObject.transform.rotation, nobuildmask))
@@ -290,7 +276,7 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         }
         else
         {
-            highlight.GetComponentInChildren<Renderer>().enabled = false;
+            highlight.SetActive(false);
             return false;
         }
     }
@@ -304,7 +290,6 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
 
     public void createHighlight()
     {
-        //highlight = GameObject.CreatePrimitive(PrimitiveType.Cube);
         if (highlight_template != null)
         {
             highlight = Instantiate(highlight_template) as GameObject;
@@ -324,12 +309,44 @@ public abstract class Building : MonoBehaviour, HealthManager{ // this should al
         highlight.transform.rotation = transform.rotation;
 
         highlight.GetComponent<Collider>().isTrigger = true;
-        highlight.GetComponentInChildren<Renderer>().enabled = false;
     }
 
-    public abstract void die();
+    public void grab() 
+    {
+        held = true;
+        //Already placed the object once so should not charge you
+        if (!bought)
+        {
+            bought = true;
+            resourceCounter.removeFaith(faithCost);
+        }
 
-    //do we still need these functions
-    public abstract void activate();  
-    public abstract void deactivate();
+        createHighlight();
+        GetComponent<Rigidbody>().useGravity = false;
+        GetComponent<Rigidbody>().isKinematic = true;
+        GetComponent<Collider>().enabled = false;
+    }
+
+    public void release(Vector3 vel)
+    {
+        held = false;
+        GetComponent<Rigidbody>().useGravity = true;
+        GetComponent<Rigidbody>().isKinematic = false;
+        GetComponent<Collider>().enabled = true;
+        GetComponent<Rigidbody>().AddForce(vel, ForceMode.VelocityChange);
+        removeOutline();
+        highlightDestroy();
+    }
+    
+     public bool canBuy()
+    {
+        if (!bought && (resourceCounter.faith >= faithCost))
+        {
+            bought = true;
+            resourceCounter.removeFaith(faithCost);
+            return true;
+        }
+        return false;
+    }
+
 }

@@ -3,25 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Tower : Building, Grabbable {
-
+    public AudioClip attackClip;
     public GameObject rangeHighlight;
+    public GameObject currentTarget;
+
     public float radius;
     public bool active = false;
-    public GameObject currentTarget;
+
     public int attackMask = 1 << 11;
     protected bool activated = false;
-    protected AudioSource attackSource;
-    public AudioClip attackClip;
-    float getHealth()
-    {
-        return health;
-    }
 
     public override void Awake()
     {
-        attackSource = gameObject.AddComponent<AudioSource>() as AudioSource;
-        attackSource.clip = attackClip;
         base.Awake();
+        audioSource.PlayOneShot(attackClip);
+        createRangeHighlight();
+    }
+
+    protected void createRangeHighlight()
+    {
         rangeHighlight = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         rangeHighlight.GetComponent<Renderer>().material.SetColor("_Color", Color.yellow);
         rangeHighlight.transform.localScale = new Vector3(radius, 0.1f, radius);
@@ -31,75 +31,49 @@ public class Tower : Building, Grabbable {
         rangeHighlight.GetComponent<Collider>().enabled = false;
         rangeHighlight.GetComponent<Renderer>().enabled = true;
         rangeHighlight.SetActive(false);
-
     }
+    virtual public void updateHighlight()
+    {
+        if (highlight != null)
+        {
+            if (highlightCheck()) showRange();
+            else hideRange();
+        }
+        else if (transform.position.y > 0f)
+        {
+            createHighlight();
+            showRange();
+        }
+        else
+        {
+            hideRange();
+        }
+    }
+
+    //override this to have the correct tower sequence
+    virtual public void activeTower()
+    {
+        if (resourceCounter.getBaddies() > 0)
+        {
+            if (currentTarget == null)
+            {
+                acquireTarget();
+            }
+        }
+    }
+
 
     // Update is called once per frame
     virtual public void Update () {
         rangeHighlight.transform.position = new Vector3(gameObject.transform.position.x, 0.1f, gameObject.transform.position.z);
-        if (held)
-        {
-            if (highlight != null)
-            {
-                if (highlightCheck()) showRange();
-                else hideRange();
-            }
-            else if (transform.position.y > 0f)
-            {
-                createHighlight();
-                showRange();
-            }
-            else
-            {
-                hideRange();
-            }
-        }
-        else if (active)
-        {
-
-            if (resourceCounter.getBaddies() > 0)
-            {
-                if (currentTarget == null)
-                {
-                    acquireTarget();
-                }
-            }
-        }
+        if (held) updateHighlight();
+        else if (active) activeTower();         
     }
 
     // different towers can aquire targets differently
     public virtual bool acquireTarget()
     {
         return true;
-    }
-    public override bool canBuy()
-    {
-        return true;
-    }
-
-    public void grab()
-    {
-        showRange();
-        if (!bought)
-        {
-            bought = true;
-            resourceCounter.removeFaith(faithCost);
-        }
-        held = true;
-
-        // Deactivate  collider and gravity
-        if (highlight != null)
-        {
-            DestroyImmediate(highlight);
-        }
-
-        // highlight where object wiould place if falling straight down
-        createHighlight();
-
-        GetComponent<Rigidbody>().useGravity = false;
-        GetComponent<Rigidbody>().isKinematic = true;
-        GetComponent<Collider>().enabled = false;
-
     }
 
     //function should be overriden by child
@@ -132,7 +106,6 @@ public class Tower : Building, Grabbable {
 
     }
 
-    //never goes in here 
     public override void create_building()
     {
 
@@ -160,7 +133,13 @@ public class Tower : Building, Grabbable {
         }
     }
 
-    new void release(Vector3 vel)
+    void Grabbable.grab() 
+    {
+        base.grab();
+        showRange();
+    }
+
+    void Grabbable.release(Vector3 vel)
     {
         base.release(vel);
         hideRange();

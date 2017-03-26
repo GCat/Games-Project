@@ -1,18 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.AI;
+using System;
 
-public class Temple : ResourceBuilding
+public class Temple : Building
 {
 
     public bool spawnedGarrison = false;
     public WorldStarter world;
     public bool placed = false;
 
-
     public override void create_building()
     {
-        buildingName = "TEMPLE";
         world.startGame();
         tablet.SetActive(true);
         placed = true;
@@ -23,6 +22,17 @@ public class Temple : ResourceBuilding
         CancelInvoke("removeOutline");
         resourceCounter.gameStart();
 
+    }
+
+    void Update()
+    {
+        if (held)
+        {
+            if (highlight != null)
+            {
+                highlightCheck();
+            }
+        }
     }
 
     private void Start()
@@ -37,7 +47,7 @@ public class Temple : ResourceBuilding
         return placed;
     }
 
-    public override void incrementResource()
+    public void incrementResource()
     {
         if (resourceCounter != null) StartCoroutine(ResourceGainText(resourceCounter.addFaith(5),"Faith"));
     }
@@ -88,4 +98,25 @@ public class Temple : ResourceBuilding
         Destroy(gameObject);
     }
 
+    public override string getName()
+    {
+        return "Temple";
+    }
+
+    public override Vector3 getLocation()
+    {
+        return transform.position;
+    }
+
+    public override void activate()
+    {
+        create_building();
+        held = false;
+        highlightDestroy();
+    }
+
+    public override void deactivate()
+    {
+
+    }
 }
