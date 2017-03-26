@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using System.Collections.Generic;
 
 public abstract class Building : MonoBehaviour, Grabbable, HealthManager{ // this should also be placeable hence the grab and release will be written once
     public AudioSource audioSource;
@@ -66,13 +67,14 @@ public abstract class Building : MonoBehaviour, Grabbable, HealthManager{ // thi
             if (fireEffect == null)
             {
                 fireEffect = Instantiate(Resources.Load("Fire"), new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.LookRotation(Vector3.forward, Vector3.up)) as GameObject;
-                ParticleSystem[] shapes = fireEffect.GetComponentsInChildren<ParticleSystem>();
-                
-                for(int i=0; i < shapes.Length; i++)
+                List<ParticleSystem> shapes = new List<ParticleSystem>(fireEffect.GetComponentsInChildren<ParticleSystem>());
+                shapes.Add(fireEffect.GetComponent<ParticleSystem>());
+                for(int i=0; i < shapes.Count; i++)
                 {
                     ParticleSystem.ShapeModule box = shapes[i].shape;
-                    box.box = GetComponent<Collider>().bounds.size*1.1f;
+                    box.box = GetComponent<Collider>().bounds.size*0.8f;
                 }
+                fireEffect.transform.parent = transform;
             }
             fireEffect.SetActive(true);
         }
@@ -108,7 +110,7 @@ public abstract class Building : MonoBehaviour, Grabbable, HealthManager{ // thi
         original_materials = new Shader[child_materials.Length];
         outlineShader = Shader.Find("Toon/Basic Outline");
         ExplosionEffect = Resources.Load("Explosion") as GameObject;
-        audioSource.PlayOneShot(buildClip, 0.7f);
+        //audioSource.PlayOneShot(buildClip, 0.7f);
         for (int i = 0; i < child_materials.Length; i++)
         {
             original_materials[i] = child_materials[i].material.shader;
