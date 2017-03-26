@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Tower : Building, Grabbable {
-    public AudioClip attackClip;
+    public AudioClip[] attackClip;
     public GameObject rangeHighlight;
     public GameObject currentTarget;
 
@@ -16,7 +16,7 @@ public class Tower : Building, Grabbable {
     public override void Awake()
     {
         base.Awake();
-        audioSource.PlayOneShot(attackClip);
+        //audioSource.PlayOneShot(attackClip);
         createRangeHighlight();
     }
 

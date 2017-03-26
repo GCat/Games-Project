@@ -15,6 +15,7 @@ public class FireTower : Tower
         Vector3 pos = transform.position;
         pos.y += 5;
         fireStream.SetActive(false);
+        audioSource.clip = attackClip[0];
     }
 
     public override void activeTower()
@@ -32,6 +33,7 @@ public class FireTower : Tower
                 if (Vector3.Distance(currentTarget.transform.position, transform.position) < radius)
                 {
                     fireStream.SetActive(true);
+                    audioSource.Play();
                     fireStream.transform.LookAt(currentTarget.transform.position);
                 }
                 else

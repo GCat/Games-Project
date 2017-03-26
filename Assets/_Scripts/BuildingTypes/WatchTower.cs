@@ -6,8 +6,6 @@ using UnityEngine;
 public class WatchTower : Tower
 {
 
-    public AudioClip arrowClip;
-    private AudioSource arrowSource;
     public float arrowDamage = 5;
     float arrowSpeed = 30;
     public string buildingName;
@@ -15,16 +13,12 @@ public class WatchTower : Tower
    
     GameObject pre;
    
+
+
     void Start()
     {
         pre = Resources.Load("Arrow_Regular") as GameObject;
-        arrowSource = gameObject.AddComponent<AudioSource>() as AudioSource;
-        arrowSource.rolloffMode = AudioRolloffMode.Linear;
-        arrowSource.volume = 0.7f;
-        arrowSource.spatialBlend = 0.5f;
-        arrowSource.clip = arrowClip;
     }
-
     //find a new nearby monster to attack
     public override bool acquireTarget()
     {
@@ -66,7 +60,7 @@ public class WatchTower : Tower
            
             float travelTime = Vector3.Distance(victim.transform.position, pos) / arrowSpeed;
             StartCoroutine(WaitToDamage(travelTime, arrowDamage, currentTarget));
-            arrowSource.Play();
+            audioSource.PlayOneShot(attackClip[UnityEngine.Random.Range(0, attackClip.Length)], 0.5f);
         }
     }
 

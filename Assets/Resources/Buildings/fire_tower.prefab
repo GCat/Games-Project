@@ -981,8 +981,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 815dc1c292a11e244a3bdfd82d194356, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioSource: {fileID: 0}
   buildClip: {fileID: 8300000, guid: 0f6a9c7d024f3144690add1c060e8ed0, type: 3}
-  source: {fileID: 0}
+  destroy: {fileID: 0}
   totalHealth: 100
   health: 100
   resourceCounter: {fileID: 0}
@@ -994,15 +995,13 @@ MonoBehaviour:
   canBeGrabbed: 1
   initialRotation: {x: 0, y: 0, z: 0, w: 0}
   held: 0
+  attackClip:
+  - {fileID: 8300000, guid: f6f489b172fe13d4990b4354eba2d772, type: 3}
   rangeHighlight: {fileID: 0}
+  currentTarget: {fileID: 0}
   radius: 20
   active: 0
-  held: 0
-  currentTarget: {fileID: 0}
   attackMask: 2048
-  attackClip: {fileID: 8300000, guid: f6f489b172fe13d4990b4354eba2d772, type: 3}
-  build: {fileID: 0}
-  destroy: {fileID: 0}
   fireDamagePerSecond: 10
   buildingName: 
   target: {fileID: 0}
