@@ -3102,7 +3102,7 @@ MonoBehaviour:
   rotationSpeed: 8
   alive: 0
   animator: {fileID: 95543238732232444}
-  monsterType: 0
+  monsterType: 1
   defaultState: 1
 --- !u!135 &135612776534938136
 SphereCollider:
@@ -3203,7 +3203,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.33
+  m_Radius: 0.25
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1.1, z: 0}
@@ -3724,10 +3724,10 @@ NavMeshAgent:
   m_Enabled: 1
   m_Radius: 0.5
   m_Speed: 4
-  m_Acceleration: 3
+  m_Acceleration: 4
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 2
+  m_StoppingDistance: 1.5
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1

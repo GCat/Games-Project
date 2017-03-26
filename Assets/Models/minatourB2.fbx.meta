@@ -218,7 +218,7 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
-    motionNodeName: <Root Transform>
+    motionNodeName: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
@@ -480,20 +480,14 @@ ModelImporter:
           serializedVersion: 2
           curve:
           - serializedVersion: 2
-            time: 0.008333334
-            value: 0.95000005
+            time: 0
+            value: 1
             inSlope: 0
             outSlope: 0
             tangentMode: 0
           - serializedVersion: 2
-            time: 0.43542814
-            value: 0.99690914
-            inSlope: 0.07659197
-            outSlope: 0.07659197
-            tangentMode: 0
-          - serializedVersion: 2
-            time: 0.9791667
-            value: 0.95125
+            time: 1
+            value: 1
             inSlope: 0
             outSlope: 0
             tangentMode: 0

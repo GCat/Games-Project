@@ -11,7 +11,7 @@ class Minotaur : Monster
     //can we make the spawn type an enum please xoxo
     void Awake()
     {
-        GameObject smoke = Instantiate(Resources.Load("Explosion") as GameObject, transform.position, Quaternion.identity);
+        GameObject smoke = Instantiate(Resources.Load("Dirty_Explosion") as GameObject, transform.position, Quaternion.LookRotation(Vector3.up, Vector3.forward));
         smoke.transform.parent = transform;
         smokeEffect = smoke.GetComponent<ParticleSystem>();
         smokeEffect.Stop();
@@ -25,6 +25,7 @@ class Minotaur : Monster
             return;
         }
         damageInRadius(5f);
+        smokeEffect.Clear();
         smokeEffect.Play();
     }
 
