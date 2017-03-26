@@ -16,6 +16,7 @@ public class GameBoard : MonoBehaviour {
     // Use this for initialization
     void Start () {
         b = GetComponent<Collider>().bounds;
+        Debug.Log(b.center);
         tR = b.max;
         bL = b.min;
 	}
@@ -59,9 +60,9 @@ public class GameBoard : MonoBehaviour {
         return transform.position;
     }
 
-    public bool dynamicAboveBoard(Vector3 p)
+    public bool dynamicAboveBoard(Vector3 position)
     {
-        return (p.x >= bL.x && p.z >= bL.z && p.x <= tR.x && p.z <= tR.z && p.y >= b.center.y -1f);
+        return (position.x >= bL.x && position.z >= bL.z && position.x <= tR.x && position.z <= tR.z && position.y >= -1f);
     }
 
     public bool dynamicWithinBounds(Vector3 position)

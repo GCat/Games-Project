@@ -21,7 +21,6 @@ public class Temple : Building
         CancelInvoke("showStartOutline");
         CancelInvoke("removeOutline");
         resourceCounter.gameStart();
-
     }
 
     void Update()
@@ -64,19 +63,27 @@ public class Temple : Building
     void spawnHumans()
     {
         Vector3 myLocation = transform.position;
+        Debug.Log("Spawning humans");
+
         // can not spawn on resource node
         Vector3 humanLocation;
         humanLocation = new Vector3(myLocation.x, myLocation.y, myLocation.z + 33);
         for (int i = 0; i < 5; i++)
         {
-
+            Debug.Log(humanLocation);
             if (resourceCounter.aboveBoard(myLocation))
             {
                 NavMeshHit hit;
                 if (NavMesh.SamplePosition(humanLocation, out hit, 50.0f, NavMesh.AllAreas))
                 {
                     Instantiate(Resources.Load("Characters/Human"), hit.position, Quaternion.identity);
+                }else
+                {
+                    Debug.Log("Could not spawn human");
                 }
+            }else
+            {
+                Debug.Log("Not above board");
             }
             humanLocation = rotateAroundPivot(humanLocation, myLocation, new Vector3(0, (360 / 5), 0));
         }
