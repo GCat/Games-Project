@@ -60,6 +60,9 @@ public class LightningBolt : Tool {
             Physics.IgnoreCollision(GetComponent<Collider>(), col.collider);
 
             Destroy(gameObject, 0.3f);      
+        }else if(col.gameObject.layer == 10)
+        {
+            Physics.IgnoreCollision(GetComponent<Collider>(), col.collider);
         }
     }
 
