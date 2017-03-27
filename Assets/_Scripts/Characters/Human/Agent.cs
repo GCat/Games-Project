@@ -290,7 +290,7 @@ public class Agent : Character, Grabbable
         if (!sacrificeEntered)
         {
             AudioSource source = GetComponent<AudioSource>();
-            source.PlayOneShot(sacrificeClip, 0.5f);
+            source.PlayOneShot(sacrificeClip, 0.2f);
             resources.addFaith(15);
             sacrificeEntered = true;
             anim.Play("diehard");

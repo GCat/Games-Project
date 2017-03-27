@@ -421,6 +421,11 @@ public class Hand : MonoBehaviour {
             {
                 int seed = Random.Range(0, hitSounds.Length);
                 audioSource.PlayOneShot(hitSounds[seed], 0.9f);
+                Monster monster = gother.GetComponent<Monster>();
+                if(monster != null)
+                {
+                    monster.stun();
+                }
                 healthManager.decrementHealth(1);
             }
         }

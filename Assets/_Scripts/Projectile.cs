@@ -10,7 +10,16 @@ public class Projectile : MonoBehaviour {
     public float destroyDelay = 0;
 	// Use this for initialization
 	void Start () {
+        StartCoroutine(fadeOut(10));
+    }
 
+    IEnumerator fadeOut(float time)
+    {
+        yield return new WaitForSeconds(time);
+        if(gameObject != null)
+        {
+            Destroy(gameObject);
+        }
     }
 
     // Update is called once per frame

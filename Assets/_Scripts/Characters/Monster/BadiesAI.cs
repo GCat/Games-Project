@@ -65,10 +65,14 @@ public abstract class Monster : Character
 
     // surround target position, used to decide where in teh perimeter of the building to attack
     private Vector3 sT;
-
+    protected ParticleSystem stunEffect;
+    //stunned should maybe be a state :)
+    private bool isStunned = false;
+    private bool resistStunning = false;
 
     void Start()
     {
+ 
         cameraPos = GameObject.FindWithTag("MainCamera").transform.position;
         agent = GetComponent<NavMeshAgent>();
         createHealthBar();
@@ -84,6 +88,7 @@ public abstract class Monster : Character
             rb.isKinematic = true;
         }
         GetComponent<Collider>().enabled = true;
+        float height = GetComponent<Collider>().bounds.size.y;
         damageText = Resources.Load("Damage Text") as GameObject;
         rb = GetComponent<Rigidbody>();
         closestEnemy = null;
@@ -95,6 +100,10 @@ public abstract class Monster : Character
         resources = GameObject.FindGameObjectWithTag("Tablet").GetComponent<ResourceCounter>();
         resources.addBaddie(monsterType);
         currentState = defaultState;
+        GameObject stun = Instantiate(Resources.Load("Seeing_stars") as GameObject, transform.position + Vector3.up * height, Quaternion.identity);
+        stun.transform.parent = transform;
+        stunEffect = stun.GetComponent<ParticleSystem>();
+        stunEffect.Stop();
     }
 
     void Update()
@@ -106,6 +115,10 @@ public abstract class Monster : Character
 
         if (alive)
         {
+            if (isStunned)
+            {
+                return;
+            }
             switch (currentState)
             {
                 case MonsterState.AttackTemple:
@@ -287,6 +300,35 @@ public abstract class Monster : Character
         {
             currentState = prevState;
             changeEnemy();
+        }
+    }
+
+    IEnumerator preventLock(float time)
+    {
+        isStunned = false;
+        resistStunning = true;
+        yield return new WaitForSeconds(time);
+        resistStunning = false;
+
+    }
+
+    IEnumerator stunLock(float time)
+    {
+        isStunned = true;
+        agent.Stop();
+        yield return new WaitForSeconds(time);
+        isStunned = false;
+        agent.Resume();
+        preventLock(2);
+    }
+
+    public void stun()
+    {
+        stunEffect.Clear();
+        if (!resistStunning)
+        {
+            stunEffect.Play();
+            StartCoroutine(stunLock(2));
         }
     }
 
