@@ -228,6 +228,7 @@ public class Agent : Character, Grabbable
     void FixedUpdate()
     {
         if (currentState == HumanState.Falling)
+        {
             if (!sacrificeEntered)
             {
                 if (resources.aboveBoard(transform.position))
@@ -249,6 +250,7 @@ public class Agent : Character, Grabbable
                     sacrifice();
                 }
             }
+        }
     }
 
     //generates a new point on the board to wander to

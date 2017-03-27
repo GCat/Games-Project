@@ -43,7 +43,6 @@ public class Hand : MonoBehaviour {
     public enum PropType { Building, Human, Tool, Handle, None};
     float rotationTimer;
     float startTime;
-    Collider heldCollider;
 
     private int grabLayer = (1 << 9) | (1 << 10) | (1 << 14);
 
@@ -413,7 +412,8 @@ public class Hand : MonoBehaviour {
         if (gother.layer == 9 || gother.layer == 10 || gother.layer == 14 && !holding)
         {
             onBounds.Add(other);
-        }else if(gother.layer == 11)
+        }
+        else if(gother.layer == 11)
         {
             //slap baddies
             HealthManager healthManager = gother.GetComponent<HealthManager>();
@@ -443,4 +443,5 @@ public class Hand : MonoBehaviour {
             onBounds.Remove(other);
         }
     }
+
 }

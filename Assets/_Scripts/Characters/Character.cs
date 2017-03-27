@@ -48,7 +48,7 @@ public abstract class Character : MonoBehaviour, HealthManager
 
     protected void setDestination(Vector3 target)
     {
-        if(agent.destination != target)
+        if(agent.destination != target && agent.isOnNavMesh)
         {
             agent.destination = target;
         }
