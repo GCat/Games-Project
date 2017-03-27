@@ -162,9 +162,10 @@ public class Agent : Character, Grabbable
                                 currentState = HumanState.Defending;
                                 break;
                             }
-                            if (transform.position.y < 0.2)
+                            if (transform.position.y < 0.3)
                             {
                                 rb.velocity = Vector3.zero;
+                                transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
                                 agent.enabled = true;
                                 rb.isKinematic = true;
                                 currentState = HumanState.Wandering;

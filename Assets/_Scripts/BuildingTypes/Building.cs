@@ -72,7 +72,7 @@ public abstract class Building : MonoBehaviour, Grabbable, HealthManager{ // thi
                 for(int i=0; i < shapes.Count; i++)
                 {
                     ParticleSystem.ShapeModule box = shapes[i].shape;
-                    box.box = GetComponent<Collider>().bounds.size*0.8f;
+                    box.box = GetComponent<Collider>().bounds.size;
                 }
                 fireEffect.transform.parent = transform;
             }
