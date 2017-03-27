@@ -202,7 +202,11 @@ public class Agent : Character, Grabbable
             if (!atDestination(target))
             {
                 offset.y = transform.position.y;
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(offset), Time.deltaTime * 10f);
+                if(agent.desiredVelocity.magnitude > 0)
+                {
+                    Quaternion desiredLookDirection = Quaternion.LookRotation(agent.desiredVelocity.normalized, Vector3.up);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, desiredLookDirection, Time.deltaTime * 10f);
+                }
             }
             anim.Play("walk");
         }
@@ -302,11 +306,6 @@ public class Agent : Character, Grabbable
         combatEngaged = false;
     }
 
-    private void moveStraightToTarget(GameObject target)
-    {
-        walkTo(target.transform.position);
-    }
-
     private void attack()
     {
         //always find closest enemy unless otherwise engaged
@@ -326,10 +325,9 @@ public class Agent : Character, Grabbable
                 anim.Play("walk");
                 return;
             }
-        }
-        else
+        }else
         {
-            moveStraightToTarget(closestEnemy);
+            anim.Play("walk");
         }
 
     }
@@ -341,6 +339,7 @@ public class Agent : Character, Grabbable
             if (!combatEngaged && resources.getGroundBaddies() > 0)
             {
                 closestEnemy = findClosestEnemy();
+                walkTo(closestEnemy.transform.position);
             }
             yield return new WaitForSeconds(1);
         }
