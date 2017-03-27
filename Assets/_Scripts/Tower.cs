@@ -32,6 +32,7 @@ public class Tower : Building, Grabbable {
         rangeHighlight.GetComponent<Renderer>().enabled = true;
         rangeHighlight.SetActive(false);
     }
+
     virtual public void updateHighlight()
     {
         if (highlight != null)

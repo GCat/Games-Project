@@ -12,6 +12,7 @@ public class ResourceCounter : MonoBehaviour, Grabbable
     public Text faithNumber;
     public Slider healthSlider;
     public Slider waveSlider;
+    public Text fpsCounter;
 
     private Temple temple;
     private Portal portal;
@@ -76,6 +77,7 @@ public class ResourceCounter : MonoBehaviour, Grabbable
         //setResourceText();
         faithNumber.text = faith.ToString();
         healthSlider.value = temple.health;
+        fpsCounter.text = "FPS: " + (1f / Time.deltaTime).ToString("F2");
     }
 
     public void setResourceText()
