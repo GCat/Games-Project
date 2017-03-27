@@ -22,6 +22,7 @@ class Minotaur : Monster
         if (currentVictim == null)
         {
             Debug.Log("No current victim");
+            
             return;
         }
         damageInRadius(5f);

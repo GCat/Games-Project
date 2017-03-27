@@ -6,6 +6,8 @@ using UnityEngine.AI;
 using UnityEngine.UI;
 
 
+
+
 public abstract class Monster : Character
 {
 
@@ -114,7 +116,14 @@ public abstract class Monster : Character
                     else
                     {
                         closestEnemy = temple;
-                        walkTowards(templeAttackPoint);
+                        try
+                        {
+                            walkTowards(templeAttackPoint);
+                        }
+                        catch(TargetNotFoundException e)
+                        {
+                            currentState = MonsterState.Idle;
+                        }
                     }
                     break;
                 case MonsterState.AttackHumans:
@@ -193,17 +202,18 @@ public abstract class Monster : Character
         return closestEnemy;
     }
 
+
+
     private Vector3 getClosestPointToTarget(Vector3 target)
     {
         NavMeshHit hit;
-        if (NavMesh.SamplePosition(target, out hit, 30.0f, NavMesh.AllAreas))
+        if (NavMesh.SamplePosition(target, out hit, 40.0f, NavMesh.AllAreas))
         {
             return hit.position;
         }
         else
         {
-            Debug.LogError("Cannot walk here!");
-            return transform.position;
+            throw new TargetNotFoundException();
         }
     }
 
@@ -263,7 +273,15 @@ public abstract class Monster : Character
                 currentState = prevState;
             }
             else
-                walkTowards(closestEnemy.GetComponent<Collider>().ClosestPointOnBounds(transform.position));
+            {
+                try
+                {
+                    walkTowards(closestEnemy.GetComponent<Collider>().ClosestPointOnBounds(transform.position));
+                }catch(TargetNotFoundException e)
+                {
+                    currentState = MonsterState.AttackHumans;
+                }
+            }
         }
         else
         {
@@ -284,7 +302,13 @@ public abstract class Monster : Character
             }
             else
             {
-                walkTowards(closestEnemy.GetComponent<Collider>().ClosestPointOnBounds(transform.position));
+                try
+                {
+                    walkTowards(closestEnemy.GetComponent<Collider>().ClosestPointOnBounds(transform.position));
+                }catch(TargetNotFoundException e)
+                {
+                    currentState = MonsterState.AttackHumans;
+                }
             }
         }
         else
@@ -310,7 +334,15 @@ public abstract class Monster : Character
             return;
         }
         //otherwise walk towards target or attack if close
-        walkTowards(closestEnemy.GetComponent<Collider>().ClosestPointOnBounds(transform.position));
+        try
+        {
+            walkTowards(closestEnemy.GetComponent<Collider>().ClosestPointOnBounds(transform.position));
+        }
+        catch(TargetNotFoundException e)
+        {
+            //ideally if you can't walk towards a human you should go to the next -- not implemented yet
+            currentState = MonsterState.AttackTemple;
+        }
 
     }
     IEnumerator CombatLock(float time)
@@ -324,7 +356,13 @@ public abstract class Monster : Character
         if (target != nextBestTarget)
         {
             //if the target is not on the nav mesh, just get the nearest valid point for now
-            nextBestTarget = getClosestPointToTarget(target);
+            try
+            {
+                nextBestTarget = getClosestPointToTarget(target);
+            }catch(TargetNotFoundException exception)
+            {
+                throw;
+            }
             target = nextBestTarget;
         }
         if (sT == Vector3.zero)
