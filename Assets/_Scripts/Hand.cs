@@ -325,8 +325,7 @@ public class Hand : MonoBehaviour {
                 {
                     //this is why the building had a grabbable interface :p - this should be there ;)
                     snapToGrid(heldObject);
-                    building.audioSource.clip = building.buildClip;
-                    building.audioSource.Play();
+                    audioSource.PlayOneShot(building.buildClip, 0.6f);
                     building.activate();
                     building.removeOutline();
                 }

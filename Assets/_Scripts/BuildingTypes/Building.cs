@@ -110,7 +110,6 @@ public abstract class Building : MonoBehaviour, Grabbable, HealthManager{ // thi
         original_materials = new Shader[child_materials.Length];
         outlineShader = Shader.Find("Toon/Basic Outline");
         ExplosionEffect = Resources.Load("Explosion") as GameObject;
-        //audioSource.PlayOneShot(buildClip, 0.7f);
         for (int i = 0; i < child_materials.Length; i++)
         {
             original_materials[i] = child_materials[i].material.shader;

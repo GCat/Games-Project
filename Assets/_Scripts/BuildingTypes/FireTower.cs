@@ -16,10 +16,12 @@ public class FireTower : Tower
         pos.y += 5;
         fireStream.SetActive(false);
         audioSource.clip = attackClip[0];
+        audioSource.volume = 0.4f;
     }
 
     public override void activeTower()
     {
+
         if (resourceCounter.getBaddies() > 0)
         {
             if (currentTarget == null)
@@ -32,12 +34,16 @@ public class FireTower : Tower
             {
                 if (Vector3.Distance(currentTarget.transform.position, transform.position) < radius)
                 {
+                    if (!audioSource.isPlaying)
+                    {
+                        audioSource.Play();
+                    }
                     fireStream.SetActive(true);
-                    audioSource.Play();
                     fireStream.transform.LookAt(currentTarget.transform.position);
                 }
                 else
                 {
+                    currentTarget = null;
                     fireStream.SetActive(false);
                     audioSource.Stop();
                 }
@@ -47,6 +53,7 @@ public class FireTower : Tower
         else
         {
             fireStream.SetActive(false);
+            audioSource.Stop();
         }
     }
 
