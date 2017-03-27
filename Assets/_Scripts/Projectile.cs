@@ -20,7 +20,7 @@ public class Projectile : MonoBehaviour {
 
     void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject != parent)
+        if (other.gameObject != parent && other.gameObject.tag == "Badies" || other.gameObject.tag == "Ground")
         {
             GetComponent<Rigidbody>().isKinematic = true;
             Destroy(gameObject, destroyDelay);

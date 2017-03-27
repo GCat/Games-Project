@@ -158,6 +158,7 @@ public class Agent : Character, Grabbable
                             if ((transform.position.y < 0.5) && droppedOnZone)
                             {
                                 agent.enabled = true;
+                                rb.isKinematic = true;
                                 currentState = HumanState.Defending;
                                 break;
                             }
@@ -165,6 +166,7 @@ public class Agent : Character, Grabbable
                             {
                                 rb.velocity = Vector3.zero;
                                 agent.enabled = true;
+                                rb.isKinematic = true;
                                 currentState = HumanState.Wandering;
                             }
                         }
@@ -236,12 +238,14 @@ public class Agent : Character, Grabbable
                     if ((transform.position.y < 0.5) && droppedOnZone)
                     {
                         agent.enabled = true;
+                        rb.isKinematic = true;
                         currentState = HumanState.Defending;
                     }
                     if (transform.position.y < 0.2)
                     {
                         rb.velocity = Vector3.zero;
                         agent.enabled = true;
+                        rb.isKinematic = true;
                         currentState = HumanState.Wandering;
                     }
                 }
