@@ -51,14 +51,6 @@ public class Temple : Building
         if (resourceCounter != null) StartCoroutine(ResourceGainText(resourceCounter.addFaith(5),"Faith"));
     }
 
-    private void showStartOutline()
-    {
-        for (int i = 0; i < child_materials.Length; i++)
-        {
-            child_materials[i].material.shader = outlineShader;
-            child_materials[i].material.SetColor("_OutlineColor", Color.yellow);
-        }
-    }
 
     void spawnHumans()
     {

@@ -34,8 +34,8 @@ using UnityEngine.AI;
  */
 
 
-
-public class Agent : Character, Grabbable
+        
+public class Agent : Character
 {
     // Human characteristics
     public float health = 100.0f;
@@ -75,9 +75,6 @@ public class Agent : Character, Grabbable
     private Vector3 wanderPoint = Vector3.zero;
     private LineRenderer lineRenderer;
 
-    protected Renderer[] child_materials;
-    private Shader outlineShader;
-
     private Vector3 bL;
     private Vector3 tR;
     private float rallyZoneRadius = 10;
@@ -104,8 +101,6 @@ public class Agent : Character, Grabbable
         healthBarOri = healthBar.transform.rotation;
         createInfoText();
         infoTextOri = infoText.transform.rotation;
-        child_materials = GetComponentsInChildren<Renderer>();
-        outlineShader = Shader.Find("Toon/Basic Outline");
         lineRenderer = GetComponent<LineRenderer>();
         tR = resources.getTopRight();
         bL = resources.getBottomLeft();
@@ -404,7 +399,7 @@ public class Agent : Character, Grabbable
 
 
 
-    public void grab()
+    public override void grab()
     {
         agent.enabled = false;
         currentState = HumanState.Grabbed;
@@ -415,7 +410,7 @@ public class Agent : Character, Grabbable
         droppedOnZone = false;
     }
 
-    public void release(Vector3 vel)
+    public override void release(Vector3 vel)
     {
         currentState = HumanState.Falling;
         GetComponent<Collider>().enabled = true;
@@ -473,25 +468,6 @@ public class Agent : Character, Grabbable
     public void changeMode(bool val)
     {
         throw new NotImplementedException();
-    }
-
-
-    private void setOutline()
-    {
-        foreach (Renderer renderer in child_materials)
-        {
-            renderer.material.shader = outlineShader;
-            renderer.material.SetColor("_OutlineColor", Color.green);
-        }
-    }
-
-    private void removeOutline()
-    {
-        foreach (Renderer renderer in child_materials)
-        {
-            renderer.material.shader = Shader.Find("Diffuse");
-            //renderer.material.SetColor("_OutlineColor", Color.green);
-        }
     }
     private void OnTriggerEnter(Collider other)
     {

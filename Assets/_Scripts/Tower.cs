@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Tower : Building, Grabbable {
+public class Tower : Building {
     public AudioClip[] attackClip;
     public GameObject rangeHighlight;
     public GameObject currentTarget;
@@ -134,13 +134,13 @@ public class Tower : Building, Grabbable {
         }
     }
 
-    void Grabbable.grab() 
+    public override void grab() 
     {
         base.grab();
         showRange();
     }
 
-    void Grabbable.release(Vector3 vel)
+    public override void release(Vector3 vel)
     {
         base.release(vel);
         hideRange();

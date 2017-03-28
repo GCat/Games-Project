@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RallyPoint : Building, Grabbable {
+public class RallyPoint : Building {
 
     public string buildingName;
     private int fCost = 0;

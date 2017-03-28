@@ -3,7 +3,7 @@ using System.Collections;
 using System;
 using UnityEngine.AI;
 
-public class House : Building, Grabbable
+public class House : Building
 {
     public GameObject humanSpawn;
     public GameObject heartEffect;

@@ -299,12 +299,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1801555696720252}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e0865ecfdb8cc4b49892f367f6558af1, type: 3}
+  m_Script: {fileID: 11500000, guid: 4ffba1521e430a14f9b46d2302219400, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   held: 0
-  fCost: 10
+  faithCost: 10
   damage: 50
   damageRadius: 30
-  res: {fileID: 0}
-  zap: {fileID: 8300000, guid: 2ba0fc330cd63314aa844a3076e2785a, type: 3}
+  audioSource: {fileID: 0}
+  powerClip: {fileID: 0}
+  resourceCounter: {fileID: 0}

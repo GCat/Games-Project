@@ -3,26 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Handle : MonoBehaviour, Grabbable {
+public class Handle : Grabbable {
 
-    protected Shader outlineShader;
     public bool rotationHandle = false;
     public bool frontHandle = false;
-    private Renderer renderer;
     private GameObject parent;
     private bool grabbed = false;
     private LineRenderer lineRenderer;
     private Collider myCol;
     public GameObject bSpawner;
-    protected Renderer[] child_materials;
 
 
     void Start()
     {
         myCol = GetComponent<Collider>();
-        renderer = GetComponent<Renderer>();
-        outlineShader = Shader.Find("Toon/Basic Outline");
-        child_materials = GetComponentsInChildren<Renderer>();
         if (transform.parent != null)
         {
             parent = transform.parent.gameObject;
@@ -72,7 +66,7 @@ public class Handle : MonoBehaviour, Grabbable {
         }
     }
 
-    public void grab()
+    public override void grab()
     {
         if (rotationHandle)
         {
@@ -87,7 +81,7 @@ public class Handle : MonoBehaviour, Grabbable {
         bSpawner.GetComponent<BuildingSpawner>().spawn = spawn;
     }
 
-    public void release(Vector3 vel)
+    public override void release(Vector3 vel)
     {
         if(transform.position.y < 0)
         {
@@ -116,26 +110,6 @@ public class Handle : MonoBehaviour, Grabbable {
         //    }
         //}
         //spawnChange(true);
-    }
-
-    public void removeOutline()
-    {
-
-        foreach (Renderer renderer in child_materials)
-        {
-            renderer.material.shader = Shader.Find("Diffuse");
-            //renderer.material.SetColor("_OutlineColor", Color.green);
-        }
-    }
-
-    private void setOutline()
-    {
-
-        foreach (Renderer renderer in child_materials)
-        {
-            renderer.material.shader = outlineShader;
-            renderer.material.SetColor("_OutlineColor", Color.green);
-        }
     }
 
     private void OnTriggerEnter(Collider other)

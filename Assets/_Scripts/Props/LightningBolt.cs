@@ -7,12 +7,6 @@ public class LightningBolt : Tool {
 
     GameObject flash;    
 
-    // Use this for initialization
-    void Start () {
-        outlineShader = Shader.Find("Toon/Basic Outline");
-        renderer = GetComponent<Renderer>();   
-    }
-
     public override void release(Vector3 vel)
     {
         GetComponent<Rigidbody>().useGravity = true;
@@ -39,7 +33,6 @@ public class LightningBolt : Tool {
         if (col.gameObject.tag == "Ground") {
             int layerMask = 1 << 11;
             ContactPoint hit = col.contacts[0];
-            renderer.enabled = false;
             GetComponent<Collider>().enabled = false;
             Collider[] damageZone = Physics.OverlapSphere(hit.point, damageRadius, layerMask);
 
@@ -65,11 +58,4 @@ public class LightningBolt : Tool {
             Physics.IgnoreCollision(GetComponent<Collider>(), col.collider);
         }
     }
-
- 
-    public void activate()
-    {
-        throw new NotImplementedException();
-    }
-
 }

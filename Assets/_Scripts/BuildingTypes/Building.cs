@@ -3,7 +3,7 @@ using System.Collections;
 using System;
 using System.Collections.Generic;
 
-public abstract class Building : MonoBehaviour, Grabbable, HealthManager{ // this should also be placeable hence the grab and release will be written once
+public abstract class Building : Grabbable, HealthManager{ // this should also be placeable hence the grab and release will be written once
     public AudioSource audioSource;
     public AudioClip buildClip;
     public AudioClip destroy;
@@ -23,10 +23,7 @@ public abstract class Building : MonoBehaviour, Grabbable, HealthManager{ // thi
     public GameObject highlight_template;
     protected GameObject highlight;
     public bool canBeGrabbed = true;
-    protected Renderer[] child_materials;
-    protected Shader[] original_materials;
 
-    protected Shader outlineShader;
     private GameObject ExplosionEffect;
     private GameObject fireEffect;
     public Quaternion initialRotation;
@@ -106,14 +103,8 @@ public abstract class Building : MonoBehaviour, Grabbable, HealthManager{ // thi
         resourceGainText = createInfoText("ResourceGainTablet");
         boxSize = GetComponent<BoxCollider>().bounds.size / 2;
         boxSize.y = 1f;
-        child_materials = GetComponentsInChildren<Renderer>(false);
-        original_materials = new Shader[child_materials.Length];
-        outlineShader = Shader.Find("Toon/Basic Outline");
         ExplosionEffect = Resources.Load("Explosion") as GameObject;
-        for (int i = 0; i < child_materials.Length; i++)
-        {
-            original_materials[i] = child_materials[i].material.shader;
-        }
+
     }
 
     //return true if within bounds & not above another building
@@ -146,37 +137,6 @@ public abstract class Building : MonoBehaviour, Grabbable, HealthManager{ // thi
         return false;
     }
 
-
-    private void setOutline()
-    {
-        if (canBeGrabbed)
-        {
-            for (int i=0; i < child_materials.Length; i++)
-            {
-                child_materials[i].material.shader = outlineShader;
-                child_materials[i].material.SetColor("_OutlineColor", Color.green);
-            }
-        }
-    }
-
-    private void setWarning()
-    {
-        for (int i = 0; i < child_materials.Length; i++)
-        {
-            child_materials[i].material.shader = outlineShader;
-            child_materials[i].material.SetColor("_OutlineColor", Color.red);
-        }
-
-    }
-
-    public void removeOutline()
-    {
-        for (int i = 0; i < child_materials.Length; i++)
-        {
-            child_materials[i].material.shader = original_materials[i];
-
-        }
-    }
     public void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Hand")
@@ -312,7 +272,7 @@ public abstract class Building : MonoBehaviour, Grabbable, HealthManager{ // thi
         highlight.GetComponent<Collider>().isTrigger = true;
     }
 
-    public void grab() 
+    public override void grab() 
     {
         held = true;
         //Already placed the object once so should not charge you
@@ -328,7 +288,7 @@ public abstract class Building : MonoBehaviour, Grabbable, HealthManager{ // thi
         GetComponent<Collider>().enabled = false;
     }
 
-    public void release(Vector3 vel)
+    public override void release(Vector3 vel)
     {
         held = false;
         GetComponent<Rigidbody>().useGravity = true;

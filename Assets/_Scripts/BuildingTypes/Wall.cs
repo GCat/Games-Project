@@ -3,7 +3,7 @@ using System.Collections;
 using System;
 using UnityEngine.AI;
 
-public class Wall : Building, Grabbable
+public class Wall : Building
 {
 
     // Use this for initialization
@@ -162,7 +162,7 @@ public class Wall : Building, Grabbable
         wallSegment.transform.LookAt(turretB.transform.position + Vector3.up * (height / 2));
     }
 
-    void Grabbable.grab()
+    public override void grab()
     {
         base.grab();    
 
@@ -174,7 +174,7 @@ public class Wall : Building, Grabbable
         showTurretHighlight();
     }
 
-   void Grabbable.release(Vector3 vel)
+   public override void release(Vector3 vel)
     {
         base.release(vel);
         hideTurretHighlight();

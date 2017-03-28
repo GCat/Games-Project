@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Tool : MonoBehaviour, Grabbable
+public abstract class Tool : Grabbable
 {
     public bool held = false;
     public int faithCost = 10;
@@ -14,7 +14,6 @@ public abstract class Tool : MonoBehaviour, Grabbable
 
     public ResourceCounter resourceCounter;
     protected new Renderer renderer;
-    protected Shader outlineShader;
 
  
     // Use this for initialization
@@ -49,26 +48,14 @@ public abstract class Tool : MonoBehaviour, Grabbable
         }
     }
 
-    public void removeOutline()
-    {
-
-        renderer.material.shader = Shader.Find("Diffuse");
-    }
-
-    private void setOutline()
-    {
-        renderer.material.shader = outlineShader;
-        renderer.material.SetColor("_OutlineColor", Color.blue);
-    }
-
-    public virtual void grab()
+    public override void grab()
     {
         held = true;
         GetComponent<Rigidbody>().useGravity = false;
         GetComponent<Rigidbody>().isKinematic = true;
         GetComponent<Collider>().enabled = false;
     }
-    public virtual void release(Vector3 vel)
+    public override void release(Vector3 vel)
     {
         //
     }

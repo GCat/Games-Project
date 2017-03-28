@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public abstract class Character : MonoBehaviour, HealthManager
+public abstract class Character : Grabbable, HealthManager
 {
     protected GameObject healthBar;
     protected Quaternion healthBarOri;

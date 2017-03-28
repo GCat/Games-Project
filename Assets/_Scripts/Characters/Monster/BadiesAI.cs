@@ -4,9 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine.AI;
 using UnityEngine.UI;
-
-
-
+using System;
 
 public abstract class Monster : Character
 {
@@ -332,6 +330,14 @@ public abstract class Monster : Character
         }
     }
 
+    public override void grab()
+    {
+
+    }
+
+    public override void release(Vector3 vel)
+    {
+    }
 
     private void attackBuildings()
     {
