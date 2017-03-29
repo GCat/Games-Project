@@ -5,62 +5,49 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-public abstract class Food : Grabbable
+class Food : Edible
 {
+    private AudioSource audioSource;
+    private GameObject crumbs;
+    private ParticleSystem crumbEffect;
+    public AudioClip squish;
+    public AudioClip munch;
+    public Color crumbColour;
 
-    protected GameObject mouth;
-    protected bool held = false;
-
-    public override void grab()
+    void Start()
     {
-        GetComponent<Rigidbody>().isKinematic = true;
-        GetComponent<Rigidbody>().useGravity = false;
-        held = true;
+        audioSource = gameObject.AddComponent<AudioSource>();
+        crumbs = Instantiate(Resources.Load("Particles/Crumbs") as GameObject, transform.position, Quaternion.identity);
+        crumbs.transform.parent = transform;
+        crumbs.transform.localScale = new Vector3(1, 1, 1);
+        crumbEffect = crumbs.GetComponent<ParticleSystem>();
+        crumbEffect.Stop();
+        crumbEffect.Clear();
+        ParticleSystem.MainModule main = crumbEffect.main;
+        main.startColor = crumbColour;
+        mouth = GameObject.FindGameObjectWithTag("MainCamera");
     }
 
-    public override void release(Vector3 vel)
+ 
+
+    public void OnCollisionEnter(Collision collision)
     {
-        GetComponent<Rigidbody>().isKinematic = false;
-        GetComponent<Rigidbody>().useGravity = true;
-        GetComponent<Rigidbody>().velocity = vel;
-        removeOutline();
+        float force = collision.impulse.magnitude;
+        if (force > 1)
+        {
+            audioSource.PlayOneShot(squish, 0.6f);
+        }
+    }
+    protected override void eat()
+    {
+        crumbEffect.Clear();
+        crumbEffect.Play();
+        audioSource.PlayOneShot(munch, 0.8f);
         held = false;
+        hide();
+        StartCoroutine(WaitToDestroy(1f));
+
     }
-
-    protected abstract void eat();
-
-
-    public void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.tag == "Hand")
-        {
-            setOutline();
-        }else if(other.gameObject.tag == "MainCamera")
-        {
-            eat();
-        }
-    }
-
-    public void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.tag == "Hand")
-        {
-            removeOutline();
-        }
-    }
-
-    void Update()
-    {
-        //get around double trigger for noms
-        if (held)
-        {
-            if (Vector3.Distance(transform.position, mouth.transform.position) < 15f)
-            {
-                eat();
-            }
-        }
-    }
-
-
 
 }
+

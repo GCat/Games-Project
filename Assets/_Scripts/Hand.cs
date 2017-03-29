@@ -40,7 +40,7 @@ public class Hand : MonoBehaviour {
     private float[] held_object_times;
 
 
-    public enum PropType { Building, Human, Tool, Handle, Food, None};
+    public enum PropType { Building, Human, Tool, Handle, Food, Prop, None};
     float rotationTimer;
     float startTime;
 
@@ -230,7 +230,8 @@ public class Hand : MonoBehaviour {
         if (prop.GetComponent<Agent>() != null) return PropType.Human;
         if (prop.GetComponent<Tool>() != null) return PropType.Tool;
         if (prop.GetComponent<Handle>() != null) return PropType.Handle;
-        if (prop.GetComponent<Food>() != null) return PropType.Food;
+        if (prop.GetComponent<Edible>() != null) return PropType.Food;
+        if (prop.GetComponent<Grabbable>() != null) return PropType.Prop;
 
         return PropType.None;
     }
@@ -302,6 +303,15 @@ public class Hand : MonoBehaviour {
                 kinect_view.setTrackingContext(BodySourceView.TrackingContext.Slow, right_hand);
                 break;
             case PropType.Food:
+                Grabbable food = grabTarget.GetComponent<Grabbable>();
+                heldObject = grabTarget;
+                food.grab();
+                snapToHand(grabTarget);
+                grabTarget.transform.parent = transform;
+                holding = true;
+                kinect_view.setTrackingContext(BodySourceView.TrackingContext.Medium, right_hand);
+                break;
+            case PropType.Prop:
                 Grabbable prop = grabTarget.GetComponent<Grabbable>();
                 heldObject = grabTarget;
                 prop.grab();
