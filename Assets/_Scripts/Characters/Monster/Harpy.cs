@@ -10,7 +10,7 @@ class Harpy : Monster
 
     void Awake()
     {
-        projectile = Resources.Load("Projectile") as GameObject;
+        projectile = Resources.Load("Particles/Projectile") as GameObject;
     }
 
 

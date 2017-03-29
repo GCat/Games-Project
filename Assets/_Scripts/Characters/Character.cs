@@ -12,7 +12,7 @@ public abstract class Character : Grabbable, HealthManager
 
     protected abstract void hit();
     public abstract void decrementHealth(float damage);
-    protected NavMeshAgent agent;
+    public NavMeshAgent agent;
     protected ResourceCounter resources;
 
 

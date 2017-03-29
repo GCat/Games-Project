@@ -46,7 +46,7 @@ class Food : Edible
         held = false;
         hide();
         StartCoroutine(WaitToDestroy(1f));
-
+        GetComponent<Collider>().enabled = false;
     }
 
 }

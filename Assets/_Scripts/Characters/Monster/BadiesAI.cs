@@ -72,7 +72,10 @@ public abstract class Monster : Character
     {
  
         cameraPos = GameObject.FindWithTag("MainCamera").transform.position;
-        agent = GetComponent<NavMeshAgent>();
+        if (agent == null)
+        {
+            agent = GetComponent<NavMeshAgent>();
+        }
         createHealthBar();
         healthBarOri = healthBar.transform.rotation;
         lineRenderer = GetComponent<LineRenderer>();
@@ -434,7 +437,7 @@ public abstract class Monster : Character
                 closestEnemy = findObstacles();
                 if (closestEnemy == null)
                 {
-                    Debug.LogError("NO OBSTACLE FOUND AND NO PATH U FUCKED!");
+
                 }
                 else
                 {
