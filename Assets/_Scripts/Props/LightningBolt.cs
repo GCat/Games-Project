@@ -23,7 +23,7 @@ public class LightningBolt : Tool {
 
     private void playDestructionEffect(ContactPoint hit)
     {
-        GameObject resource = Resources.Load("Bolt flash") as GameObject;
+        GameObject resource = Resources.Load("Particles/Bolt flash") as GameObject;
         flash = GameObject.Instantiate(resource, hit.point, Quaternion.identity);
         Destroy(flash.gameObject, 2f);
     }

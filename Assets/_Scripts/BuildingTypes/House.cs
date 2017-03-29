@@ -40,7 +40,7 @@ public class House : Building
 
     void Start()
     {
-        heartEffect = Resources.Load("Explosion_Lovely") as GameObject;
+        heartEffect = Resources.Load("Particles/Explosion_Lovely") as GameObject;
         boxSize = GetComponent<BoxCollider>().bounds.size / 2;
         boxSize.y = 0.01f;
     }

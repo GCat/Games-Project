@@ -63,7 +63,7 @@ public abstract class Building : Grabbable, HealthManager{ // this should also b
         {
             if (fireEffect == null)
             {
-                fireEffect = Instantiate(Resources.Load("Fire"), new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.LookRotation(Vector3.forward, Vector3.up)) as GameObject;
+                fireEffect = Instantiate(Resources.Load("Particles/Fire"), new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.LookRotation(Vector3.forward, Vector3.up)) as GameObject;
                 List<ParticleSystem> shapes = new List<ParticleSystem>(fireEffect.GetComponentsInChildren<ParticleSystem>());
                 shapes.Add(fireEffect.GetComponent<ParticleSystem>());
                 for(int i=0; i < shapes.Count; i++)
@@ -103,7 +103,7 @@ public abstract class Building : Grabbable, HealthManager{ // this should also b
         resourceGainText = createInfoText("ResourceGainTablet");
         boxSize = GetComponent<BoxCollider>().bounds.size / 2;
         boxSize.y = 1f;
-        ExplosionEffect = Resources.Load("Explosion") as GameObject;
+        ExplosionEffect = Resources.Load("Particles/Explosion") as GameObject;
 
     }
 

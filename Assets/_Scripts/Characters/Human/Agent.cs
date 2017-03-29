@@ -392,7 +392,7 @@ public class Agent : Character
             alive = false;
             anim.Play("diehard");
             StartCoroutine(WaitToDestroy(2.0f));
-            GameObject ghost = Instantiate(Resources.Load("Spooky_Explosion") as GameObject, transform.position, Quaternion.identity);
+            GameObject ghost = Instantiate(Resources.Load("Particles/Spooky_Explosion") as GameObject, transform.position, Quaternion.identity);
             Destroy(ghost, 1f);
         }
     }

@@ -9,7 +9,7 @@ public class Swatter : Tool {
 
 	// Use this for initialization
 	void Start () {
-        ExplosionEffect = Resources.Load("Explosion") as GameObject;
+        ExplosionEffect = Resources.Load("Particles/Explosion") as GameObject;
         if (ExplosionEffect != null)
         {
             Debug.Log("Effect loaded");

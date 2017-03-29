@@ -98,7 +98,7 @@ public abstract class Monster : Character
         resources = GameObject.FindGameObjectWithTag("Tablet").GetComponent<ResourceCounter>();
         resources.addBaddie(monsterType);
         currentState = defaultState;
-        GameObject stun = Instantiate(Resources.Load("Seeing_stars") as GameObject, transform.position + Vector3.up * height, Quaternion.identity);
+        GameObject stun = Instantiate(Resources.Load("Particles/Seeing_Stars") as GameObject, transform.position + Vector3.up * height, Quaternion.identity);
         stun.transform.parent = transform;
         stunEffect = stun.GetComponent<ParticleSystem>();
         stunEffect.Stop();
@@ -521,7 +521,7 @@ public abstract class Monster : Character
             {
                 collider.enabled = false;
             }
-            GameObject ghost = Instantiate(Resources.Load("Spooky_Explosion") as GameObject, transform.position, Quaternion.identity);
+            GameObject ghost = Instantiate(Resources.Load("Particles/Spooky_Explosion") as GameObject, transform.position, Quaternion.identity);
             Destroy(ghost, 3f);
             gameObject.tag = "Untagged";
             StartCoroutine(WaitToDestroy(0.1f));

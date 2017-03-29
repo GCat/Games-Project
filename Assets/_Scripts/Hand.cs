@@ -40,7 +40,7 @@ public class Hand : MonoBehaviour {
     private float[] held_object_times;
 
 
-    public enum PropType { Building, Human, Tool, Handle, Prop, None};
+    public enum PropType { Building, Human, Tool, Handle, Food, None};
     float rotationTimer;
     float startTime;
 
@@ -230,6 +230,7 @@ public class Hand : MonoBehaviour {
         if (prop.GetComponent<Agent>() != null) return PropType.Human;
         if (prop.GetComponent<Tool>() != null) return PropType.Tool;
         if (prop.GetComponent<Handle>() != null) return PropType.Handle;
+        if (prop.GetComponent<Food>() != null) return PropType.Food;
 
         return PropType.None;
     }
@@ -300,7 +301,7 @@ public class Hand : MonoBehaviour {
                 holding = true;
                 kinect_view.setTrackingContext(BodySourceView.TrackingContext.Slow, right_hand);
                 break;
-            case PropType.Prop:
+            case PropType.Food:
                 Grabbable prop = grabTarget.GetComponent<Grabbable>();
                 heldObject = grabTarget;
                 prop.grab();
@@ -318,6 +319,12 @@ public class Hand : MonoBehaviour {
 
     private void releaseObject ()
     {
+        if(heldObject == null)
+        {
+            onBounds.Clear();
+            holding = false;
+            return;
+        }
         if (holding)
         {
             onBounds.Remove(heldObject.GetComponent<Collider>());
