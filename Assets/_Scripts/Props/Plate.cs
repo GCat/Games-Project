@@ -45,6 +45,7 @@ class Plate : Grabbable
 
     public void OnTriggerExit(Collider other)
     {
+        Debug.Log("remove the outline please");
         if (other.gameObject.tag == "Hand")
         {
             removeOutline();
