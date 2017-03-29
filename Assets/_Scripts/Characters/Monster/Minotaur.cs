@@ -17,7 +17,7 @@ class Minotaur : Monster
         //smokeEffect.Stop();
     }
 
-    protected override void hit()
+    public override void hit()
     {
         if (currentVictim == null)
         {

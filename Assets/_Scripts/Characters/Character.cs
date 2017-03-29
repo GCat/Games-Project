@@ -10,7 +10,7 @@ public abstract class Character : Grabbable, HealthManager
     protected GameObject infoText;
     protected Quaternion infoTextOri;
 
-    protected abstract void hit();
+    public abstract void hit();
     public abstract void decrementHealth(float damage);
     public NavMeshAgent agent;
     protected ResourceCounter resources;

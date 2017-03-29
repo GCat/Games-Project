@@ -361,7 +361,7 @@ public class Agent : Character
         {
             foreach (GameObject badie in badies)
             {
-                if (badie.GetComponent<Monster>().monsterType != Portal.MonsterType.Harpy)
+
                 {
                     Vector3 diff = badie.transform.position - position;
                     float current_distance = diff.sqrMagnitude;
@@ -495,7 +495,7 @@ public class Agent : Character
         }
     }
 
-    protected override void hit()
+    public override void hit()
     {
     }
 

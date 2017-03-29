@@ -14,7 +14,7 @@ class Harpy : Monster
     }
 
 
-    protected override void hit()
+    public override void hit()
     {
         if (currentVictim == null)
         {
