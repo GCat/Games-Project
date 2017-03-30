@@ -295,7 +295,7 @@ Transform:
   m_GameObject: {fileID: 1399337637958074}
   m_LocalRotation: {x: -0, y: 0.21990858, z: -0, w: 0.97552055}
   m_LocalPosition: {x: 0.7, y: -30.1, z: -0.6}
-  m_LocalScale: {x: 8, y: 10, z: 8}
+  m_LocalScale: {x: 4.4251738, y: 5.5314674, z: 4.4251738}
   m_Children: []
   m_Father: {fileID: 4936315258676768}
   m_RootOrder: 3
@@ -347,7 +347,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1643311417326162}
   m_LocalRotation: {x: -0, y: -0.21990858, z: -0, w: 0.97552055}
-  m_LocalPosition: {x: -86.6, y: 31.4, z: -32.1}
+  m_LocalPosition: {x: -29.30568, y: 23.7, z: 21.294495}
   m_LocalScale: {x: 0.44485623, y: 0.44485617, z: 0.44485617}
   m_Children:
   - {fileID: 4833527596483228}
@@ -779,6 +779,7 @@ MonoBehaviour:
   resources: {fileID: 0}
   imgCanvas: {fileID: 0}
   resourceCost: {fileID: 114337355989509136}
+  spawn: 1
 --- !u!114 &114064797030054208
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -823,6 +824,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationHandle: 0
+  frontHandle: 0
+  bSpawner: {fileID: 0}
 --- !u!114 &114278805764595264
 MonoBehaviour:
   m_ObjectHideFlags: 1

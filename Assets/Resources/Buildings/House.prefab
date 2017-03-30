@@ -2786,8 +2786,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a25bbba434e2794e8bd5c0264fbe8fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioSource: {fileID: 0}
   buildClip: {fileID: 8300000, guid: 0f6a9c7d024f3144690add1c060e8ed0, type: 3}
-  source: {fileID: 0}
+  destroy: {fileID: 8300000, guid: 903652cac7f2f744ab1f18d72f2461ba, type: 3}
+  description: House - Provides Soldiers
   totalHealth: 100
   health: 100
   resourceCounter: {fileID: 0}
@@ -2799,16 +2801,9 @@ MonoBehaviour:
   canBeGrabbed: 1
   initialRotation: {x: 0, y: 0, z: 0, w: 0}
   held: 0
-  build: {fileID: 0}
-  destroy: {fileID: 8300000, guid: 903652cac7f2f744ab1f18d72f2461ba, type: 3}
   humanSpawn: {fileID: 1351535047606338}
-  smokeEffect: {fileID: 198221221841677044}
   heartEffect: {fileID: 0}
-  capacity: 5
-  inhabitants: 0
-  foodCost: 10
-  active: 0
-  held: 0
+  smokeEffect: {fileID: 198221221841677044}
   humanSpawnDelay: 30
 --- !u!198 &198221221841677044
 ParticleSystem:

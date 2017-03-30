@@ -7,7 +7,7 @@ public abstract class Building : Grabbable, HealthManager{ // this should also b
     public AudioSource audioSource;
     public AudioClip buildClip;
     public AudioClip destroy;
-
+    public string description = "";
     public abstract string getName();
     public abstract Vector3 getLocation();
     public abstract void create_building();

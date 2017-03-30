@@ -12,7 +12,8 @@ public class Handle : Grabbable {
     private LineRenderer lineRenderer;
     private Collider myCol;
     public GameObject bSpawner;
-
+    public GameObject godRay = null;
+    private bool grabbedOnce = false;
 
     void Start()
     {
@@ -72,6 +73,13 @@ public class Handle : Grabbable {
         {
             transform.parent = null;
             grabbed = true;
+
+        }
+        if (!grabbedOnce)
+        {
+            grabbedOnce = true;
+            GameObject.FindGameObjectWithTag("Portal").GetComponent<Portal>().disableGodRay();
+            Debug.Log("remove god ray please!");
         }
 
     }

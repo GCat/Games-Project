@@ -12,4 +12,6 @@ public class Wave {
     public float waveTime = 30;
 
     public Event waveEvent = null;
+
+    public GameObject newBuilding = null;
 }
