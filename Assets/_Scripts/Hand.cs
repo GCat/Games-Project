@@ -255,7 +255,7 @@ public class Hand : MonoBehaviour {
         {
             case PropType.Building:
                 Building building = grabTarget.GetComponent<Building>();
-                if (!building.canBeGrabbed || (!resources.hasGameStarted() && grabTarget.tag != "Temple")) return;
+                if (!building.canBeGrabbed || building.held == true || (!resources.hasGameStarted() && grabTarget.tag != "Temple")) return;
                 if (building.canBuy() || building.bought)
                 {
                     heldObject = grabTarget;
