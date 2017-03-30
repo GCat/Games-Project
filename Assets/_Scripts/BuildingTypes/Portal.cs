@@ -68,7 +68,7 @@ public class Portal : MonoBehaviour
 
             if(wave.waveEvent != null)
             {
-
+                wave.waveEvent.startEvent();
             }
             //spawn each monster with a 1 second delay
             foreach (MonsterType monsterType in wave.monsters)
