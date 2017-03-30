@@ -104,6 +104,9 @@ public class Wall : Building
         int buildingLayer = 1 << 18;
         Collider[] turretAPoints = Physics.OverlapSphere(turretA.transform.position, turretRadius/2, buildingLayer);
         Collider[] turretBPoints = Physics.OverlapSphere(turretB.transform.position, turretRadius/2, buildingLayer);
+        initialTurretA = turretA.transform.position;
+        initialTurretB = turretB.transform.position;
+
 
         foreach (Collider collider in turretAPoints)
         {
@@ -154,12 +157,13 @@ public class Wall : Building
         turretA.transform.position = initialTurretA;
         turretB.transform.position = initialTurretB;
 
-        float height = wallSegment.transform.localScale.y;
-        Vector3 midPoint = turretA.transform.position + (turretB.transform.position - turretA.transform.position) / 2f;
+        alignWall(initialTurretA, initialTurretB);
 
-        wallSegment.transform.position = new Vector3(midPoint.x, height / 2, midPoint.z);
-        wallSegment.transform.localScale = new Vector3(wallSegment.transform.localScale.x, wallSegment.transform.localScale.y, (turretB.transform.position - turretA.transform.position).magnitude);
-        wallSegment.transform.LookAt(turretB.transform.position + Vector3.up * (height / 2));
+        //float height = wallSegment.transform.localScale.y;
+        //Vector3 midPoint = turretA.transform.position + (turretB.transform.position - turretA.transform.position) / 2f;
+        //wallSegment.transform.position = new Vector3(midPoint.x, height / 2, midPoint.z);
+        //wallSegment.transform.localScale = new Vector3(wallSegment.transform.localScale.x, wallSegment.transform.localScale.y, (turretB.transform.position - turretA.transform.position).magnitude);
+        //wallSegment.transform.LookAt(turretB.transform.position + Vector3.up * (height / 2));
     }
 
     public override void grab()
