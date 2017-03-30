@@ -2122,15 +2122,18 @@ MonoBehaviour:
   - monsters: 0000000000000000010000000100000001000000
     waveTime: 30
     waveEvent: {fileID: 0}
-    newBuilding: {fileID: 0}
+    newBuilding: {fileID: 1000011474536254, guid: 86e7e9ca316409341936a51aa4c4a194,
+      type: 2}
   - monsters: 000000000000000000000000000000000000000001000000
     waveTime: 60
     waveEvent: {fileID: 0}
-    newBuilding: {fileID: 0}
+    newBuilding: {fileID: 1801555696720252, guid: 10ce0b7e17a2ab547adc092fc6fc7ee3,
+      type: 2}
   - monsters: 0200000002000000020000000000000000000000
     waveTime: 60
     waveEvent: {fileID: 0}
-    newBuilding: {fileID: 0}
+    newBuilding: {fileID: 1079506678861314, guid: 310caef1c0665e74e891d1f72c253479,
+      type: 2}
   - monsters: 00000000010000000200000000000000010000000200000000000000010000000200000000000000
     waveTime: 71.8
     waveEvent: {fileID: 0}
