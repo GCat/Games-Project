@@ -63,7 +63,6 @@ public class Tower : Building {
         }
     }
 
-
     // Update is called once per frame
     virtual public void Update () {
         rangeHighlight.transform.position = new Vector3(gameObject.transform.position.x, 0.1f, gameObject.transform.position.z);

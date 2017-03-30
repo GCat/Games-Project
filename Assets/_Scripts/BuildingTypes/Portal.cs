@@ -65,6 +65,11 @@ public class Portal : MonoBehaviour
         foreach (Wave wave in Waves)    
         {
             asource.Play();
+
+            if(wave.waveEvent != null)
+            {
+
+            }
             //spawn each monster with a 1 second delay
             foreach (MonsterType monsterType in wave.monsters)
             {
