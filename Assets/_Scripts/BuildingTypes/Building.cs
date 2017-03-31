@@ -137,7 +137,7 @@ public abstract class Building : Grabbable, HealthManager{ // this should also b
         return false;
     }
 
-    public void OnTriggerEnter(Collider other)
+    public virtual void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Hand")
         {

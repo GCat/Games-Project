@@ -117,4 +117,9 @@ public class Temple : Building
     {
 
     }
+
+    public override void OnTriggerEnter(Collider other)
+    {
+        if (!placed) base.OnTriggerEnter(other);
+    }
 }

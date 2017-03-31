@@ -317,9 +317,16 @@ public abstract class Monster : Character
         isStunned = true;
         agent.Stop();
         yield return new WaitForSeconds(time);
-        isStunned = false;
-        agent.Resume();
-        preventLock(2);
+        try
+        {
+            isStunned = false;
+            agent.Resume();
+            preventLock(2);
+        }
+        catch (Exception e)
+        {
+            /// BAAAA
+        }
     }
 
     public void stun()
