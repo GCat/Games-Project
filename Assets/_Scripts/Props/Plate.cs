@@ -54,7 +54,7 @@ class Plate : Grabbable
     public void OnCollisionEnter(Collision collision)
     {
         float force = collision.impulse.magnitude;
-        if (force > 100)
+        if (force > 80)
         {
             smashPlate();
         }

@@ -77,7 +77,6 @@ public class Portal : MonoBehaviour
     public void enableGodRay()
     {
         godRay.SetActive(true);
-
     }
 
     bool allDead(List<GameObject> monsters)
@@ -127,8 +126,11 @@ public class Portal : MonoBehaviour
                 //monster.GetComponent<Character>().agent.Warp(validSpawnLoc);
                 yield return new WaitForSeconds(2);
             }
-            while (!allDead(spawnedMonsters))
-            {
+            for(int i=0; i < 10; i++) {
+                if (allDead(spawnedMonsters))
+                {
+                    break;
+                }
                 yield return new WaitForSeconds(2);
             }
             if (wave.newBuilding != null)

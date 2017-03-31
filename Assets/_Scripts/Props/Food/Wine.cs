@@ -38,7 +38,7 @@ class Wine : Edible
     public void OnCollisionEnter(Collision collision)
     {
         float force = collision.impulse.magnitude;
-        if(force > 15)
+        if(force > 80)
         {
             smashBottle();
         }
