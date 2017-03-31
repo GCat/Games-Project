@@ -62,7 +62,6 @@ public class Temple : Building
         humanLocation = new Vector3(myLocation.x, myLocation.y, myLocation.z + 33);
         for (int i = 0; i < 5; i++)
         {
-            Debug.Log(humanLocation);
             if (resourceCounter.aboveBoard(myLocation))
             {
                 NavMeshHit hit;
