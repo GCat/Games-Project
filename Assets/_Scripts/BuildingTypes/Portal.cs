@@ -68,19 +68,20 @@ public class Portal : MonoBehaviour
         spPos.y += 20f;
         spPos.x += 10f;
 
-        if(clouds.Count > 0)
+        if (clouds.Count > 0)
         {
             float dis = 100000f;
             int iterations = 0;
             do
             {
-                if (iterations > 20) {
+                if (iterations > 20)
+                {
                     Debug.Log("shit");
                     break;
                 }
                 foreach (GameObject c in clouds)
                 {
-                    if (Vector3.Distance(spPos,c.transform.position) < dis)
+                    if (Vector3.Distance(spPos, c.transform.position) < dis)
                     {
                         dis = Vector3.Distance(spPos, c.transform.position);
                     }
@@ -108,13 +109,7 @@ public class Portal : MonoBehaviour
             newSpawner.GetComponentInChildren<TextMesh>().text = newBuilding.GetComponent<Building>().description;
             clouds.Add(newSpawner);
         }
-
- 
-         
-        
-
     }
-
 
     bool allDead(List<GameObject> monsters)
     {
@@ -163,8 +158,11 @@ public class Portal : MonoBehaviour
                 //monster.GetComponent<Character>().agent.Warp(validSpawnLoc);
                 yield return new WaitForSeconds(2);
             }
-            while (!allDead(spawnedMonsters))
-            {
+            for(int i=0; i < 10; i++) {
+                if (allDead(spawnedMonsters))
+                {
+                    break;
+                }
                 yield return new WaitForSeconds(2);
             }
             if (wave.newBuilding != null)

@@ -39,15 +39,17 @@ public class BodySourceView : MonoBehaviour
     private bool started = true;
     private TrackingContext leftHandContext = TrackingContext.Medium;
     private TrackingContext rightHandContext = TrackingContext.Medium;
+    private Filter rightHandFilter = new MovingAverageFilter(3);
+    private Filter leftHandFilter = new MovingAverageFilter(3);
 
-    public enum TrackingContext {Slow, Medium, Fast };
+    public enum TrackingContext { Slow, Medium, Fast };
 
     //holds all the hand joint objects - palm, wrist, thumb, tip
     public Dictionary<Kinect.JointType, GameObject> player_objects = new Dictionary<Kinect.JointType, GameObject>();
 
     private Dictionary<ulong, GameObject> _Bodies = new Dictionary<ulong, GameObject>();
     private BodySourceManager _BodyManager;
-    
+
 
     private Dictionary<Kinect.JointType, Kinect.JointType> _BoneMap = new Dictionary<Kinect.JointType, Kinect.JointType>()
     {
@@ -55,26 +57,26 @@ public class BodySourceView : MonoBehaviour
         { Kinect.JointType.AnkleLeft, Kinect.JointType.KneeLeft },
         { Kinect.JointType.KneeLeft, Kinect.JointType.HipLeft },
         { Kinect.JointType.HipLeft, Kinect.JointType.SpineBase },
-        
+
         { Kinect.JointType.FootRight, Kinect.JointType.AnkleRight },
         { Kinect.JointType.AnkleRight, Kinect.JointType.KneeRight },
         { Kinect.JointType.KneeRight, Kinect.JointType.HipRight },
         { Kinect.JointType.HipRight, Kinect.JointType.SpineBase },
-        
+
         { Kinect.JointType.HandTipLeft, Kinect.JointType.HandLeft },
         { Kinect.JointType.ThumbLeft, Kinect.JointType.HandLeft },
         { Kinect.JointType.HandLeft, Kinect.JointType.WristLeft },
         { Kinect.JointType.WristLeft, Kinect.JointType.ElbowLeft },
         { Kinect.JointType.ElbowLeft, Kinect.JointType.ShoulderLeft },
         { Kinect.JointType.ShoulderLeft, Kinect.JointType.SpineShoulder },
-        
+
         { Kinect.JointType.HandTipRight, Kinect.JointType.HandRight },
         { Kinect.JointType.ThumbRight, Kinect.JointType.HandRight },
         { Kinect.JointType.HandRight, Kinect.JointType.WristRight },
         { Kinect.JointType.WristRight, Kinect.JointType.ElbowRight },
         { Kinect.JointType.ElbowRight, Kinect.JointType.ShoulderRight },
         { Kinect.JointType.ShoulderRight, Kinect.JointType.SpineShoulder },
-        
+
         { Kinect.JointType.SpineBase, Kinect.JointType.SpineMid },
         { Kinect.JointType.SpineMid, Kinect.JointType.SpineShoulder },
         { Kinect.JointType.SpineShoulder, Kinect.JointType.Neck },
@@ -87,62 +89,62 @@ public class BodySourceView : MonoBehaviour
         Temple = GameObject.FindGameObjectWithTag("Temple");
     }
 
-    void Update () 
+    void Update()
     {
         if (BodySourceManager == null)
         {
             return;
         }
-        
+
         _BodyManager = BodySourceManager.GetComponent<BodySourceManager>();
         if (_BodyManager == null)
         {
             return;
         }
-        
+
         Kinect.Body[] data = _BodyManager.GetData();
         if (data == null)
         {
             return;
         }
-        
+
         List<ulong> trackedIds = new List<ulong>();
-        foreach(var body in data)
+        foreach (var body in data)
         {
             if (body == null)
             {
                 continue;
-              }
-                
-            if(body.IsTracked)
+            }
+
+            if (body.IsTracked)
             {
-                trackedIds.Add (body.TrackingId);
+                trackedIds.Add(body.TrackingId);
                 break;
             }
         }
-        
+
         List<ulong> knownIds = new List<ulong>(_Bodies.Keys);
-        
+
         // First delete untracked bodies
-        foreach(ulong trackingId in knownIds)
+        foreach (ulong trackingId in knownIds)
         {
-            if(!trackedIds.Contains(trackingId))
+            if (!trackedIds.Contains(trackingId))
             {
                 Destroy(_Bodies[trackingId]);
                 _Bodies.Remove(trackingId);
             }
         }
 
-        foreach(var body in data)
+        foreach (var body in data)
         {
             if (body == null)
             {
                 continue;
             }
-            
-            if(body.IsTracked)
+
+            if (body.IsTracked)
             {
-                if(!_Bodies.ContainsKey(body.TrackingId))
+                if (!_Bodies.ContainsKey(body.TrackingId))
                 {
                     if (player_id == 99)
                     {
@@ -153,7 +155,7 @@ public class BodySourceView : MonoBehaviour
                         float headHeight = headObject.y;
                         float idealHeight = 40;
                         float feetOffset = headHeight - idealHeight;
-                        kinectLocation.transform.position += new Vector3(0,-feetOffset,0);
+                        kinectLocation.transform.position += new Vector3(0, -feetOffset, 0);
                         player_id = body.TrackingId;
                         started = false;
                     }
@@ -169,6 +171,7 @@ public class BodySourceView : MonoBehaviour
     }
 
 
+
     //I'm really sorry about this
     private void adjustBodyParts(Kinect.Body body, GameObject bodyObject)
     {
@@ -177,16 +180,13 @@ public class BodySourceView : MonoBehaviour
 
         if (!started)
         {
-            Temple.transform.position = player_objects[Kinect.JointType.Head].transform.position + Vector3.left*40 + Vector3.down*20;
+            Temple.transform.position = player_objects[Kinect.JointType.Head].transform.position + Vector3.left * 40 + Vector3.down * 20;
             started = true;
         }
         rightHandVelocity = (player_objects[Kinect.JointType.HandRight].transform.position - right_hand.transform.position).magnitude / Time.deltaTime;
         leftHandVelocity = (player_objects[Kinect.JointType.HandLeft].transform.position - left_hand.transform.position).magnitude / Time.deltaTime;
         right_hand.transform.position = Vector3.Slerp(right_hand.transform.position, player_objects[Kinect.JointType.HandRight].transform.position, Time.deltaTime * 10.0f);
         left_hand.transform.position = Vector3.Slerp(left_hand.transform.position, player_objects[Kinect.JointType.HandLeft].transform.position, Time.deltaTime * 10.0f);
-
-
-
 
         Vector3 right_foot_direction = player_objects[Kinect.JointType.FootRight].transform.position - player_objects[Kinect.JointType.AnkleRight].transform.position;
         Vector3 left_foot_direction = player_objects[Kinect.JointType.FootLeft].transform.position - player_objects[Kinect.JointType.AnkleLeft].transform.position;
@@ -221,6 +221,9 @@ public class BodySourceView : MonoBehaviour
         Vector3 r_handUp = Vector3.Cross(r_handRotation, r_handVector);
         Vector3 l_handUp = Vector3.Cross(l_handVector, l_handRotation);
 
+        rightHandFilter.record(r_handUp);
+        leftHandFilter.record(l_handUp);
+
         Vector3 r_handDist = player_objects[Kinect.JointType.HandRight].transform.position - kinectLocation.transform.position;
         Vector3 l_handDist = player_objects[Kinect.JointType.HandLeft].transform.position - kinectLocation.transform.position;
 
@@ -254,7 +257,7 @@ public class BodySourceView : MonoBehaviour
                 rightHandClosed = true;
                 r_hand_open_frames = 0;
             }
-           
+
 
         }
         else
@@ -265,7 +268,7 @@ public class BodySourceView : MonoBehaviour
                 rightHandClosed = false;
                 r_hand_closed_frames = 0;
             }
-         
+
 
         }
 
@@ -277,7 +280,7 @@ public class BodySourceView : MonoBehaviour
                 leftHandClosed = true;
                 l_hand_open_frames = 0;
             }
-          
+
         }
         else
         {
@@ -298,7 +301,8 @@ public class BodySourceView : MonoBehaviour
         }
         else
         {
-            Quaternion target = Quaternion.LookRotation(r_handVector, r_handUp);
+            Quaternion target = Quaternion.LookRotation(r_handVector, rightHandFilter.predict());
+            float diff = Mathf.Abs(target.eulerAngles.z - right_hand.transform.rotation.eulerAngles.z);
             right_hand.transform.rotation = Quaternion.Slerp(right_hand.transform.rotation, target, Time.deltaTime * 10.0f);
         }
         if (leftHandClosed)
@@ -308,7 +312,7 @@ public class BodySourceView : MonoBehaviour
         }
         else
         {
-            Quaternion target = Quaternion.LookRotation(l_handVector, l_handUp);
+            Quaternion target = Quaternion.LookRotation(l_handVector, leftHandFilter.predict());
             left_hand.transform.rotation = Quaternion.Slerp(left_hand.transform.rotation, target, Time.deltaTime * 10.0f);
         }
 
@@ -328,8 +332,8 @@ public class BodySourceView : MonoBehaviour
         int speedAdjust = 0;
         if (rightHand)
         {
-            
-            if(rightHandVelocity > 500)
+
+            if (rightHandVelocity > 500)
             {
 
                 speedAdjust = 10;
@@ -344,7 +348,8 @@ public class BodySourceView : MonoBehaviour
                 case TrackingContext.Slow:
                     return tracking_frames * 2 + speedAdjust;
             }
-        }else
+        }
+        else
         {
             if (leftHandVelocity > 500)
             {
@@ -369,7 +374,8 @@ public class BodySourceView : MonoBehaviour
         if (rightHand)
         {
             rightHandContext = newContext;
-        }else
+        }
+        else
         {
             leftHandContext = newContext;
         }
@@ -387,7 +393,7 @@ public class BodySourceView : MonoBehaviour
             lr.SetVertexCount(2);
             lr.material = BoneMaterial;
             lr.SetWidth(0.05f, 0.05f);
-            
+
             jointObj.transform.localScale = new Vector3(5f, 5f, 5f);
             jointObj.name = jt.ToString();
             jointObj.transform.parent = body.transform;
@@ -400,28 +406,28 @@ public class BodySourceView : MonoBehaviour
 
         return body;
     }
-    
+
     private void RefreshBodyObject(Kinect.Body body, GameObject bodyObject)
     {
         for (Kinect.JointType jt = Kinect.JointType.SpineBase; jt <= Kinect.JointType.ThumbRight; jt++)
         {
             Kinect.Joint sourceJoint = body.Joints[jt];
             Kinect.Joint? targetJoint = null;
-            
-            if(_BoneMap.ContainsKey(jt))
+
+            if (_BoneMap.ContainsKey(jt))
             {
                 targetJoint = body.Joints[_BoneMap[jt]];
             }
-            
+
             Transform jointObj = bodyObject.transform.FindChild(jt.ToString());
             jointObj.localPosition = GetVector3FromJoint(sourceJoint);
 
             LineRenderer lr = jointObj.GetComponent<LineRenderer>();
-            if(targetJoint.HasValue)
+            if (targetJoint.HasValue)
             {
                 //lr.SetPosition(0, jointObj.localPosition*10);
                 //lr.SetPosition(1, GetVector3FromJoint(targetJoint.Value)*10);
-                lr.SetColors(GetColorForState (sourceJoint.TrackingState), GetColorForState(targetJoint.Value.TrackingState));
+                lr.SetColors(GetColorForState(sourceJoint.TrackingState), GetColorForState(targetJoint.Value.TrackingState));
             }
             else
             {
@@ -429,24 +435,24 @@ public class BodySourceView : MonoBehaviour
             }
         }
     }
-    
+
     private static Color GetColorForState(Kinect.TrackingState state)
     {
         switch (state)
         {
-        case Kinect.TrackingState.Tracked:
-            return Color.green;
+            case Kinect.TrackingState.Tracked:
+                return Color.green;
 
-        case Kinect.TrackingState.Inferred:
-            return Color.red;
+            case Kinect.TrackingState.Inferred:
+                return Color.red;
 
-        default:
-            return Color.black;
+            default:
+                return Color.black;
         }
     }
-    
+
     private static Vector3 GetVector3FromJoint(Kinect.Joint joint)
     {
-        return new Vector3(-joint.Position.X * 70, joint.Position.Y * 70, joint.Position.Z * 70 );
+        return new Vector3(-joint.Position.X * 70, joint.Position.Y * 70, joint.Position.Z * 70);
     }
 }
