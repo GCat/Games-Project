@@ -361,6 +361,7 @@ public class Hand : MonoBehaviour {
                     {
                         if (building.gameObject.tag != "Temple")
                         {
+                            building.refund();
                             Destroy(heldObject);
                         }
                     }

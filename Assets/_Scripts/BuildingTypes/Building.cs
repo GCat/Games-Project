@@ -309,5 +309,9 @@ public abstract class Building : Grabbable, HealthManager{ // this should also b
         }
         return false;
     }
+    public void refund()
+    {
+        resourceCounter.addFaith(faithCost);
+    }
 
 }
