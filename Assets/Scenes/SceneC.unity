@@ -597,6 +597,7 @@ MonoBehaviour:
   imgCanvas: {fileID: 0}
   resourceCost: {fileID: 76133735}
   spawn: 1
+  godRay: {fileID: 0}
 --- !u!1 &72391030
 GameObject:
   m_ObjectHideFlags: 0
@@ -4337,6 +4338,7 @@ MonoBehaviour:
   imgCanvas: {fileID: 0}
   resourceCost: {fileID: 2031924847}
   spawn: 1
+  godRay: {fileID: 0}
 --- !u!1 &466808330
 GameObject:
   m_ObjectHideFlags: 0
@@ -5846,6 +5848,7 @@ MonoBehaviour:
   imgCanvas: {fileID: 0}
   resourceCost: {fileID: 1696290092}
   spawn: 1
+  godRay: {fileID: 0}
 --- !u!1 &662849908
 GameObject:
   m_ObjectHideFlags: 0
@@ -8917,6 +8920,7 @@ MonoBehaviour:
   imgCanvas: {fileID: 0}
   resourceCost: {fileID: 72391032}
   spawn: 1
+  godRay: {fileID: 0}
 --- !u!1 &1027060047
 GameObject:
   m_ObjectHideFlags: 0
@@ -14591,12 +14595,12 @@ Prefab:
     - target: {fileID: 114585129072737174, guid: 832e3998ba188d54585391e1bdb68df0,
         type: 2}
       propertyPath: Waves.Array.data[0].monsters.Array.data[0]
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114585129072737174, guid: 832e3998ba188d54585391e1bdb68df0,
         type: 2}
       propertyPath: Waves.Array.data[0].monsters.Array.data[1]
-      value: 4
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 832e3998ba188d54585391e1bdb68df0, type: 2}

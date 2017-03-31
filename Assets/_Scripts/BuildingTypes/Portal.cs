@@ -15,6 +15,8 @@ public class Portal : MonoBehaviour
     public GameObject spawnPos;
     public GameObject[] monsterTypes;
 
+    public HashSet<GameObject> clouds;
+
     private float animLength = 0.833f;
     private float animSpeed = 1f;
     public float delayStart;
@@ -23,7 +25,6 @@ public class Portal : MonoBehaviour
     AudioSource asource;
     Animation anim;
     GameObject playerHead;
-    public GameObject godRay;
 
     GameObject temple;
     ResourceCounter resourceCounter;
@@ -43,6 +44,7 @@ public class Portal : MonoBehaviour
         startTime = Time.time;
         anim = GetComponentInChildren<Animation>();
         playerHead = GameObject.FindGameObjectWithTag("MainCamera");
+        clouds = new HashSet<GameObject>();
     }
 
     void Update()
@@ -62,23 +64,57 @@ public class Portal : MonoBehaviour
     //creates a new spawner with a new tool/ building for the player
     void spawnNewBuilding(GameObject newBuilding)
     {
-        GameObject newSpawner = Instantiate(spawner, transform.position + Vector3.up*20 - Vector3.left*20, Quaternion.identity);
-        newSpawner.GetComponentInChildren<BuildingSpawner>().buildingToSpawn = newBuilding;
-        newSpawner.GetComponentInChildren<TextMesh>().text = newBuilding.GetComponent<Building>().description;
-        godRay.SetActive(true);
-        enableGodRay();
+        Vector3 spPos = transform.position;
+        spPos.y += 20f;
+        spPos.x += 10f;
+
+        if(clouds.Count > 0)
+        {
+            float dis = 100000f;
+            int iterations = 0;
+            do
+            {
+                if (iterations > 20) {
+                    Debug.Log("shit");
+                    break;
+                }
+                foreach (GameObject c in clouds)
+                {
+                    if (Vector3.Distance(spPos,c.transform.position) < dis)
+                    {
+                        dis = Vector3.Distance(spPos, c.transform.position);
+                    }
+                }
+                if (dis < 10f)
+                {
+                    float z = Random.Range(-30f, 30f);
+                    float x = Random.Range(-15f, -70f);
+                    spPos = new Vector3(x, spPos.y, z);
+                }
+                iterations++;
+            } while (dis < 10f);
+
+            GameObject newSpawner = Instantiate(spawner, spPos, Quaternion.identity);
+            newSpawner.GetComponentInChildren<BuildingSpawner>().buildingToSpawn = newBuilding;
+            newSpawner.GetComponentInChildren<BuildingSpawner>().newBuilding();
+            newSpawner.GetComponentInChildren<TextMesh>().text = newBuilding.GetComponent<Building>().description;
+            clouds.Add(newSpawner);
+        }
+        else
+        {
+            GameObject newSpawner = Instantiate(spawner, spPos, Quaternion.identity);
+            newSpawner.GetComponentInChildren<BuildingSpawner>().buildingToSpawn = newBuilding;
+            newSpawner.GetComponentInChildren<BuildingSpawner>().newBuilding();
+            newSpawner.GetComponentInChildren<TextMesh>().text = newBuilding.GetComponent<Building>().description;
+            clouds.Add(newSpawner);
+        }
+
+ 
+         
+        
+
     }
 
-    public void disableGodRay()
-    {
-        godRay.SetActive(false);
-    }
-
-    public void enableGodRay()
-    {
-        godRay.SetActive(true);
-
-    }
 
     bool allDead(List<GameObject> monsters)
     {

@@ -263,7 +263,6 @@ public class Hand : MonoBehaviour {
                     holding = true;
                     building.initialRotation = building.transform.rotation;
                     building.held = true;
-                    Debug.Log("Grab BUILDING");
                     building.GetComponent<Grabbable>().grab();
                     snapToHand(grabTarget);
                     heldObject.transform.parent = transform;

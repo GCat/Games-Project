@@ -95,7 +95,6 @@ public abstract class Monster : Character
         closestEnemy = null;
         temple = GameObject.FindGameObjectWithTag("Temple");
         alive = true;
-        Debug.Log(string.Format("Spawn at: {0} with Type: {1}", transform.position, monsterType));
         renderers = GetComponentsInChildren<Renderer>();
         templeAttackPoint = temple.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
         resources = GameObject.FindGameObjectWithTag("Tablet").GetComponent<ResourceCounter>();
