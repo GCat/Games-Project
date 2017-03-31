@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour {
 
+
     //the thing that shot this
     public GameObject parent = null;
 
@@ -27,7 +28,7 @@ public class Projectile : MonoBehaviour {
 		
 	}
 
-    void OnCollisionEnter(Collision other)
+    public virtual void OnCollisionEnter(Collision other)
     {
         if (other.gameObject != parent && other.gameObject.tag == "Badies" || other.gameObject.tag == "Ground")
         {

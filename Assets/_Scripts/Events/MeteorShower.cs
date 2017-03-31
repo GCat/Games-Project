@@ -8,7 +8,7 @@ public class MeteorShower : Event {
     public int Damage;
     private Vector3 max;
     private Vector3 min;
-    public float meteorSpeed = 1.0f;
+    public float meteorSpeed;
 
     private void Awake()
     {
@@ -16,8 +16,8 @@ public class MeteorShower : Event {
         Vector3 bounds = ground.GetComponent<Collider>().bounds.size;
         Vector3 position = ground.transform.position;
 
-        max = new Vector3(position.x + bounds.x/2, position.y ,position.z + bounds.z/2);
-        min = new Vector3(position.x - bounds.x / 2, position.x, position.z - bounds.z / 2);
+        max = new Vector3((position.x + bounds.x)/2, position.y ,(position.z + bounds.z)/2);
+        min = new Vector3((position.x - bounds.x) / 2, position.y, (position.z - bounds.z) / 2);
     }
 
     public override void startEvent()
@@ -36,32 +36,24 @@ public class MeteorShower : Event {
     //dont use move towards, cause need to use the update function to see it ?
     private IEnumerator SpawnMeteor()
     {
-        //dafuck 
-        while(true)
+        while(true) 
         {
             Debug.Log("Spawn METEORRRRR");
             Vector3 target = Target();
-            float step = meteorSpeed * Time.deltaTime;
-            Debug.Log(meteor.transform.position);
-            GameObject shot = GameObject.Instantiate(meteor, meteor.transform.position, meteor.transform.rotation) as GameObject;
-            shot.GetComponent<Rigidbody>().velocity = target;
+            Vector3 direction = target - meteor.transform.position; 
+            GameObject shot = GameObject.Instantiate(meteor, meteor.transform.position, Quaternion.identity) as GameObject;
+            shot.GetComponent<Rigidbody>().velocity = direction * meteorSpeed;
             yield return new WaitForSeconds(1);
         }
     }
 
-
-    //activate partical effect, inflict damage 
-    private void onHit()
-    {
-        //do something (puff somke..)
-    }
 
     //Random Targets
     private Vector3 Target()
     {
         float rand_x = UnityEngine.Random.Range(max.x, min.x);
         float rand_z = UnityEngine.Random.Range(max.z, min.z);
-        return new Vector3(rand_x, max.y, rand_z);
+        return new Vector3(rand_x, 0, rand_z);
     }
 
 }
