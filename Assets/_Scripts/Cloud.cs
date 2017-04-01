@@ -16,6 +16,7 @@ public class Cloud : MonoBehaviour {
             //rotator.transform.parent = null;
         }
 	}
+
 	
 	// Update is called once per frame
 	void Update () {
