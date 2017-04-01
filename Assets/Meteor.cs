@@ -49,7 +49,7 @@ public class Meteor : Projectile {
     {
         if (other.gameObject.tag == "Racket")
         {
-            //do some maths to add the physics to it so you can bash them out 
+            // this will automatically bounce from it 
         }
         else 
         {

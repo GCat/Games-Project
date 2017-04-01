@@ -9,6 +9,7 @@ public class MeteorShower : Event {
     private Vector3 max;
     private Vector3 min;
     public float meteorSpeed;
+    public GameObject Racket;
 
     private void Awake()
     {
@@ -22,6 +23,9 @@ public class MeteorShower : Event {
 
     public override void startEvent()
     {
+        GameObject racket_inhand = GameObject.Instantiate(Racket, GameObject.FindGameObjectWithTag("Hand").transform.position, Quaternion.identity) as GameObject;
+        racket_inhand.transform.parent = GameObject.FindGameObjectWithTag("Hand").transform;
+        racket_inhand.SetActive(true);
         StartCoroutine(SpawnMeteor());
         //StartCoroutine(MeteorOutside(4))
     }
@@ -44,7 +48,9 @@ public class MeteorShower : Event {
             GameObject shot = GameObject.Instantiate(meteor, meteor.transform.position, Quaternion.identity) as GameObject;
             shot.GetComponent<Rigidbody>().velocity = direction * meteorSpeed;
             yield return new WaitForSeconds(1);
+            Racket.SetActive(false);
         }
+
     }
 
 
