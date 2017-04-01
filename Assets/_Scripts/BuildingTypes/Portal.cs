@@ -98,7 +98,10 @@ public class Portal : MonoBehaviour
             GameObject newSpawner = Instantiate(spawner, spPos, Quaternion.identity);
             newSpawner.GetComponentInChildren<BuildingSpawner>().buildingToSpawn = newBuilding;
             newSpawner.GetComponentInChildren<BuildingSpawner>().newBuilding();
-            newSpawner.GetComponentInChildren<TextMesh>().text = newBuilding.GetComponent<Building>().description;
+            if (newBuilding.GetComponent<Building>() != null && newBuilding.GetComponent<Building>().description != null)
+            {
+                newSpawner.GetComponentInChildren<TextMesh>().text = newBuilding.GetComponent<Building>().description;
+            }
             clouds.Add(newSpawner);
         }
         else
@@ -106,7 +109,10 @@ public class Portal : MonoBehaviour
             GameObject newSpawner = Instantiate(spawner, spPos, Quaternion.identity);
             newSpawner.GetComponentInChildren<BuildingSpawner>().buildingToSpawn = newBuilding;
             newSpawner.GetComponentInChildren<BuildingSpawner>().newBuilding();
-            newSpawner.GetComponentInChildren<TextMesh>().text = newBuilding.GetComponent<Building>().description;
+            if (newBuilding.GetComponent<Building>() != null && newBuilding.GetComponent<Building>().description != null)
+            {
+                newSpawner.GetComponentInChildren<TextMesh>().text = newBuilding.GetComponent<Building>().description;
+            }
             clouds.Add(newSpawner);
         }
     }

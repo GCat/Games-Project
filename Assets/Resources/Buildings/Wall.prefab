@@ -1487,6 +1487,7 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   buildClip: {fileID: 8300000, guid: 0f6a9c7d024f3144690add1c060e8ed0, type: 3}
   destroy: {fileID: 0}
+  description: 
   totalHealth: 300
   health: 300
   resourceCounter: {fileID: 0}
@@ -1499,7 +1500,7 @@ MonoBehaviour:
   initialRotation: {x: 0, y: 0, z: 0, w: 0}
   held: 0
   cost_per_meter: 10
-  turretRadius: 10
+  turretRadius: 25
   turretB: {fileID: 1088060195567358}
   turretA: {fileID: 1356206817766396}
   wallSegment: {fileID: 1083709367599340}
