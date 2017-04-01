@@ -807,7 +807,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4583652171711426, guid: bc03c5fa11c4f56459e3e3291a813aec, type: 2}
       propertyPath: m_RootOrder
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 114471517625051702, guid: bc03c5fa11c4f56459e3e3291a813aec,
         type: 2}
@@ -846,6 +846,10 @@ Prefab:
       propertyPath: audioSource
       value: 
       objectReference: {fileID: 806002737}
+    - target: {fileID: 1317429716513458, guid: bc03c5fa11c4f56459e3e3291a813aec, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bc03c5fa11c4f56459e3e3291a813aec, type: 2}
   m_IsPrefabParent: 0
@@ -1363,6 +1367,8 @@ MonoBehaviour:
   meteor: {fileID: 1709350465309320, guid: 2faec0011894a4e479be93d3687d7db1, type: 2}
   Damage: 0
   meteorSpeed: 0.25
+  Racket: {fileID: 1129843404162700, guid: 21692ffc87757494992740f8a3ae9bca, type: 2}
+  meteorAttack: 60
 --- !u!4 &230881978
 Transform:
   m_ObjectHideFlags: 0
@@ -7375,7 +7381,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4434251442131386, guid: f8944127a1ee7404ca8ab160846ee099, type: 2}
       propertyPath: m_RootOrder
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 114687539696213070, guid: f8944127a1ee7404ca8ab160846ee099,
         type: 2}
@@ -7395,7 +7401,7 @@ Prefab:
     - target: {fileID: 114687539696213070, guid: f8944127a1ee7404ca8ab160846ee099,
         type: 2}
       propertyPath: useMouse
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114350785072023630, guid: f8944127a1ee7404ca8ab160846ee099,
         type: 2}

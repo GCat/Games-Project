@@ -10,6 +10,9 @@ public class MeteorShower : Event {
     private Vector3 min;
     public float meteorSpeed;
     public GameObject Racket;
+    public int meteorAttack = 60;
+    private GameObject racket_inhand1;
+    private GameObject racket_inhand2;
 
     private void Awake()
     {
@@ -23,34 +26,35 @@ public class MeteorShower : Event {
 
     public override void startEvent()
     {
-        GameObject racket_inhand = GameObject.Instantiate(Racket, GameObject.FindGameObjectWithTag("Hand").transform.position, Quaternion.identity) as GameObject;
-        racket_inhand.transform.parent = GameObject.FindGameObjectWithTag("Hand").transform;
-        racket_inhand.SetActive(true);
-        StartCoroutine(SpawnMeteor());
-        //StartCoroutine(MeteorOutside(4))
-    }
+        //GameObject racket_inhand = GameObject.Instantiate(Racket, GameObject.FindGameObjectWithTag("Hand").transform.position, Quaternion.identity) as GameObject;
+        GameObject[] hands = GameObject.FindGameObjectsWithTag("Hand");
+        racket_inhand1 = GameObject.Instantiate(Racket, hands[0].transform.position, Racket.transform.rotation) as GameObject;
+        racket_inhand2 = GameObject.Instantiate(Racket, hands[1].transform.position, Racket.transform.rotation) as GameObject;
 
-    private IEnumerator SpawnOutside(int targets)
-    {
-        //acquire multiple targets outside the table
-        yield return new WaitForSeconds(3);
+        racket_inhand1.transform.parent = hands[0].transform;
+        racket_inhand2.transform.parent = hands[1].transform;
+        racket_inhand2.SetActive(true);
+        racket_inhand1.SetActive(true);
+        StartCoroutine(SpawnMeteor());
     }
     
 
     //dont use move towards, cause need to use the update function to see it ?
     private IEnumerator SpawnMeteor()
     {
-        while(true) 
+        int round = 0;
+        while( round < meteorAttack) 
         {
-            Debug.Log("Spawn METEORRRRR");
             Vector3 target = Target();
             Vector3 direction = target - meteor.transform.position; 
             GameObject shot = GameObject.Instantiate(meteor, meteor.transform.position, Quaternion.identity) as GameObject;
             shot.GetComponent<Rigidbody>().velocity = direction * meteorSpeed;
+            round++;
             yield return new WaitForSeconds(1);
-            Racket.SetActive(false);
         }
 
+        Destroy(racket_inhand1);
+        Destroy(racket_inhand2);
     }
 
 
