@@ -11,7 +11,7 @@ public class Wave {
     [Range(1, 120)]
     public float waveTime = 30;
 
-    public Event waveEvent = null;
+    public WaveEvent waveEvent = null;
 
     public GameObject newBuilding = null;
 }
