@@ -213,9 +213,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 014f20a82ff2c8a43a7b101be532a392, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parent: {fileID: 0}
+  parent: {fileID: 1709350465309320}
   destroyDelay: 1
-  FireEffect: {fileID: 1543621164556384, guid: 0b6ea1eff1b565643a334ac625164e47, type: 2}
+  FireEffect: {fileID: 1369680662280826, guid: fbfce11354677ba4288e6d5ff6b9dbc4, type: 2}
+  DestructionEffect: {fileID: 1410670585646408, guid: 9cecf1bf857a1fb40bd39df450a50ed8,
+    type: 2}
+  destruction_radius: 10
 --- !u!135 &135997970773159438
 SphereCollider:
   m_ObjectHideFlags: 1

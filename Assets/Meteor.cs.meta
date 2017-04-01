@@ -1,10 +1,13 @@
 fileFormatVersion: 2
 guid: 014f20a82ff2c8a43a7b101be532a392
-timeCreated: 1490958439
+timeCreated: 1491049932
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - parent: {instanceID: 0}
+  - FireEffect: {fileID: 1369680662280826, guid: fbfce11354677ba4288e6d5ff6b9dbc4,
+      type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

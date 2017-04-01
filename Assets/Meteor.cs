@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Meteor : Projectile {
     public GameObject FireEffect;
+    public GameObject DestructionEffect;
+    public int destruction_radius;
+    public int Damage;
 
     // Use this for initialization
     void Start () {
@@ -15,22 +18,43 @@ public class Meteor : Projectile {
 		
 	}
 
+    
     private void DestroyObject()
     {
-        FireEffect.SetActive(true);
+        GameObject fire = GameObject.Instantiate(FireEffect, this.transform.position, Quaternion.identity) as GameObject;
+        GameObject explosion = GameObject.Instantiate(DestructionEffect, this.transform.position, Quaternion.identity) as GameObject;
+        fire.transform.Rotate(-90, 0, 0);
+        fire.SetActive(true);
+        explosion.SetActive(true);
+        Destroy(explosion, 2);
+        Destroy(fire, 2);
         Destroy(gameObject);
+    }
+
+    private void DamageBuildings(Vector3 hit_position)
+    {
+        Collider[] hitcolliders = Physics.OverlapSphere(hit_position, destruction_radius);
+        if (hitcolliders.Length == 0 ) return;
+
+        foreach (Collider hit in hitcolliders)
+        {   
+            if (hit.gameObject.GetComponent<Building>() != null)
+            {
+                hit.gameObject.GetComponent<Building>().decrementHealth(Damage);
+            } 
+        } 
     }
 
     public  override void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.tag == "Hand")
+        if (other.gameObject.tag == "Racket")
         {
             //do some maths to add the physics to it so you can bash them out 
         }
         else 
         {
+            DamageBuildings(gameObject.transform.position);
             DestroyObject();
-            //damage on builinds in a certain radius, death animation
         }
     }
 }
