@@ -23,8 +23,11 @@ public class Portal : MonoBehaviour
     Vector3 pos;
     AudioClip attackClip;
     AudioSource asource;
+    public AudioClip teleport;
     Animation anim;
     GameObject playerHead;
+
+    Vector3 originalPos;
 
     GameObject temple;
     ResourceCounter resourceCounter;
@@ -45,6 +48,7 @@ public class Portal : MonoBehaviour
         anim = GetComponentInChildren<Animation>();
         playerHead = GameObject.FindGameObjectWithTag("MainCamera");
         clouds = new HashSet<GameObject>();
+        originalPos = transform.position;
     }
 
     void Update()
@@ -64,7 +68,7 @@ public class Portal : MonoBehaviour
     //creates a new spawner with a new tool/ building for the player
     void spawnNewBuilding(GameObject newBuilding)
     {
-        Vector3 spPos = transform.position;
+        Vector3 spPos = originalPos;
         spPos.y += 20f;
         spPos.x += 10f;
 
@@ -143,9 +147,9 @@ public class Portal : MonoBehaviour
             //spawn each monster with a 1 second delay
             foreach (MonsterType monsterType in wave.monsters)
             {
-                Vector3 validSpawnLoc = pos;
+                Vector3 validSpawnLoc = spawnPos.transform.position;
                 NavMeshHit hit;
-                if (NavMesh.SamplePosition(pos, out hit, 40.0f, NavMesh.AllAreas))
+                if (NavMesh.SamplePosition(spawnPos.transform.position, out hit, 40.0f, NavMesh.AllAreas))
                 {
                     validSpawnLoc = hit.position;
                 }
@@ -175,6 +179,35 @@ public class Portal : MonoBehaviour
             anim.Play("Countdown");
             yield return new WaitForSeconds(wave.waveTime);
         }
+    }
+
+    public void movePortal()
+    {
+        GameObject[] movepoints = GameObject.FindGameObjectsWithTag("PortalMove");
+        if(movepoints.Length > 0)
+        {
+            GameObject p = Resources.Load("Particles/teleport1") as GameObject;
+            int index = Random.Range(0, movepoints.Length - 1);
+            NavMeshHit hit;
+            if(NavMesh.SamplePosition(movepoints[index].transform.position, out hit, 80f, NavMesh.AllAreas))
+            {
+                asource.PlayOneShot(teleport);
+                GameObject teleportParticles = Instantiate( p, transform.position, Quaternion.LookRotation(Vector3.up));
+                StartCoroutine(moveP(hit.position, teleportParticles));
+
+
+            }
+        }
+    }
+
+    IEnumerator moveP (Vector3 pos, GameObject particles)
+    {
+        yield return new WaitForSeconds(3f);
+        transform.position = pos;
+        if (temple != null) transform.LookAt(Vector3.forward);
+        DestroyImmediate(particles);
+
+
     }
 
 }

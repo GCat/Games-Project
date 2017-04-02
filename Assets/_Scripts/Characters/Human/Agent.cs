@@ -13,22 +13,6 @@ using UnityEngine.AI;
  *  TODO: Smooth Rotation
  *  TODO: Avoidance
  *  
- * PHASE 2 
- * If at any moment temple detryed everyone dies
- * 
- * 
- * 
- * --Killers COMPLETED
- * Search for nearest enemy 
- * Go to its position
- * Attack it
- * When dead look for next enemy
- * If no humans remain either go for watch towers or go for temple 
- * 
- * --Defender
- * Go towards temple, if enemy near temple kill it
- * 
- * --Camper
  * 
  * 
  */
