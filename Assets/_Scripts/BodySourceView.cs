@@ -381,6 +381,14 @@ public class BodySourceView : MonoBehaviour
         }
     }
 
+    IEnumerator alignCountDown()
+    {
+        for(int i=0; i < 3; i++)
+        {
+            yield return new WaitForSeconds(1);
+        }
+        InputTracking.Recenter();
+    }
 
     private GameObject CreateBodyObject(ulong id)
     {
@@ -400,10 +408,8 @@ public class BodySourceView : MonoBehaviour
 
             player_objects.Add(jt, jointObj);
         }
-        InputTracking.Recenter();
 
-
-
+        StartCoroutine(alignCountDown());
         return body;
     }
 
