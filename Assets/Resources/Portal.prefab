@@ -1090,7 +1090,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1202590423550394}
   m_LocalRotation: {x: -0, y: 0.70995927, z: -0, w: 0.70424277}
-  m_LocalPosition: {x: -92.9, y: 6.8, z: 5}
+  m_LocalPosition: {x: -92.9, y: 0, z: 5}
   m_LocalScale: {x: 27.600939, y: 13.80046, z: 13.80046}
   m_Children:
   - {fileID: 4050100237852904}
@@ -1189,7 +1189,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1464150063751194}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.072968006, y: -0.565, z: 0.20110154}
+  m_LocalPosition: {x: -0.072968006, y: 0, z: 0.20110154}
   m_LocalScale: {x: 25.555359, y: 51.110695, z: 51.110695}
   m_Children:
   - {fileID: 4364844040326274}
@@ -2154,7 +2154,6 @@ MonoBehaviour:
   - {fileID: 1454130615011182, guid: 45c41ec318340254f9e812a2a0cc50f3, type: 2}
   - {fileID: 1454130615011182, guid: 45c41ec318340254f9e812a2a0cc50f3, type: 2}
   delayStart: 30
-  godRay: {fileID: 1863264257053320}
 --- !u!114 &114731457494940228
 MonoBehaviour:
   m_ObjectHideFlags: 1
