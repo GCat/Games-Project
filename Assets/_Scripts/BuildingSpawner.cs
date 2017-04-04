@@ -52,6 +52,18 @@ public class BuildingSpawner : MonoBehaviour {
         
     }
 
+    public void rayDisappear(float time)
+    {
+        StopCoroutine(rayInactive(time));
+    }
+
+    IEnumerator rayInactive(float time)
+    {
+        yield return new WaitForSeconds(time);
+        godRay.SetActive(false);
+
+    }
+
     private void spawnBuilding()
     {
         if (resources.faith < buildingCost || !resources.hasGameStarted())

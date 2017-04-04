@@ -102,6 +102,7 @@ public class Portal : MonoBehaviour
             GameObject newSpawner = Instantiate(spawner, spPos, Quaternion.identity);
             newSpawner.GetComponentInChildren<BuildingSpawner>().buildingToSpawn = newBuilding;
             newSpawner.GetComponentInChildren<BuildingSpawner>().newBuilding();
+            newSpawner.GetComponentInChildren<BuildingSpawner>().rayDisappear(30f);
             if (newBuilding.GetComponent<Building>() != null && newBuilding.GetComponent<Building>().description != null)
             {
                 newSpawner.GetComponentInChildren<TextMesh>().text = newBuilding.GetComponent<Building>().description;
