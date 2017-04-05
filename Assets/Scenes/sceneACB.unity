@@ -1367,7 +1367,6 @@ MonoBehaviour:
   meteor: {fileID: 1709350465309320, guid: 2faec0011894a4e479be93d3687d7db1, type: 2}
   Damage: 0
   meteorSpeed: 0.25
-  Racket: {fileID: 1129843404162700, guid: 21692ffc87757494992740f8a3ae9bca, type: 2}
   meteorAttack: 60
 --- !u!4 &230881978
 Transform:
@@ -4988,7 +4987,7 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 1
+  MinDistance: 5.2805862
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
@@ -5049,6 +5048,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!135 &806002738
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 806002736}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &806997432
 GameObject:
   m_ObjectHideFlags: 0
@@ -7416,6 +7427,11 @@ Prefab:
     - target: {fileID: 114687539696213070, guid: f8944127a1ee7404ca8ab160846ee099,
         type: 2}
       propertyPath: right_hand
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 136047094338742572, guid: f8944127a1ee7404ca8ab160846ee099,
+        type: 2}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -10039,6 +10055,18 @@ GameObject:
   m_PrefabParentObject: {fileID: 1810336348677828, guid: f8944127a1ee7404ca8ab160846ee099,
     type: 2}
   m_PrefabInternal: {fileID: 1157285281}
+--- !u!135 &1893965761
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1893965760}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Radius: 1.6736318
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1904800533
 GameObject:
   m_ObjectHideFlags: 0
