@@ -9,10 +9,7 @@ public class MeteorShower : Event {
     private Vector3 max;
     private Vector3 min;
     public float meteorSpeed;
-    public GameObject Racket;
     public int meteorAttack = 60;
-    private GameObject racket_inhand1;
-    private GameObject racket_inhand2;
 
     private void Awake()
     {
@@ -26,18 +23,21 @@ public class MeteorShower : Event {
 
     public override void startEvent()
     {
-        //GameObject racket_inhand = GameObject.Instantiate(Racket, GameObject.FindGameObjectWithTag("Hand").transform.position, Quaternion.identity) as GameObject;
-        GameObject[] hands = GameObject.FindGameObjectsWithTag("Hand");
-        racket_inhand1 = GameObject.Instantiate(Racket, hands[0].transform.position, Racket.transform.rotation) as GameObject;
-        racket_inhand2 = GameObject.Instantiate(Racket, hands[1].transform.position, Racket.transform.rotation) as GameObject;
-
-        racket_inhand1.transform.parent = hands[0].transform;
-        racket_inhand2.transform.parent = hands[1].transform;
-        racket_inhand2.SetActive(true);
-        racket_inhand1.SetActive(true);
+        enable_disable_SphereCollider(true);
         StartCoroutine(SpawnMeteor());
     }
     
+    private void enable_disable_SphereCollider(bool enable)
+    {
+        GameObject[] hands = GameObject.FindGameObjectsWithTag("Hand");
+
+        foreach (GameObject hand in hands)
+        {
+            hand.GetComponent<CapsuleCollider>().enabled = !enable;
+            hand.GetComponent<SphereCollider>().enabled = enable;
+        }
+    }
+
 
     //dont use move towards, cause need to use the update function to see it ?
     private IEnumerator SpawnMeteor()
@@ -53,8 +53,7 @@ public class MeteorShower : Event {
             yield return new WaitForSeconds(1);
         }
 
-        Destroy(racket_inhand1);
-        Destroy(racket_inhand2);
+        enable_disable_SphereCollider(false);
     }
 
 

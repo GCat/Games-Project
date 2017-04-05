@@ -47,9 +47,9 @@ public class Meteor : Projectile {
 
     public  override void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.tag == "Racket")
+        if (other.gameObject.tag == "Hand")
         {
-            // this will automatically bounce from it 
+            // this will automatically bounce from it  so do fuck nothing -- might need to change the different logisitcs like speed of meteorite ?
         }
         else 
         {
