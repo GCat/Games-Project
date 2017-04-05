@@ -118,6 +118,7 @@ GameObject:
   - component: {fileID: 4049017430771932}
   - component: {fileID: 95284703843987776}
   - component: {fileID: 65420350296434070}
+  - component: {fileID: 114233346249824370}
   m_Layer: 18
   m_Name: turret_b
   m_TagString: Turret
@@ -285,6 +286,7 @@ GameObject:
   - component: {fileID: 4438326224536636}
   - component: {fileID: 95804235395629864}
   - component: {fileID: 65426624409181150}
+  - component: {fileID: 114950193320862744}
   m_Layer: 18
   m_Name: turret_a
   m_TagString: Turret
@@ -663,7 +665,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010810685680}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 19.412704, y: 0, z: -36.97198}
+  m_LocalPosition: {x: -56.77996, y: -0.0036621094, z: 5.0699463}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4672694764092034}
@@ -1273,6 +1275,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!23 &23144794033778694
 MeshRenderer:
@@ -1304,6 +1307,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!23 &23634264051521332
 MeshRenderer:
@@ -1335,6 +1339,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!23 &23653337541882764
 MeshRenderer:
@@ -1366,6 +1371,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!33 &33005642556358410
 MeshFilter:
@@ -1501,9 +1507,59 @@ MonoBehaviour:
   held: 0
   cost_per_meter: 10
   turretRadius: 25
-  turretB: {fileID: 1088060195567358}
-  turretA: {fileID: 1356206817766396}
+  turretB: {fileID: 114233346249824370}
+  turretA: {fileID: 114950193320862744}
   wallSegment: {fileID: 1083709367599340}
+--- !u!114 &114233346249824370
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1088060195567358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1848f75a57f23e45b10d083fc910964, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSource: {fileID: 0}
+  buildClip: {fileID: 0}
+  destroy: {fileID: 0}
+  description: 
+  totalHealth: 100
+  health: 100
+  resourceCounter: {fileID: 0}
+  tablet: {fileID: 0}
+  bought: 0
+  faithCost: 0
+  highlight_template: {fileID: 0}
+  canBeGrabbed: 1
+  initialRotation: {x: 0, y: 0, z: 0, w: 0}
+  held: 0
+--- !u!114 &114950193320862744
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1356206817766396}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1848f75a57f23e45b10d083fc910964, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSource: {fileID: 0}
+  buildClip: {fileID: 0}
+  destroy: {fileID: 0}
+  description: 
+  totalHealth: 100
+  health: 100
+  resourceCounter: {fileID: 0}
+  tablet: {fileID: 0}
+  bought: 0
+  faithCost: 0
+  highlight_template: {fileID: 0}
+  canBeGrabbed: 1
+  initialRotation: {x: 0, y: 0, z: 0, w: 0}
+  held: 0
 --- !u!208 &208372280704976308
 NavMeshObstacle:
   m_ObjectHideFlags: 1
