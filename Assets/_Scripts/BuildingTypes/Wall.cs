@@ -9,7 +9,7 @@ public class Wall : Building
     // Use this for initialization
     public int cost_per_meter = 10;
     public float turretRadius = 20f;
-
+    public float maxWallLength = 70f;
     public WallTurret turretB = null;
     public WallTurret turretA = null;
     public GameObject wallSegment = null;
@@ -82,52 +82,26 @@ public class Wall : Building
 
     private void createTurretHighlight()
     {
-        turretA.createHighlight(turretRadius);
-        turretB.createHighlight(turretRadius);
+        turretA.createHighlight(turretRadius, maxWallLength);
+        turretB.createHighlight(turretRadius, maxWallLength);
     }
 
     public override void activate()
     {
         if (highlight != null) highlightDestroy();
         held = false;
-        int buildingLayer = 1 << 10;
-        Collider[] turretAPoints = Physics.OverlapSphere(turretA.transform.position, turretRadius / 2, buildingLayer);
-        Collider[] turretBPoints = Physics.OverlapSphere(turretB.transform.position, turretRadius / 2, buildingLayer);
-        initialTurretA = turretA.transform.position;
-        initialTurretB = turretB.transform.position;
 
-
-        foreach (Collider collider in turretAPoints)
-        {
-            if (collider.gameObject.tag == "Turret" && collider.gameObject != turretA && collider.gameObject != turretB)
-            {
-                initialTurretB = turretB.transform.position;
-                initialTurretA = turretA.transform.position;
-                turretA.transform.position = collider.transform.position;
-                turretA.transform.rotation = collider.transform.rotation;
-                alignWall(turretB.transform.position, turretA.transform.position);
-            }
-        }
-        foreach (Collider collider in turretBPoints)
-        {
-            if (collider.gameObject.tag == "Turret" && collider.gameObject != turretA && collider.gameObject != turretB)
-            {
-                initialTurretA = turretA.transform.position;
-                initialTurretB = turretB.transform.position;
-                turretB.transform.position = collider.transform.position;
-                turretB.transform.rotation = collider.transform.rotation;
-                alignWall(turretA.transform.position, turretB.transform.position);
-
-            }
-        }
         turretA.activate();
         turretB.activate();
+
         deactivate();
         canBeGrabbed = false;
         gameObject.layer = 0;
         setGrabbable(false);
         turretA.transform.parent = null;
         turretB.transform.parent = null;
+        turretA.snap();
+        turretB.snap();
     }
 
     public void updateWall()

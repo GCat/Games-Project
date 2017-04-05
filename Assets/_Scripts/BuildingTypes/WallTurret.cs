@@ -8,10 +8,14 @@ public class WallTurret : Building
 {
     private Wall wall;
     private GameObject radiusHighlight;
+    private GameObject wallLengthHighlight;
     private float turretRadius;
     public List<WallTurret> overlappingTurrets;
+    public WallTurret otherEnd;
+
     public override void activate()
     {
+        limitLength();
         overlappingTurrets = new List<WallTurret>();
         canBeGrabbed = true;
         if (highlight != null) highlightDestroy();
@@ -22,13 +26,25 @@ public class WallTurret : Building
         removeOutline();
         wall.GetComponent<Collider>().enabled = true;
         GetComponent<Collider>().enabled = true;
+        otherEnd.showWallLengthHighlight(false);
+
     }
     public void Start()
     {
         wall = transform.parent.gameObject.GetComponent<Wall>();
     }
 
+    private void limitLength()
+    {
+        if (Vector3.Distance(otherEnd.transform.position, transform.position) < wall.maxWallLength*0.5f)
+        {
+            Debug.Log("Within range");
+            return;
+        }
+        Vector3 wallDirection = (transform.position - otherEnd.transform.position).normalized * wall.maxWallLength*0.5f;
+        transform.position = otherEnd.transform.position + wallDirection;
 
+    }
 
     public void Update()
     {
@@ -39,6 +55,7 @@ public class WallTurret : Building
             highlightCheck();
             wall.updateWall();
             adjustHighlight();
+
         }
         else if (wall == null)
         {
@@ -63,6 +80,7 @@ public class WallTurret : Building
             turret.reveal();
         }
         base.grab();
+        otherEnd.showWallLengthHighlight(true);
     }
 
     public void reveal()
@@ -128,8 +146,14 @@ public class WallTurret : Building
         radiusHighlight.transform.position = new Vector3(transform.position.x, 0.1f, transform.position.z);
 
     }
+    public void showWallLengthHighlight(bool active)
+    {
+        wallLengthHighlight.transform.position = new Vector3(transform.position.x, 0.1f, transform.position.z);
+        wallLengthHighlight.SetActive(active);
+    }
 
-    public void createHighlight(float radius)
+
+    public void createHighlight(float radius, float maxWallLength)
     {
         radiusHighlight = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         radiusHighlight.GetComponent<Renderer>().material.SetColor("_Color", Color.yellow);
@@ -140,6 +164,16 @@ public class WallTurret : Building
         radiusHighlight.GetComponent<Renderer>().enabled = true;
         radiusHighlight.SetActive(false);
         turretRadius = radius;
+
+        wallLengthHighlight = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        wallLengthHighlight.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
+        wallLengthHighlight.transform.localScale = (new Vector3(maxWallLength, 0.1f, maxWallLength));
+        wallLengthHighlight.transform.position = new Vector3(transform.position.x, 0.1f, transform.position.z);
+        wallLengthHighlight.transform.rotation = Quaternion.LookRotation(Vector3.forward);
+        wallLengthHighlight.GetComponent<Collider>().enabled = false;
+        wallLengthHighlight.GetComponent<Renderer>().enabled = true;
+        wallLengthHighlight.SetActive(false);
+
     }
 
     public override void highlightDestroy()
