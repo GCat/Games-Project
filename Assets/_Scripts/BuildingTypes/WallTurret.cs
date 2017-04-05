@@ -37,6 +37,10 @@ public class WallTurret : Building
             wall.updateWall();
             adjustHighlight();
         }
+        else if (wall == null)
+        {
+            Destroy(gameObject);
+        }
     }
 
     public override void create_building()
