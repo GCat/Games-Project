@@ -9,9 +9,10 @@ public class WallTurret : Building
     private Wall wall;
     private GameObject radiusHighlight;
     private float turretRadius;
-
+    public List<WallTurret> overlappingTurrets;
     public override void activate()
     {
+        overlappingTurrets = new List<WallTurret>();
         canBeGrabbed = true;
         if (highlight != null) highlightDestroy();
         held = false;
@@ -26,6 +27,8 @@ public class WallTurret : Building
     {
         wall = transform.parent.gameObject.GetComponent<Wall>();
     }
+
+
 
     public void Update()
     {
@@ -52,6 +55,30 @@ public class WallTurret : Building
 
     }
 
+    public override void grab()
+    {
+        foreach (WallTurret turret in overlappingTurrets)
+        {
+            turret.overlappingTurrets.Remove(this);
+            turret.reveal();
+        }
+        base.grab();
+    }
+
+    public void reveal()
+    {
+        bool reveal = true;
+        foreach (WallTurret turret in overlappingTurrets)
+        {
+            if (turret.gameObject.activeInHierarchy)
+            {
+                reveal = false;
+            }
+        }
+        gameObject.SetActive(reveal);
+
+    }
+
     public void snap()
     {
         int buildingLayer = 1 << 10;
@@ -63,8 +90,11 @@ public class WallTurret : Building
             {
                 transform.position = collider.transform.position;
                 wall.updateWall();
+                overlappingTurrets.Add(collider.gameObject.GetComponent<WallTurret>());
+                collider.gameObject.GetComponent<WallTurret>().overlappingTurrets.Add(this);
             }
         }
+        reveal();
     }
 
     public override void die()
