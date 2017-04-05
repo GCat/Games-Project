@@ -18,6 +18,7 @@ public class Hand : MonoBehaviour {
 
     public Collider[] things;
     public AudioClip[] hitSounds;
+    public AudioClip destructionSound;
     public AudioSource audioSource;
     public GameObject close_hand;
     public GameObject open_hand;
@@ -366,6 +367,12 @@ public class Hand : MonoBehaviour {
                     }
                     else
                     {
+                        if (building.gameObject.tag != "Temple")
+                        {
+                            building.delete();
+                            audioSource.PlayOneShot(destructionSound, 0.5f);
+                            Destroy(heldObject);
+                        }
                         throwObject(heldObject);
                     }
                 }

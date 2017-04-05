@@ -113,7 +113,13 @@ public class WallTurret : Building
         if (highlight != null)
         {
             highlight.SetActive(false);
+            radiusHighlight.SetActive(false);
         }
+    }
+
+    public override void delete()
+    {
+        wall.delete();
     }
 }
 

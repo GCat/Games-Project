@@ -207,4 +207,13 @@ public class Wall : Building
         turretA.hideTurretHighlight();
         turretB.hideTurretHighlight();
     }
+    public override void delete()
+    {
+        turretA.highlightDestroy();
+        turretB.highlightDestroy();
+
+        Destroy(turretA);
+        Destroy(turretB);
+        base.delete();
+    }
 }
