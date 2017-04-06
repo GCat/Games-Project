@@ -28,7 +28,6 @@ public class FireTower : Tower
             {
                 audioSource.Stop();
                 fireStream.SetActive(false);
-                acquireTarget();
             }
             else
             {
@@ -107,5 +106,6 @@ public class FireTower : Tower
             StartCoroutine(attack());
             activated = true;
         }
+        base.activate();
     }
 }

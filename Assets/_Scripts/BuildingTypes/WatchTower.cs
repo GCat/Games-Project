@@ -97,5 +97,6 @@ public class WatchTower : Tower
             StartCoroutine(attack());
             activated = true;
         }
+        base.activate();
     }
 }

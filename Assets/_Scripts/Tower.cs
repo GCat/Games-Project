@@ -54,13 +54,6 @@ public class Tower : Building {
     //override this to have the correct tower sequence
     virtual public void activeTower()
     {
-        if (resourceCounter.getBaddies() > 0)
-        {
-            if (currentTarget == null)
-            {
-                acquireTarget();
-            }
-        }
     }
 
     // Update is called once per frame
@@ -87,7 +80,9 @@ public class Tower : Building {
         return transform.position;
     }
 
-    public override void activate() {} //function should be overriden by child
+    public override void activate() {
+        StartCoroutine(getNearestTarget());
+    } //function should be overriden by child
 
     public override void deactivate()
     {
@@ -97,7 +92,21 @@ public class Tower : Building {
     public void showRange()
     {
         rangeHighlight.SetActive(true);
+    }
 
+    protected IEnumerator getNearestTarget()
+    {
+        while (active)
+        {
+            yield return new WaitForSeconds(1);
+            if (resourceCounter.getBaddies() > 0)
+            {
+                if (currentTarget == null || Vector3.Distance(transform.position, currentTarget.transform.position) > radius)
+                {
+                    acquireTarget();
+                }
+            }
+        }
     }
 
     public void hideRange()
