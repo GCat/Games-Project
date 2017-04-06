@@ -107,6 +107,8 @@ public abstract class Building : Grabbable, HealthManager{ // this should also b
 
     }
 
+
+
     //return true if within bounds & not above another building
     public bool canPlace()
     {
@@ -126,10 +128,12 @@ public abstract class Building : Grabbable, HealthManager{ // this should also b
             {
                 rot = Quaternion.LookRotation(Vector3.forward);
             }
-
-            if (Physics.CheckBox(new Vector3(x, 0, z), boxSize, rot, nobuildmask))
-            {
-                return false;
+            Collider[] colliders = Physics.OverlapBox(new Vector3(x, 0, z), boxSize, rot, nobuildmask);
+            foreach (Collider collider in colliders) {
+                if (!(GetComponent<WallTurret>() != null && collider.GetComponent<WallTurret>() != null))
+                {
+                    return false;
+                }
             }
             GetComponent<Collider>().enabled = true;
             return true;
@@ -217,23 +221,24 @@ public abstract class Building : Grabbable, HealthManager{ // this should also b
             highlight.SetActive(true);
             highlight.transform.position = new Vector3(transform.position.x, 0.1f,transform.position.z);
             highlight.transform.rotation = transform.rotation;
-            if (Physics.CheckBox(new Vector3(transform.position.x, 0, transform.position.z), boxSize, gameObject.transform.rotation, nobuildmask))
+            Collider[] colliders = Physics.OverlapBox(new Vector3(transform.position.x, 0, transform.position.z), boxSize, gameObject.transform.rotation, nobuildmask);
+            foreach (Collider collider in colliders)
             {
-                foreach (Renderer t in highlight.GetComponentsInChildren<Renderer>())
+                if (!(GetComponent<WallTurret>() != null && collider.GetComponent<WallTurret>() != null))
                 {
-                    t.material.SetColor("_Color", Color.red);
+                    foreach (Renderer t in highlight.GetComponentsInChildren<Renderer>())
+                    {
+                        t.material.SetColor("_Color", Color.red);
+                    }
+                    return false;
                 }
-                return false;
             }
-            else
-            {
+            
                 foreach (Renderer t in highlight.GetComponentsInChildren<Renderer>())
                 {
                     t.material.SetColor("_Color", Color.green);
                 }
                 return true;
-
-            }
         }
         else
         {
@@ -317,7 +322,7 @@ public abstract class Building : Grabbable, HealthManager{ // this should also b
 
     public virtual void delete()
     {
-
+        highlightDestroy();
         Destroy(gameObject);
     }
 

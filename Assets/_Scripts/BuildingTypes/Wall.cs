@@ -37,6 +37,7 @@ public class Wall : Building
         {
             turretA.adjustHighlight();
             turretB.adjustHighlight();
+            boxSize = GetComponent<BoxCollider>().size;
             if (highlight != null)
             {
                 if (highlightCheck()) showTurretHighlight();
@@ -64,6 +65,7 @@ public class Wall : Building
     public override void highlightDestroy()
     {
         highlight.SetActive(false);
+        
         turretA.highlightDestroy();
         turretB.highlightDestroy();
     }
@@ -107,6 +109,7 @@ public class Wall : Building
     public void updateWall()
     {
         alignWall(turretA.transform.position, turretB.transform.position);
+
     }
     private void alignWall(Vector3 pointA, Vector3 pointB)
     {
@@ -185,7 +188,7 @@ public class Wall : Building
     {
         turretA.highlightDestroy();
         turretB.highlightDestroy();
-
+        highlightDestroy();
         Destroy(turretA, 0.1f);
         Destroy(turretB, 0.1f);
         base.delete();

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -110,6 +111,7 @@ public class WallTurret : Building
                 wall.updateWall();
                 overlappingTurrets.Add(collider.gameObject.GetComponent<WallTurret>());
                 collider.gameObject.GetComponent<WallTurret>().overlappingTurrets.Add(this);
+                collider.gameObject.GetComponent<WallTurret>().removeOutline();
             }
         }
         reveal();
@@ -121,6 +123,16 @@ public class WallTurret : Building
         Destroy(gameObject);
     }
 
+    private IEnumerator clearOutline()
+    {
+        while (!held)
+        {
+            yield return new WaitForSeconds(1f);
+            removeOutline();
+
+        }
+
+    }
     public override Vector3 getLocation()
     {
         return transform.position;
@@ -181,6 +193,9 @@ public class WallTurret : Building
         if (highlight != null)
         {
             highlight.SetActive(false);
+        }
+        if (radiusHighlight != null)
+        {
             radiusHighlight.SetActive(false);
         }
     }

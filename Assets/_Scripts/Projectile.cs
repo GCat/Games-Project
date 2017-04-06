@@ -31,7 +31,7 @@ public class Projectile : MonoBehaviour
         if (gameObject != null)
         {
             Destroy(gameObject);
-            if (explosion.gameObject != null)
+            if (explosion != null && explosion.gameObject != null)
             {
                 Destroy(explosion.gameObject);
             }
