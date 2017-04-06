@@ -409,6 +409,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!23 &23223322880871412
 MeshRenderer:
@@ -440,6 +441,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!23 &23358761639166488
 MeshRenderer:
@@ -471,6 +473,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!23 &23499328314575344
 MeshRenderer:
@@ -502,6 +505,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!23 &23765157551849390
 MeshRenderer:
@@ -533,6 +537,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!23 &23766236072363946
 MeshRenderer:
@@ -564,6 +569,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!23 &23771786406073274
 MeshRenderer:
@@ -595,6 +601,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!23 &23798279850082386
 MeshRenderer:
@@ -626,6 +633,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!33 &33103754868573136
 MeshFilter:
@@ -818,6 +826,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: acba26e73f636e644a22c7a93d89e775, type: 3}
   - {fileID: 8300000, guid: dadb310d771dcac4ea701addc18c1385, type: 3}
   - {fileID: 8300000, guid: 9496b9a2f02d74e4eb1c44ea1a251491, type: 3}
+  destructionSound: {fileID: 8300000, guid: 03e5db10502f38d40aab0861935538ec, type: 3}
   audioSource: {fileID: 82619670837451796}
   close_hand: {fileID: 1837521622713668}
   open_hand: {fileID: 1971902728037730}

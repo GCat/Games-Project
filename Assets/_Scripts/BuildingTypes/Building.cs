@@ -309,9 +309,16 @@ public abstract class Building : Grabbable, HealthManager{ // this should also b
         }
         return false;
     }
-    public void refund()
+
+    public virtual void refund()
     {
         resourceCounter.addFaith(faithCost);
+    }
+
+    public virtual void delete()
+    {
+
+        Destroy(gameObject);
     }
 
 }
