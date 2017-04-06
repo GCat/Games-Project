@@ -1552,6 +1552,7 @@ MonoBehaviour:
   held: 0
   cost_per_meter: 10
   turretRadius: 25
+  maxWallLength: 70
   turretB: {fileID: 114233346249824370}
   turretA: {fileID: 114950193320862744}
   wallSegment: {fileID: 1083709367599340}
@@ -1581,6 +1582,8 @@ MonoBehaviour:
   canBeGrabbed: 1
   initialRotation: {x: 0, y: 0, z: 0, w: 0}
   held: 0
+  overlappingTurrets: []
+  otherEnd: {fileID: 114950193320862744}
 --- !u!114 &114950193320862744
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1607,6 +1610,8 @@ MonoBehaviour:
   canBeGrabbed: 1
   initialRotation: {x: 0, y: 0, z: 0, w: 0}
   held: 0
+  overlappingTurrets: []
+  otherEnd: {fileID: 114233346249824370}
 --- !u!208 &208372280704976308
 NavMeshObstacle:
   m_ObjectHideFlags: 1
