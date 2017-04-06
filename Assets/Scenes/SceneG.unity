@@ -8911,7 +8911,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1027060048
 Transform:
   m_ObjectHideFlags: 0
@@ -14401,6 +14401,12 @@ Prefab:
       propertyPath: Waves.Array.data[6].waveEvent
       value: 
       objectReference: {fileID: 656921780}
+    - target: {fileID: 114585129072737174, guid: 832e3998ba188d54585391e1bdb68df0,
+        type: 2}
+      propertyPath: Waves.Array.data[4].newBuilding
+      value: 
+      objectReference: {fileID: 1800203989559666, guid: be19340edba1cb34ca731aa769354cb5,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 832e3998ba188d54585391e1bdb68df0, type: 2}
   m_IsPrefabParent: 0
