@@ -286,7 +286,7 @@ public abstract class Building : Grabbable, HealthManager{ // this should also b
         GetComponent<Rigidbody>().useGravity = false;
         GetComponent<Rigidbody>().isKinematic = true;
         GetComponent<Collider>().enabled = false;
-    }
+    }   
 
     public override void release(Vector3 vel)
     {
