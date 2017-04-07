@@ -22,7 +22,7 @@ public class Catapult : Tower
     //find a new nearby monster to attack
     public override bool acquireTarget()
     {
-        List<Collider> hitColliders = new List<Collider>(Physics.OverlapSphere(transform.position, radius, attackMask));
+        List<Collider> hitColliders = new List<Collider>(Physics.OverlapSphere(floor, radius, attackMask));
         if (hitColliders.Count > 0)
         {
             Debug.Log("Acquired target");
@@ -38,7 +38,7 @@ public class Catapult : Tower
 
         while (true)
         {
-            if (currentTarget != null && Vector3.Distance(transform.position, currentTarget.transform.position) < radius)
+            if (currentTarget != null && Vector3.Distance(floor, currentTarget.transform.position) < radius)
             {
                 throwRock(currentTarget);
             }

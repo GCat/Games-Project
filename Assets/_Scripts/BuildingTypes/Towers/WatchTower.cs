@@ -18,11 +18,13 @@ public class WatchTower : Tower
     void Start()
     {
         pre = Resources.Load("Arrow_Regular") as GameObject;
+
     }
     //find a new nearby monster to attack
     public override bool acquireTarget()
     {
-        List<Collider> hitColliders = new List<Collider>(Physics.OverlapSphere(transform.position, radius, attackMask));
+
+        List<Collider> hitColliders = new List<Collider>(Physics.OverlapSphere(floor, radius, attackMask));
         if (hitColliders.Count > 0)
         {
             Debug.Log("Acquired target");
@@ -38,7 +40,7 @@ public class WatchTower : Tower
 
         while (true)
         {
-            if (currentTarget != null && Vector3.Distance(transform.position, currentTarget.transform.position) < radius)
+            if (currentTarget != null && Vector3.Distance(floor, currentTarget.transform.position) < radius)
             {
                 throwArrow(currentTarget);
             }

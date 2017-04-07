@@ -6,6 +6,7 @@ public class Tower : Building {
     public AudioClip[] attackClip;
     public GameObject rangeHighlight;
     public GameObject currentTarget;
+    protected Vector3 floor;
 
     public float radius;
     public bool active = false;
@@ -81,6 +82,8 @@ public class Tower : Building {
     }
 
     public override void activate() {
+        Vector3 floor = transform.position;
+        floor.y = 0;
         StartCoroutine(getNearestTarget());
     } //function should be overriden by child
 
@@ -101,7 +104,7 @@ public class Tower : Building {
             yield return new WaitForSeconds(1);
             if (resourceCounter.getBaddies() > 0)
             {
-                if (currentTarget == null || Vector3.Distance(transform.position, currentTarget.transform.position) > radius)
+                if (currentTarget == null || Vector3.Distance(floor, currentTarget.transform.position) > radius)
                 {
                     acquireTarget();
                 }
