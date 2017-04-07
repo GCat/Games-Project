@@ -29,6 +29,7 @@ public abstract class Character : Grabbable, HealthManager
         healthBar = GameObject.Instantiate(Resources.Load("CharacterHealthBar")) as GameObject;
         healthBar.transform.position = gameObject.GetComponent<Collider>().transform.position;
         healthBar.transform.Translate(new Vector3(0, 0, dims.size.y * -1.0f));
+        healthBar.transform.position += Vector3.up * 1f;
         healthBar.transform.SetParent(gameObject.transform);
     }
 
