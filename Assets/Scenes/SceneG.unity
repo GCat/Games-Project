@@ -3619,7 +3619,7 @@ Prefab:
         type: 2}
       propertyPath: buildingToSpawn
       value: 
-      objectReference: {fileID: 1801555696720252, guid: 10ce0b7e17a2ab547adc092fc6fc7ee3,
+      objectReference: {fileID: 1000010810685680, guid: fe9f788ae3115b343a21720d55615ef0,
         type: 2}
     m_RemovedComponents:
     - {fileID: 120489849706793892, guid: 954a9ca7a1bd3464bb395b8d5230dcfb, type: 2}
