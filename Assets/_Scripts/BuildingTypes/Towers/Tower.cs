@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Tower : Building {
+public abstract class Tower : Building {
     public AudioClip[] attackClip;
     public GameObject rangeHighlight;
     public GameObject currentTarget;
@@ -67,7 +67,14 @@ public class Tower : Building {
     // different towers can aquire targets differently
     public virtual bool acquireTarget()
     {
-        return true;
+        List<Collider> hitColliders = new List<Collider>(Physics.OverlapSphere(floor, radius, attackMask));
+        if (hitColliders.Count > 0)
+        {
+            Debug.Log("Acquired target");
+            currentTarget = hitColliders[0].gameObject;
+            return true;
+        }
+        return false;
     }
 
     //function should be overriden by child
@@ -81,9 +88,24 @@ public class Tower : Building {
         return transform.position;
     }
 
+    protected abstract IEnumerator attack();
+
     public override void activate() {
-        Vector3 floor = transform.position;
+        Debug.Log("Position: " + transform.position);
+        floor = transform.position;
         floor.y = 0;
+        if (!bought) resourceCounter.removeFaith(faithCost);
+        active = true;
+        if (highlight != null) Destroy(highlight);
+        highlight = null;
+        held = false;
+
+        hideRange();
+        if (!activated)
+        {
+            StartCoroutine(attack());
+            activated = true;
+        }
         StartCoroutine(getNearestTarget());
     } //function should be overriden by child
 

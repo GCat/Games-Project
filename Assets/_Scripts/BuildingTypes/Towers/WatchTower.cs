@@ -35,7 +35,7 @@ public class WatchTower : Tower
         return false;
     }
 
-    private IEnumerator attack()
+    protected override IEnumerator attack()
     {
 
         while (true)
@@ -87,18 +87,7 @@ public class WatchTower : Tower
 
     public override void activate()
     {
-        if (!bought) resourceCounter.removeFaith(faithCost);
-        active = true;
-        if (highlight != null) Destroy(highlight);
-        highlight = null;
-        held = false;
-        buildingName = "TOWER";
-        hideRange();
-        if (!activated)
-        {
-            StartCoroutine(attack());
-            activated = true;
-        }
+        
         base.activate();
     }
 }
