@@ -243,6 +243,7 @@ public class Agent : Character
     {
         float randX = UnityEngine.Random.Range(bL.x, tR.x);
         float randZ = UnityEngine.Random.Range(bL.z, tR.z);
+        Debug.Log("Finding new target");
         Vector3 v = new Vector3(randX, 0, randZ);
         NavMeshHit hit;
         if (NavMesh.SamplePosition(v, out hit, 20.0f, NavMesh.AllAreas))

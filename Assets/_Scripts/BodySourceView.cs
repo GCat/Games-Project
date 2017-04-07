@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Kinect = Windows.Kinect;
 using System.IO;
 using UnityEngine.VR;
+using UnityEngine.UI;
 
 public class BodySourceView : MonoBehaviour
 {
@@ -22,6 +23,7 @@ public class BodySourceView : MonoBehaviour
     public GameObject kinectLocation;
     public GameObject left_foot;
     public GameObject right_foot;
+    public Text countdown;
     public int tracking_frames = 8;
     public bool rightHandClosed = false;
     public bool leftHandClosed = false;
@@ -385,8 +387,12 @@ public class BodySourceView : MonoBehaviour
     {
         for(int i=0; i < 3; i++)
         {
+            string newText = countdown.text.Substring(0, countdown.text.Length-1);
+            newText += i.ToString();
+            countdown.text = newText;
             yield return new WaitForSeconds(1);
         }
+        countdown.text = "";
         InputTracking.Recenter();
     }
 
