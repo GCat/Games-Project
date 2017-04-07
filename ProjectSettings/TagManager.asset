@@ -32,6 +32,7 @@ TagManager:
   - Niet
   - Spawner
   - PortalMove
+  - Bee
   layers:
   - Default
   - TransparentFX
