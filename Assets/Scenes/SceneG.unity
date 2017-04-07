@@ -3610,6 +3610,12 @@ Prefab:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114294504456913204, guid: 954a9ca7a1bd3464bb395b8d5230dcfb,
+        type: 2}
+      propertyPath: buildingToSpawn
+      value: 
+      objectReference: {fileID: 1800203989559666, guid: be19340edba1cb34ca731aa769354cb5,
+        type: 2}
     m_RemovedComponents:
     - {fileID: 120489849706793892, guid: 954a9ca7a1bd3464bb395b8d5230dcfb, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 954a9ca7a1bd3464bb395b8d5230dcfb, type: 2}
@@ -10041,7 +10047,7 @@ Prefab:
     - target: {fileID: 114687539696213070, guid: f8944127a1ee7404ca8ab160846ee099,
         type: 2}
       propertyPath: useMouse
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114350785072023630, guid: f8944127a1ee7404ca8ab160846ee099,
         type: 2}
