@@ -5,7 +5,14 @@ using UnityEngine;
 
 public class LightningBolt : Tool {
 
-    GameObject flash;    
+    GameObject flash;
+
+    public override void grab()
+    {
+        base.grab();
+        GetComponent<Collider>().enabled = true;
+        GetComponent<Rigidbody>().isKinematic = false;
+    }
 
     public override void release(Vector3 vel)
     {
@@ -30,6 +37,7 @@ public class LightningBolt : Tool {
 
     void OnCollisionEnter(Collision col)
     {
+        Debug.Log(col.gameObject);
         if (col.gameObject.tag == "Ground") {
             int layerMask = 1 << 11;
             ContactPoint hit = col.contacts[0];

@@ -50,10 +50,10 @@ public abstract class Tool : Grabbable
 
     public override void grab()
     {
+        Debug.Log("HERE");
         held = true;
         GetComponent<Rigidbody>().useGravity = false;
         GetComponent<Rigidbody>().isKinematic = true;
-        GetComponent<Collider>().enabled = false;
     }
     public override void release(Vector3 vel)
     {

@@ -278,6 +278,7 @@ public class Hand : MonoBehaviour {
                     snapToHand(heldObject);
                     grabTarget.transform.parent = transform;
                     holding = true;
+                    tool.grab();
                 }
                 else
                 {
