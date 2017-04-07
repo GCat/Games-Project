@@ -7626,7 +7626,7 @@ Transform:
   - {fileID: 1027060048}
   - {fileID: 1902198882}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &878989759
 GameObject:
@@ -10175,15 +10175,15 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4434251442131386, guid: f8944127a1ee7404ca8ab160846ee099, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 64.51
+      value: -72.8
       objectReference: {fileID: 0}
     - target: {fileID: 4434251442131386, guid: f8944127a1ee7404ca8ab160846ee099, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 11.63
+      value: -0.6
       objectReference: {fileID: 0}
     - target: {fileID: 4434251442131386, guid: f8944127a1ee7404ca8ab160846ee099, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 22.3
+      value: 72.1
       objectReference: {fileID: 0}
     - target: {fileID: 4434251442131386, guid: f8944127a1ee7404ca8ab160846ee099, type: 2}
       propertyPath: m_LocalRotation.x
@@ -14560,7 +14560,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4638784060754756, guid: 832e3998ba188d54585391e1bdb68df0, type: 2}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1863264257053320, guid: 832e3998ba188d54585391e1bdb68df0, type: 2}
       propertyPath: m_IsActive
@@ -14697,7 +14697,8 @@ Prefab:
         type: 2}
       propertyPath: Waves.Array.data[0].waveEvent
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 114947349970735228, guid: 4eb7c76834d01cb4f91089e1bba51f17,
+        type: 2}
     - target: {fileID: 4825022829646916, guid: 832e3998ba188d54585391e1bdb68df0, type: 2}
       propertyPath: m_LocalPosition.y
       value: 0
@@ -14981,7 +14982,7 @@ Prefab:
         type: 2}
       propertyPath: Waves.Array.data[1].waveEvent
       value: 
-      objectReference: {fileID: 114236806691041284, guid: e45105c5ad7cf9946aca09f862220ff9,
+      objectReference: {fileID: 114947349970735228, guid: 4eb7c76834d01cb4f91089e1bba51f17,
         type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 832e3998ba188d54585391e1bdb68df0, type: 2}
