@@ -15,7 +15,7 @@ public class Temple : Building
         world.startGame();
         tablet.SetActive(true);
         placed = true;
-        spawnHumans();
+        StartCoroutine(spawnHumans());
         InvokeRepeating("incrementResource", 10.0f, 10.0f); // after 10 sec call every 5
         canBeGrabbed = false;
         CancelInvoke("showStartOutline");
@@ -52,8 +52,9 @@ public class Temple : Building
     }
 
 
-    void spawnHumans()
+    IEnumerator spawnHumans()
     {
+        yield return new WaitForSeconds(0.2f);
         Vector3 myLocation = transform.position;
         Debug.Log("Spawning humans");
 
@@ -80,6 +81,7 @@ public class Temple : Building
         }
         spawnedGarrison = true;
     }
+
     Vector3 rotateAroundPivot(Vector3 point, Vector3 pivot, Vector3 angles)
     {
         Vector3 dir = point - pivot;

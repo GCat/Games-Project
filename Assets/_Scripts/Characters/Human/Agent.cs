@@ -244,15 +244,21 @@ public class Agent : Character
         float randX = UnityEngine.Random.Range(bL.x, tR.x);
         float randZ = UnityEngine.Random.Range(bL.z, tR.z);
         Vector3 v = new Vector3(randX, 0, randZ);
-        NavMeshHit hit;
-        if (NavMesh.SamplePosition(v, out hit, 20.0f, NavMesh.AllAreas))
-        {
-            return hit.position;
+        //attempt to get a new wander point 3 times
+        //we should probably use an area mask or something but easier to rebake navmesh to remove invalid areas
+        for (int i = 0; i < 3; i++) {
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(v, out hit, 20.0f, NavMesh.AllAreas))
+            {
+                NavMeshPath path = new NavMeshPath();
+                agent.CalculatePath(hit.position, path);
+                if (path.status != NavMeshPathStatus.PathInvalid)
+                {
+                    return hit.position;
+                }
+            }
         }
-        else
-        {
-            return transform.position;
-        }
+        throw new TargetNotFoundException();
     }
 
     private void showPath()

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MovePortalEvent : Event {
+public class MovePortalEvent : WaveEvent {
 
     public override void startEvent()
     {

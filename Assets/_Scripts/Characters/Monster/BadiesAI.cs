@@ -70,7 +70,7 @@ public abstract class Monster : Character
 
     void Start()
     {
- 
+
         cameraPos = GameObject.FindWithTag("MainCamera").transform.position;
         if (agent == null)
         {
@@ -133,7 +133,7 @@ public abstract class Monster : Character
                         {
                             walkTowards(templeAttackPoint);
                         }
-                        catch(TargetNotFoundException e)
+                        catch (TargetNotFoundException e)
                         {
                             currentState = MonsterState.Idle;
                         }
@@ -290,7 +290,8 @@ public abstract class Monster : Character
                 try
                 {
                     walkTowards(closestEnemy.GetComponent<Collider>().ClosestPointOnBounds(transform.position));
-                }catch(TargetNotFoundException e)
+                }
+                catch (TargetNotFoundException e)
                 {
                     currentState = MonsterState.AttackHumans;
                 }
@@ -362,7 +363,8 @@ public abstract class Monster : Character
                 try
                 {
                     walkTowards(closestEnemy.GetComponent<Collider>().ClosestPointOnBounds(transform.position));
-                }catch(TargetNotFoundException e)
+                }
+                catch (TargetNotFoundException e)
                 {
                     currentState = MonsterState.AttackHumans;
                 }
@@ -395,7 +397,7 @@ public abstract class Monster : Character
         {
             walkTowards(closestEnemy.GetComponent<Collider>().ClosestPointOnBounds(transform.position));
         }
-        catch(TargetNotFoundException e)
+        catch (TargetNotFoundException e)
         {
             //ideally if you can't walk towards a human you should go to the next -- not implemented yet
             currentState = MonsterState.AttackTemple;
@@ -416,7 +418,8 @@ public abstract class Monster : Character
             try
             {
                 nextBestTarget = getClosestPointToTarget(target);
-            }catch(TargetNotFoundException exception)
+            }
+            catch (TargetNotFoundException exception)
             {
                 throw;
             }
