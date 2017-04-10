@@ -31,7 +31,7 @@ public class FireTower : Tower
             }
             else
             {
-                if (Vector3.Distance(currentTarget.transform.position, transform.position) < radius)
+                if (Vector3.Distance(currentTarget.transform.position, floor) < (radius+1))
                 {
                     if (!audioSource.isPlaying)
                     {
@@ -59,7 +59,7 @@ public class FireTower : Tower
     //find a new nearby monster to attack
     public override bool acquireTarget()
     {
-        List<Collider> hitColliders = new List<Collider>(Physics.OverlapSphere(transform.position, radius, attackMask));
+        List<Collider> hitColliders = new List<Collider>(Physics.OverlapSphere(floor, (radius + 1), attackMask));
         if (hitColliders.Count > 0)
         {
             currentTarget = hitColliders[0].gameObject;
@@ -70,12 +70,12 @@ public class FireTower : Tower
         return false;
     }
 
-    private IEnumerator attack()
+    protected override IEnumerator attack()
     {
 
         while (true)
         {
-            if (currentTarget != null && Vector3.Distance(currentTarget.transform.position, transform.position) < radius)
+            if (currentTarget != null && Vector3.Distance(currentTarget.transform.position, floor) < (radius + 1))
             {
                 HealthManager targetHealth = currentTarget.GetComponent<HealthManager>();
                 if (targetHealth != null)
@@ -94,18 +94,6 @@ public class FireTower : Tower
 
     public override void activate()
     {
-        if (!bought) resourceCounter.removeFaith(faithCost);
-        active = true;
-        if (highlight != null) Destroy(highlight);
-        highlight = null;
-        held = false;
-        buildingName = "TOWER";
-        hideRange();
-        if (!activated)
-        {
-            StartCoroutine(attack());
-            activated = true;
-        }
         base.activate();
     }
 }
