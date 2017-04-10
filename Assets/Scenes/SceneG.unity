@@ -7193,6 +7193,24 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 806997432}
   m_Mesh: {fileID: 4300006, guid: f305fa179506f1342af6263473dabdc8, type: 3}
+--- !u!1 &813077303 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1202590423550394, guid: 832e3998ba188d54585391e1bdb68df0,
+    type: 2}
+  m_PrefabInternal: {fileID: 1962966062}
+--- !u!114 &813077304
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 813077303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a6bfe45d8cd73a4db7bc1699a96158d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  swarmSize: 10
+  beePrefab: {fileID: 1094484192780146, guid: b7faecde6eacece47aaf2b0bae2d5749, type: 2}
 --- !u!4 &823015063 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4523207481569686, guid: c994a954a90e19f4fa31cb2cd635a7b0,
@@ -14492,6 +14510,11 @@ Prefab:
       value: 
       objectReference: {fileID: 1800203989559666, guid: be19340edba1cb34ca731aa769354cb5,
         type: 2}
+    - target: {fileID: 114585129072737174, guid: 832e3998ba188d54585391e1bdb68df0,
+        type: 2}
+      propertyPath: Waves.Array.data[4].waveEvent
+      value: 
+      objectReference: {fileID: 813077304}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 832e3998ba188d54585391e1bdb68df0, type: 2}
   m_IsPrefabParent: 0

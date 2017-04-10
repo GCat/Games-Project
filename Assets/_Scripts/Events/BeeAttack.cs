@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BeeAttack : Event {
+public class BeeAttack : WaveEvent {
 
     /// <summary>
     /// BEES will attack for a limited amount of time after that all die to symbolize imminent extintion of all bees

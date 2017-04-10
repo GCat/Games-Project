@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TornadoEvent : Event {
+public class TornadoEvent : WaveEvent {
     /// <summary>
     /// Tornado event creates a tornado in a random position, tornado damages both enemies and alies
     /// </summary>
