@@ -5,6 +5,7 @@ using Kinect = Windows.Kinect;
 using System.IO;
 using UnityEngine.VR;
 using UnityEngine.UI;
+using System.Threading;
 
 public class BodySourceView : MonoBehaviour
 {
@@ -43,6 +44,7 @@ public class BodySourceView : MonoBehaviour
     private TrackingContext rightHandContext = TrackingContext.Medium;
     private Filter rightHandFilter = new MovingAverageFilter(3);
     private Filter leftHandFilter = new MovingAverageFilter(3);
+    private Thread bodyThread = null;
 
     public enum TrackingContext { Slow, Medium, Fast };
 
@@ -51,6 +53,12 @@ public class BodySourceView : MonoBehaviour
 
     private Dictionary<ulong, GameObject> _Bodies = new Dictionary<ulong, GameObject>();
     private BodySourceManager _BodyManager;
+
+    private Kinect.Body trackedBody;
+    private GameObject trackedBodyObject;
+
+    private Dictionary<string, Transform> bodyTransforms = new Dictionary<string, Transform>();
+    private Dictionary<string, Vector3> bodyPositions = new Dictionary<string, Vector3>();
 
 
     private Dictionary<Kinect.JointType, Kinect.JointType> _BoneMap = new Dictionary<Kinect.JointType, Kinect.JointType>()
@@ -150,7 +158,7 @@ public class BodySourceView : MonoBehaviour
                 {
                     if (player_id == 99)
                     {
-                        _Bodies[body.TrackingId] = CreateBodyObject(body.TrackingId);
+                        _Bodies[body.TrackingId] = CreateBodyObject(body);
                         Vector3 headObject = GetVector3FromJoint(body.Joints[Kinect.JointType.Head]);
                         Kinect.JointOrientation headOrientation = body.JointOrientations[Kinect.JointType.Head];
                         Debug.Log(headOrientation.Orientation);
@@ -160,14 +168,38 @@ public class BodySourceView : MonoBehaviour
                         kinectLocation.transform.position += new Vector3(0, -feetOffset, 0);
                         player_id = body.TrackingId;
                         started = false;
+                        trackedBody = body;
+                        trackedBodyObject = _Bodies[body.TrackingId];
+                        bodyThread = new Thread(new ThreadStart(testThread));
+                        bodyThread.Start();
+
+                        //StartCoroutine(RefreshBodyObject(body, _Bodies[body.TrackingId]));
                     }
                 }
                 if (body.TrackingId == player_id)
                 {
-                    RefreshBodyObject(body, _Bodies[body.TrackingId]);
+                    UpdateBodyObject(body, _Bodies[body.TrackingId]);
                     adjustBodyParts(body, _Bodies[body.TrackingId]);
                 }
                 break;
+            }
+        }
+    }
+
+    private void testThread()
+    {
+        while (true)
+        {
+            try
+            {
+                Debug.Log("hiya");
+                RefreshBodyObject(trackedBody, trackedBodyObject);
+                Thread.Sleep(3);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError("Thread closed");
+                Thread.CurrentThread.Abort();
             }
         }
     }
@@ -387,9 +419,9 @@ public class BodySourceView : MonoBehaviour
     {
         //for debugging purposes
         ColorSourceManager colorManager = GameObject.FindGameObjectWithTag("TV").GetComponent<ColorSourceManager>();
-        for(int i=0; i < 3; i++)
+        for (int i = 0; i < 3; i++)
         {
-            string newText = countdown.text.Substring(0, countdown.text.Length-1);
+            string newText = countdown.text.Substring(0, countdown.text.Length - 1);
             newText += i.ToString();
             countdown.text = newText;
             yield return new WaitForSeconds(1);
@@ -398,8 +430,9 @@ public class BodySourceView : MonoBehaviour
         InputTracking.Recenter();
     }
 
-    private GameObject CreateBodyObject(ulong id)
+    private GameObject CreateBodyObject(Kinect.Body kinectBody)
     {
+        ulong id = kinectBody.TrackingId;
         GameObject body = startBody;
         for (Kinect.JointType jt = Kinect.JointType.SpineBase; jt <= Kinect.JointType.ThumbRight; jt++)
         {
@@ -413,7 +446,8 @@ public class BodySourceView : MonoBehaviour
             jointObj.transform.localScale = new Vector3(5f, 5f, 5f);
             jointObj.name = jt.ToString();
             jointObj.transform.parent = body.transform;
-
+            bodyTransforms.Add(jt.ToString(), jointObj.transform);
+            bodyPositions.Add(jt.ToString(), GetVector3FromJoint(kinectBody.Joints[jt]));
             player_objects.Add(jt, jointObj);
         }
 
@@ -421,8 +455,18 @@ public class BodySourceView : MonoBehaviour
         return body;
     }
 
+    private void UpdateBodyObject(Kinect.Body body, GameObject bodyObject)
+    {
+        for (Kinect.JointType jt = Kinect.JointType.SpineBase; jt <= Kinect.JointType.ThumbRight; jt++)
+        {
+            Transform jointObj = bodyTransforms[jt.ToString()];
+            jointObj.localPosition = bodyPositions[jt.ToString()];
+        }
+
+    }
     private void RefreshBodyObject(Kinect.Body body, GameObject bodyObject)
     {
+
         for (Kinect.JointType jt = Kinect.JointType.SpineBase; jt <= Kinect.JointType.ThumbRight; jt++)
         {
             Kinect.Joint sourceJoint = body.Joints[jt];
@@ -433,21 +477,23 @@ public class BodySourceView : MonoBehaviour
                 targetJoint = body.Joints[_BoneMap[jt]];
             }
 
-            Transform jointObj = bodyObject.transform.FindChild(jt.ToString());
-            jointObj.localPosition = GetVector3FromJoint(sourceJoint);
+            Transform jointObj = bodyTransforms[jt.ToString()];
+            bodyPositions[jt.ToString()] = GetVector3FromJoint(sourceJoint);
+            //jointObj.localPosition = 
 
-            LineRenderer lr = jointObj.GetComponent<LineRenderer>();
+            //LineRenderer lr = jointObj.GetComponent<LineRenderer>();
             if (targetJoint.HasValue)
             {
                 //lr.SetPosition(0, jointObj.localPosition*10);
                 //lr.SetPosition(1, GetVector3FromJoint(targetJoint.Value)*10);
-                lr.SetColors(GetColorForState(sourceJoint.TrackingState), GetColorForState(targetJoint.Value.TrackingState));
+                //lr.SetColors(GetColorForState(sourceJoint.TrackingState), GetColorForState(targetJoint.Value.TrackingState));
             }
             else
             {
-                lr.enabled = false;
+                //lr.enabled = false;
             }
         }
+
     }
 
     private static Color GetColorForState(Kinect.TrackingState state)
