@@ -232,6 +232,95 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.39239362, y: 0.099363536, z: -0.007957697}
     m_Extent: {x: 1.1299983, y: 0.7627524, z: 1.5482005}
   m_DirtyAABB: 0
+--- !u!1 &14976819
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 14976820}
+  - component: {fileID: 14976824}
+  - component: {fileID: 14976823}
+  - component: {fileID: 14976822}
+  - component: {fileID: 14976821}
+  m_Layer: 0
+  m_Name: KinectView
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &14976820
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 14976819}
+  m_LocalRotation: {x: 0.047900893, y: -0, z: -0.0000000037252899, w: 0.99885213}
+  m_LocalPosition: {x: 0, y: 38.999996, z: 11}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 741378834}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 5.491, y: 0, z: 0}
+--- !u!81 &14976821
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 14976819}
+  m_Enabled: 0
+--- !u!92 &14976822
+Behaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 14976819}
+  m_Enabled: 1
+--- !u!124 &14976823
+Behaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 14976819}
+  m_Enabled: 1
+--- !u!20 &14976824
+Camera:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 14976819}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_ClearFlags: 1
+  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: 0.3
+  far clip plane: 1000
+  field of view: 84.1
+  orthographic: 0
+  orthographic size: 5
+  m_Depth: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingPath: -1
+  m_TargetTexture: {fileID: 0}
+  m_TargetDisplay: 0
+  m_TargetEye: 0
+  m_HDR: 1
+  m_AllowMSAA: 1
+  m_ForceIntoRT: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: 0.022
+  m_StereoMirrorMode: 0
 --- !u!4 &17861891 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4622110894460432, guid: ab1495e5104b9474e9243e8b0c7bc8a4,
@@ -1785,7 +1874,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4998613395263404, guid: 528926bc338195743bb510e03036f916, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 0.49999988
+      value: 26.2
       objectReference: {fileID: 0}
     - target: {fileID: 4998613395263404, guid: 528926bc338195743bb510e03036f916, type: 2}
       propertyPath: m_LocalPosition.z
@@ -1883,7 +1972,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4963287316602236, guid: 528926bc338195743bb510e03036f916, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -12.4
+      value: -12
       objectReference: {fileID: 0}
     - target: {fileID: 4834751397845552, guid: 528926bc338195743bb510e03036f916, type: 2}
       propertyPath: m_LocalPosition.x
@@ -1970,6 +2059,10 @@ Prefab:
       propertyPath: countdown
       value: 
       objectReference: {fileID: 1618935947}
+    - target: {fileID: 4963287316602236, guid: 528926bc338195743bb510e03036f916, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -20
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 528926bc338195743bb510e03036f916, type: 2}
   m_IsPrefabParent: 0
@@ -6373,6 +6466,11 @@ MonoBehaviour:
 --- !u!1 &741378833 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1807271820940308, guid: 528926bc338195743bb510e03036f916,
+    type: 2}
+  m_PrefabInternal: {fileID: 202134294}
+--- !u!4 &741378834 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4998613395263404, guid: 528926bc338195743bb510e03036f916,
     type: 2}
   m_PrefabInternal: {fileID: 202134294}
 --- !u!1 &743013050

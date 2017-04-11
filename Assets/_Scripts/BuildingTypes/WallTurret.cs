@@ -39,7 +39,7 @@ public class WallTurret : Building
     {
         if (Vector3.Distance(otherEnd.transform.position, transform.position) < wall.maxWallLength*0.5f)
         {
-            Debug.Log("Within range");
+
             return;
         }
         Vector3 wallDirection = (transform.position - otherEnd.transform.position).normalized * wall.maxWallLength*0.5f;

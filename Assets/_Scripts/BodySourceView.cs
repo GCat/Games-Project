@@ -163,7 +163,7 @@ public class BodySourceView : MonoBehaviour
                         Kinect.JointOrientation headOrientation = body.JointOrientations[Kinect.JointType.Head];
                         Debug.Log(headOrientation.Orientation);
                         float headHeight = headObject.y;
-                        float idealHeight = 40;
+                        float idealHeight = 20;
                         float feetOffset = headHeight - idealHeight;
                         kinectLocation.transform.position += new Vector3(0, -feetOffset, 0);
                         player_id = body.TrackingId;
@@ -432,6 +432,7 @@ public class BodySourceView : MonoBehaviour
         }
         countdown.text = "";
         InputTracking.Recenter();
+        VRSettings.showDeviceView = false;
     }
 
     private GameObject CreateBodyObject(Kinect.Body kinectBody)
