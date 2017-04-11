@@ -12017,6 +12017,11 @@ Prefab:
       propertyPath: m_SortingOrder
       value: -1
       objectReference: {fileID: 0}
+    - target: {fileID: 114513029549792622, guid: 0b9f62ec50a87184e9a2db897d16cf8e,
+        type: 2}
+      propertyPath: colorManager
+      value: 
+      objectReference: {fileID: 2077914190}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0b9f62ec50a87184e9a2db897d16cf8e, type: 2}
   m_IsPrefabParent: 0
@@ -15311,7 +15316,7 @@ GameObject:
   - component: {fileID: 2077914189}
   m_Layer: 0
   m_Name: ColorScreen
-  m_TagString: Untagged
+  m_TagString: TV
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

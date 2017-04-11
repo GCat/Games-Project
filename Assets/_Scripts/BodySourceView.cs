@@ -186,19 +186,23 @@ public class BodySourceView : MonoBehaviour
         }
     }
 
+    void OnApplicationQuit() {
+        bodyThread.Abort();
+    }
+
     private void testThread()
     {
         while (true)
         {
             try
             {
-                Debug.Log("hiya");
+
                 RefreshBodyObject(trackedBody, trackedBodyObject);
                 Thread.Sleep(3);
             }
             catch (System.Exception e)
             {
-                Debug.LogError("Thread closed");
+                Debug.LogError("Thread closed" + e);
                 Thread.CurrentThread.Abort();
             }
         }
@@ -459,8 +463,14 @@ public class BodySourceView : MonoBehaviour
     {
         for (Kinect.JointType jt = Kinect.JointType.SpineBase; jt <= Kinect.JointType.ThumbRight; jt++)
         {
-            Transform jointObj = bodyTransforms[jt.ToString()];
-            jointObj.localPosition = bodyPositions[jt.ToString()];
+            try
+            {
+                Transform jointObj = bodyTransforms[jt.ToString()];
+                jointObj.localPosition = bodyPositions[jt.ToString()];
+            }
+            catch
+            {
+            }
         }
 
     }
