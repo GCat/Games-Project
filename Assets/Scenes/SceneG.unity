@@ -8822,6 +8822,11 @@ Prefab:
       propertyPath: m_IsKinematic
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114678634798780838, guid: 2c290e998500e814cab53deb29922dd5,
+        type: 2}
+      propertyPath: startingHumans
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2c290e998500e814cab53deb29922dd5, type: 2}
   m_IsPrefabParent: 0

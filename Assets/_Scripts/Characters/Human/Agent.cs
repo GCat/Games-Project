@@ -187,7 +187,7 @@ public class Agent : Character
                 if(agent.desiredVelocity.magnitude > 0)
                 {
                     Quaternion desiredLookDirection = Quaternion.LookRotation(agent.desiredVelocity.normalized, Vector3.up);
-                    transform.rotation = Quaternion.Slerp(transform.rotation, desiredLookDirection, Time.deltaTime * 10f);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, desiredLookDirection, Time.deltaTime);
                 }
             }
             anim.Play("walk");
@@ -199,6 +199,7 @@ public class Agent : Character
     {
         if (wanderPoint == Vector3.zero || atDestination(wanderPoint))
         {
+            Debug.Log(gameObject.name + " Finding new Target");
             wanderPoint = findNewTarget();
         }
         else
@@ -246,7 +247,7 @@ public class Agent : Character
         Vector3 v = new Vector3(randX, 0, randZ);
         //attempt to get a new wander point 3 times
         //we should probably use an area mask or something but easier to rebake navmesh to remove invalid areas
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 1; i++) {
             NavMeshHit hit;
             if (NavMesh.SamplePosition(v, out hit, 20.0f, NavMesh.AllAreas))
             {
