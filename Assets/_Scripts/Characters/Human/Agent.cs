@@ -199,7 +199,7 @@ public class Agent : Character
     {
         if (wanderPoint == Vector3.zero || atDestination(wanderPoint))
         {
-            Debug.Log(gameObject.name + " Finding new Target");
+
             wanderPoint = findNewTarget();
         }
         else
