@@ -29,6 +29,7 @@ public abstract class Building : Grabbable, HealthManager{ // this should also b
     public Quaternion initialRotation;
     private int nobuildmask = (1 << 10 | 1 << 17);
     public bool held = false;
+    public GameObject destroyedBuilding;
 
     public abstract void die();
     public abstract void activate();
@@ -50,6 +51,12 @@ public abstract class Building : Grabbable, HealthManager{ // this should also b
         {
             GameObject explosion = GameObject.Instantiate(ExplosionEffect);
             explosion.transform.position = transform.position;
+            if (destroyedBuilding != null)
+            {
+                destroyedBuilding.SetActive(true);
+                destroyedBuilding.transform.parent = null;
+                Destroy(destroyedBuilding, 5f);
+            }
             Destroy(explosion, 3.0f);
             if (fireEffect != null)
             {
