@@ -22,6 +22,7 @@ public abstract class Monster : Character
     public float health;
     public float totalHealth;
     public int faithValue;
+    public bool active;
 
     GameObject damageText;
     public float rotationSpeed = 6.0f;
@@ -70,7 +71,7 @@ public abstract class Monster : Character
 
     void Start()
     {
-
+        active = true;
         cameraPos = GameObject.FindWithTag("MainCamera").transform.position;
         if (agent == null)
         {
@@ -113,7 +114,7 @@ public abstract class Monster : Character
             healthBar.transform.rotation = healthBarOri;
         }
 
-        if (alive)
+        if (alive && active)
         {
             if (isStunned)
             {
@@ -620,5 +621,6 @@ public abstract class Monster : Character
 
         sT = Vector3.zero;
     }
+
 
 }
