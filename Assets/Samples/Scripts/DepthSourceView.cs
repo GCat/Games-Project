@@ -212,7 +212,8 @@ public class DepthSourceView : MonoBehaviour
         ColorSpacePoint[] colorSpace = new ColorSpacePoint[depthData.Length];
         _Mapper.MapDepthFrameToColorSpace(depthData, colorSpace);
         Bounds playerBounds = bodyView.getPlayerBounds();
-        playerBounds.Expand(20f);
+        playerBounds.Expand(25f);
+        playerBounds.max += Vector3.up * 10f;
         for (int y = 0; y < frameHeight; y += _DownsampleSize)
         {
             for (int x = 0; x < frameWidth; x += _DownsampleSize)
@@ -230,7 +231,6 @@ public class DepthSourceView : MonoBehaviour
 
                 if (!playerBounds.Contains(localToWorld.MultiplyPoint3x4(_Vertices[smallIndex]))){
                     _Vertices[smallIndex].z = 999;
-
                 }
 
                 // Update UV mapping with CDRP
