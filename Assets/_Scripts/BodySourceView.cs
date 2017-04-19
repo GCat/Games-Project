@@ -45,7 +45,7 @@ public class BodySourceView : MonoBehaviour
     private Filter rightHandFilter = new MovingAverageFilter(3);
     private Filter leftHandFilter = new MovingAverageFilter(3);
     private Thread bodyThread = null;
-
+    private Bounds playerBounds;
     public enum TrackingContext { Slow, Medium, Fast };
 
     //holds all the hand joint objects - palm, wrist, thumb, tip
@@ -180,6 +180,8 @@ public class BodySourceView : MonoBehaviour
                 {
                     UpdateBodyObject(body, _Bodies[body.TrackingId]);
                     adjustBodyParts(body, _Bodies[body.TrackingId]);
+                    //Debug.DrawLine(playerBounds.min, playerBounds.max, Color.red, 2f);
+
                 }
                 break;
             }
@@ -453,6 +455,12 @@ public class BodySourceView : MonoBehaviour
             jointObj.transform.parent = body.transform;
             bodyTransforms.Add(jt.ToString(), jointObj.transform);
             bodyPositions.Add(jt.ToString(), GetVector3FromJoint(kinectBody.Joints[jt]));
+            if (playerBounds == null)
+            {
+                Vector3 pos = GetVector3FromJoint(kinectBody.Joints[jt]);
+                playerBounds = new Bounds(pos, new Vector3(1, 1, 1));
+
+            }
             player_objects.Add(jt, jointObj);
         }
 
@@ -462,12 +470,22 @@ public class BodySourceView : MonoBehaviour
 
     private void UpdateBodyObject(Kinect.Body body, GameObject bodyObject)
     {
+        playerBounds.size = new Vector3(0,0,0);
         for (Kinect.JointType jt = Kinect.JointType.SpineBase; jt <= Kinect.JointType.ThumbRight; jt++)
         {
             try
             {
+
                 Transform jointObj = bodyTransforms[jt.ToString()];
                 jointObj.localPosition = bodyPositions[jt.ToString()];
+                if (playerBounds.size.magnitude < 1)
+                {
+                    Vector3 pos = bodyPositions[jt.ToString()];
+                    playerBounds = new Bounds(pos, new Vector3(1, 1, 1));
+
+                }
+                playerBounds.max = Vector3.Max(playerBounds.max, jointObj.position);
+                playerBounds.min = Vector3.Min(playerBounds.min, jointObj.position);
             }
             catch
             {
@@ -490,7 +508,9 @@ public class BodySourceView : MonoBehaviour
             }
 
             Transform jointObj = bodyTransforms[jt.ToString()];
-            bodyPositions[jt.ToString()] = GetVector3FromJoint(sourceJoint);
+            Vector3 pos = GetVector3FromJoint(sourceJoint);
+            bodyPositions[jt.ToString()] = pos;
+
             //jointObj.localPosition = 
 
             //LineRenderer lr = jointObj.GetComponent<LineRenderer>();
@@ -506,6 +526,11 @@ public class BodySourceView : MonoBehaviour
             }
         }
 
+    }
+
+    public Bounds getPlayerBounds()
+    {
+        return playerBounds;
     }
 
     private static Color GetColorForState(Kinect.TrackingState state)

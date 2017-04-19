@@ -17,6 +17,7 @@ public class DepthSourceView : MonoBehaviour
     public GameObject ColorSourceManager;
     public GameObject DepthSourceManager;
     public GameObject MultiSourceManager;
+    public BodySourceView bodyView;
 
     private KinectSensor _Sensor;
     private CoordinateMapper _Mapper;
@@ -38,8 +39,10 @@ public class DepthSourceView : MonoBehaviour
     int frameWidth, frameHeight;
     private Thread thread = null;
     private bool running = true;
+    Matrix4x4 localToWorld;
     void Start()
     {
+        localToWorld = transform.localToWorldMatrix;
         _Sensor = KinectSensor.GetDefault();
         if (_Sensor != null)
         {
@@ -112,6 +115,7 @@ public class DepthSourceView : MonoBehaviour
 
     void Update()
     {
+        localToWorld = transform.localToWorldMatrix;
         gameObject.GetComponent<Renderer>().material.mainTexture = _ColorManager.GetColorTexture();
         _Mesh.vertices = _Vertices;
         _Mesh.uv = _UV;
@@ -130,7 +134,7 @@ public class DepthSourceView : MonoBehaviour
             }
             catch (Exception e)
             {
-                Debug.LogError(e);
+
                 thread.Abort();
             }
         }
@@ -207,7 +211,8 @@ public class DepthSourceView : MonoBehaviour
 
         ColorSpacePoint[] colorSpace = new ColorSpacePoint[depthData.Length];
         _Mapper.MapDepthFrameToColorSpace(depthData, colorSpace);
-
+        Bounds playerBounds = bodyView.getPlayerBounds();
+        playerBounds.Expand(20f);
         for (int y = 0; y < frameHeight; y += _DownsampleSize)
         {
             for (int x = 0; x < frameWidth; x += _DownsampleSize)
@@ -223,6 +228,10 @@ public class DepthSourceView : MonoBehaviour
 
                 _Vertices[smallIndex].z = (float)avg;
 
+                if (!playerBounds.Contains(localToWorld.MultiplyPoint3x4(_Vertices[smallIndex]))){
+                    _Vertices[smallIndex].z = 999;
+
+                }
 
                 // Update UV mapping with CDRP
                 var colorSpacePoint = colorSpace[(y * frameWidth) + x];
