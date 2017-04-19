@@ -8,8 +8,8 @@ public class MeteorShower : Event {
     public int Damage;
     private Vector3 max;
     private Vector3 min;
-    public float meteorSpeed = 0.5f;
-    public int meteorAttack = 60;
+    public float meteorSpeed = 0.1f;
+    public int meteorAttack = 30;
 
     private void Awake()
     {
@@ -50,7 +50,7 @@ public class MeteorShower : Event {
             GameObject shot = GameObject.Instantiate(meteor, meteor.transform.position, Quaternion.identity) as GameObject;
             shot.GetComponent<Rigidbody>().velocity = direction * meteorSpeed;
             round++;
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(2);
         }
 
         enable_disable_SphereCollider(false);
@@ -62,7 +62,7 @@ public class MeteorShower : Event {
     {
         float rand_x = UnityEngine.Random.Range(max.x, min.x);
         float rand_z = UnityEngine.Random.Range(max.z, min.z);
-        return new Vector3(rand_x, 0, rand_z);
+        return new Vector3(rand_x, 10, rand_z);
     }
 
 }
