@@ -5,6 +5,7 @@ using UnityEngine;
 public class Meteor : Projectile {
     public GameObject FireEffect;
     public GameObject DestructionEffect;
+    public GameObject PoufEffect;
     public int destruction_radius;
     public int Damage;
 
@@ -45,11 +46,22 @@ public class Meteor : Projectile {
         } 
     }
 
+    //Pouff the meteor if touched
+    private void HandDestroy(GameObject todestroy)
+    {
+        Vector3 location = todestroy.transform.position;
+        GameObject pouf = GameObject.Instantiate(PoufEffect, location, Quaternion.identity) as GameObject;
+        pouf.SetActive(true);
+        Destroy(pouf, 1);
+        Destroy(todestroy);
+    }
+
     public  override void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.tag == "Hand")
         {
             // this will automatically bounce from it  so do fuck nothing -- might need to change the different logisitcs like speed of meteorite ?
+            HandDestroy(other.gameObject);
         }
         else 
         {

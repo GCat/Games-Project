@@ -34,8 +34,6 @@ public class MeteorShower : Event {
         foreach (GameObject hand in hands)
         {
             hand.GetComponent<CapsuleCollider>().enabled = !enable;
-            //Collider handco = hand.GetComponent<CapsuleCollider>();
-            //handco.GetComponent<Physics>().GetIgnoreLayerCollisions
             hand.GetComponent<SphereCollider>().enabled = enable;
         }
     }
