@@ -17,8 +17,8 @@ public class MeteorShower : Event {
         Vector3 bounds = ground.GetComponent<Collider>().bounds.size;
         Vector3 position = ground.transform.position;
 
-        max = new Vector3((position.x + bounds.x)/2, position.y ,(position.z + bounds.z)/2);
-        min = new Vector3((position.x - bounds.x) / 2, position.y, (position.z - bounds.z) / 2);
+        max = new Vector3(position.x + (bounds.x/ 2), position.y ,position.z + (bounds.z)/2);
+        min = new Vector3(position.x - (bounds.x/ 2), position.y, position.z - (bounds.z) / 2);
     }
 
     public override void startEvent()
@@ -34,6 +34,8 @@ public class MeteorShower : Event {
         foreach (GameObject hand in hands)
         {
             hand.GetComponent<CapsuleCollider>().enabled = !enable;
+            //Collider handco = hand.GetComponent<CapsuleCollider>();
+            //handco.GetComponent<Physics>().GetIgnoreLayerCollisions
             hand.GetComponent<SphereCollider>().enabled = enable;
         }
     }
