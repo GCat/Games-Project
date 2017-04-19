@@ -18,7 +18,7 @@ public class DepthSourceView : MonoBehaviour
     
     private KinectSensor _Sensor;
     private CoordinateMapper _Mapper;
-    private Mesh _Mesh;
+    //private Mesh _Mesh;
     private Vector3[] _Vertices;
     private Vector2[] _UV;
     private int[] _Triangles;
@@ -41,7 +41,7 @@ public class DepthSourceView : MonoBehaviour
             var frameDesc = _Sensor.DepthFrameSource.FrameDescription;
 
             // Downsample to lower resolution
-            CreateMesh(frameDesc.Width / _DownsampleSize, frameDesc.Height / _DownsampleSize);
+            //CreateMesh(frameDesc.Width / _DownsampleSize, frameDesc.Height / _DownsampleSize);
 
             if (!_Sensor.IsOpen)
             {
@@ -49,7 +49,7 @@ public class DepthSourceView : MonoBehaviour
             }
         }
     }
-
+    /*
     void CreateMesh(int width, int height)
     {
         _Mesh = new Mesh();
@@ -91,7 +91,7 @@ public class DepthSourceView : MonoBehaviour
         _Mesh.uv = _UV;
         _Mesh.triangles = _Triangles;
         _Mesh.RecalculateNormals();
-    }
+    }*/
     
     void OnGUI()
     {
@@ -205,10 +205,10 @@ public class DepthSourceView : MonoBehaviour
             }
         }
         
-        _Mesh.vertices = _Vertices;
-        _Mesh.uv = _UV;
-        _Mesh.triangles = _Triangles;
-        _Mesh.RecalculateNormals();
+        //_Mesh.vertices = _Vertices;
+        //_Mesh.uv = _UV;
+        //_Mesh.triangles = _Triangles;
+        //_Mesh.RecalculateNormals();
     }
     
     private double GetAvg(ushort[] depthData, int x, int y, int width, int height)

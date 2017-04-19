@@ -5,10 +5,11 @@ using Windows.Kinect;
 public class ColorSourceView : MonoBehaviour
 {
     public GameObject ColorSourceManager;
+    public DepthSourceManager DepthSourceManager;
     private ColorSourceManager _ColorManager;
     private Renderer thisRenderer;
-    
-    void Start ()
+
+    void Start()
     {
         gameObject.GetComponent<Renderer>().material.SetTextureScale("_MainTex", new Vector2(-1, 1));
         _ColorManager = ColorSourceManager.GetComponent<ColorSourceManager>();
@@ -21,7 +22,7 @@ public class ColorSourceView : MonoBehaviour
         {
             return;
         }
-        
+
         if (_ColorManager == null)
         {
             return;
@@ -29,4 +30,6 @@ public class ColorSourceView : MonoBehaviour
 
         thisRenderer.material.mainTexture = _ColorManager.GetColorTexture();
     }
+
+
 }
