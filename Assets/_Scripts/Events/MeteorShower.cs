@@ -8,7 +8,7 @@ public class MeteorShower : Event {
     public int Damage;
     private Vector3 max;
     private Vector3 min;
-    public float meteorSpeed;
+    public float meteorSpeed = 0.5f;
     public int meteorAttack = 60;
 
     private void Awake()

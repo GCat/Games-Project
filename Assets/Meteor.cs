@@ -53,7 +53,7 @@ public class Meteor : Projectile {
         }
         else 
         {
-            DamageBuildings(gameObject.transform.position);
+            DamageBuildings(gameObject.transform.position); // maybe check if object is placed or not as in not a cloud building 
             DestroyObject();
         }
     }
