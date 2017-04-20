@@ -485,8 +485,18 @@ public class Agent : Character
         }
     }
 
+    public void Deactivate()
+    {
+        active = false;
+    }
+
     public override void hit()
     {
     }
 
+    public void debugBlackhole(Vector3 vel1)
+    {
+        String s = String.Format("{0} : {1}", vel1, rb.velocity);
+        Debug.Log(s);
+    }
 }
