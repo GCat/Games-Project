@@ -5,6 +5,7 @@ using Kinect = Windows.Kinect;
 using System.IO;
 using UnityEngine.VR;
 using UnityEngine.UI;
+using System.Threading;
 
 public class BodySourceView : MonoBehaviour
 {
@@ -43,7 +44,8 @@ public class BodySourceView : MonoBehaviour
     private TrackingContext rightHandContext = TrackingContext.Medium;
     private Filter rightHandFilter = new MovingAverageFilter(3);
     private Filter leftHandFilter = new MovingAverageFilter(3);
-
+    private Thread bodyThread = null;
+    private Bounds playerBounds;
     public enum TrackingContext { Slow, Medium, Fast };
 
     //holds all the hand joint objects - palm, wrist, thumb, tip
@@ -51,6 +53,12 @@ public class BodySourceView : MonoBehaviour
 
     private Dictionary<ulong, GameObject> _Bodies = new Dictionary<ulong, GameObject>();
     private BodySourceManager _BodyManager;
+
+    private Kinect.Body trackedBody;
+    private GameObject trackedBodyObject;
+
+    private Dictionary<string, Transform> bodyTransforms = new Dictionary<string, Transform>();
+    private Dictionary<string, Vector3> bodyPositions = new Dictionary<string, Vector3>();
 
 
     private Dictionary<Kinect.JointType, Kinect.JointType> _BoneMap = new Dictionary<Kinect.JointType, Kinect.JointType>()
@@ -150,24 +158,54 @@ public class BodySourceView : MonoBehaviour
                 {
                     if (player_id == 99)
                     {
-                        _Bodies[body.TrackingId] = CreateBodyObject(body.TrackingId);
+                        _Bodies[body.TrackingId] = CreateBodyObject(body);
                         Vector3 headObject = GetVector3FromJoint(body.Joints[Kinect.JointType.Head]);
                         Kinect.JointOrientation headOrientation = body.JointOrientations[Kinect.JointType.Head];
                         Debug.Log(headOrientation.Orientation);
                         float headHeight = headObject.y;
-                        float idealHeight = 40;
+                        float idealHeight = 20;
                         float feetOffset = headHeight - idealHeight;
                         kinectLocation.transform.position += new Vector3(0, -feetOffset, 0);
                         player_id = body.TrackingId;
                         started = false;
+                        trackedBody = body;
+                        trackedBodyObject = _Bodies[body.TrackingId];
+                        bodyThread = new Thread(new ThreadStart(testThread));
+                        bodyThread.Start();
+
+                        //StartCoroutine(RefreshBodyObject(body, _Bodies[body.TrackingId]));
                     }
                 }
                 if (body.TrackingId == player_id)
                 {
-                    RefreshBodyObject(body, _Bodies[body.TrackingId]);
+                    UpdateBodyObject(body, _Bodies[body.TrackingId]);
                     adjustBodyParts(body, _Bodies[body.TrackingId]);
+                    //Debug.DrawLine(playerBounds.min, playerBounds.max, Color.red, 2f);
+
                 }
                 break;
+            }
+        }
+    }
+
+    void OnApplicationQuit() {
+        bodyThread.Abort();
+    }
+
+    private void testThread()
+    {
+        while (true)
+        {
+            try
+            {
+
+                RefreshBodyObject(trackedBody, trackedBodyObject);
+                Thread.Sleep(3);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError("Thread closed" + e);
+                Thread.CurrentThread.Abort();
             }
         }
     }
@@ -385,19 +423,23 @@ public class BodySourceView : MonoBehaviour
 
     IEnumerator alignCountDown()
     {
-        for(int i=0; i < 3; i++)
+        //for debugging purposes
+        ColorSourceManager colorManager = GameObject.FindGameObjectWithTag("TV").GetComponent<ColorSourceManager>();
+        for (int i = 0; i < 3; i++)
         {
-            string newText = countdown.text.Substring(0, countdown.text.Length-1);
+            string newText = countdown.text.Substring(0, countdown.text.Length - 1);
             newText += i.ToString();
             countdown.text = newText;
             yield return new WaitForSeconds(1);
         }
         countdown.text = "";
         InputTracking.Recenter();
+        //VRSettings.showDeviceView = false;
     }
 
-    private GameObject CreateBodyObject(ulong id)
+    private GameObject CreateBodyObject(Kinect.Body kinectBody)
     {
+        ulong id = kinectBody.TrackingId;
         GameObject body = startBody;
         for (Kinect.JointType jt = Kinect.JointType.SpineBase; jt <= Kinect.JointType.ThumbRight; jt++)
         {
@@ -411,7 +453,14 @@ public class BodySourceView : MonoBehaviour
             jointObj.transform.localScale = new Vector3(5f, 5f, 5f);
             jointObj.name = jt.ToString();
             jointObj.transform.parent = body.transform;
+            bodyTransforms.Add(jt.ToString(), jointObj.transform);
+            bodyPositions.Add(jt.ToString(), GetVector3FromJoint(kinectBody.Joints[jt]));
+            if (playerBounds == null)
+            {
+                Vector3 pos = GetVector3FromJoint(kinectBody.Joints[jt]);
+                playerBounds = new Bounds(pos, new Vector3(1, 1, 1));
 
+            }
             player_objects.Add(jt, jointObj);
         }
 
@@ -419,33 +468,69 @@ public class BodySourceView : MonoBehaviour
         return body;
     }
 
+    private void UpdateBodyObject(Kinect.Body body, GameObject bodyObject)
+    {
+        playerBounds.size = new Vector3(0,0,0);
+        for (Kinect.JointType jt = Kinect.JointType.SpineBase; jt <= Kinect.JointType.ThumbRight; jt++)
+        {
+            try
+            {
+
+                Transform jointObj = bodyTransforms[jt.ToString()];
+                jointObj.localPosition = bodyPositions[jt.ToString()];
+                if (playerBounds.size.magnitude < 1)
+                {
+                    Vector3 pos = bodyPositions[jt.ToString()];
+                    playerBounds = new Bounds(pos, new Vector3(1, 1, 1));
+
+                }
+                playerBounds.max = Vector3.Max(playerBounds.max, jointObj.position);
+                playerBounds.min = Vector3.Min(playerBounds.min, jointObj.position);
+            }
+            catch
+            {
+            }
+        }
+
+    }
     private void RefreshBodyObject(Kinect.Body body, GameObject bodyObject)
     {
+
         for (Kinect.JointType jt = Kinect.JointType.SpineBase; jt <= Kinect.JointType.ThumbRight; jt++)
         {
             Kinect.Joint sourceJoint = body.Joints[jt];
             Kinect.Joint? targetJoint = null;
 
+            
             if (_BoneMap.ContainsKey(jt))
             {
                 targetJoint = body.Joints[_BoneMap[jt]];
             }
 
-            Transform jointObj = bodyObject.transform.FindChild(jt.ToString());
-            jointObj.localPosition = GetVector3FromJoint(sourceJoint);
+            Transform jointObj = bodyTransforms[jt.ToString()];
+            Vector3 pos = GetVector3FromJoint(sourceJoint);
+            bodyPositions[jt.ToString()] = pos;
 
-            LineRenderer lr = jointObj.GetComponent<LineRenderer>();
+            //jointObj.localPosition = 
+
+            //LineRenderer lr = jointObj.GetComponent<LineRenderer>();
             if (targetJoint.HasValue)
             {
                 //lr.SetPosition(0, jointObj.localPosition*10);
                 //lr.SetPosition(1, GetVector3FromJoint(targetJoint.Value)*10);
-                lr.SetColors(GetColorForState(sourceJoint.TrackingState), GetColorForState(targetJoint.Value.TrackingState));
+                //lr.SetColors(GetColorForState(sourceJoint.TrackingState), GetColorForState(targetJoint.Value.TrackingState));
             }
             else
             {
-                lr.enabled = false;
+                //lr.enabled = false;
             }
         }
+
+    }
+
+    public Bounds getPlayerBounds()
+    {
+        return playerBounds;
     }
 
     private static Color GetColorForState(Kinect.TrackingState state)

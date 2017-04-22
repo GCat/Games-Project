@@ -33,6 +33,7 @@ TagManager:
   - Spawner
   - PortalMove
   - Bee
+  - TV
   layers:
   - Default
   - TransparentFX
@@ -54,6 +55,8 @@ TagManager:
   - Portal
   - Turret
   - BlackHole
+  - TV
+  - Hand
   - 
   - 
   - 

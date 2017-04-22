@@ -9,6 +9,7 @@ public class Temple : Building
     public bool spawnedGarrison = false;
     public WorldStarter world;
     public bool placed = false;
+    public int startingHumans = 5;
 
     public override void create_building()
     {
@@ -61,7 +62,7 @@ public class Temple : Building
         // can not spawn on resource node
         Vector3 humanLocation;
         humanLocation = new Vector3(myLocation.x, myLocation.y, myLocation.z + 33);
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < startingHumans; i++)
         {
             if (resourceCounter.aboveBoard(myLocation))
             {
