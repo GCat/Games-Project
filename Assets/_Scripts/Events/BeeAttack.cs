@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
-public class BeeAttack : WaveEvent {
+public class BeeAttack : WaveEvent
+{
 
     /// <summary>
     /// BEES will attack for a limited amount of time after that all die to symbolize imminent extintion of all bees
@@ -14,23 +16,24 @@ public class BeeAttack : WaveEvent {
     /// 
     public int swarmSize;
     public GameObject beePrefab;
-    public override void startEvent(){
-        GameObject temple = GameObject.FindGameObjectWithTag("Temple");
-        Vector3 tPost = temple.transform.position;
-        Vector3 spawnLocation = GameObject.FindGameObjectWithTag("Portal").transform.position;
-        spawnLocation.y = 30f;
-        spawnLocation.x += Random.Range(-20, 20);
-        spawnLocation.z += Random.Range(-20, 20);
-        if (temple != null)
+    public override void startEvent()
+    {
+
+        Vector3 spawnPos = GameObject.FindGameObjectWithTag("Portal").GetComponent<Portal>().spawnPos.transform.position;
+
+        for (int s = 0; s < swarmSize; s++)
         {
-            for (int s= 0; s< swarmSize; s++ )
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(spawnPos, out hit, 40.0f, NavMesh.AllAreas))
             {
-                GameObject bee = GameObject.Instantiate(beePrefab, spawnLocation, Quaternion.identity);
-                Vector3 attackPoint = temple.GetComponent<Collider>().ClosestPointOnBounds(spawnLocation);
-                bee.GetComponent<Bee>().Spawn(temple, 2f, attackPoint);
-                spawnLocation.x += Random.Range(-10, 10);
-                spawnLocation.z += Random.Range(-10, 10);
+                Instantiate(beePrefab, hit.position, Quaternion.LookRotation(Vector3.forward, Vector3.up));
             }
+            else
+            {
+                Debug.LogError("Could not spawn monster");
+            }
+
         }
+
     }
 }

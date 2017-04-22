@@ -8,7 +8,7 @@ public class Portal : MonoBehaviour
 
     bool active = false;
     [System.Serializable]
-    public enum MonsterType { Monster, Minataur, Harpy, BossMinataur, BossGolem };
+    public enum MonsterType { Monster, Minataur, Harpy, BossMinataur, BossGolem, Bee };
 
     [SerializeField]
     public Wave[] Waves;
