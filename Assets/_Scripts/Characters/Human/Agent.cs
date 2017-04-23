@@ -32,6 +32,7 @@ public class Agent : Character
     private bool alive = true;
     public bool humanHeld = false;
     public bool droppedOnZone = false;
+    public House myHome;
 
     // Components
     public AudioClip sacrificeClip;
@@ -288,6 +289,7 @@ public class Agent : Character
     {
         yield return new WaitForSeconds(waitTime);
         resources.removePop();
+        if (myHome) myHome.spawnedPopulation--;
         GameObject.Destroy(gameObject);
     }
     //locks this chap in combat for some period of time, so they don't change target

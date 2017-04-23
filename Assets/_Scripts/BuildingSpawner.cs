@@ -5,6 +5,8 @@ using UnityEngine;
 public class BuildingSpawner : MonoBehaviour {
 
     public GameObject buildingToSpawn;
+    public int amountSpawned;
+    public int maxBuildings;
     public ResourceCounter resources;
     public GameObject imgCanvas;
     public ResourceGainTablet resourceCost;
@@ -15,6 +17,8 @@ public class BuildingSpawner : MonoBehaviour {
     bool usedOnce = false;
 	// Use this for initialization
 	void Start () {
+        amountSpawned = 0;
+        maxBuildings = 5;
         InvokeRepeating("spawnBuilding", .1f, 1f);
         if (buildingCost == 0) buildingCost = 20;
         resources = GameObject.FindGameObjectWithTag("Tablet").GetComponent<ResourceCounter>();
@@ -66,7 +70,7 @@ public class BuildingSpawner : MonoBehaviour {
 
     private void spawnBuilding()
     {
-        if (resources.faith < buildingCost || !resources.hasGameStarted())
+        if (amountSpawned >= maxBuildings || resources.faith < buildingCost || !resources.hasGameStarted())
         {
             imgCanvas.SetActive(true);
             resourceCost.text.color = Color.red;
@@ -79,6 +83,8 @@ public class BuildingSpawner : MonoBehaviour {
             {
                 if (usedOnce) godRay.SetActive(false);
                 GameObject building = Instantiate(buildingToSpawn, transform.position, transform.rotation);
+                Building myScript = building.GetComponent<Building>();
+                if (myScript) myScript.spawnedFrom = this;
                 building.transform.parent = transform;
                 building.GetComponent<Rigidbody>().useGravity = false;
                 usedOnce = true;

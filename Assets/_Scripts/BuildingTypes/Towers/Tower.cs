@@ -147,6 +147,7 @@ public abstract class Tower : Building {
 
     public override void die()
     {
+        spawnedFrom.amountSpawned--;
         Destroy(gameObject);
     }
 

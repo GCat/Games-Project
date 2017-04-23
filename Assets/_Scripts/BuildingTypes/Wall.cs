@@ -79,6 +79,7 @@ public class Wall : Building
     {
         turretA.die();
         turretB.die();
+        spawnedFrom.amountSpawned--;
         Destroy(gameObject);
     }
 

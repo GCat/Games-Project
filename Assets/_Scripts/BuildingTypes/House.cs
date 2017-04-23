@@ -11,6 +11,7 @@ public class House : Building
     public float humanSpawnDelay;
     Material matEmpty;
     Material matInval;
+    public int spawnedPopulation;
 
     public override string getName()
     {
@@ -43,6 +44,7 @@ public class House : Building
         heartEffect = Resources.Load("Particles/Explosion_Lovely") as GameObject;
         boxSize = GetComponent<BoxCollider>().bounds.size / 2;
         boxSize.y = 0.01f;
+        spawnedPopulation = 0;
     }
 
     // Spawning a human 
@@ -51,19 +53,22 @@ public class House : Building
         while (true)
         {
             yield return new WaitForSeconds(humanSpawnDelay);
-            Vector3 humanLocation = humanSpawn.transform.position;
-            humanLocation = new Vector3(transform.position.x, transform.position.y, transform.position.z + 10);
-            NavMeshHit hit;
-            if (NavMesh.SamplePosition(humanLocation, out hit, 30.0f, NavMesh.AllAreas))
+            if (spawnedPopulation < 3)
             {
-                Debug.Log("Spawning a human");
-                Instantiate(Resources.Load("Characters/Human"), hit.position, Quaternion.identity);
-                Instantiate(heartEffect, transform.position + 5*Vector3.up, Quaternion.identity);
-                StartCoroutine(ResourceGainText(1, "Chap"));
+                Vector3 humanLocation = humanSpawn.transform.position;
+                humanLocation = new Vector3(transform.position.x, transform.position.y, transform.position.z + 10);
+                NavMeshHit hit;
+                if (NavMesh.SamplePosition(humanLocation, out hit, 30.0f, NavMesh.AllAreas))
+                {
+                    Debug.Log("Spawning a human");
+                    GameObject thisHuman = Instantiate(Resources.Load("Characters/Human"), hit.position, Quaternion.identity) as GameObject;
+                    thisHuman.GetComponent<Agent>().myHome = this;
+                    Instantiate(heartEffect, transform.position + 5 * Vector3.up, Quaternion.identity);
+                    StartCoroutine(ResourceGainText(1, "Chap")); 
+                    spawnedPopulation++;
+                }
+                else Debug.Log("Could not spawn human");
             }
-            else
-                Debug.Log("Could not spawn human");
-
         }
     }
 
@@ -114,6 +119,7 @@ public class House : Building
 
     public override void die()
     {
+        spawnedFrom.amountSpawned--;
         Destroy(gameObject);
     }
 
