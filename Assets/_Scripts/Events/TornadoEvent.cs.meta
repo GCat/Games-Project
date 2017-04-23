@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: d11fe9a7abeecd1439bb903cd7cb3ef8
+timeCreated: 1492427047
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - tornadoPrefab: {fileID: 1707809359867106, guid: 55b8ee99f7c7e8d4a9a6c4504aff38c3,
+      type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

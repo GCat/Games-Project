@@ -37,7 +37,7 @@ public class KrakenTower : Tower
     }
 
 
-    private IEnumerator attack()
+    protected override IEnumerator attack()
     {
         while (true)
         {

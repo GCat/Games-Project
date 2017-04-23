@@ -9,13 +9,14 @@ public class Temple : Building
     public bool spawnedGarrison = false;
     public WorldStarter world;
     public bool placed = false;
+    public int startingHumans = 5;
 
     public override void create_building()
     {
         world.startGame();
         tablet.SetActive(true);
         placed = true;
-        spawnHumans();
+        StartCoroutine(spawnHumans());
         InvokeRepeating("incrementResource", 10.0f, 10.0f); // after 10 sec call every 5
         canBeGrabbed = false;
         CancelInvoke("showStartOutline");
@@ -52,17 +53,17 @@ public class Temple : Building
     }
 
 
-    void spawnHumans()
+    IEnumerator spawnHumans()
     {
+        yield return new WaitForSeconds(0.2f);
         Vector3 myLocation = transform.position;
         Debug.Log("Spawning humans");
 
         // can not spawn on resource node
         Vector3 humanLocation;
         humanLocation = new Vector3(myLocation.x, myLocation.y, myLocation.z + 33);
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < startingHumans; i++)
         {
-            Debug.Log(humanLocation);
             if (resourceCounter.aboveBoard(myLocation))
             {
                 NavMeshHit hit;
@@ -81,6 +82,7 @@ public class Temple : Building
         }
         spawnedGarrison = true;
     }
+
     Vector3 rotateAroundPivot(Vector3 point, Vector3 pivot, Vector3 angles)
     {
         Vector3 dir = point - pivot;
@@ -117,5 +119,10 @@ public class Temple : Building
     public override void deactivate()
     {
 
+    }
+
+    public override void OnTriggerEnter(Collider other)
+    {
+        if (!placed) base.OnTriggerEnter(other);
     }
 }

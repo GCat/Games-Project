@@ -18,6 +18,7 @@ public class Hand : MonoBehaviour {
 
     public Collider[] things;
     public AudioClip[] hitSounds;
+    public AudioClip destructionSound;
     public AudioSource audioSource;
     public GameObject close_hand;
     public GameObject open_hand;
@@ -263,7 +264,6 @@ public class Hand : MonoBehaviour {
                     holding = true;
                     building.initialRotation = building.transform.rotation;
                     building.held = true;
-                    Debug.Log("Grab BUILDING");
                     building.GetComponent<Grabbable>().grab();
                     snapToHand(grabTarget);
                     heldObject.transform.parent = transform;
@@ -278,6 +278,7 @@ public class Hand : MonoBehaviour {
                     snapToHand(heldObject);
                     grabTarget.transform.parent = transform;
                     holding = true;
+                    tool.grab();
                 }
                 else
                 {
@@ -361,11 +362,18 @@ public class Hand : MonoBehaviour {
                     {
                         if (building.gameObject.tag != "Temple")
                         {
-                            Destroy(heldObject);
+                            building.refund();
+                            building.delete();
                         }
                     }
                     else
                     {
+                        if (building.gameObject.tag != "Temple")
+                        {
+                            building.delete();
+                            audioSource.PlayOneShot(destructionSound, 0.5f);
+                            Destroy(heldObject);
+                        }
                         throwObject(heldObject);
                     }
                 }

@@ -6,6 +6,7 @@ public abstract class Grabbable : MonoBehaviour {
 
     protected Renderer[] child_materials;
     protected Shader[] original_materials;
+    protected bool allowOutline = true;
     private Shader outlineShader;
 
     //function to be called when grabbed by hand
@@ -14,6 +15,10 @@ public abstract class Grabbable : MonoBehaviour {
     //function to be called when released from hand
     public abstract void release(Vector3 vel);
 
+    public void setGrabbable(bool grabbable)
+    {
+        allowOutline = grabbable;
+    }
 
     private void init()
     {
@@ -31,6 +36,10 @@ public abstract class Grabbable : MonoBehaviour {
         if(outlineShader == null)
         {
             init();
+        }
+        if (!allowOutline)
+        {
+            return;
         }
         for (int i = 0; i < child_materials.Length; i++)
         {

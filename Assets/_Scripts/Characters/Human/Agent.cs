@@ -13,22 +13,6 @@ using UnityEngine.AI;
  *  TODO: Smooth Rotation
  *  TODO: Avoidance
  *  
- * PHASE 2 
- * If at any moment temple detryed everyone dies
- * 
- * 
- * 
- * --Killers COMPLETED
- * Search for nearest enemy 
- * Go to its position
- * Attack it
- * When dead look for next enemy
- * If no humans remain either go for watch towers or go for temple 
- * 
- * --Defender
- * Go towards temple, if enemy near temple kill it
- * 
- * --Camper
  * 
  * 
  */
@@ -203,7 +187,7 @@ public class Agent : Character
                 if(agent.desiredVelocity.magnitude > 0)
                 {
                     Quaternion desiredLookDirection = Quaternion.LookRotation(agent.desiredVelocity.normalized, Vector3.up);
-                    transform.rotation = Quaternion.Slerp(transform.rotation, desiredLookDirection, Time.deltaTime * 10f);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, desiredLookDirection, Time.deltaTime);
                 }
             }
             anim.Play("walk");
@@ -215,6 +199,7 @@ public class Agent : Character
     {
         if (wanderPoint == Vector3.zero || atDestination(wanderPoint))
         {
+
             wanderPoint = findNewTarget();
         }
         else
@@ -260,15 +245,21 @@ public class Agent : Character
         float randX = UnityEngine.Random.Range(bL.x, tR.x);
         float randZ = UnityEngine.Random.Range(bL.z, tR.z);
         Vector3 v = new Vector3(randX, 0, randZ);
-        NavMeshHit hit;
-        if (NavMesh.SamplePosition(v, out hit, 20.0f, NavMesh.AllAreas))
-        {
-            return hit.position;
+        //attempt to get a new wander point 3 times
+        //we should probably use an area mask or something but easier to rebake navmesh to remove invalid areas
+        for (int i = 0; i < 1; i++) {
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(v, out hit, 20.0f, NavMesh.AllAreas))
+            {
+                NavMeshPath path = new NavMeshPath();
+                agent.CalculatePath(hit.position, path);
+                if (path.status != NavMeshPathStatus.PathInvalid)
+                {
+                    return hit.position;
+                }
+            }
         }
-        else
-        {
-            return transform.position;
-        }
+        throw new TargetNotFoundException();
     }
 
     private void showPath()
@@ -495,8 +486,18 @@ public class Agent : Character
         }
     }
 
+    public void Deactivate()
+    {
+        active = false;
+    }
+
     public override void hit()
     {
     }
 
+    public void debugBlackhole(Vector3 vel1)
+    {
+        String s = String.Format("{0} : {1}", vel1, rb.velocity);
+        Debug.Log(s);
+    }
 }

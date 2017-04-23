@@ -25,7 +25,7 @@ class Minotaur : Monster
             
             return;
         }
-        damageInRadius(5f);
+        damageInRadius(5f + transform.localScale.z);
         //smokeEffect.Clear();
         //smokeEffect.Play();
     }

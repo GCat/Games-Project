@@ -56,4 +56,5 @@ public class DepthSourceManager : MonoBehaviour
             _Sensor = null;
         }
     }
+
 }

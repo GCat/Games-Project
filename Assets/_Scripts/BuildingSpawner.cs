@@ -11,6 +11,8 @@ public class BuildingSpawner : MonoBehaviour {
     private int buildingCost;
     private int buildingMask = (1 << 10) | (1 << 14);
     public bool spawn = true;
+    public GameObject godRay;
+    bool usedOnce = false;
 	// Use this for initialization
 	void Start () {
         InvokeRepeating("spawnBuilding", .1f, 1f);
@@ -43,6 +45,25 @@ public class BuildingSpawner : MonoBehaviour {
         DestroyImmediate(building);
     }
 
+    public void newBuilding()
+    {
+        godRay.transform.parent = null;
+        godRay.SetActive(true);
+        
+    }
+
+    public void rayDisappear(float time)
+    {
+        StopCoroutine(rayInactive(time));
+    }
+
+    IEnumerator rayInactive(float time)
+    {
+        yield return new WaitForSeconds(time);
+        godRay.SetActive(false);
+
+    }
+
     private void spawnBuilding()
     {
         if (resources.faith < buildingCost || !resources.hasGameStarted())
@@ -56,9 +77,11 @@ public class BuildingSpawner : MonoBehaviour {
             resourceCost.text.color = Color.black;
             if (spawn && Physics.OverlapSphere(transform.position, 8.0f, buildingMask).Length == 0)
             {
+                if (usedOnce) godRay.SetActive(false);
                 GameObject building = Instantiate(buildingToSpawn, transform.position, transform.rotation);
                 building.transform.parent = transform;
                 building.GetComponent<Rigidbody>().useGravity = false;
+                usedOnce = true;
             }
         }
 

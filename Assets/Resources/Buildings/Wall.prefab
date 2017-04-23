@@ -101,6 +101,7 @@ GameObject:
   - component: {fileID: 4672694764092034}
   - component: {fileID: 33007846555172194}
   - component: {fileID: 23144794033778694}
+  - component: {fileID: 65348919434906260}
   m_Layer: 10
   m_Name: Wall
   m_TagString: WallSegment
@@ -118,7 +119,9 @@ GameObject:
   - component: {fileID: 4049017430771932}
   - component: {fileID: 95284703843987776}
   - component: {fileID: 65420350296434070}
-  m_Layer: 18
+  - component: {fileID: 114233346249824370}
+  - component: {fileID: 54931410959637654}
+  m_Layer: 10
   m_Name: turret_b
   m_TagString: Turret
   m_Icon: {fileID: 0}
@@ -285,7 +288,9 @@ GameObject:
   - component: {fileID: 4438326224536636}
   - component: {fileID: 95804235395629864}
   - component: {fileID: 65426624409181150}
-  m_Layer: 18
+  - component: {fileID: 114950193320862744}
+  - component: {fileID: 54891400385053796}
+  m_Layer: 10
   m_Name: turret_a
   m_TagString: Turret
   m_Icon: {fileID: 0}
@@ -663,7 +668,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010810685680}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 19.412704, y: 0, z: -36.97198}
+  m_LocalPosition: {x: -56.77996, y: -0.0036621094, z: 5.0699463}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4672694764092034}
@@ -1273,6 +1278,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!23 &23144794033778694
 MeshRenderer:
@@ -1304,6 +1310,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!23 &23634264051521332
 MeshRenderer:
@@ -1335,6 +1342,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!23 &23653337541882764
 MeshRenderer:
@@ -1366,6 +1374,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!33 &33005642556358410
 MeshFilter:
@@ -1395,6 +1404,21 @@ Rigidbody:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010810685680}
   serializedVersion: 2
+  m_Mass: 10
+  m_Drag: 2
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!54 &54891400385053796
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1356206817766396}
+  serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
@@ -1402,7 +1426,22 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
+--- !u!54 &54931410959637654
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1088060195567358}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 2
 --- !u!65 &65024212219374802
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -1415,6 +1454,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 4.14, y: 7.5, z: 23.81}
   m_Center: {x: 0, y: 4, z: 0}
+--- !u!65 &65348919434906260
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1083709367599340}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!65 &65420350296434070
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -1487,6 +1538,7 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   buildClip: {fileID: 8300000, guid: 0f6a9c7d024f3144690add1c060e8ed0, type: 3}
   destroy: {fileID: 0}
+  description: 
   totalHealth: 300
   health: 300
   resourceCounter: {fileID: 0}
@@ -1499,10 +1551,67 @@ MonoBehaviour:
   initialRotation: {x: 0, y: 0, z: 0, w: 0}
   held: 0
   cost_per_meter: 10
-  turretRadius: 10
-  turretB: {fileID: 1088060195567358}
-  turretA: {fileID: 1356206817766396}
+  turretRadius: 25
+  maxWallLength: 70
+  turretB: {fileID: 114233346249824370}
+  turretA: {fileID: 114950193320862744}
   wallSegment: {fileID: 1083709367599340}
+--- !u!114 &114233346249824370
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1088060195567358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1848f75a57f23e45b10d083fc910964, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSource: {fileID: 0}
+  buildClip: {fileID: 8300000, guid: 0f6a9c7d024f3144690add1c060e8ed0, type: 3}
+  destroy: {fileID: 0}
+  description: 
+  totalHealth: 100
+  health: 100
+  resourceCounter: {fileID: 0}
+  tablet: {fileID: 0}
+  bought: 0
+  faithCost: 0
+  highlight_template: {fileID: 1099646031208200, guid: af6b570f005b2b644995644bdf9f3108,
+    type: 2}
+  canBeGrabbed: 1
+  initialRotation: {x: 0, y: 0, z: 0, w: 0}
+  held: 0
+  overlappingTurrets: []
+  otherEnd: {fileID: 114950193320862744}
+--- !u!114 &114950193320862744
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1356206817766396}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1848f75a57f23e45b10d083fc910964, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSource: {fileID: 0}
+  buildClip: {fileID: 8300000, guid: 0f6a9c7d024f3144690add1c060e8ed0, type: 3}
+  destroy: {fileID: 0}
+  description: 
+  totalHealth: 100
+  health: 100
+  resourceCounter: {fileID: 0}
+  tablet: {fileID: 0}
+  bought: 0
+  faithCost: 0
+  highlight_template: {fileID: 1099646031208200, guid: af6b570f005b2b644995644bdf9f3108,
+    type: 2}
+  canBeGrabbed: 1
+  initialRotation: {x: 0, y: 0, z: 0, w: 0}
+  held: 0
+  overlappingTurrets: []
+  otherEnd: {fileID: 114233346249824370}
 --- !u!208 &208372280704976308
 NavMeshObstacle:
   m_ObjectHideFlags: 1

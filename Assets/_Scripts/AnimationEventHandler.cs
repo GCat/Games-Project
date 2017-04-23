@@ -18,7 +18,6 @@ public class AnimationEventHandler : MonoBehaviour {
 
     public void hit()
     {
-
         transform.parent.GetComponent<Character>().hit();
     }
 }

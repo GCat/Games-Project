@@ -22,6 +22,7 @@ public abstract class Monster : Character
     public float health;
     public float totalHealth;
     public int faithValue;
+    public bool active;
 
     GameObject damageText;
     public float rotationSpeed = 6.0f;
@@ -70,7 +71,7 @@ public abstract class Monster : Character
 
     void Start()
     {
- 
+        active = true;
         cameraPos = GameObject.FindWithTag("MainCamera").transform.position;
         if (agent == null)
         {
@@ -95,7 +96,6 @@ public abstract class Monster : Character
         closestEnemy = null;
         temple = GameObject.FindGameObjectWithTag("Temple");
         alive = true;
-        Debug.Log(string.Format("Spawn at: {0} with Type: {1}", transform.position, monsterType));
         renderers = GetComponentsInChildren<Renderer>();
         templeAttackPoint = temple.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
         resources = GameObject.FindGameObjectWithTag("Tablet").GetComponent<ResourceCounter>();
@@ -114,7 +114,7 @@ public abstract class Monster : Character
             healthBar.transform.rotation = healthBarOri;
         }
 
-        if (alive)
+        if (alive && active)
         {
             if (isStunned)
             {
@@ -134,7 +134,7 @@ public abstract class Monster : Character
                         {
                             walkTowards(templeAttackPoint);
                         }
-                        catch(TargetNotFoundException e)
+                        catch (TargetNotFoundException e)
                         {
                             currentState = MonsterState.Idle;
                         }
@@ -291,7 +291,8 @@ public abstract class Monster : Character
                 try
                 {
                     walkTowards(closestEnemy.GetComponent<Collider>().ClosestPointOnBounds(transform.position));
-                }catch(TargetNotFoundException e)
+                }
+                catch (TargetNotFoundException e)
                 {
                     currentState = MonsterState.AttackHumans;
                 }
@@ -318,9 +319,16 @@ public abstract class Monster : Character
         isStunned = true;
         agent.Stop();
         yield return new WaitForSeconds(time);
-        isStunned = false;
-        agent.Resume();
-        preventLock(2);
+        try
+        {
+            isStunned = false;
+            agent.Resume();
+            preventLock(2);
+        }
+        catch (Exception e)
+        {
+            /// BAAAA
+        }
     }
 
     public void stun()
@@ -356,7 +364,8 @@ public abstract class Monster : Character
                 try
                 {
                     walkTowards(closestEnemy.GetComponent<Collider>().ClosestPointOnBounds(transform.position));
-                }catch(TargetNotFoundException e)
+                }
+                catch (TargetNotFoundException e)
                 {
                     currentState = MonsterState.AttackHumans;
                 }
@@ -389,7 +398,7 @@ public abstract class Monster : Character
         {
             walkTowards(closestEnemy.GetComponent<Collider>().ClosestPointOnBounds(transform.position));
         }
-        catch(TargetNotFoundException e)
+        catch (TargetNotFoundException e)
         {
             //ideally if you can't walk towards a human you should go to the next -- not implemented yet
             currentState = MonsterState.AttackTemple;
@@ -410,7 +419,8 @@ public abstract class Monster : Character
             try
             {
                 nextBestTarget = getClosestPointToTarget(target);
-            }catch(TargetNotFoundException exception)
+            }
+            catch (TargetNotFoundException exception)
             {
                 throw;
             }
@@ -611,5 +621,6 @@ public abstract class Monster : Character
 
         sT = Vector3.zero;
     }
+
 
 }

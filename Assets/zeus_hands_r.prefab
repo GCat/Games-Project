@@ -617,6 +617,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!23 &23367796197979064
 MeshRenderer:
@@ -648,6 +649,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!23 &23673482134404926
 MeshRenderer:
@@ -679,6 +681,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!23 &23682182123901236
 MeshRenderer:
@@ -710,6 +713,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!23 &23793266567463740
 MeshRenderer:
@@ -741,6 +745,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!23 &23810747456215458
 MeshRenderer:
@@ -772,6 +777,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!23 &23815854106259722
 MeshRenderer:
@@ -803,6 +809,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!23 &23968949215730976
 MeshRenderer:
@@ -834,6 +841,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!33 &33151228893596850
 MeshFilter:
@@ -1044,6 +1052,7 @@ MonoBehaviour:
   faithNumber: {fileID: 114356619474807880}
   healthSlider: {fileID: 114514500222797988}
   waveSlider: {fileID: 0}
+  fpsCounter: {fileID: 0}
   faith: 40
 --- !u!114 &114356619474807880
 MonoBehaviour:
@@ -1186,6 +1195,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: acba26e73f636e644a22c7a93d89e775, type: 3}
   - {fileID: 8300000, guid: dadb310d771dcac4ea701addc18c1385, type: 3}
   - {fileID: 8300000, guid: 9496b9a2f02d74e4eb1c44ea1a251491, type: 3}
+  destructionSound: {fileID: 8300000, guid: 03e5db10502f38d40aab0861935538ec, type: 3}
   audioSource: {fileID: 82982846710227026}
   close_hand: {fileID: 1198415810436942}
   open_hand: {fileID: 1440514488961328}
@@ -1329,7 +1339,7 @@ Canvas:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1489921108788740}
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_RenderMode: 2
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
@@ -1338,6 +1348,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
