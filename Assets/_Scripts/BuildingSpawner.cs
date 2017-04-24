@@ -5,8 +5,8 @@ using UnityEngine;
 public class BuildingSpawner : MonoBehaviour {
 
     public GameObject buildingToSpawn;
-    public int amountSpawned;
-    public int maxBuildings;
+    public int amountSpawned = 0;
+    public int maxBuildings = 5;
     public ResourceCounter resources;
     public GameObject imgCanvas;
     public ResourceGainTablet resourceCost;
@@ -17,8 +17,6 @@ public class BuildingSpawner : MonoBehaviour {
     bool usedOnce = false;
 	// Use this for initialization
 	void Start () {
-        amountSpawned = 0;
-        maxBuildings = 5;
         InvokeRepeating("spawnBuilding", .1f, 1f);
         if (buildingCost == 0) buildingCost = 20;
         resources = GameObject.FindGameObjectWithTag("Tablet").GetComponent<ResourceCounter>();
