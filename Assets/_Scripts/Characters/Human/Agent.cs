@@ -239,6 +239,15 @@ public class Agent : Character
         }
     }
 
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Ground")
+        {
+            agent.Warp(collision.contacts[0].point);
+        }
+
+    }
+
     //generates a new point on the board to wander to
     private Vector3 findNewTarget() 
     {
