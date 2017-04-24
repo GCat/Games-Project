@@ -23,6 +23,7 @@ public abstract class Building : Grabbable, HealthManager{ // this should also b
     public GameObject highlight_template;
     protected GameObject highlight;
     public bool canBeGrabbed = true;
+    public BuildingSpawner spawnedFrom;
 
     private GameObject ExplosionEffect;
     private GameObject fireEffect;
@@ -35,9 +36,18 @@ public abstract class Building : Grabbable, HealthManager{ // this should also b
     public abstract void activate();
     public abstract void deactivate();
 
+    public void faceHPBarToFront()
+    {
+        Vector3 barPos = healthBar.transform.position;
+        barPos.x += 1000;
+        healthBar.transform.LookAt(barPos);
+        healthBar.transform.Rotate(new Vector3(0, 0, 90));
+    }
+
     public void decrementHealth(float damage)
     {
         if (!healthBar.activeSelf) healthBar.SetActive(true);
+        faceHPBarToFront();
         StartCoroutine(lockBuilding(5));
         health -= damage;
         if (health > 0)
@@ -291,6 +301,7 @@ public abstract class Building : Grabbable, HealthManager{ // this should also b
         if (!bought)
         {
             bought = true;
+            spawnedFrom.amountSpawned++;
             resourceCounter.removeFaith(faithCost);
         }
 
@@ -316,6 +327,7 @@ public abstract class Building : Grabbable, HealthManager{ // this should also b
         if (!bought && (resourceCounter.faith >= faithCost))
         {
             bought = true;
+            if (spawnedFrom) spawnedFrom.amountSpawned++;
             resourceCounter.removeFaith(faithCost);
             return true;
         }
@@ -330,6 +342,7 @@ public abstract class Building : Grabbable, HealthManager{ // this should also b
     public virtual void delete()
     {
         highlightDestroy();
+        if (spawnedFrom) spawnedFrom.amountSpawned--;
         Destroy(gameObject);
     }
 
