@@ -42,8 +42,8 @@ public class BodySourceView : MonoBehaviour
     private bool started = true;
     private TrackingContext leftHandContext = TrackingContext.Medium;
     private TrackingContext rightHandContext = TrackingContext.Medium;
-    private Filter rightHandFilter = new MovingAverageFilter(3);
-    private Filter leftHandFilter = new MovingAverageFilter(3);
+    private Filter rightHandFilter = new KalmanFilter();
+    private Filter leftHandFilter = new KalmanFilter();
     private Thread bodyThread = null;
     private Bounds playerBounds;
     public enum TrackingContext { Slow, Medium, Fast };
@@ -204,7 +204,7 @@ public class BodySourceView : MonoBehaviour
             {
 
                 RefreshBodyObject(trackedBody, trackedBodyObject);
-                Thread.Sleep(3);
+                Thread.Sleep(1);
             }
             catch (System.Exception e)
             {
