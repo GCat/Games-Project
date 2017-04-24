@@ -86,8 +86,8 @@ public class Agent : Character
         createInfoText();
         infoTextOri = infoText.transform.rotation;
         lineRenderer = GetComponent<LineRenderer>();
-        tR = resources.getTopRight();
-        bL = resources.getBottomLeft();
+        tR = resources.getTopRight() - new Vector3(10,0,10);
+        bL = resources.getBottomLeft() + new Vector3(10, 0, 10);
         StartCoroutine(acquireTargets());
     }
 
