@@ -191,6 +191,10 @@ public class BodySourceView : MonoBehaviour
     void OnApplicationQuit() {
         bodyThread.Abort();
     }
+    void OnDestroyed()
+    {
+        bodyThread.Abort();
+    }
 
     private void testThread()
     {
@@ -434,7 +438,7 @@ public class BodySourceView : MonoBehaviour
         }
         countdown.text = "";
         InputTracking.Recenter();
-        //VRSettings.showDeviceView = false;
+        VRSettings.showDeviceView = false;
     }
 
     private GameObject CreateBodyObject(Kinect.Body kinectBody)

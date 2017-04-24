@@ -90,6 +90,11 @@ public class ColorSourceManager : MonoBehaviour
         }
     }
 
+    void OnDestroyed()
+    {
+        thread.Abort();
+    }
+
     void OnApplicationQuit()
     {
         thread.Abort();

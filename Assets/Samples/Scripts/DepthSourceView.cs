@@ -142,6 +142,11 @@ public class DepthSourceView : MonoBehaviour
 
     }
 
+    void OnDestroyed()
+    {
+        thread.Abort();
+    }
+
     void OnApplicationQuit()
     {
         running = false;
