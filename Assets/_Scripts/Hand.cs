@@ -461,6 +461,11 @@ public class Hand : MonoBehaviour {
                     monster.stun();
                 }
                 healthManager.decrementHealth(1);
+                if (gother.GetComponent<Bee>() != null)
+                {
+                    gother.GetComponent<Rigidbody>().AddForce(velocity.normalized * 2f, ForceMode.Impulse);
+
+                }
             }
         }
     }

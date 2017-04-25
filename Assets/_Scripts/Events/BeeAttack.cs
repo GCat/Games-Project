@@ -18,7 +18,7 @@ public class BeeAttack : WaveEvent {
         GameObject temple = GameObject.FindGameObjectWithTag("Temple");
         Vector3 tPost = temple.transform.position;
         Vector3 spawnLocation = GameObject.FindGameObjectWithTag("Portal").transform.position;
-        spawnLocation.y = 30f;
+        spawnLocation.y = 25f;
         spawnLocation.x += Random.Range(-20, 20);
         spawnLocation.z += Random.Range(-20, 20);
         if (temple != null)
