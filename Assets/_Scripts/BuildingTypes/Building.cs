@@ -3,7 +3,8 @@ using System.Collections;
 using System;
 using System.Collections.Generic;
 
-public abstract class Building : Grabbable, HealthManager{ // this should also be placeable hence the grab and release will be written once
+public abstract class Building : Grabbable, HealthManager
+{ // this should also be placeable hence the grab and release will be written once
     public AudioSource audioSource;
     public AudioClip buildClip;
     public AudioClip destroy;
@@ -73,17 +74,19 @@ public abstract class Building : Grabbable, HealthManager{ // this should also b
                 fireEffect.SetActive(false);
             }
             die();
-        }else if(health <= (0.2 * totalHealth))
+        }
+        else if (health <= (0.2 * totalHealth))
         {
             setWarning();
-        }else if( health <= (0.5 * totalHealth))
+        }
+        else if (health <= (0.5 * totalHealth))
         {
             if (fireEffect == null)
             {
                 fireEffect = Instantiate(Resources.Load("Particles/Fire"), new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.LookRotation(Vector3.forward, Vector3.up)) as GameObject;
                 List<ParticleSystem> shapes = new List<ParticleSystem>(fireEffect.GetComponentsInChildren<ParticleSystem>());
                 shapes.Add(fireEffect.GetComponent<ParticleSystem>());
-                for(int i=0; i < shapes.Count; i++)
+                for (int i = 0; i < shapes.Count; i++)
                 {
                     ParticleSystem.ShapeModule box = shapes[i].shape;
                     box.box = GetComponent<Collider>().bounds.size;
@@ -153,7 +156,8 @@ public abstract class Building : Grabbable, HealthManager{ // this should also b
                 rot = Quaternion.LookRotation(Vector3.forward);
             }
             Collider[] colliders = Physics.OverlapBox(new Vector3(x, 0, z), boxSize, rot, nobuildmask);
-            foreach (Collider collider in colliders) {
+            foreach (Collider collider in colliders)
+            {
                 if (!(GetComponent<WallTurret>() != null && collider.GetComponent<WallTurret>() != null))
                 {
                     return false;
@@ -196,12 +200,12 @@ public abstract class Building : Grabbable, HealthManager{ // this should also b
         }
     }
 
-    public IEnumerator ResourceGainText(int value,string resource)
+    public IEnumerator ResourceGainText(int value, string resource)
     {
-        GameObject resourceText = GameObject.Instantiate(resourceGainText,resourceGainText.transform) as GameObject;
+        GameObject resourceText = GameObject.Instantiate(resourceGainText, resourceGainText.transform) as GameObject;
         resourceText.transform.parent = gameObject.transform;
-        Vector2 randPos = UnityEngine.Random.insideUnitCircle*5.0f;
-        resourceText.transform.Translate(new Vector3(randPos.x,-2.0f,randPos.y*2.0f));
+        Vector2 randPos = UnityEngine.Random.insideUnitCircle * 5.0f;
+        resourceText.transform.Translate(new Vector3(randPos.x, -2.0f, randPos.y * 2.0f));
         Vector3 startLocation = resourceText.transform.position;
         resourceText.GetComponent<ResourceGainTablet>().setText("+" + value.ToString());
         resourceText.GetComponent<ResourceGainTablet>().activateThis();
@@ -220,7 +224,7 @@ public abstract class Building : Grabbable, HealthManager{ // this should also b
         Vector3 actualSize = dims.size;
         healthBar = GameObject.Instantiate(Resources.Load("HealthBar")) as GameObject;
         healthBar.transform.position = gameObject.GetComponent<Collider>().transform.position;
-        healthBar.transform.Translate(new Vector3(0, actualSize.y*1.5f, 0));
+        healthBar.transform.Translate(new Vector3(0, actualSize.y * 1.5f, 0));
         healthBar.transform.eulerAngles = new Vector3(0.0f, 90.0f, 90.0f);
         healthBar.transform.SetParent(gameObject.transform);
         healthBar.SetActive(false);
@@ -243,7 +247,7 @@ public abstract class Building : Grabbable, HealthManager{ // this should also b
         if (resourceCounter.withinBounds(transform.position))
         {
             highlight.SetActive(true);
-            highlight.transform.position = new Vector3(transform.position.x, 0.1f,transform.position.z);
+            highlight.transform.position = new Vector3(transform.position.x, 0.1f, transform.position.z);
             highlight.transform.rotation = transform.rotation;
             Collider[] colliders = Physics.OverlapBox(new Vector3(transform.position.x, 0, transform.position.z), boxSize, gameObject.transform.rotation, nobuildmask);
             foreach (Collider collider in colliders)
@@ -257,12 +261,12 @@ public abstract class Building : Grabbable, HealthManager{ // this should also b
                     return false;
                 }
             }
-            
-                foreach (Renderer t in highlight.GetComponentsInChildren<Renderer>())
-                {
-                    t.material.SetColor("_Color", Color.green);
-                }
-                return true;
+
+            foreach (Renderer t in highlight.GetComponentsInChildren<Renderer>())
+            {
+                t.material.SetColor("_Color", Color.green);
+            }
+            return true;
         }
         else
         {
@@ -295,13 +299,13 @@ public abstract class Building : Grabbable, HealthManager{ // this should also b
             highlight.GetComponentInChildren<Renderer>().material.SetColor("_Color", Color.green);
         }
         highlight.SetActive(true);
-        highlight.transform.position = new Vector3(transform.position.x , 0.1f, transform.position.z);
+        highlight.transform.position = new Vector3(transform.position.x, 0.1f, transform.position.z);
         highlight.transform.rotation = transform.rotation;
 
         highlight.GetComponent<Collider>().isTrigger = true;
     }
 
-    public override void grab() 
+    public override void grab()
     {
         held = true;
         //Already placed the object once so should not charge you
@@ -316,7 +320,7 @@ public abstract class Building : Grabbable, HealthManager{ // this should also b
         GetComponent<Rigidbody>().useGravity = false;
         GetComponent<Rigidbody>().isKinematic = true;
         GetComponent<Collider>().enabled = false;
-    }   
+    }
 
     public override void release(Vector3 vel)
     {
@@ -328,8 +332,8 @@ public abstract class Building : Grabbable, HealthManager{ // this should also b
         removeOutline();
         highlightDestroy();
     }
-    
-     public bool canBuy()
+
+    public bool canBuy()
     {
         if (!bought && (resourceCounter.faith >= faithCost))
         {

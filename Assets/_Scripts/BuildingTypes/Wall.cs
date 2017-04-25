@@ -113,7 +113,7 @@ public class Wall : Building
                 }
             }
             GetComponent<Collider>().enabled = true;
-            return true;
+            return turretA.canPlace() && turretB.canPlace();
         }
         return false;
     }

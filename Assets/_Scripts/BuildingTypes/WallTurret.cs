@@ -209,6 +209,12 @@ public class WallTurret : Building
     public override void delete()
     {
         wall.delete();
+        wallLengthHighlight.SetActive(false);
+        if (gameObject != null)
+        {
+            Destroy(gameObject);
+        }
+        highlightDestroy();
     }
 }
 
