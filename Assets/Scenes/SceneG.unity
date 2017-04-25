@@ -16127,56 +16127,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 1863264257053320, guid: 832e3998ba188d54585391e1bdb68df0, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4156113216104344, guid: 832e3998ba188d54585391e1bdb68df0, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: -0.072
-      objectReference: {fileID: 0}
-    - target: {fileID: 4156113216104344, guid: 832e3998ba188d54585391e1bdb68df0, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 1.232
-      objectReference: {fileID: 0}
-    - target: {fileID: 4156113216104344, guid: 832e3998ba188d54585391e1bdb68df0, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: -0.166
-      objectReference: {fileID: 0}
-    - target: {fileID: 114585129072737174, guid: 832e3998ba188d54585391e1bdb68df0,
-        type: 2}
-      propertyPath: Waves.Array.data[0].waveEvent
-      value: 
-      objectReference: {fileID: 114236806691041284, guid: e45105c5ad7cf9946aca09f862220ff9,
-        type: 2}
-    - target: {fileID: 4638784060754756, guid: 832e3998ba188d54585391e1bdb68df0, type: 2}
-      propertyPath: m_LocalScale.x
-      value: 12.241752
-      objectReference: {fileID: 0}
-    - target: {fileID: 4638784060754756, guid: 832e3998ba188d54585391e1bdb68df0, type: 2}
-      propertyPath: m_LocalScale.y
-      value: 6.1208725
-      objectReference: {fileID: 0}
-    - target: {fileID: 4638784060754756, guid: 832e3998ba188d54585391e1bdb68df0, type: 2}
-      propertyPath: m_LocalScale.z
-      value: 6.1208725
-      objectReference: {fileID: 0}
     - target: {fileID: 114585129072737174, guid: 832e3998ba188d54585391e1bdb68df0,
         type: 2}
       propertyPath: Waves.Array.data[6].waveEvent
       value: 
       objectReference: {fileID: 656921780}
-    - target: {fileID: 114585129072737174, guid: 832e3998ba188d54585391e1bdb68df0,
-        type: 2}
-      propertyPath: Waves.Array.data[4].newBuilding
-      value: 
-      objectReference: {fileID: 1800203989559666, guid: be19340edba1cb34ca731aa769354cb5,
-        type: 2}
-    - target: {fileID: 114585129072737174, guid: 832e3998ba188d54585391e1bdb68df0,
-        type: 2}
-      propertyPath: Waves.Array.data[4].waveEvent
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 114585129072737174, guid: 832e3998ba188d54585391e1bdb68df0,
         type: 2}
       propertyPath: spawnerLocationsParent
