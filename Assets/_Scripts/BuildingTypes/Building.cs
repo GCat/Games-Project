@@ -104,6 +104,13 @@ public abstract class Building : Grabbable, HealthManager{ // this should also b
             canBeGrabbed = true;
         }
     }
+
+    protected IEnumerator fixOutline()
+    {
+        yield return new WaitForSeconds(0.2f);
+        removeOutline();
+    }
+
     public virtual void Awake()
     {
         audioSource = gameObject.AddComponent<AudioSource>();

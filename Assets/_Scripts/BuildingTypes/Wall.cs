@@ -58,6 +58,9 @@ public class Wall : Building
 
     }
 
+
+
+
     public new bool highlightCheck()
     {
         if (resourceCounter.withinBounds(transform.position))
@@ -157,7 +160,7 @@ public class Wall : Building
     {
         if (highlight != null) highlightDestroy();
         held = false;
-
+       
         turretA.activate();
         turretB.activate();
 
@@ -169,6 +172,10 @@ public class Wall : Building
         turretB.transform.parent = null;
         turretA.snap();
         turretB.snap();
+        turretA.removeOutline();
+        turretB.removeOutline();
+        removeOutline();
+        StartCoroutine(fixOutline());
     }
 
     public void updateWall()
