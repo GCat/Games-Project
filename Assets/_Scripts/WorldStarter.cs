@@ -51,6 +51,8 @@ public class WorldStarter : MonoBehaviour
         {
             takeMugShot();
         }
+        yield return new WaitForSeconds(2);
+        Application.Quit();
     }
 
 

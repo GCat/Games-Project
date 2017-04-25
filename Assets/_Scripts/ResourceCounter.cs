@@ -82,7 +82,7 @@ public class ResourceCounter : Grabbable
         healthSlider.value = temple.health;
         frames++;
         totalFPS += (1f / Time.deltaTime);
-        fpsCounter.text = "FPS: " + (1f / Time.deltaTime).ToString("F2");
+        fpsCounter.text = "FPS: " + (totalFPS / frames).ToString("F2");
     }
 
     IEnumerator logFPS() {
