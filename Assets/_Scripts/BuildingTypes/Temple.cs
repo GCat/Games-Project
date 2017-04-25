@@ -49,7 +49,7 @@ public class Temple : Building
 
     public void incrementResource()
     {
-        if (resourceCounter != null) StartCoroutine(ResourceGainText(resourceCounter.addFaith(5),"Faith"));
+        if (resourceCounter != null) StartCoroutine(ResourceGainText(resourceCounter.addFaith(1),"Faith"));
     }
 
 
