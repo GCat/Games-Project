@@ -3095,10 +3095,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bef738fd152f5f441a32ede2e38262a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  strength: 40
-  health: 250
-  totalHealth: 250
+  agent: {fileID: 0}
+  strength: 25
+  health: 150
+  totalHealth: 150
   faithValue: 8
+  active: 0
   rotationSpeed: 8
   alive: 0
   animator: {fileID: 95543238732232444}
@@ -3263,6 +3265,7 @@ SkinnedMeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
   serializedVersion: 2
   m_Quality: 0
@@ -3722,9 +3725,10 @@ NavMeshAgent:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1944568527468440}
   m_Enabled: 1
+  m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 4
-  m_Acceleration: 4
+  m_Speed: 2
+  m_Acceleration: 3
   avoidancePriority: 50
   m_AngularSpeed: 120
   m_StoppingDistance: 1.5

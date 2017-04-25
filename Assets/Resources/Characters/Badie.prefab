@@ -640,10 +640,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 0}
-  strength: 5
+  strength: 4
   health: 100
   totalHealth: 100
   faithValue: 5
+  active: 0
   rotationSpeed: 4
   alive: 0
   animator: {fileID: 95793851212632952}

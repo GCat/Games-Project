@@ -191,6 +191,22 @@ public class Bee : MonoBehaviour, HealthManager {
         attacking = false;
     }
 
+
+    public void slap()
+    {
+        StartCoroutine(knock());
+    }
+
+    IEnumerator knock()
+    {
+        active = false;
+        GetComponentInChildren<Rigidbody>().useGravity = true;
+        yield return new WaitForSeconds(1f);
+        GetComponentInChildren<Rigidbody>().useGravity = false;
+
+        active = true;
+    }
+
     void OnCollisionEnter(Collision col)
     {
 

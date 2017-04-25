@@ -18,7 +18,7 @@ public class Portal : MonoBehaviour
     public GameObject spawnerLocationsParent;
     private List<Transform> spawnerLocations;
     public HashSet<GameObject> clouds;
-
+    public WorldStarter worldstarter;
     private float animLength = 0.833f;
     private float animSpeed = 1f;
     public float delayStart;
@@ -159,13 +159,10 @@ public class Portal : MonoBehaviour
                 //monster.GetComponent<Character>().agent.Warp(validSpawnLoc);
                 yield return new WaitForSeconds(2);
             }
-            for (int i = 0; i < 10; i++)
-            {
-                if (allDead(spawnedMonsters))
-                {
-                    break;
-                }
-                yield return new WaitForSeconds(2);
+
+
+            while (!allDead(spawnedMonsters)) {
+                yield return new WaitForSeconds(1);
             }
             if (wave.newBuilding != null)
             {
@@ -177,6 +174,7 @@ public class Portal : MonoBehaviour
             anim.Play("Countdown");
             yield return new WaitForSeconds(wave.waveTime);
         }
+        worldstarter.stopGame();
     }
 
     public void movePortal()
