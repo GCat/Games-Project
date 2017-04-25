@@ -52,4 +52,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   swarmSize: 10
-  beePrefab: {fileID: 1094484192780146, guid: b7faecde6eacece47aaf2b0bae2d5749, type: 2}
+  beePrefab: {fileID: 1485311110788158, guid: a26dcc45a62e8e94e8320b97861228f1, type: 2}

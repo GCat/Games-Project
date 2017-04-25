@@ -135,7 +135,6 @@ GameObject:
   - component: {fileID: 33594120813657838}
   - component: {fileID: 23892174723478478}
   - component: {fileID: 95633308278961694}
-  - component: {fileID: 114263235874736966}
   m_Layer: 0
   m_Name: bee
   m_TagString: Untagged
@@ -222,10 +221,9 @@ GameObject:
   - component: {fileID: 82962625671023368}
   - component: {fileID: 136214736752747672}
   - component: {fileID: 54577068080914312}
-  - component: {fileID: 195235497730311528}
   m_Layer: 11
   m_Name: bee2
-  m_TagString: Badies
+  m_TagString: Bee
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -477,7 +475,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1193052840706074}
-  m_LocalRotation: {x: -0.10755527, y: 0.698879, z: -0.698879, w: 0.10755527}
+  m_LocalRotation: {x: 0.6988788, y: -0.10755655, z: -0.10755655, w: 0.6988788}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2.1308804, y: 2.1308804, z: 2.1308808}
   m_Children:
@@ -490,7 +488,7 @@ Transform:
   - {fileID: 4857629117041370}
   m_Father: {fileID: 4526169049085194}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 72.50201, y: 90, z: -90.00001}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4441629262151562
 Transform:
   m_ObjectHideFlags: 1
@@ -525,14 +523,14 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1485311110788158}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -18.049927, y: -0.003660202, z: 51.00659}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -74.447945, y: 5.01, z: -10.040405}
   m_LocalScale: {x: 7.4430904, y: 7.4430933, z: 7.4430933}
   m_Children:
   - {fileID: 4434406567758592}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4578577651458066
 Transform:
   m_ObjectHideFlags: 1
@@ -1279,7 +1277,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 1cff15919969fcc41bba14931a8eaf37, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -1312,32 +1310,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e5269edccae5a94d91132e1815d8681, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agent: {fileID: 0}
-  strength: 5
-  health: 20
-  totalHealth: 20
-  faithValue: 1
-  active: 0
-  rotationSpeed: 6
-  alive: 0
-  animator: {fileID: 95550033908097276}
-  monsterType: 5
-  defaultState: 0
   damage: 1
   health: 20
   speed: 10
---- !u!114 &114263235874736966
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1193052840706074}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e6d07dcb36f62b647ba475c98d09d545, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parentCharacter: {fileID: 1485311110788158}
 --- !u!136 &136214736752747672
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -1347,28 +1322,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.009045088
-  m_Height: 0.02275608
+  m_Radius: 0.30926198
+  m_Height: 0.61852396
   m_Direction: 1
-  m_Center: {x: -0.0009081757, y: 0.0013780402, z: 9.0425695e-10}
---- !u!195 &195235497730311528
-NavMeshAgent:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1485311110788158}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.29
-  m_Speed: 3.5
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 4
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 0.69
-  m_BaseOffset: 0.5
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_Center: {x: -0, y: 0.0013780568, z: 0}

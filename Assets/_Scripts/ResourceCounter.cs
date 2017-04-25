@@ -30,7 +30,7 @@ public class ResourceCounter : Grabbable
     private int swordMult = 1;
     private int armourMult = 1;
     //number of each baddie type
-    private int[] baddies = new int[6];
+    private int[] baddies = new int[4];
 
     private bool gameStarted;
 
@@ -39,7 +39,7 @@ public class ResourceCounter : Grabbable
     {
         resource_nodes = new Dictionary<string, GameObject[]>();
         gameStarted = false;
-        baddies = new int[6];
+        baddies = new int[4];
         for (int i = 0; i < baddies.Length; i++)
         {
             baddies[i] = 0;
@@ -223,7 +223,7 @@ public class ResourceCounter : Grabbable
     //get the number of ground based baddies
     public int getGroundBaddies()
     {
-        return baddies[1] + baddies[0] + baddies[4] + baddies[3];
+        return baddies[1] + baddies[0];
     }
     public int getBaddies()
     {

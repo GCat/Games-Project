@@ -428,10 +428,10 @@ public class BodySourceView : MonoBehaviour
     IEnumerator alignCountDown()
     {
         //for debugging purposes
-        ColorSourceManager colorManager = GameObject.FindGameObjectWithTag("TV").GetComponent<ColorSourceManager>();
-        for (int i = 0; i < 3; i++)
+        string alignText = "Please look at the camera! ";
+        for (int i = 5; i >= 0; i--)
         {
-            string newText = countdown.text.Substring(0, countdown.text.Length - 1);
+            string newText = alignText;
             newText += i.ToString();
             countdown.text = newText;
             yield return new WaitForSeconds(1);
