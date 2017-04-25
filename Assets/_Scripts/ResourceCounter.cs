@@ -31,6 +31,8 @@ public class ResourceCounter : Grabbable
     private int armourMult = 1;
     //number of each baddie type
     private int[] baddies = new int[4];
+    int frames = 0;
+    float totalFPS = 0.0f;
 
     private bool gameStarted;
 
@@ -57,6 +59,7 @@ public class ResourceCounter : Grabbable
         temple = GameObject.FindGameObjectWithTag("Temple").GetComponent<Temple>();
         healthSlider.maxValue = temple.totalHealth;
         portal = GameObject.FindGameObjectWithTag("Portal").GetComponent<Portal>();
+        StartCoroutine(logFPS());
     }
 
     // Update is called once per frame : 
@@ -77,7 +80,19 @@ public class ResourceCounter : Grabbable
         //setResourceText();
         faithNumber.text = faith.ToString();
         healthSlider.value = temple.health;
+        frames++;
+        totalFPS += (1f / Time.deltaTime);
         fpsCounter.text = "FPS: " + (1f / Time.deltaTime).ToString("F2");
+    }
+
+    IEnumerator logFPS() {
+        while (true)
+        {
+            yield return new WaitForSeconds(2);
+            Debug.Log("Average FPS:" + (totalFPS / frames).ToString("F2"));
+
+        }
+
     }
 
     public void setResourceText()
