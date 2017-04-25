@@ -51,5 +51,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a6bfe45d8cd73a4db7bc1699a96158d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swarmSize: 10
+  swarmSize: 1
   beePrefab: {fileID: 1485311110788158, guid: a26dcc45a62e8e94e8320b97861228f1, type: 2}

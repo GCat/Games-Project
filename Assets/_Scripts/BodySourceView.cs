@@ -57,7 +57,7 @@ public class BodySourceView : MonoBehaviour
     private Kinect.Body trackedBody;
     private GameObject trackedBodyObject;
 
-    private Dictionary<string, Transform> bodyTransforms = new Dictionary<string, Transform>();
+    private Dictionary<Kinect.JointType, Transform> bodyTransforms = new Dictionary<Kinect.JointType, Transform>();
     private Dictionary<string, Vector3> bodyPositions = new Dictionary<string, Vector3>();
 
 
@@ -457,7 +457,7 @@ public class BodySourceView : MonoBehaviour
             jointObj.transform.localScale = new Vector3(5f, 5f, 5f);
             jointObj.name = jt.ToString();
             jointObj.transform.parent = body.transform;
-            bodyTransforms.Add(jt.ToString(), jointObj.transform);
+            bodyTransforms.Add(jt, jointObj.transform);
             bodyPositions.Add(jt.ToString(), GetVector3FromJoint(kinectBody.Joints[jt]));
             if (playerBounds == null)
             {
@@ -480,7 +480,7 @@ public class BodySourceView : MonoBehaviour
             try
             {
 
-                Transform jointObj = bodyTransforms[jt.ToString()];
+                Transform jointObj = bodyTransforms[jt];
                 jointObj.localPosition = bodyPositions[jt.ToString()];
                 if (playerBounds.size.magnitude < 1)
                 {
@@ -511,7 +511,7 @@ public class BodySourceView : MonoBehaviour
                 targetJoint = body.Joints[_BoneMap[jt]];
             }
 
-            Transform jointObj = bodyTransforms[jt.ToString()];
+            Transform jointObj = bodyTransforms[jt];
             Vector3 pos = GetVector3FromJoint(sourceJoint);
             bodyPositions[jt.ToString()] = pos;
 

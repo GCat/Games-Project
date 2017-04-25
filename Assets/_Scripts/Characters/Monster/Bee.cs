@@ -73,6 +73,7 @@ public class Bee : MonoBehaviour, HealthManager {
 
     public void Spawn(GameObject target, float timeout, Vector3 t)
     {
+        Debug.Log(transform.position);
         this.target = target;
         attackPoint = t;
         active = true;

@@ -801,7 +801,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1681742849497422}
   m_LocalRotation: {x: 0.50088465, y: -0.50714797, z: -0.49498627, w: 0.49689448}
-  m_LocalPosition: {x: -0.072872, y: 0.678, z: -0.16193}
+  m_LocalPosition: {x: -0.072, y: 1.232, z: -0.166}
   m_LocalScale: {x: 0.7494799, y: 0.23470189, z: 0.3819215}
   m_Children:
   - {fileID: 4729628858985840}
@@ -1090,8 +1090,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1202590423550394}
   m_LocalRotation: {x: -0, y: 0.70995927, z: -0, w: 0.70424277}
-  m_LocalPosition: {x: -92.9, y: 0, z: 5}
-  m_LocalScale: {x: 27.600939, y: 13.80046, z: 13.80046}
+  m_LocalPosition: {x: -96.1, y: 0, z: 2.6}
+  m_LocalScale: {x: 12.241752, y: 6.1208725, z: 6.1208725}
   m_Children:
   - {fileID: 4050100237852904}
   - {fileID: 4825022829646916}
@@ -2137,7 +2137,8 @@ MonoBehaviour:
   Waves:
   - monsters: 00000000000000000000000000000000
     waveTime: 30
-    waveEvent: {fileID: 0}
+    waveEvent: {fileID: 114236806691041284, guid: e45105c5ad7cf9946aca09f862220ff9,
+      type: 2}
     newBuilding: {fileID: 1000064598565702, guid: 9ac0a4ee9e45c50479888cadeab078d7,
       type: 2}
   - monsters: 000000000000000001000000
@@ -2158,7 +2159,8 @@ MonoBehaviour:
   - monsters: 00000000010000000200000000000000010000000200000000000000010000000200000000000000
     waveTime: 71.8
     waveEvent: {fileID: 0}
-    newBuilding: {fileID: 100012, guid: caefd7971b5a7a044b604a6916edd146, type: 3}
+    newBuilding: {fileID: 1800203989559666, guid: be19340edba1cb34ca731aa769354cb5,
+      type: 2}
   - monsters: 00000000010000000200000000000000010000000200000000000000010000000200000000000000
     waveTime: 45
     waveEvent: {fileID: 0}
@@ -2174,6 +2176,7 @@ MonoBehaviour:
   - {fileID: 1454130615011182, guid: 45c41ec318340254f9e812a2a0cc50f3, type: 2}
   - {fileID: 1454130615011182, guid: 45c41ec318340254f9e812a2a0cc50f3, type: 2}
   - {fileID: 1454130615011182, guid: 45c41ec318340254f9e812a2a0cc50f3, type: 2}
+  spawnerLocationsParent: {fileID: 0}
   delayStart: 30
   teleport: {fileID: 0}
 --- !u!114 &114731457494940228
