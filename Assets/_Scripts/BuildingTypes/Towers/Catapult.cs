@@ -7,6 +7,7 @@ public class Catapult : Tower
     private Animator animator;
     private GameObject rock;
     public GameObject launchPoint;
+    public float attackRange;
     // Use this for initialization
     void Start()
     {
@@ -22,7 +23,7 @@ public class Catapult : Tower
     //find a new nearby monster to attack
     public override bool acquireTarget()
     {
-        List<Collider> hitColliders = new List<Collider>(Physics.OverlapSphere(floor, radius, attackMask));
+        List<Collider> hitColliders = new List<Collider>(Physics.OverlapSphere(floor, attackRange, attackMask));
         if (hitColliders.Count > 0)
         {
             Debug.Log("Acquired target");
@@ -38,7 +39,7 @@ public class Catapult : Tower
 
         while (true)
         {
-            if (currentTarget != null && Vector3.Distance(floor, currentTarget.transform.position) < radius)
+            if (currentTarget != null && Vector3.Distance(floor, currentTarget.transform.position) < attackRange)
             {
                 throwRock(currentTarget);
             }

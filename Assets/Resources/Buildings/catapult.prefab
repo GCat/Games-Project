@@ -1837,15 +1837,18 @@ MonoBehaviour:
   faithCost: 30
   highlight_template: {fileID: 0}
   canBeGrabbed: 1
+  spawnedFrom: {fileID: 0}
   initialRotation: {x: 0, y: 0, z: 0, w: 0}
   held: 0
+  destroyedBuilding: {fileID: 0}
   attackClip: []
   rangeHighlight: {fileID: 0}
   currentTarget: {fileID: 0}
-  radius: 200
+  radius: 1
   active: 0
   attackMask: 2048
   launchPoint: {fileID: 1824025752015916}
+  attackRange: 200
 --- !u!208 &208955002134755508
 NavMeshObstacle:
   m_ObjectHideFlags: 1
