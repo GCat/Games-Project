@@ -28,7 +28,7 @@ public abstract class Building : Grabbable, HealthManager{ // this should also b
     private GameObject ExplosionEffect;
     private GameObject fireEffect;
     public Quaternion initialRotation;
-    private int nobuildmask = (1 << 10 | 1 << 17);
+    protected int nobuildmask = (1 << 10 | 1 << 17);
     public bool held = false;
     public GameObject destroyedBuilding;
 
@@ -127,7 +127,7 @@ public abstract class Building : Grabbable, HealthManager{ // this should also b
 
 
     //return true if within bounds & not above another building
-    public bool canPlace()
+    public virtual bool canPlace()
     {
 
         float x = transform.position.x;

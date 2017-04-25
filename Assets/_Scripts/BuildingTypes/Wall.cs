@@ -48,7 +48,71 @@ public class Wall : Building
                 hideTurretHighlight();
             }
         }
+        else
+        {
+            if (turretA == null || turretB == null)
+            {
+                die();
+            }
+        }
 
+    }
+
+    public new bool highlightCheck()
+    {
+        if (resourceCounter.withinBounds(transform.position))
+        {
+            highlight.SetActive(true);
+            highlight.transform.position = new Vector3(transform.position.x, 0.1f, transform.position.z);
+            highlight.transform.rotation = transform.rotation;
+            Collider[] colliders = Physics.OverlapBox(new Vector3(transform.position.x, 0, transform.position.z), boxSize, gameObject.transform.rotation, nobuildmask);
+            foreach (Collider collider in colliders)
+            {
+                if (collider.GetComponent<WallTurret>() == null)
+                {
+                    foreach (Renderer t in highlight.GetComponentsInChildren<Renderer>())
+                    {
+                        t.material.SetColor("_Color", Color.red);
+                    }
+                    return false;
+                }
+            }
+
+            foreach (Renderer t in highlight.GetComponentsInChildren<Renderer>())
+            {
+                t.material.SetColor("_Color", Color.green);
+            }
+            return true;
+        }
+        else
+        {
+            highlight.SetActive(false);
+            return false;
+        }
+    }
+
+
+    //return true if within bounds & not above another building
+    public override bool canPlace()
+    {
+
+        float x = transform.position.x;
+        float z = transform.position.z;
+
+        if (resourceCounter.withinBounds(transform.position))
+        {
+            Collider[] colliders = Physics.OverlapBox(new Vector3(x, 0, z), boxSize, transform.rotation, nobuildmask);
+            foreach (Collider collider in colliders)
+            {
+                if (collider.GetComponent<WallTurret>() == null)
+                {
+                    return false;
+                }
+            }
+            GetComponent<Collider>().enabled = true;
+            return true;
+        }
+        return false;
     }
 
     public override string getName()

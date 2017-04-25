@@ -120,7 +120,10 @@ public class WallTurret : Building
     public override void die()
     {
         Destroy(highlight);
-        Destroy(gameObject);
+        if (gameObject != null)
+        {
+            Destroy(gameObject);
+        } 
     }
 
     private IEnumerator clearOutline()
