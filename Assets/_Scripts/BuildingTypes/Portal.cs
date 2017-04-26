@@ -18,12 +18,15 @@ public class Portal : MonoBehaviour
     public GameObject spawnerLocationsParent;
     private List<Transform> spawnerLocations;
     public HashSet<GameObject> clouds;
+    public AudioClip battleMusic;
+    public AudioClip transition;
     public WorldStarter worldstarter;
     private float animLength = 0.833f;
     private float animSpeed = 1f;
     public float delayStart;
     Vector3 pos;
-    AudioClip attackClip;
+    public AudioClip attackClip;
+    public AudioClip peaceMusic;
     AudioSource asource;
     public AudioClip teleport;
     Animation anim;
@@ -46,6 +49,7 @@ public class Portal : MonoBehaviour
         resourceCounter = GameObject.FindGameObjectWithTag("Tablet").GetComponent<ResourceCounter>();
         pos = spawnPos.transform.position;
         asource = GetComponent<AudioSource>();
+        asource.clip = peaceMusic;
         startTime = Time.time;
         anim = GetComponentInChildren<Animation>();
         playerHead = GameObject.FindGameObjectWithTag("MainCamera");
@@ -56,6 +60,7 @@ public class Portal : MonoBehaviour
         {
             spawnerLocations.Add(child);
         }
+        asource.Play();
     }
 
     void Update()
@@ -134,8 +139,8 @@ public class Portal : MonoBehaviour
         foreach (Wave wave in Waves)
         {
             List<GameObject> spawnedMonsters = new List<GameObject>();
-            asource.Play();
-
+            asource.PlayOneShot(transition);
+            StartCoroutine(playBattleMusic());
             if (wave.waveEvent != null)
             {
                 wave.waveEvent.startEvent();
@@ -164,6 +169,7 @@ public class Portal : MonoBehaviour
             while (!allDead(spawnedMonsters)) {
                 yield return new WaitForSeconds(1);
             }
+            asource.Play();
             if (wave.newBuilding != null)
             {
                 spawnNewBuilding(wave.newBuilding);
@@ -175,6 +181,12 @@ public class Portal : MonoBehaviour
             yield return new WaitForSeconds(wave.waveTime);
         }
         worldstarter.stopGame();
+    }
+
+    IEnumerator playBattleMusic()
+    {
+        yield return new WaitForSeconds(8);
+        asource.PlayOneShot(battleMusic);
     }
 
     public void movePortal()

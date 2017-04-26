@@ -38,12 +38,12 @@ public class WallTurret : Building
 
     private void limitLength()
     {
-        if (Vector3.Distance(otherEnd.transform.position, transform.position) < wall.maxWallLength*0.5f)
+        if (Vector3.Distance(otherEnd.transform.position, transform.position) < wall.maxWallLength * 0.5f)
         {
 
             return;
         }
-        Vector3 wallDirection = (transform.position - otherEnd.transform.position).normalized * wall.maxWallLength*0.5f;
+        Vector3 wallDirection = (transform.position - otherEnd.transform.position).normalized * wall.maxWallLength * 0.5f;
         transform.position = otherEnd.transform.position + wallDirection;
 
     }
@@ -107,7 +107,7 @@ public class WallTurret : Building
 
         foreach (Collider collider in points)
         {
-            if (collider.gameObject.tag == "Turret" && collider.gameObject != gameObject && collider.gameObject.GetComponent<WallTurret>().wall != wall )
+            if (collider.gameObject.tag == "Turret" && collider.gameObject != gameObject && collider.gameObject.GetComponent<WallTurret>().wall != wall)
             {
                 transform.position = collider.transform.position;
                 wall.updateWall();
@@ -123,10 +123,19 @@ public class WallTurret : Building
     public override void die()
     {
         Destroy(highlight);
-        if (gameObject != null)
+        try
         {
-            Destroy(gameObject);
-        } 
+            if (gameObject != null)
+            {
+
+                Destroy(gameObject);
+            }
+
+        }
+        catch (Exception e)
+        {
+
+        }
     }
 
     private IEnumerator clearOutline()
@@ -189,7 +198,8 @@ public class WallTurret : Building
         wallLengthHighlight.transform.position = new Vector3(transform.position.x, 0.1f, transform.position.z);
         wallLengthHighlight.transform.rotation = Quaternion.LookRotation(Vector3.forward);
         wallLengthHighlight.GetComponent<Collider>().enabled = false;
-        wallLengthHighlight.GetComponent<Renderer>().enabled = true;
+        // wallLengthHighlight.GetComponent<Renderer>().enabled = true;
+        wallLengthHighlight.GetComponent<Renderer>().enabled = false;
         wallLengthHighlight.SetActive(false);
 
     }

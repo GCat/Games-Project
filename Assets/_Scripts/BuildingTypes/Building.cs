@@ -354,7 +354,7 @@ public abstract class Building : Grabbable, HealthManager
     public virtual void delete()
     {
         highlightDestroy();
-        if (spawnedFrom) spawnedFrom.amountSpawned--;
+        if (spawnedFrom != null) spawnedFrom.amountSpawned--;
         Destroy(gameObject);
     }
 

@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BuildingSpawner : MonoBehaviour {
+public class BuildingSpawner : MonoBehaviour
+{
 
     public GameObject buildingToSpawn;
     public int amountSpawned = 0;
@@ -15,9 +16,10 @@ public class BuildingSpawner : MonoBehaviour {
     public bool spawn = true;
     public GameObject godRay;
     bool usedOnce = false;
-	// Use this for initialization
-	void Start () {
-        InvokeRepeating("spawnBuilding", .1f, 1f);
+    // Use this for initialization
+    void Start()
+    {
+        StartCoroutine(spawnBuilding());
         if (buildingCost == 0) buildingCost = 20;
         resources = GameObject.FindGameObjectWithTag("Tablet").GetComponent<ResourceCounter>();
         imgCanvas = transform.GetChild(0).gameObject;
@@ -26,14 +28,14 @@ public class BuildingSpawner : MonoBehaviour {
         resourceCost.activateThis();
         GameObject building = Instantiate(buildingToSpawn, transform.position, transform.rotation);
         Building bScript = building.GetComponent<Building>();
-        if(bScript != null)
+        if (bScript != null)
         {
             buildingCost = bScript.faithCost;
         }
         else
         {
             LightningBolt light = building.GetComponent<LightningBolt>();
-            if(light != null)
+            if (light != null)
             {
                 buildingCost = light.faithCost;
             }
@@ -51,13 +53,14 @@ public class BuildingSpawner : MonoBehaviour {
     {
         godRay.transform.parent = null;
         godRay.SetActive(true);
-        
+
     }
 
     public void rayDisappear(float time)
     {
         StopCoroutine(rayInactive(time));
     }
+
 
     IEnumerator rayInactive(float time)
     {
@@ -66,29 +69,33 @@ public class BuildingSpawner : MonoBehaviour {
 
     }
 
-    private void spawnBuilding()
+    IEnumerator spawnBuilding()
     {
-        if (amountSpawned >= maxBuildings || resources.faith < buildingCost || !resources.hasGameStarted())
+        while (true)
         {
-            imgCanvas.SetActive(true);
-            resourceCost.text.color = Color.red;
-        }
-        else
-        {
-            imgCanvas.SetActive(false);
-            resourceCost.text.color = Color.black;
-            if (spawn && Physics.OverlapSphere(transform.position, 8.0f, buildingMask).Length == 0)
+            yield return new WaitForSeconds(1);
+            if (amountSpawned >= maxBuildings || resources.faith < buildingCost || !resources.hasGameStarted())
             {
-                if (usedOnce) godRay.SetActive(false);
-                GameObject building = Instantiate(buildingToSpawn, transform.position, transform.rotation);
-                Building myScript = building.GetComponent<Building>();
-                if (myScript) myScript.spawnedFrom = this;
-                building.transform.parent = transform;
-                building.GetComponent<Rigidbody>().useGravity = false;
-                usedOnce = true;
+                imgCanvas.SetActive(true);
+                resourceCost.text.color = Color.red;
             }
-        }
+            else
+            {
+                imgCanvas.SetActive(false);
+                resourceCost.text.color = Color.black;
+                if (spawn && Physics.OverlapSphere(transform.position, 8.0f, buildingMask).Length == 0)
+                {
+                    if (usedOnce) godRay.SetActive(false);
+                    GameObject building = Instantiate(buildingToSpawn, transform.position, transform.rotation);
+                    Building myScript = building.GetComponent<Building>();
+                    if (myScript) myScript.spawnedFrom = this;
+                    building.transform.parent = transform;
+                    building.GetComponent<Rigidbody>().useGravity = false;
+                    usedOnce = true;
+                }
+            }
 
+        }
     }
 
 }

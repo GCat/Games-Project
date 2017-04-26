@@ -360,7 +360,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1643311417326162}
   m_LocalRotation: {x: -0, y: -0.21990858, z: -0, w: 0.97552055}
-  m_LocalPosition: {x: -43.116756, y: -0.0036621094, z: 36.361366}
+  m_LocalPosition: {x: 6.6511993, y: -0.0036640167, z: -61.009224}
   m_LocalScale: {x: 0.44485623, y: 0.44485617, z: 0.44485617}
   m_Children:
   - {fileID: 4504486111289460}
@@ -838,7 +838,7 @@ MonoBehaviour:
   rotationHandle: 0
   frontHandle: 0
   bSpawner: {fileID: 0}
-  godRay: {fileID: 0}
+  godRay: {fileID: 1446173176992694}
 --- !u!114 &114278805764595264
 MonoBehaviour:
   m_ObjectHideFlags: 1

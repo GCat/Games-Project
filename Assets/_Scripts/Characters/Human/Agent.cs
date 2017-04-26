@@ -200,8 +200,14 @@ public class Agent : Character
     {
         if (wanderPoint == Vector3.zero || atDestination(wanderPoint))
         {
-
-            wanderPoint = findNewTarget();
+            try
+            {
+                wanderPoint = findNewTarget();
+            }
+            catch
+            {
+                wanderPoint = Vector3.zero + Vector3.forward * 20;
+            }
         }
         else
         {

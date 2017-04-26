@@ -363,6 +363,7 @@ public class Hand : MonoBehaviour {
                         if (building.gameObject.tag != "Temple")
                         {
                             building.refund();
+                            audioSource.PlayOneShot(destructionSound, 0.5f);
                             building.delete();
                         }
                     }

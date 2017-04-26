@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Grabbable : MonoBehaviour {
+public abstract class Grabbable : MonoBehaviour
+{
 
     protected Renderer[] child_materials;
     protected Shader[] original_materials;
@@ -33,7 +35,8 @@ public abstract class Grabbable : MonoBehaviour {
 
     public void setOutline()
     {
-        if(outlineShader == null)
+
+        if (outlineShader == null)
         {
             init();
         }
@@ -43,8 +46,15 @@ public abstract class Grabbable : MonoBehaviour {
         }
         for (int i = 0; i < child_materials.Length; i++)
         {
-            child_materials[i].material.shader = outlineShader;
-            child_materials[i].material.SetColor("_OutlineColor", Color.green);
+            try
+            {
+                child_materials[i].material.shader = outlineShader;
+                child_materials[i].material.SetColor("_OutlineColor", Color.green);
+            }
+            catch (Exception e)
+            {
+
+            }
         }
     }
 
