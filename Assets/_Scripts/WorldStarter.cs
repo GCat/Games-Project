@@ -11,6 +11,9 @@ public class WorldStarter : MonoBehaviour
     private float startTime;
     private Rect TextAreaRect = new Rect(25, 25, 250, 100);
     public Text gameOverText;
+    
+    string timeText;
+    bool recordTime = false;
     void Start()
     {
         colorManager = colorScreen.GetComponent<ColorSourceManager>();
@@ -40,6 +43,7 @@ public class WorldStarter : MonoBehaviour
     IEnumerator mugShotCountdown()
     {
         string text = gameOverText.text;
+        recordTime = true;
         for (int i = 5; i >= 0; i--)
         {
             yield return new WaitForSeconds(1);
@@ -60,8 +64,7 @@ public class WorldStarter : MonoBehaviour
     {
         Texture2D mugshot = colorManager.GetColorTexture();
         byte[] pixels = mugshot.EncodeToPNG();
-        string text = addtimeScore();
-        byte[] score = System.Text.Encoding.ASCII.GetBytes(text);
+        byte[] score = System.Text.Encoding.ASCII.GetBytes(timeText);
         byte[] final = new byte[pixels.Length + score.Length];
         System.Buffer.BlockCopy(pixels, 0, final, 0, pixels.Length);
         System.Buffer.BlockCopy(score, 0, final, pixels.Length, score.Length);
@@ -78,5 +81,15 @@ public class WorldStarter : MonoBehaviour
         float sec = now % 60;
         string text = "Lasted " + min + " min" + sec + " s!";
         return text;
+    }
+
+    void OnGUI()
+    {
+        if (recordTime)
+        {
+            timeText = addtimeScore();
+            timeText = GUI.TextField(new Rect(100, 100, 1000, 600), timeText, 75);
+            recordTime = false;
+        }
     }
 }

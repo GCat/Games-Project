@@ -313,6 +313,7 @@ public abstract class Building : Grabbable, HealthManager
         {
             bought = true;
             spawnedFrom.amountSpawned++;
+            spawnedFrom.godRay.SetActive(false);
             resourceCounter.removeFaith(faithCost);
         }
 

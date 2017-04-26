@@ -231,6 +231,7 @@ MonoBehaviour:
   bounce: 1
   explosionRadius: 10
   damage: 15
+  explode: 1
 --- !u!135 &135393854685177478
 SphereCollider:
   m_ObjectHideFlags: 1

@@ -13,11 +13,12 @@ public class Projectile : MonoBehaviour
     public bool bounce = false;
     public float explosionRadius = 0;
     public float damage = 8f;
+    public bool explode;
     // Use this for initialization
     void Start()
     {
         StartCoroutine(fadeOut(10));
-        if (GetComponent<ParticleSystem>() != null)
+        if (GetComponent<ParticleSystem>() != null && explode)
         {
             explosion = GetComponent<ParticleSystem>();
             explosion.Clear();

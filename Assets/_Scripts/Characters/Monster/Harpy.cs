@@ -10,7 +10,10 @@ class Harpy : Monster
 
     void Awake()
     {
-        projectile = Resources.Load("Particles/Projectile") as GameObject;
+        if (projectile == null)
+        {
+            projectile = Resources.Load("Particles/Projectile") as GameObject;
+        }
     }
 
 
@@ -24,9 +27,12 @@ class Harpy : Monster
         HealthManager victimHealth = currentVictim.GetComponent<HealthManager>();
         if (victimHealth != null)
         {
-            GameObject spit = Instantiate(projectile, transform.position, transform.rotation);
+            GameObject spit = Instantiate(projectile, transform.position + Vector3.up*12f, transform.rotation);
             Vector3 direction = Vector3.Normalize(currentVictim.transform.position - transform.position) * 15;
             spit.GetComponent<Rigidbody>().velocity = direction;
+            spit.GetComponent<ParticleSystem>().Clear();
+            spit.GetComponent<ParticleSystem>().Play();
+
             Physics.IgnoreCollision(GetComponent<Collider>(), spit.GetComponent<Collider>());
             victimHealth.decrementHealth(strength);
         }
