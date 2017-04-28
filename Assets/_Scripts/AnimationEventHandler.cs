@@ -21,4 +21,9 @@ public class AnimationEventHandler : MonoBehaviour {
 
         transform.parent.GetComponent<Character>().hit();
     }
+
+    public void fire()
+    {
+        parentCharacter.GetComponent<Hades>().fire();
+    }
 }

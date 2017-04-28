@@ -14,6 +14,7 @@ public class Projectile : MonoBehaviour
     public float explosionRadius = 0;
     public float damage = 8f;
     public bool explode;
+    public bool fireBall;
     // Use this for initialization
     void Start()
     {
@@ -78,6 +79,17 @@ public class Projectile : MonoBehaviour
 
                 }
             }
+        }
+        if (other.gameObject.layer == 22)
+        {
+            GetComponent<Rigidbody>().useGravity = true;
+
+        }
+        if (other.transform.root.tag == "Hades")
+        {
+
+
+
         }
     }
 }

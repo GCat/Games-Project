@@ -5,14 +5,15 @@ using UnityEngine;
 public class Hades : MonoBehaviour {
 
     public Animator animator;
-    Material original;
+    public Material original;
     public Material stoneMat;
     public GameObject playerHead;
-
+    public GameObject projectile;
     public GameObject r_hand;
     public GameObject l_hand;
     public GameObject head;
     public GameObject chest;
+    
 
 
     enum BossState {Idle, Ranged, Melee, Dead };
@@ -21,8 +22,8 @@ public class Hades : MonoBehaviour {
 	void Start () {
         foreach (Renderer renderer in GetComponentsInChildren<Renderer>())
         {
-            renderer.material = stoneMat;
 
+            renderer.material = stoneMat;
         }
 	}
 	
@@ -36,6 +37,7 @@ public class Hades : MonoBehaviour {
     {
         while (state != BossState.Dead)
         {
+            Debug.Log("attacking");
             switch (state)
             {
                 case BossState.Idle:
@@ -48,15 +50,15 @@ public class Hades : MonoBehaviour {
                 case BossState.Dead:
                     break;
             }
+            yield return new WaitForSeconds(5f);
         }
-        yield return new WaitForSeconds(5f);
 
     }
 
 
     void rangedAttack()
     {
-        animator.SetTrigger("Fire");
+        animator.SetBool("Fire", true);
     }
 
     void meleeAttack()
@@ -64,10 +66,14 @@ public class Hades : MonoBehaviour {
         animator.SetBool("Punch", true);
     }
 
-    void fire()
+    public void fire()
     {
-
-
+        Vector3 direction = Vector3.Normalize(playerHead.transform.position - r_hand.transform.position)*50;
+        GameObject fireBall = Instantiate(projectile, r_hand.transform.position, Quaternion.identity);
+        Physics.IgnoreCollision(r_hand.GetComponent<Collider>(), fireBall.GetComponent<Collider>());
+        fireBall.GetComponent<Rigidbody>().AddForce(direction,ForceMode.VelocityChange);
+        fireBall.GetComponent<ParticleSystem>().Clear();
+        fireBall.GetComponent<ParticleSystem>().Play();
     }
 
     public void comeAlive()
@@ -77,7 +83,7 @@ public class Hades : MonoBehaviour {
             renderer.material = original;
         }
         state = BossState.Ranged;
-        animator.SetBool("Celebrate", true);
+        StartCoroutine(attack());
     }
 
 
