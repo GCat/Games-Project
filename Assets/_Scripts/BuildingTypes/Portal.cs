@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Audio;
 
 public class Portal : MonoBehaviour
 {
@@ -18,17 +19,13 @@ public class Portal : MonoBehaviour
     public GameObject spawnerLocationsParent;
     private List<Transform> spawnerLocations;
     public HashSet<GameObject> clouds;
-    public AudioClip battleMusic;
-    public AudioClip transition;
+
     public WorldStarter worldstarter;
     private float animLength = 0.833f;
     private float animSpeed = 1f;
     public float delayStart;
     Vector3 pos;
-    public AudioClip attackClip;
-    public AudioClip peaceMusic;
-    AudioSource asource;
-    public AudioClip teleport;
+
     Animation anim;
     GameObject playerHead;
 
@@ -41,6 +38,16 @@ public class Portal : MonoBehaviour
     bool started = false;
     MonsterType currentType = 0;
     GameObject spawner;
+
+
+    public AudioMixerSnapshot outOfCombat;
+    public AudioMixerSnapshot inCombat;
+    public AudioClip battleMusic;
+    public AudioClip peaceMusic;
+    public AudioClip transition;
+    public AudioClip teleport;
+    public AudioClip party;
+    AudioSource asource;
 
     void Start()
     {
@@ -129,6 +136,14 @@ public class Portal : MonoBehaviour
         return true;
     }
 
+
+    public void gameOver(bool success)
+    {
+        asource.clip = party;
+        asource.Play();
+
+    }
+
     IEnumerator spawnWaves()
     {
         //coundown animation
@@ -139,13 +154,11 @@ public class Portal : MonoBehaviour
         foreach (Wave wave in Waves)
         {
             List<GameObject> spawnedMonsters = new List<GameObject>();
-            asource.PlayOneShot(transition);
-            StartCoroutine(playBattleMusic());
             if (wave.waveEvent != null)
             {
                 wave.waveEvent.startEvent();
             }
-
+            transitionMusic(true);
             //spawn each monster with a 1 second delay
             foreach (MonsterType monsterType in wave.monsters)
             {
@@ -166,10 +179,11 @@ public class Portal : MonoBehaviour
             }
 
 
-            while (!allDead(spawnedMonsters)) {
+            while (!allDead(spawnedMonsters))
+            {
                 yield return new WaitForSeconds(1);
             }
-            asource.Play();
+            transitionMusic(false);
             if (wave.newBuilding != null)
             {
                 spawnNewBuilding(wave.newBuilding);
@@ -183,11 +197,31 @@ public class Portal : MonoBehaviour
         worldstarter.stopGame();
     }
 
+    void transitionMusic(bool toBattle)
+    {
+        if (toBattle)
+        {
+            StartCoroutine(playBattleMusic());
+
+        }
+        else
+        {
+            inCombat.TransitionTo(6f);
+            asource.clip = peaceMusic;
+            asource.Play();
+        }
+
+    }
+
     IEnumerator playBattleMusic()
     {
-        yield return new WaitForSeconds(8);
-        asource.PlayOneShot(battleMusic);
+        asource.PlayOneShot(transition);
+        yield return new WaitForSeconds(4f);
+        outOfCombat.TransitionTo(1f);
+        asource.clip = battleMusic;
+        asource.Play();
     }
+
 
     public void movePortal()
     {

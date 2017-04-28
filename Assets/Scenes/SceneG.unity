@@ -8191,6 +8191,12 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 852116243}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &862747844 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114585129072737174, guid: 832e3998ba188d54585391e1bdb68df0,
+    type: 2}
+  m_PrefabInternal: {fileID: 1962966062}
+  m_Script: {fileID: 11500000, guid: 9c6e4de0e97e3bb4f86abf2162ae2b7e, type: 3}
 --- !u!1 &863224181
 GameObject:
   m_ObjectHideFlags: 0
@@ -13136,6 +13142,11 @@ Prefab:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114513029549792622, guid: 0b9f62ec50a87184e9a2db897d16cf8e,
+        type: 2}
+      propertyPath: portal
+      value: 
+      objectReference: {fileID: 862747844}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0b9f62ec50a87184e9a2db897d16cf8e, type: 2}
   m_IsPrefabParent: 0
@@ -16847,6 +16858,29 @@ Prefab:
       value: 
       objectReference: {fileID: 114236806691041284, guid: e45105c5ad7cf9946aca09f862220ff9,
         type: 2}
+    - target: {fileID: 114585129072737174, guid: 832e3998ba188d54585391e1bdb68df0,
+        type: 2}
+      propertyPath: outOfCombat
+      value: 
+      objectReference: {fileID: 24500006, guid: 868ddb31a81c53847a979bc796046669,
+        type: 2}
+    - target: {fileID: 114585129072737174, guid: 832e3998ba188d54585391e1bdb68df0,
+        type: 2}
+      propertyPath: inCombat
+      value: 
+      objectReference: {fileID: 245161387107951486, guid: 868ddb31a81c53847a979bc796046669,
+        type: 2}
+    - target: {fileID: 82549568859925382, guid: 832e3998ba188d54585391e1bdb68df0,
+        type: 2}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 243351253542342618, guid: 868ddb31a81c53847a979bc796046669,
+        type: 2}
+    - target: {fileID: 114585129072737174, guid: 832e3998ba188d54585391e1bdb68df0,
+        type: 2}
+      propertyPath: party
+      value: 
+      objectReference: {fileID: 8300000, guid: cf1e18ec906f9ac43b7e73e2e0d9feab, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 832e3998ba188d54585391e1bdb68df0, type: 2}
   m_IsPrefabParent: 0

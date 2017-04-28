@@ -11,7 +11,7 @@ public class WorldStarter : MonoBehaviour
     private float startTime;
     private Rect TextAreaRect = new Rect(25, 25, 250, 100);
     public Text gameOverText;
-    
+    public Portal portal;
     string timeText;
     bool recordTime = false;
     void Start()
@@ -35,6 +35,10 @@ public class WorldStarter : MonoBehaviour
         Debug.Log("Game finished");
         this.GetComponent<Animator>().SetTrigger("GameOver");
         colorScreen.SetActive(true);
+        if (portal != null)
+        {
+            portal.gameOver(false);
+        }
         StartCoroutine(mugShotCountdown());
     }
 
