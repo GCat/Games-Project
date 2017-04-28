@@ -302,7 +302,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 227.76
   field of view: 84.1
   orthographic: 0
   orthographic size: 5
@@ -2191,10 +2191,6 @@ Prefab:
     - target: {fileID: 4963287316602236, guid: 528926bc338195743bb510e03036f916, type: 2}
       propertyPath: m_LocalPosition.y
       value: -20
-      objectReference: {fileID: 0}
-    - target: {fileID: 1776425131052636, guid: 528926bc338195743bb510e03036f916, type: 2}
-      propertyPath: m_Layer
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 528926bc338195743bb510e03036f916, type: 2}
@@ -10959,7 +10955,7 @@ Prefab:
     - target: {fileID: 114687539696213070, guid: f8944127a1ee7404ca8ab160846ee099,
         type: 2}
       propertyPath: useMouse
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114350785072023630, guid: f8944127a1ee7404ca8ab160846ee099,
         type: 2}
@@ -17693,7 +17689,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ColorSourceManager: {fileID: 2077914188}
-  DepthSourceManager: {fileID: 0}
+  DepthSourceManager: {fileID: 389677948}
 --- !u!114 &2077914190
 MonoBehaviour:
   m_ObjectHideFlags: 0

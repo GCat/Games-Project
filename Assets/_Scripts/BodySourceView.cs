@@ -204,7 +204,7 @@ public class BodySourceView : MonoBehaviour
             {
 
                 RefreshBodyObject(trackedBody, trackedBodyObject);
-                Thread.Sleep(1);
+                Thread.Sleep(3);
             }
             catch (System.Exception e)
             {
