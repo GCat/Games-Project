@@ -49,9 +49,9 @@ public class Hades : MonoBehaviour, HealthManager
             Vector3 target = playerBody.transform.position;
             target.y = transform.position.y;
 
-            if (Vector3.Distance(transform.position, target) > 40f)
+            if (Vector3.Distance(transform.position, target) > 50f)
             {
-                transform.position = Vector3.Lerp(transform.position, (target - transform.position), Time.deltaTime * 10.0f);
+                transform.position = Vector3.Lerp(transform.position, (target - transform.position).normalized, Time.deltaTime * 10.0f);
             } else if (Vector3.Distance(transform.position, target) > 20f) {
                 transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(target - transform.position, Vector3.up), Time.deltaTime * 10.0f);
                 transform.LookAt(target);
