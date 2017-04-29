@@ -468,6 +468,13 @@ public class Hand : MonoBehaviour {
 
                 }
             }
+            if (gother.transform.root.tag == "Hades" && velocity.magnitude > 100)
+            {
+                Hades hades = gother.transform.root.GetComponent<Hades>();
+                hades.decrementHealth(2);
+                audioSource.PlayOneShot(hitSounds[hitSounds.Length - 1], 0.9f);
+
+            }
         }
     }
     private void OnTriggerStay(Collider other)

@@ -14,6 +14,7 @@ public class FireBall : Grabbable
     public GameObject explosion;
     Temple temple;
     GameObject destruction;
+    bool repelled = false;
     // Use this for initialization
     void Start()
     {
@@ -42,13 +43,15 @@ public class FireBall : Grabbable
 
     void OnCollisionEnter(Collision other)
     {
-        if (other.transform.root.tag == "Hades")
+    
+        if (other.transform.root.tag == "Hades" && repelled)
         {
             if (hades != null)
             {
                 hades.decrementHealth(damage);
             }
             explode();
+            Physics.IgnoreCollision(GetComponent<Collider>(), other.collider);
         }
 
     }
@@ -57,6 +60,7 @@ public class FireBall : Grabbable
     {
         GetComponent<Rigidbody>().isKinematic = true;
         GetComponent<Rigidbody>().useGravity = false;
+        repelled = true;
     }
 
     public override void release(Vector3 vel)

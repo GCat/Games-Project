@@ -29,4 +29,10 @@ public class HealthBar : MonoBehaviour {
         }
     }
 
+    public void resetHealth()
+    {
+        health = originalHealth;
+        decrementHealth(0);
+    }
+
 }

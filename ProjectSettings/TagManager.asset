@@ -35,6 +35,7 @@ TagManager:
   - Bee
   - TV
   - Hades
+  - PlayerBody
   layers:
   - Default
   - TransparentFX

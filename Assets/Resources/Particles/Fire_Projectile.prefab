@@ -112,7 +112,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destroyDelay: 0
-  damage: 8
+  damage: 10
   hades: {fileID: 0}
   explosion: {fileID: 1938317783047832, guid: 1ac67f826959d6c4e821f18231de586c, type: 2}
 --- !u!136 &136795795374640350
