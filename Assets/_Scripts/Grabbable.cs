@@ -6,7 +6,7 @@ using UnityEngine;
 public abstract class Grabbable : MonoBehaviour
 {
 
-    protected Renderer[] child_materials;
+    protected MeshRenderer[] child_materials;
     protected Shader[] original_materials;
     protected bool allowOutline = true;
     private Shader outlineShader;
@@ -25,7 +25,7 @@ public abstract class Grabbable : MonoBehaviour
     private void init()
     {
         outlineShader = Shader.Find("Toon/Basic Outline");
-        child_materials = GetComponentsInChildren<Renderer>(false);
+        child_materials = GetComponentsInChildren<MeshRenderer>(false);
         original_materials = new Shader[child_materials.Length];
         for (int i = 0; i < child_materials.Length; i++)
         {

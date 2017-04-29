@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Hades : MonoBehaviour {
+public class Hades : MonoBehaviour, HealthManager {
 
     public Animator animator;
     public Material original;
@@ -74,6 +75,7 @@ public class Hades : MonoBehaviour {
         fireBall.GetComponent<Rigidbody>().AddForce(direction,ForceMode.VelocityChange);
         fireBall.GetComponent<ParticleSystem>().Clear();
         fireBall.GetComponent<ParticleSystem>().Play();
+        fireBall.GetComponent<FireBall>().hades = this;
     }
 
     public void comeAlive()
@@ -92,5 +94,10 @@ public class Hades : MonoBehaviour {
     {
         //animator.SetBool("Celebrate", true);
 
+    }
+
+    public void decrementHealth(float damage)
+    {
+        
     }
 }

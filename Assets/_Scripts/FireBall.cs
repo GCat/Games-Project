@@ -10,6 +10,7 @@ public class FireBall : Grabbable
 
     public float destroyDelay = 0;
     public float damage = 8f;
+    public Hades hades = null;
     // Use this for initialization
     void Start()
     {
@@ -35,6 +36,10 @@ public class FireBall : Grabbable
     {
         if (other.transform.root.tag == "Hades")
         {
+            if (hades != null)
+            {
+                hades.decrementHealth(damage);
+            }
         }
     }
 

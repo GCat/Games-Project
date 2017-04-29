@@ -23,9 +23,9 @@ GameObject:
   - component: {fileID: 199887973318926818}
   - component: {fileID: 54107472682458610}
   - component: {fileID: 136795795374640350}
-  - component: {fileID: 114491403401117562}
   - component: {fileID: 33814602525367132}
   - component: {fileID: 23317945315774692}
+  - component: {fileID: 114212712770265440}
   m_Layer: 14
   m_Name: Fire_Projectile
   m_TagString: Untagged
@@ -100,7 +100,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 2
---- !u!114 &114491403401117562
+--- !u!114 &114212712770265440
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -108,17 +108,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1734383128804124}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d50363b74c7e4040b751d825f284c5e, type: 3}
+  m_Script: {fileID: 11500000, guid: ab1d89ff1f192ee4fac9ecd03e8144aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parent: {fileID: 0}
-  destroyDelay: 0.5
-  explosion: {fileID: 0}
-  bounce: 0
-  explosionRadius: 0
+  destroyDelay: 0
   damage: 8
-  explode: 0
-  fireBall: 0
 --- !u!136 &136795795374640350
 CapsuleCollider:
   m_ObjectHideFlags: 1
