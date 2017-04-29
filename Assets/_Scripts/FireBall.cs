@@ -11,10 +11,14 @@ public class FireBall : Grabbable
     public float destroyDelay = 0;
     public float damage = 8f;
     public Hades hades = null;
+    public GameObject explosion;
+    Temple temple;
+    GameObject destruction;
     // Use this for initialization
     void Start()
     {
         StartCoroutine(fadeOut(10));
+        temple = GameObject.FindGameObjectWithTag("Temple").GetComponent<Temple>();
     }
 
     IEnumerator fadeOut(float time)
@@ -23,6 +27,10 @@ public class FireBall : Grabbable
         if (gameObject != null)
         {
             Destroy(gameObject);
+        }
+        if (destruction != null)
+        {
+            Destroy(destruction);
         }
     }
 
@@ -40,7 +48,9 @@ public class FireBall : Grabbable
             {
                 hades.decrementHealth(damage);
             }
+            explode();
         }
+
     }
 
     public override void grab()
@@ -62,6 +72,13 @@ public class FireBall : Grabbable
         if (other.gameObject.tag == "Hand")
         {
             setOutline();
+        }else if (other.gameObject.tag == "MainCamera")
+        {
+            if (temple != null)
+            {
+                temple.decrementHealth(damage*2);
+            }
+            explode();
         }
     }
 
@@ -72,5 +89,14 @@ public class FireBall : Grabbable
         {
             removeOutline();
         }
+    }
+
+    void explode()
+    {
+        destruction = Instantiate(explosion, transform.position, Quaternion.identity);
+        destruction.transform.parent = null;
+        destruction.GetComponent<ParticleSystem>().Clear();
+        destruction.GetComponent<ParticleSystem>().Play();
+
     }
 }

@@ -19,8 +19,6 @@ public abstract class Monster : Character
 
     // Badie characteristic
     public float strength;
-    public float health;
-    public float totalHealth;
     public int faithValue;
     public bool active;
 
@@ -71,14 +69,13 @@ public abstract class Monster : Character
 
     void Start()
     {
+        healthBar = GetComponentInChildren<HealthBar>();
         active = true;
         cameraPos = GameObject.FindWithTag("MainCamera").transform.position;
         if (agent == null)
         {
             agent = GetComponent<NavMeshAgent>();
         }
-        createHealthBar();
-        healthBarOri = healthBar.transform.rotation;
         lineRenderer = GetComponent<LineRenderer>();
         ragdoll = GetComponentsInChildren<Collider>();
         foreach (Collider collider in ragdoll)
@@ -109,11 +106,6 @@ public abstract class Monster : Character
 
     void Update()
     {
-        if (healthBar != null)
-        {
-            healthBar.transform.rotation = healthBarOri;
-        }
-
         if (alive && active)
         {
             if (isStunned)
@@ -513,16 +505,9 @@ public abstract class Monster : Character
 
     public override void decrementHealth(float damage)
     {
-        health -= damage;
+        healthBar.decrementHealth(damage);
         StartCoroutine(DamageText("-" + damage, Color.red));
-        if (health > 0 && healthBar != null)
-        {
-            float scale = (health / totalHealth);
-            float characterScale = gameObject.transform.localScale.x;
-            healthBar.transform.localScale = new Vector3(0.1f / characterScale, scale / characterScale, 0.1f / characterScale);
-            healthBar.GetComponent<Renderer>().material.SetColor("_Color", new Color(1.0f - scale, scale, 0));
-        }
-        if (health <= 0 && alive == true)
+        if (healthBar.health <= 0 && alive == true)
         {
             Destroy(healthBar);
             StartCoroutine(DamageText("+" + faithValue, Color.magenta));

@@ -6,7 +6,7 @@ using UnityEngine;
 public abstract class Grabbable : MonoBehaviour
 {
 
-    protected MeshRenderer[] child_materials;
+    protected List<Renderer> child_materials;
     protected Shader[] original_materials;
     protected bool allowOutline = true;
     private Shader outlineShader;
@@ -25,9 +25,16 @@ public abstract class Grabbable : MonoBehaviour
     private void init()
     {
         outlineShader = Shader.Find("Toon/Basic Outline");
-        child_materials = GetComponentsInChildren<MeshRenderer>(false);
-        original_materials = new Shader[child_materials.Length];
-        for (int i = 0; i < child_materials.Length; i++)
+        child_materials = new List<Renderer>(GetComponentsInChildren<Renderer>(false));
+        ParticleSystemRenderer[] ps = GetComponentsInChildren<ParticleSystemRenderer>(false);
+        foreach (ParticleSystemRenderer p in ps)
+        {
+            child_materials.Remove(p);
+        }
+
+
+        original_materials = new Shader[child_materials.Count];
+        for (int i = 0; i < child_materials.Count; i++)
         {
             original_materials[i] = child_materials[i].material.shader;
         }
@@ -44,7 +51,7 @@ public abstract class Grabbable : MonoBehaviour
         {
             return;
         }
-        for (int i = 0; i < child_materials.Length; i++)
+        for (int i = 0; i < child_materials.Count; i++)
         {
             try
             {
@@ -64,7 +71,7 @@ public abstract class Grabbable : MonoBehaviour
         {
             init();
         }
-        for (int i = 0; i < child_materials.Length; i++)
+        for (int i = 0; i < child_materials.Count; i++)
         {
             child_materials[i].material.shader = original_materials[i];
 
@@ -76,7 +83,7 @@ public abstract class Grabbable : MonoBehaviour
         {
             init();
         }
-        for (int i = 0; i < child_materials.Length; i++)
+        for (int i = 0; i < child_materials.Count; i++)
         {
             child_materials[i].material.shader = outlineShader;
             child_materials[i].material.SetColor("_OutlineColor", Color.red);
@@ -90,7 +97,7 @@ public abstract class Grabbable : MonoBehaviour
         {
             init();
         }
-        for (int i = 0; i < child_materials.Length; i++)
+        for (int i = 0; i < child_materials.Count; i++)
         {
             child_materials[i].material.shader = outlineShader;
             child_materials[i].material.SetColor("_OutlineColor", Color.yellow);

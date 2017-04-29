@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Hades : MonoBehaviour, HealthManager {
+public class Hades : MonoBehaviour, HealthManager
+{
 
     public Animator animator;
     public Material original;
@@ -14,24 +15,31 @@ public class Hades : MonoBehaviour, HealthManager {
     public GameObject l_hand;
     public GameObject head;
     public GameObject chest;
-    
+    public HealthBar healthBar;
 
 
-    enum BossState {Idle, Ranged, Melee, Dead };
+
+    enum BossState { Idle, Ranged, Melee, Dead };
     BossState state = BossState.Idle;
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         foreach (Renderer renderer in GetComponentsInChildren<Renderer>())
         {
-
-            renderer.material = stoneMat;
+            if (renderer.gameObject.GetComponent<HealthBar>() == null)
+            {
+                renderer.material = stoneMat;
+            }
         }
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	    	
-	}
+        healthBar = GetComponentInChildren<HealthBar>();
+        healthBar.gameObject.SetActive(false);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
 
 
     IEnumerator attack()
@@ -69,10 +77,10 @@ public class Hades : MonoBehaviour, HealthManager {
 
     public void fire()
     {
-        Vector3 direction = Vector3.Normalize(playerHead.transform.position - r_hand.transform.position)*50;
+        Vector3 direction = Vector3.Normalize(playerHead.transform.position - r_hand.transform.position) * 50;
         GameObject fireBall = Instantiate(projectile, r_hand.transform.position, Quaternion.identity);
         Physics.IgnoreCollision(r_hand.GetComponent<Collider>(), fireBall.GetComponent<Collider>());
-        fireBall.GetComponent<Rigidbody>().AddForce(direction,ForceMode.VelocityChange);
+        fireBall.GetComponent<Rigidbody>().AddForce(direction, ForceMode.VelocityChange);
         fireBall.GetComponent<ParticleSystem>().Clear();
         fireBall.GetComponent<ParticleSystem>().Play();
         fireBall.GetComponent<FireBall>().hades = this;
@@ -80,9 +88,14 @@ public class Hades : MonoBehaviour, HealthManager {
 
     public void comeAlive()
     {
+        healthBar.gameObject.SetActive(true);
+
         foreach (Renderer renderer in GetComponentsInChildren<Renderer>())
         {
-            renderer.material = original;
+            if (renderer.gameObject.GetComponent<HealthBar>() == null)
+            {
+                renderer.material = original;
+            }
         }
         state = BossState.Ranged;
         StartCoroutine(attack());
@@ -98,6 +111,7 @@ public class Hades : MonoBehaviour, HealthManager {
 
     public void decrementHealth(float damage)
     {
-        
+        healthBar.decrementHealth(damage);
+
     }
 }

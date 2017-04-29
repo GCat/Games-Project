@@ -207,6 +207,24 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1089339646838400
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4493544496984106}
+  - component: {fileID: 33605146827505120}
+  - component: {fileID: 23507127192810546}
+  - component: {fileID: 114927259036076098}
+  m_Layer: 0
+  m_Name: CharacterHealthBar (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1091933885982110
 GameObject:
   m_ObjectHideFlags: 1
@@ -1645,7 +1663,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1944568527468440}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -32.758194, y: 0, z: 18.00785}
+  m_LocalPosition: {x: -47.560017, y: -0.0036621094, z: -18.994453}
   m_LocalScale: {x: 4.7983813, y: 4.798379, z: 4.798379}
   m_Children:
   - {fileID: 4979670661208206}
@@ -1655,6 +1673,7 @@ Transform:
   - {fileID: 4896031043859370}
   - {fileID: 4730917365463506}
   - {fileID: 4290576025845944}
+  - {fileID: 4493544496984106}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2169,6 +2188,19 @@ Transform:
   m_Father: {fileID: 4896031043859370}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4493544496984106
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1089339646838400}
+  m_LocalRotation: {x: 0.50000006, y: -0.50000006, z: 0.5, w: 0.5}
+  m_LocalPosition: {x: 0.747, y: 2.158, z: -0.95}
+  m_LocalScale: {x: 0.121454835, y: 0.81467927, z: 0.12145501}
+  m_Children: []
+  m_Father: {fileID: 4056006438682938}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 90.00001, y: 0, z: 90}
 --- !u!4 &4496720483191790
 Transform:
   m_ObjectHideFlags: 1
@@ -2863,6 +2895,45 @@ Transform:
   m_Father: {fileID: 4056006438682938}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &23507127192810546
+MeshRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1089339646838400}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_Materials:
+  - {fileID: 2100000, guid: 3c6f4cbc398bab34e8eb96c8481589e1, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!33 &33605146827505120
+MeshFilter:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1089339646838400}
+  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!54 &54140515955854840
 Rigidbody:
   m_ObjectHideFlags: 1
@@ -3095,10 +3166,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bef738fd152f5f441a32ede2e38262a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healthBar: {fileID: 0}
   agent: {fileID: 0}
   strength: 25
-  health: 150
-  totalHealth: 150
   faithValue: 8
   active: 0
   rotationSpeed: 8
@@ -3106,6 +3176,18 @@ MonoBehaviour:
   animator: {fileID: 95543238732232444}
   monsterType: 1
   defaultState: 1
+--- !u!114 &114927259036076098
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1089339646838400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85c1a0f337ebf7f49af2dd5452a7e6e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 150
 --- !u!135 &135612776534938136
 SphereCollider:
   m_ObjectHideFlags: 1

@@ -5,8 +5,8 @@ using UnityEngine.AI;
 
 public abstract class Character : Grabbable, HealthManager
 {
-    protected GameObject healthBar;
-    protected Quaternion healthBarOri;
+
+    public HealthBar healthBar;
     protected GameObject infoText;
     protected Quaternion infoTextOri;
 
@@ -20,17 +20,6 @@ public abstract class Character : Grabbable, HealthManager
     protected virtual bool atDestination(Vector3 target)
     {
         return Vector3.Distance(target, transform.position) < (agent.stoppingDistance + 3);
-    }
-
-    protected void createHealthBar()
-    {
-        Bounds dims = gameObject.GetComponent<Collider>().bounds;
-        Vector3 actualSize = dims.size;
-        healthBar = GameObject.Instantiate(Resources.Load("CharacterHealthBar")) as GameObject;
-        healthBar.transform.position = gameObject.GetComponent<Collider>().transform.position;
-        healthBar.transform.Translate(new Vector3(0, 0, dims.size.y * -1.0f));
-        healthBar.transform.position += Vector3.up * 1f;
-        healthBar.transform.SetParent(gameObject.transform);
     }
 
     protected void createInfoText()

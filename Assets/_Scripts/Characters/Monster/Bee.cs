@@ -7,7 +7,6 @@ public class Bee : MonoBehaviour, HealthManager {
 
 
     public float damage;
-    public float health;
     public float speed;
     private float totalHealth;
     private Vector3 attackPoint = Vector3.zero;
@@ -16,8 +15,7 @@ public class Bee : MonoBehaviour, HealthManager {
     private Rigidbody rb;
     private float range = 10.0f;
     private bool attacking = false;
-    protected GameObject healthBar;
-    protected Quaternion healthBarOri;
+    public HealthBar healthBar;
     protected GameObject infoText;
     protected Quaternion infoTextOri;
     Vector3 cameraPos;
@@ -27,7 +25,7 @@ public class Bee : MonoBehaviour, HealthManager {
     // Use this for initialization
     void Start () {
         rb = GetComponent<Rigidbody>();
-        totalHealth = health;
+        healthBar = GetComponentInChildren<HealthBar>();
         damageText = Resources.Load("Damage Text") as GameObject;
     }
 
@@ -93,16 +91,9 @@ public class Bee : MonoBehaviour, HealthManager {
 
     public void decrementHealth(float damage)
     {
-        health -= damage;
+        healthBar.decrementHealth(damage);
         StartCoroutine(DamageText("-" + damage, Color.red));
-        if (health > 0 && healthBar != null)
-        {
-            float scale = (health / totalHealth);
-            float characterScale = gameObject.transform.localScale.x;
-            healthBar.transform.localScale = new Vector3(0.1f / characterScale, scale / characterScale, 0.1f / characterScale);
-            healthBar.GetComponent<Renderer>().material.SetColor("_Color", new Color(1.0f - scale, scale, 0));
-        }
-        if (health <= 0)
+        if (healthBar.health <= 0)
         {
             Destroy(healthBar);
             GetComponent<Rigidbody>().useGravity = true;
@@ -143,19 +134,6 @@ public class Bee : MonoBehaviour, HealthManager {
             }
         }
     }
-
-
-    protected void createHealthBar()
-    {
-        Bounds dims = gameObject.GetComponent<Collider>().bounds;
-        Vector3 actualSize = dims.size;
-        healthBar = GameObject.Instantiate(Resources.Load("CharacterHealthBar")) as GameObject;
-        healthBar.transform.position = gameObject.GetComponent<Collider>().transform.position;
-        healthBar.transform.Translate(new Vector3(0, 0, dims.size.y * -1.0f));
-        healthBar.transform.position += Vector3.up * 1f;
-        healthBar.transform.SetParent(gameObject.transform);
-    }
-
     protected void createInfoText()
     {
         Bounds dims = gameObject.GetComponent<Collider>().bounds;

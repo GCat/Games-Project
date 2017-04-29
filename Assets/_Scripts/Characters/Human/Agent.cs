@@ -21,9 +21,6 @@ using UnityEngine.AI;
         
 public class Agent : Character
 {
-    // Human characteristics
-    public float health = 100.0f;
-    public float totalHealth = 100.0f;
 
     public float strength = 10.0f;
     public float gravity = 9.81F;
@@ -71,7 +68,7 @@ public class Agent : Character
 
     void Start()
     {
-
+        healthBar = GetComponentInChildren<HealthBar>();
         anim = GetComponent<Animation>();
         rb = GetComponent<Rigidbody>();
         rb.interpolation = RigidbodyInterpolation.Interpolate;
@@ -82,8 +79,6 @@ public class Agent : Character
         resources = GameObject.FindGameObjectWithTag("Tablet").GetComponent<ResourceCounter>();
         resources.addPop();
         agent = GetComponent<NavMeshAgent>();
-        createHealthBar();
-        healthBarOri = healthBar.transform.rotation;
         createInfoText();
         infoTextOri = infoText.transform.rotation;
         lineRenderer = GetComponent<LineRenderer>();
@@ -95,7 +90,6 @@ public class Agent : Character
     // Update is called once per frame
     void Update()
     {
-        healthBar.transform.rotation = healthBarOri;
         infoText.transform.rotation = infoTextOri;
         if (active)
         {
@@ -387,15 +381,8 @@ public class Agent : Character
 
     public override void decrementHealth(float damage)
     {
-        health -= damage;
-        if (health > 0)
-        {
-            float scale = (health / totalHealth);
-            float characterScale = gameObject.transform.localScale.x;
-            healthBar.transform.localScale = new Vector3(0.1f / characterScale, scale / characterScale, 0.1f / characterScale);
-            healthBar.GetComponent<Renderer>().material.SetColor("_Color", new Color(1.0f - scale, scale, 0));
-        }
-        if (health <= 0 && alive == true)
+        healthBar.decrementHealth(damage);
+        if (healthBar.health <= 0 && alive == true)
         {
             alive = false;
             anim.Play("diehard");

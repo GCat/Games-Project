@@ -5,55 +5,28 @@ using UnityEngine;
 public class HealthBar : MonoBehaviour {
 
     public float health;
-    Building building;
-    House house;
-    bool isHouse = false;
-    public float totalHealth;
+    float originalHealth;
+    Vector3 originalSize;
 
-    // Use this for initialization
-    void Start () {
-        building = gameObject.transform.parent.GetComponent<Building>();
-        if (building == null)
-        {
-            house = gameObject.transform.parent.GetComponent<House>();
-            isHouse = true;
-        }
-        if (isHouse)
-        {
-            totalHealth = house.health;
-        }
-        else
-        {
-            totalHealth = building.health;
-        }
-        gameObject.SetActive(false);
-    }
-	
-	// Update is called once per frame
-	void Update () {
-        if (isHouse)
-        {
-            health = house.health;
-        }
-        else
-        {
-            health = building.health;
-        }
-        if (health < totalHealth)
-        {
-            gameObject.SetActive(true);
-        }
-        updateMeter();
-	}
 
-    void updateMeter()
+    void Start()
     {
-        float displayHealth;
-        if (health < 0) displayHealth = 0;
-        else if (health > totalHealth) displayHealth = totalHealth;
-        else displayHealth = health/totalHealth;
-        Vector3 scale = gameObject.transform.localScale;
-        scale.y = displayHealth*1;
-        gameObject.transform.localScale = Vector3.Lerp(gameObject.transform.localScale, scale, 2.0f * Time.deltaTime);
+        originalHealth = health;
+        originalSize = transform.localScale;
     }
+
+
+    public void decrementHealth(float damage)
+    {
+        health -= damage;
+        if (health > 0)
+        {
+            Vector3 newScale = originalSize;
+            float scale = (health / originalHealth);
+            newScale.y = scale * originalSize.y;
+            transform.localScale = newScale;
+            GetComponent<Renderer>().material.SetColor("_Color", new Color(1.0f - scale, scale, 0));
+        }
+    }
+
 }
