@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4632150196949984}
   - component: {fileID: 33043586154123288}
   - component: {fileID: 23207492621969784}
+  - component: {fileID: 114872066109702624}
   m_Layer: 0
   m_Name: HealthBar
   m_TagString: Untagged
@@ -71,6 +72,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!33 &33043586154123288
 MeshFilter:
@@ -79,3 +81,15 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1737100434599452}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &114872066109702624
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1737100434599452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85c1a0f337ebf7f49af2dd5452a7e6e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 0
