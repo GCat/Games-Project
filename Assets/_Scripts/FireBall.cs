@@ -98,7 +98,7 @@ public class FireBall : Grabbable
     void explode()
     {
         destruction = Instantiate(explosion, transform.position, Quaternion.identity);
-        destruction.transform.parent = null;
+        destruction.transform.SetParent(null);
         destruction.GetComponent<ParticleSystem>().Clear();
         destruction.GetComponent<ParticleSystem>().Play();
 

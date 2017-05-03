@@ -431,7 +431,10 @@ public class Agent : Character
                     victimHealth.decrementHealth(strength);
                     AudioSource source = GetComponent<AudioSource>();
                     source.PlayOneShot(getAttackSound(), 0.1f);
-                    StartCoroutine(CombatLock(2, victim.GetComponent<Monster>()));
+                    if (victim != null)
+                    {
+                        StartCoroutine(CombatLock(2, victim.GetComponent<Monster>()));
+                    }
                 }
                 else
                 {

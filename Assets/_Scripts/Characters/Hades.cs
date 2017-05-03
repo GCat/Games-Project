@@ -16,8 +16,10 @@ public class Hades : MonoBehaviour, HealthManager
 
     public HealthBar healthBar;
     public GameObject meleePos;
+    public WorldStarter world;
     GameObject playerBody;
-
+    public int maxRangedAttacks = 5;
+    int rangedAttacks = 0;
     enum BossState { Idle, Ranged, Melee, Dead };
     BossState state = BossState.Idle;
     // Use this for initialization
@@ -49,12 +51,20 @@ public class Hades : MonoBehaviour, HealthManager
             Vector3 target = playerBody.transform.position;
             target.y = transform.position.y;
 
-            if (Vector3.Distance(transform.position, target) > 50f)
+            if (Vector3.Distance(transform.position, target) > 30f)
             {
-                transform.position = Vector3.Lerp(transform.position, (target - transform.position).normalized, Time.deltaTime * 10.0f);
-            } else if (Vector3.Distance(transform.position, target) > 20f) {
-                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(target - transform.position, Vector3.up), Time.deltaTime * 10.0f);
+                transform.position = Vector3.Lerp(transform.position, (target - transform.position).normalized, Time.deltaTime * 0.1f);
+                animator.SetBool("Punching", false);
+            }
+            else if (Vector3.Distance(transform.position, target) > 20f)
+            {
+                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(target - transform.position, Vector3.up), Time.deltaTime * 0.5f);
                 transform.LookAt(target);
+                animator.SetBool("Punching", false);
+            }
+            else
+            {
+                animator.SetBool("Punching", true);
             }
         }
 
@@ -74,7 +84,7 @@ public class Hades : MonoBehaviour, HealthManager
                     rangedAttack();
                     break;
                 case BossState.Melee:
-                    meleeAttack();
+                    //meleeAttack();
                     break;
                 case BossState.Dead:
                     Destroy(gameObject);
@@ -107,6 +117,11 @@ public class Hades : MonoBehaviour, HealthManager
         fireBall.GetComponent<ParticleSystem>().Clear();
         fireBall.GetComponent<ParticleSystem>().Play();
         fireBall.GetComponent<FireBall>().hades = this;
+        rangedAttacks++;
+        if (rangedAttacks >= maxRangedAttacks)
+        {
+            nextStage();
+        }
     }
 
     public void comeAlive()
@@ -139,8 +154,9 @@ public class Hades : MonoBehaviour, HealthManager
         if (state == BossState.Ranged)
         {
             state = BossState.Melee;
-            transform.position = meleePos.transform.position;
+            //transform.position = meleePos.transform.position;
             animator.SetBool("Fire", false);
+            animator.SetBool("Walking", true);
         }
         else if (state == BossState.Melee)
         {
@@ -159,7 +175,7 @@ public class Hades : MonoBehaviour, HealthManager
             rb.isKinematic = false;
         }
         StartCoroutine(waitToDestroy(5));
-
+        world.stopGame();
 }
 
     IEnumerator waitToDestroy(float time)

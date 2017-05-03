@@ -65,7 +65,7 @@ public abstract class Building : Grabbable, HealthManager
             if (destroyedBuilding != null)
             {
                 destroyedBuilding.SetActive(true);
-                destroyedBuilding.transform.parent = null;
+                destroyedBuilding.transform.SetParent(null);
                 Destroy(destroyedBuilding, 5f);
             }
             Destroy(explosion, 3.0f);
@@ -89,9 +89,13 @@ public abstract class Building : Grabbable, HealthManager
                 for (int i = 0; i < shapes.Count; i++)
                 {
                     ParticleSystem.ShapeModule box = shapes[i].shape;
-                    box.box = GetComponent<Collider>().bounds.size;
+                    Vector3 bounds = GetComponent<Collider>().bounds.size;
+                    if (bounds != null && Vector3.Magnitude(bounds) > 1f)
+                    {
+                        box.box = bounds;
+                    }
                 }
-                fireEffect.transform.parent = transform;
+                fireEffect.transform.SetParent(transform);
             }
             fireEffect.SetActive(true);
         }
@@ -203,7 +207,7 @@ public abstract class Building : Grabbable, HealthManager
     public IEnumerator ResourceGainText(int value, string resource)
     {
         GameObject resourceText = GameObject.Instantiate(resourceGainText, resourceGainText.transform) as GameObject;
-        resourceText.transform.parent = gameObject.transform;
+        resourceText.transform.SetParent(gameObject.transform);
         Vector2 randPos = UnityEngine.Random.insideUnitCircle * 5.0f;
         resourceText.transform.Translate(new Vector3(randPos.x, -2.0f, randPos.y * 2.0f));
         Vector3 startLocation = resourceText.transform.position;

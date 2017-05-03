@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,13 +20,25 @@ public class BuildingSpawner : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        StartCoroutine(spawnBuilding());
+        try
+        {
+            StartCoroutine(spawnBuilding());
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("OH FDUCK");
+            Debug.LogError(e);
+        }
         if (buildingCost == 0) buildingCost = 20;
         resources = GameObject.FindGameObjectWithTag("Tablet").GetComponent<ResourceCounter>();
         imgCanvas = transform.GetChild(0).gameObject;
         imgCanvas.SetActive(false);
         resourceCost.setText(buildingCost.ToString());
         resourceCost.activateThis();
+        if (buildingToSpawn == null)
+        {
+            Debug.LogError("Null buiulding");
+        }
         GameObject building = Instantiate(buildingToSpawn, transform.position, transform.rotation);
         Building bScript = building.GetComponent<Building>();
         if (bScript != null)
@@ -51,7 +64,6 @@ public class BuildingSpawner : MonoBehaviour
 
     public void newBuilding()
     {
-        godRay.transform.parent = null;
         godRay.SetActive(true);
 
     }
@@ -83,19 +95,29 @@ public class BuildingSpawner : MonoBehaviour
             {
                 imgCanvas.SetActive(false);
                 resourceCost.text.color = Color.black;
-                if (spawn && Physics.OverlapSphere(transform.position, 8.0f, buildingMask).Length == 0)
+                if (spawn && Physics.OverlapSphere(transform.position, 12.0f, buildingMask).Length == 0)
                 {
+                    GameObject building = null;
+
                     if (usedOnce) godRay.SetActive(false);
-                    GameObject building = Instantiate(buildingToSpawn, transform.position, transform.rotation);
+                    Debug.Log("Instantiating");
+                    if (transform.position != null && transform.rotation != null && buildingToSpawn != null)
+                    {
+                        building = Instantiate(buildingToSpawn, transform.position + Vector3.up * 4, transform.rotation, transform);
+                    }
+                    else
+                    {
+                        Debug.LogError("Null transform");
+                    }
+                    Debug.Log("Instantiated");
                     Building myScript = building.GetComponent<Building>();
                     if (myScript) myScript.spawnedFrom = this;
-                    building.transform.parent = transform;
-                    building.GetComponent<Rigidbody>().useGravity = false;
+                    //building.GetComponent<Rigidbody>().useGravity = false;
                     usedOnce = true;
                 }
             }
-
         }
-    }
 
+    }
 }
+

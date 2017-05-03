@@ -12,6 +12,7 @@ public class Catapult : Tower
     void Start()
     {
         rock = Resources.Load("Rock") as GameObject;
+        GetComponent<Rigidbody>().useGravity = false;
     }
 
     // Update is called once per frame

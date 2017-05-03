@@ -41,6 +41,7 @@ public class House : Building
 
     void Start()
     {
+        GetComponent<Rigidbody>().useGravity = false;
         heartEffect = Resources.Load("Particles/Explosion_Lovely") as GameObject;
         boxSize = GetComponent<BoxCollider>().bounds.size / 2;
         boxSize.y = 0.01f;

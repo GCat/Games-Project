@@ -9,8 +9,8 @@ public class Cloud : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         handle = transform.FindChild("handle").gameObject;
-        handle.transform.parent = null;
-        transform.parent = handle.transform;
+        handle.transform.SetParent(null);
+        transform.SetParent(handle.transform);
         if(rotator != null)
         {
             //rotator.transform.parent = null;

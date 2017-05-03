@@ -28,6 +28,15 @@ class Food : Edible
         mouth = GameObject.FindGameObjectWithTag("MainCamera");
     }
 
+    void Update()
+    {
+        if (transform.position.magnitude > 500)
+        {
+            Destroy(gameObject);
+
+        }
+
+    }
  
 
     public void OnCollisionEnter(Collision collision)

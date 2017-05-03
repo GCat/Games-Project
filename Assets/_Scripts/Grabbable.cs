@@ -73,7 +73,10 @@ public abstract class Grabbable : MonoBehaviour
         }
         for (int i = 0; i < child_materials.Count; i++)
         {
-            child_materials[i].material.shader = original_materials[i];
+            if (child_materials[i] != null)
+            {
+                child_materials[i].material.shader = original_materials[i];
+            }
 
         }
     }

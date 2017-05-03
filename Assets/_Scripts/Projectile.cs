@@ -60,7 +60,7 @@ public class Projectile : MonoBehaviour
 
                 if (explosion.gameObject != gameObject)
                 {
-                    explosion.gameObject.transform.parent = null;
+                    explosion.gameObject.transform.SetParent(null);
                 }
                 explosion.Clear();
                 explosion.Play();

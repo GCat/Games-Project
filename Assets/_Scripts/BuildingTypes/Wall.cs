@@ -27,6 +27,7 @@ public class Wall : Building
         turretB.canBeGrabbed = true;
         turretA.GetComponent<Collider>().enabled = false;
         turretB.GetComponent<Collider>().enabled = false;
+        GetComponent<Rigidbody>().useGravity = false;
 
     }
 
@@ -168,8 +169,8 @@ public class Wall : Building
         canBeGrabbed = false;
         gameObject.layer = 0;
         setGrabbable(false);
-        turretA.transform.parent = null;
-        turretB.transform.parent = null;
+        turretA.transform.SetParent(null);
+        turretB.transform.SetParent(null);
         turretA.snap();
         turretB.snap();
         turretA.removeOutline();

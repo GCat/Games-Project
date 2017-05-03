@@ -18,7 +18,6 @@ public class Portal : MonoBehaviour
 
     public GameObject spawnerLocationsParent;
     private List<Transform> spawnerLocations;
-    public HashSet<GameObject> clouds;
 
     public WorldStarter worldstarter;
     private float animLength = 0.833f;
@@ -60,7 +59,6 @@ public class Portal : MonoBehaviour
         startTime = Time.time;
         anim = GetComponentInChildren<Animation>();
         playerHead = GameObject.FindGameObjectWithTag("MainCamera");
-        clouds = new HashSet<GameObject>();
         originalPos = transform.position;
         spawnerLocations = new List<Transform>();
         foreach (Transform child in spawnerLocationsParent.transform)
@@ -79,49 +77,44 @@ public class Portal : MonoBehaviour
         if (!started && temple.GetComponent<Temple>().isPlaced())
         {
             started = true;
-            StartCoroutine(spawnWaves());
-        }
-
-    }
-
-
-    private bool cloudPositionFilled(Transform c)
-    {
-        foreach (GameObject cloud in clouds)
-        {
-            if (Vector3.Distance(cloud.transform.position, c.position) < 10f)
+            try
             {
-                return true;
+                StartCoroutine(spawnWaves());
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError(e);
             }
         }
-        return false;
+
     }
+
 
     //creates a new spawner with a new tool/ building for the player
     void spawnNewBuilding(GameObject newBuilding)
     {
-        Vector3 spPos = spawnerLocations[0].position;
-        if (clouds.Count > 0)
-        {
-            foreach (Transform pos in spawnerLocations)
-            {
-                if (!cloudPositionFilled(pos))
-                {
-                    spPos = pos.position;
-                    break;
-                }
-            }
-        }
+        Vector3 spPos = Vector3.zero;
 
-        GameObject newSpawner = Instantiate(spawner, spPos, Quaternion.identity);
-        newSpawner.GetComponentInChildren<BuildingSpawner>().buildingToSpawn = newBuilding;
-        newSpawner.GetComponentInChildren<BuildingSpawner>().newBuilding();
-        newSpawner.GetComponentInChildren<BuildingSpawner>().rayDisappear(30f);
-        if (newBuilding.GetComponent<Building>() != null && newBuilding.GetComponent<Building>().description != null)
+        foreach (Transform pos in spawnerLocations)
         {
-            newSpawner.GetComponentInChildren<TextMesh>().text = newBuilding.GetComponent<Building>().description;
+            if (!Physics.CheckSphere(pos.position, 10f))
+            {
+                spPos = pos.position;
+                GameObject newSpawner = Instantiate(spawner, spPos, Quaternion.identity);
+                newSpawner.GetComponentInChildren<BuildingSpawner>().buildingToSpawn = newBuilding;
+                newSpawner.GetComponentInChildren<BuildingSpawner>().newBuilding();
+                newSpawner.GetComponentInChildren<BuildingSpawner>().rayDisappear(30f);
+                return;
+            }
+
         }
-        clouds.Add(newSpawner);
+        Debug.Log("Fuck sake");
+
+
+        //if (newBuilding.GetComponent<Building>() != null && newBuilding.GetComponent<Building>().description != null)
+        //{
+        //    newSpawner.GetComponentInChildren<TextMesh>().text = newBuilding.GetComponent<Building>().description;
+        //}
     }
 
     bool allDead(List<GameObject> monsters)
@@ -147,9 +140,9 @@ public class Portal : MonoBehaviour
     IEnumerator spawnWaves()
     {
         //coundown animation
-        animSpeed = animLength / delayStart;
-        anim["Countdown"].speed = animSpeed;
-        anim.Play("Countdown");
+        //animSpeed = animLength / delayStart;
+        //anim["Countdown"].speed = animSpeed;
+        //anim.Play("Countdown");
         yield return new WaitForSeconds(delayStart);
         foreach (Wave wave in Waves)
         {
@@ -164,17 +157,18 @@ public class Portal : MonoBehaviour
             {
                 Vector3 validSpawnLoc = spawnPos.transform.position;
                 NavMeshHit hit;
-                if (NavMesh.SamplePosition(spawnPos.transform.position, out hit, 40.0f, NavMesh.AllAreas))
+                if (NavMesh.SamplePosition(spawnPos.transform.position, out hit, 20.0f, NavMesh.AllAreas))
                 {
                     validSpawnLoc = hit.position;
+                    GameObject monster = Instantiate(monsterTypes[(int)monsterType], validSpawnLoc, Quaternion.LookRotation(Vector3.forward, Vector3.up));
+                    spawnedMonsters.Add(monster);
                 }
                 else
                 {
                     Debug.LogError("Could not spawn monster");
                 }
-                GameObject monster = GameObject.Instantiate(monsterTypes[(int)monsterType], validSpawnLoc, Quaternion.identity);
-                spawnedMonsters.Add(monster);
-                //monster.GetComponent<Character>().agent.Warp(validSpawnLoc);
+
+
                 yield return new WaitForSeconds(2);
             }
 
@@ -189,12 +183,12 @@ public class Portal : MonoBehaviour
                 spawnNewBuilding(wave.newBuilding);
             }
             //coundown animation
-            animSpeed = animLength / wave.waveTime;
-            anim["Countdown"].speed = animSpeed;
-            anim.Play("Countdown");
+            //animSpeed = animLength / wave.waveTime;
+            //anim["Countdown"].speed = animSpeed;
+            //anim.Play("Countdown");
             yield return new WaitForSeconds(wave.waveTime);
         }
-        worldstarter.stopGame();
+        //worldstarter.stopGame();
     }
 
     void transitionMusic(bool toBattle)

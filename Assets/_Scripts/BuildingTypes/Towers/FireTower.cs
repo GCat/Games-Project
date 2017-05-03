@@ -17,6 +17,7 @@ public class FireTower : Tower
         fireStream.SetActive(false);
         audioSource.clip = attackClip[0];
         audioSource.volume = 0.4f;
+        GetComponent<Rigidbody>().useGravity = false;
     }
 
     public override void activeTower()

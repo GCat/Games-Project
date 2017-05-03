@@ -18,7 +18,7 @@ public class WatchTower : Tower
     void Start()
     {
         pre = Resources.Load("Arrow_Regular") as GameObject;
-
+        GetComponent<Rigidbody>().useGravity = false;
     }
     //find a new nearby monster to attack
     public override bool acquireTarget()

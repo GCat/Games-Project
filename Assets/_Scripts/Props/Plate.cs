@@ -68,7 +68,7 @@ class Plate : Grabbable
         audioSource.PlayOneShot(smash, 0.8f);
         GameObject explosion = GameObject.Instantiate(Resources.Load("Particles/Explosion") as GameObject, transform.position, Quaternion.identity);
         explosion.transform.position = transform.position;
-        explosion.transform.parent = null;
+        explosion.transform.SetParent(null);
         Destroy(explosion, 3.0f);
         hide();
         GetComponent<Collider>().enabled = false;

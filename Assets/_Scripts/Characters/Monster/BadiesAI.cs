@@ -29,7 +29,6 @@ public abstract class Monster : Character
     private bool combatEngaged = false;
 
     // Components
-    private Rigidbody rb;
     public Animator animator;
 
 
@@ -82,14 +81,10 @@ public abstract class Monster : Character
         {
             collider.enabled = false;
         }
-        foreach (Rigidbody rb in GetComponentsInChildren<Rigidbody>())
-        {
-            rb.isKinematic = true;
-        }
+
         GetComponent<Collider>().enabled = true;
         float height = GetComponent<Collider>().bounds.size.y;
         damageText = Resources.Load("Damage Text") as GameObject;
-        rb = GetComponent<Rigidbody>();
         closestEnemy = null;
         temple = GameObject.FindGameObjectWithTag("Temple");
         alive = true;
@@ -99,7 +94,7 @@ public abstract class Monster : Character
         resources.addBaddie(monsterType);
         currentState = defaultState;
         GameObject stun = Instantiate(Resources.Load("Particles/Seeing_Stars") as GameObject, transform.position + Vector3.up * height, Quaternion.identity);
-        stun.transform.parent = transform;
+        stun.transform.SetParent(transform);
         stunEffect = stun.GetComponent<ParticleSystem>();
         stunEffect.Stop();
     }
@@ -157,7 +152,7 @@ public abstract class Monster : Character
         Text text = damageIndicator.GetComponentInChildren<Text>();
         text.text = textString;
         text.color = color;
-        Destroy(damageIndicator, 1);
+        //Destroy(damageIndicator, 1);
         for (float f = 1f; f >= 0; f -= 0.01f)
         {
             if (damageIndicator != null)
@@ -165,10 +160,17 @@ public abstract class Monster : Character
                 Color c = text.color;
                 c.a = f;
                 text.color = c;
-                damageIndicator.transform.Translate(new Vector3(0, 0.1f, 0));
-                damageIndicator.transform.LookAt(cameraPos);
-                yield return null;
+                if (damageIndicator != null)
+                {
+                    damageIndicator.transform.Translate(new Vector3(0, 0.1f, 0));
+                    damageIndicator.transform.LookAt(cameraPos);
+                }
+                yield return new WaitForSeconds(0.05f);
             }
+        }
+        if (damageIndicator != null)
+        {
+            Destroy(damageIndicator);
         }
     }
 
@@ -311,16 +313,11 @@ public abstract class Monster : Character
         isStunned = true;
         agent.Stop();
         yield return new WaitForSeconds(time);
-        try
-        {
-            isStunned = false;
-            agent.Resume();
-            preventLock(2);
-        }
-        catch (Exception e)
-        {
-            /// BAAAA
-        }
+
+        isStunned = false;
+        agent.Resume();
+        preventLock(2);
+
     }
 
     public void stun()
@@ -329,7 +326,14 @@ public abstract class Monster : Character
         if (!resistStunning)
         {
             stunEffect.Play();
-            StartCoroutine(stunLock(2));
+            try
+            {
+                StartCoroutine(stunLock(2));
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("FUCK");
+            }
         }
     }
 
@@ -506,11 +510,19 @@ public abstract class Monster : Character
     public override void decrementHealth(float damage)
     {
         healthBar.decrementHealth(damage);
-        StartCoroutine(DamageText("-" + damage, Color.red));
+        try
+        {
+            //StartCoroutine(DamageText("-" + damage, Color.red));
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e);
+        }
         if (healthBar.health <= 0 && alive == true)
         {
             Destroy(healthBar);
-            StartCoroutine(DamageText("+" + faithValue, Color.magenta));
+
+            //StartCoroutine(DamageText("+" + faithValue, Color.magenta));
             resources.addFaith(faithValue);
             alive = false;
             //die animation here
@@ -522,8 +534,9 @@ public abstract class Monster : Character
             GameObject ghost = Instantiate(Resources.Load("Particles/Spooky_Explosion") as GameObject, transform.position, Quaternion.identity);
             Destroy(ghost, 3f);
             gameObject.tag = "Untagged";
-            StartCoroutine(WaitToDestroy(0.1f));
+            //StartCoroutine(WaitToDestroy(0.1f));
             resources.removeBaddie(monsterType);
+            Destroy(gameObject);
         }
     }
 

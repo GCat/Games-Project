@@ -260,13 +260,13 @@ public class Hand : MonoBehaviour {
                 if (building.canBuy() || building.bought)
                 {
                     heldObject = grabTarget;
-                    building.transform.parent = null;
+                    building.transform.SetParent(null);
                     holding = true;
                     building.initialRotation = building.transform.rotation;
                     building.held = true;
                     building.GetComponent<Grabbable>().grab();
                     snapToHand(grabTarget);
-                    heldObject.transform.parent = transform;
+                    heldObject.transform.SetParent(transform);
                     kinect_view.setTrackingContext(BodySourceView.TrackingContext.Slow, right_hand);
                 }
                 break;
@@ -276,7 +276,7 @@ public class Hand : MonoBehaviour {
                 {
                     heldObject = grabTarget;
                     snapToHand(heldObject);
-                    grabTarget.transform.parent = transform;
+                    grabTarget.transform.SetParent(transform);
                     holding = true;
                     tool.grab();
                 }
@@ -290,7 +290,7 @@ public class Hand : MonoBehaviour {
                 heldObject = grabTarget;
                 human.grab();
                 snapToHand(grabTarget);
-                grabTarget.transform.parent = transform;
+                grabTarget.transform.SetParent(transform);
                 holding = true;
                 kinect_view.setTrackingContext(BodySourceView.TrackingContext.Fast, right_hand);
                 break;
@@ -299,7 +299,7 @@ public class Hand : MonoBehaviour {
                 heldObject = grabTarget;
                 handle.grab();
                 snapToHand(grabTarget);
-                heldObject.transform.parent = transform;
+                heldObject.transform.SetParent(transform);
                 holding = true;
                 kinect_view.setTrackingContext(BodySourceView.TrackingContext.Slow, right_hand);
                 break;
@@ -308,7 +308,7 @@ public class Hand : MonoBehaviour {
                 heldObject = grabTarget;
                 food.grab();
                 snapToHand(grabTarget);
-                grabTarget.transform.parent = transform;
+                grabTarget.transform.SetParent(transform);
                 holding = true;
                 kinect_view.setTrackingContext(BodySourceView.TrackingContext.Medium, right_hand);
                 break;
@@ -317,7 +317,7 @@ public class Hand : MonoBehaviour {
                 heldObject = grabTarget;
                 prop.grab();
                 snapToHand(grabTarget);
-                grabTarget.transform.parent = transform;
+                grabTarget.transform.SetParent(transform);
                 holding = true;
                 kinect_view.setTrackingContext(BodySourceView.TrackingContext.Medium, right_hand);
                 break;
@@ -341,7 +341,7 @@ public class Hand : MonoBehaviour {
             onBounds.Remove(heldObject.GetComponent<Collider>());
 
             holding = false;
-            heldObject.transform.parent = null;
+            heldObject.transform.SetParent(null);
             Building building = heldObject.GetComponent<Building>();
 
             if(building != null)

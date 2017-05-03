@@ -76,6 +76,8 @@ MonoBehaviour:
   bounce: 0
   explosionRadius: 0
   damage: 8
+  explode: 0
+  fireBall: 0
 --- !u!136 &136541885619038558
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -141,7 +143,7 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 1
+  moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
   randomSeed: -1439637001

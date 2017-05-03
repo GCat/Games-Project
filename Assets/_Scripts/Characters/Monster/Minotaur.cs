@@ -39,11 +39,9 @@ class Minotaur : Monster
     {
         int layerMask = 1 << 9;
         layerMask |= 1 << 10;
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, radius);
+        Collider[] hitColliders = Physics.OverlapBox(transform.position, new Vector3(radius, 1, radius), Quaternion.identity, layerMask);
         foreach(Collider collider in hitColliders)
         {
-
-
             HealthManager health = collider.GetComponent<HealthManager>();
             if(health != null && collider.GetComponent<Monster>() == null)
             {

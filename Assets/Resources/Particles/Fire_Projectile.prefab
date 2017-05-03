@@ -26,7 +26,7 @@ GameObject:
   - component: {fileID: 33814602525367132}
   - component: {fileID: 23317945315774692}
   - component: {fileID: 114212712770265440}
-  m_Layer: 14
+  m_Layer: 23
   m_Name: Fire_Projectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -121,7 +121,7 @@ CapsuleCollider:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1734383128804124}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 9f93f63d068b08c459038c40fce897d8, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.80210173
@@ -180,7 +180,7 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 1
+  moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
   randomSeed: 1970279143
