@@ -10,7 +10,6 @@ public abstract class Grabbable : MonoBehaviour
     protected Shader[] original_materials;
     protected bool allowOutline = true;
     private Shader outlineShader;
-
     //function to be called when grabbed by hand
     public abstract void grab();
 
@@ -39,7 +38,6 @@ public abstract class Grabbable : MonoBehaviour
             original_materials[i] = child_materials[i].material.shader;
         }
     }
-
     public void setOutline()
     {
 

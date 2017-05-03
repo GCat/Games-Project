@@ -443,6 +443,11 @@ public class BodySourceView : MonoBehaviour
         //VRSettings.showDeviceView = false;
     }
 
+    public GameObject getBodyPart(Kinect.JointType jt)
+    {
+        return bodyTransforms[jt].gameObject;
+    }
+
     private GameObject CreateBodyObject(Kinect.Body kinectBody)
     {
         ulong id = kinectBody.TrackingId;

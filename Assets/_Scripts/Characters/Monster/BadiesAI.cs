@@ -152,7 +152,7 @@ public abstract class Monster : Character
         Text text = damageIndicator.GetComponentInChildren<Text>();
         text.text = textString;
         text.color = color;
-        //Destroy(damageIndicator, 1);
+        Destroy(damageIndicator, 1);
         for (float f = 1f; f >= 0; f -= 0.01f)
         {
             if (damageIndicator != null)
@@ -165,7 +165,7 @@ public abstract class Monster : Character
                     damageIndicator.transform.Translate(new Vector3(0, 0.1f, 0));
                     damageIndicator.transform.LookAt(cameraPos);
                 }
-                yield return new WaitForSeconds(0.05f);
+                yield return null;
             }
         }
         if (damageIndicator != null)
@@ -512,7 +512,7 @@ public abstract class Monster : Character
         healthBar.decrementHealth(damage);
         try
         {
-            //StartCoroutine(DamageText("-" + damage, Color.red));
+            StartCoroutine(DamageText("-" + damage, Color.red));
         }
         catch (Exception e)
         {

@@ -35,10 +35,20 @@ class Wine : Edible
         }
     }
 
+    void FixedUpdate()
+    {
+        if (held && mouth != null)
+        {
+            transform.LookAt(mouth.transform);
+            transform.Rotate(-90, 0, 0);
+        }
+
+    }
+
     public void OnCollisionEnter(Collision collision)
     {
         float force = collision.impulse.magnitude;
-        if(force > 80)
+        if (force > 80)
         {
             smashBottle();
         }

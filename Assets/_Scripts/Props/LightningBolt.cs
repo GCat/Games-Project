@@ -6,12 +6,18 @@ using UnityEngine;
 public class LightningBolt : Tool {
 
     GameObject flash;
+    public GameObject shoulder;
+
+    void Start()
+    {
+    }
 
     public override void grab()
     {
         base.grab();
         GetComponent<Collider>().enabled = true;
         GetComponent<Rigidbody>().isKinematic = false;
+        
     }
 
     public override void release(Vector3 vel)
@@ -35,6 +41,14 @@ public class LightningBolt : Tool {
         Destroy(flash.gameObject, 2f);
     }
 
+    void FixedUpdate()
+    {
+        if (held && shoulder != null)
+        {
+            transform.LookAt(shoulder.transform);
+        }
+
+    }
     void OnCollisionEnter(Collision col)
     {
         Debug.Log(col.gameObject);
