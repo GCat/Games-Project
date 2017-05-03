@@ -97,7 +97,7 @@ public class Portal : MonoBehaviour
 
         foreach (Transform pos in spawnerLocations)
         {
-            if (!Physics.CheckSphere(pos.position, 10f))
+            if (!Physics.CheckSphere(pos.position, 15f))
             {
                 spPos = pos.position;
                 GameObject newSpawner = Instantiate(spawner, spPos, Quaternion.identity);
@@ -140,9 +140,9 @@ public class Portal : MonoBehaviour
     IEnumerator spawnWaves()
     {
         //coundown animation
-        //animSpeed = animLength / delayStart;
-        //anim["Countdown"].speed = animSpeed;
-        //anim.Play("Countdown");
+        animSpeed = animLength / delayStart;
+        anim["Countdown"].speed = animSpeed;
+        anim.Play("Countdown");
         yield return new WaitForSeconds(delayStart);
         foreach (Wave wave in Waves)
         {
@@ -183,9 +183,9 @@ public class Portal : MonoBehaviour
                 spawnNewBuilding(wave.newBuilding);
             }
             //coundown animation
-            //animSpeed = animLength / wave.waveTime;
-            //anim["Countdown"].speed = animSpeed;
-            //anim.Play("Countdown");
+            animSpeed = animLength / wave.waveTime;
+            anim["Countdown"].speed = animSpeed;
+            anim.Play("Countdown");
             yield return new WaitForSeconds(wave.waveTime);
         }
         //worldstarter.stopGame();
