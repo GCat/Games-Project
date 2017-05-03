@@ -57,7 +57,7 @@ public class ResourceCounter : Grabbable
         resource_nodes.Add("Forest", forests);
         resource_nodes.Add("Iron", ironNode);
         temple = GameObject.FindGameObjectWithTag("Temple").GetComponent<Temple>();
-        healthSlider.maxValue = temple.totalHealth;
+        healthSlider.maxValue = temple.healthBar.getOriginalHealth();
         portal = GameObject.FindGameObjectWithTag("Portal").GetComponent<Portal>();
         StartCoroutine(logFPS());
     }
@@ -79,7 +79,7 @@ public class ResourceCounter : Grabbable
         }
         //setResourceText();
         faithNumber.text = faith.ToString();
-        healthSlider.value = temple.health;
+        healthSlider.value = temple.healthBar.health;
         frames++;
         totalFPS += (1f / Time.deltaTime);
         fpsCounter.text = "FPS: " + (totalFPS / frames).ToString("F2");

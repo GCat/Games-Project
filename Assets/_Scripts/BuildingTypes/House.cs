@@ -22,11 +22,6 @@ public class House : Building
     {
         return this.gameObject.transform.position;
     }
-    float getHealth()
-    {
-        return health;
-    }
-
 
     void Update()
     {

@@ -12,11 +12,9 @@ public abstract class Building : Grabbable, HealthManager
     public abstract string getName();
     public abstract Vector3 getLocation();
     public abstract void create_building();
-    public float totalHealth = 100.0f;
-    public float health = 100.0f;
     public ResourceCounter resourceCounter;
     public GameObject tablet;
-    GameObject healthBar;
+    public HealthBar healthBar;
     GameObject resourceGainText;
     public bool bought = false;
     public int faithCost;
@@ -37,13 +35,21 @@ public abstract class Building : Grabbable, HealthManager
     public abstract void activate();
     public abstract void deactivate();
 
+    public void faceHPBarToFront()
+    {
+        Vector3 barPos = healthBar.transform.position;
+        barPos.x += 1000;
+        healthBar.transform.LookAt(barPos);
+        healthBar.transform.Rotate(new Vector3(0, 0, 90));
+    }
+
     public void decrementHealth(float damage)
     {
-        if (!healthBar.activeSelf) healthBar.SetActive(true);
+        if (!healthBar.gameObject.activeSelf) healthBar.gameObject.SetActive(true);
+        faceHPBarToFront();
         StartCoroutine(lockBuilding(5));
-        healthBar.GetComponent<HealthBar>().decrementHealth(damage);
-        health -= damage;
-        if (health <= 0)
+        healthBar.decrementHealth(damage);
+        if (healthBar.health <= 0)
         {
             GameObject explosion = GameObject.Instantiate(ExplosionEffect);
             explosion.transform.position = transform.position;
@@ -60,11 +66,11 @@ public abstract class Building : Grabbable, HealthManager
             }
             die();
         }
-        else if (health <= (0.2 * totalHealth))
+        else if (healthBar.health <= (0.2 * healthBar.getOriginalHealth()))
         {
             setWarning();
         }
-        else if (health <= (0.5 * totalHealth))
+        else if (healthBar.health <= (0.5 * healthBar.getOriginalHealth()))
         {
             if (fireEffect == null)
             {
