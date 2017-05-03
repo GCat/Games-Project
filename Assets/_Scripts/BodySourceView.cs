@@ -37,6 +37,7 @@ public class BodySourceView : MonoBehaviour
     private int l_hand_closed_frames = 0;
     private int l_hand_open_frames = 0;
     private ulong player_id = 99;
+    bool runningThread = true;
     private Renderer renderer;
     public GameObject Temple;
     private bool started = true;
@@ -193,17 +194,18 @@ public class BodySourceView : MonoBehaviour
     }
     void OnDestroyed()
     {
-        bodyThread.Abort();
+        runningThread = false;
+        bodyThread.Join();
     }
 
     private void testThread()
     {
-        while (true)
+        while (runningThread)
         {
             try
             {
 
-                RefreshBodyObject(trackedBody, trackedBodyObject);
+                RefreshBodyObject(trackedBody);
                 Thread.Sleep(3);
             }
             catch (System.Exception e)
@@ -373,7 +375,7 @@ public class BodySourceView : MonoBehaviour
     //takes the tracking context of the hand and returns the number of continuous frames required to make a state change
     private int getTrackingFrames(bool rightHand)
     {
-        int speedAdjust = 0;
+        int speedAdjust = 2;
         if (rightHand)
         {
 
@@ -390,7 +392,7 @@ public class BodySourceView : MonoBehaviour
                 case TrackingContext.Fast:
                     return tracking_frames / 2;
                 case TrackingContext.Slow:
-                    return tracking_frames * 2 + speedAdjust;
+                    return tracking_frames + speedAdjust;
             }
         }
         else
@@ -407,7 +409,7 @@ public class BodySourceView : MonoBehaviour
                 case TrackingContext.Fast:
                     return tracking_frames / 2;
                 case TrackingContext.Slow:
-                    return tracking_frames * 2 + speedAdjust;
+                    return tracking_frames + speedAdjust;
             }
         }
         return tracking_frames;
@@ -497,7 +499,7 @@ public class BodySourceView : MonoBehaviour
         }
 
     }
-    private void RefreshBodyObject(Kinect.Body body, GameObject bodyObject)
+    private void RefreshBodyObject(Kinect.Body body)
     {
 
         for (Kinect.JointType jt = Kinect.JointType.SpineBase; jt <= Kinect.JointType.ThumbRight; jt++)
