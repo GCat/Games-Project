@@ -47,6 +47,10 @@ public class Temple : Building
         return placed;
     }
 
+    public void resetPosition()
+    {
+        transform.position = GameObject.FindGameObjectWithTag("Portal").transform.position + Vector3.up * 20 + Vector3.right * 40;
+    }
     public void incrementResource()
     {
         if (resourceCounter != null) StartCoroutine(ResourceGainText(resourceCounter.addFaith(1),"Faith"));

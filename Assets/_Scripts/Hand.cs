@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Collections;
 
-public class Hand : MonoBehaviour {
+public class Hand : MonoBehaviour
+{
 
-    public enum HandStatus {Open, Close};
+    public enum HandStatus { Open, Close };
     HandStatus hand = HandStatus.Open;
     public bool holding = false;
     public Vector3[] fingers = new Vector3[5];
@@ -41,7 +42,7 @@ public class Hand : MonoBehaviour {
     private float[] held_object_times;
 
 
-    public enum PropType { Building, Human, Tool, Handle, Food, Prop, None};
+    public enum PropType { Building, Human, Tool, Handle, Food, Prop, None };
     float rotationTimer;
     float startTime;
 
@@ -54,7 +55,8 @@ public class Hand : MonoBehaviour {
     }
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         held_object_times = new float[5];
         held_object_positions = new Vector3[5];
         held_object_positions[0] = Vector3.zero;
@@ -69,7 +71,8 @@ public class Hand : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
+    void Update()
+    {
         velocity = (transform.position - lastPosition) / Time.deltaTime;
         lastPosition = transform.position;
         // MOUSE TESTING
@@ -105,7 +108,8 @@ public class Hand : MonoBehaviour {
 
         if (holding)
         {
-            for (int i = 4; i >0; i--) {
+            for (int i = 4; i > 0; i--)
+            {
                 held_object_positions[i] = held_object_positions[i - 1];
                 held_object_times[i] = held_object_times[i - 1];
             }
@@ -115,7 +119,7 @@ public class Hand : MonoBehaviour {
             //heldObject.transform.position = p;
         }
 
-               
+
     }
 
     //handle player interaction using the mouse foor testing
@@ -186,7 +190,7 @@ public class Hand : MonoBehaviour {
             hand = HandStatus.Open;
             change = true;
         }
-        
+
     }
 
     public void closeHand()
@@ -243,13 +247,13 @@ public class Hand : MonoBehaviour {
         if (holding) return;
         heldObject = null;
 
-        if(velocity.magnitude > 100)
+        if (velocity.magnitude > 100)
         {
             return;
         }
 
         GameObject grabTarget = getClosestObject();
-        if (grabTarget == null ) return;
+        if (grabTarget == null) return;
 
         PropType propType = getPropType(grabTarget);
         switch (propType)
@@ -328,9 +332,9 @@ public class Hand : MonoBehaviour {
 
     }
 
-    private void releaseObject ()
+    private void releaseObject()
     {
-        if(heldObject == null)
+        if (heldObject == null)
         {
             onBounds.Clear();
             holding = false;
@@ -344,10 +348,10 @@ public class Hand : MonoBehaviour {
             heldObject.transform.SetParent(null);
             Building building = heldObject.GetComponent<Building>();
 
-            if(building != null)
+            if (building != null)
             {
-               
-                if(building.canPlace() && (building.bought || building.canBuy()))
+
+                if (building.canPlace() && (building.bought || building.canBuy()))
                 {
                     //this is why the building had a grabbable interface :p - this should be there ;)
                     snapToGrid(heldObject);
@@ -357,31 +361,38 @@ public class Hand : MonoBehaviour {
                 }
                 else
                 {
-                    building.highlightDestroy();
-                    if (resources.withinBounds(heldObject.transform.position))
+                    if (building.gameObject.tag == "Temple")
                     {
-                        if (building.gameObject.tag != "Temple")
-                        {
-                            building.refund();
-                            audioSource.PlayOneShot(destructionSound, 0.5f);
-                            building.delete();
-                        }
+                        building.GetComponent<Temple>().resetPosition();
+                        building.held = false;
+                        building.canBeGrabbed = true;
+                        audioSource.PlayOneShot(destructionSound, 0.5f);
+                        building.GetComponent<Collider>().enabled = true;                        
+                    }
+                    else if (resources.withinBounds(heldObject.transform.position))
+                    {
+                        building.highlightDestroy();
+
+                        building.refund();
+                        audioSource.PlayOneShot(destructionSound, 0.5f);
+                        building.delete();
+
                     }
                     else
                     {
-                        if (building.gameObject.tag != "Temple")
-                        {
-                            building.delete();
-                            audioSource.PlayOneShot(destructionSound, 0.5f);
-                            Destroy(heldObject);
-                        }
+                        building.highlightDestroy();
+
+                        building.delete();
+                        audioSource.PlayOneShot(destructionSound, 0.5f);
+                        Destroy(heldObject);
+
                         throwObject(heldObject);
                     }
                 }
             }
             else
             {
-                
+
                 throwObject(heldObject);
             }
             heldObject = null;
@@ -392,20 +403,21 @@ public class Hand : MonoBehaviour {
     //changing the colour of the bracelets when something grabbed
     private void colourChange(GameObject heldObject)
     {
- 
+
         if (holding && heldObject != null)                                  //success you've grabbed an object
         {
-            renderer_closed.material.SetColor("_Color", Color.green); 
-        }else                                                               //fail you've grabbed the air
+            renderer_closed.material.SetColor("_Color", Color.green);
+        }
+        else                                                               //fail you've grabbed the air
         {
-            renderer_closed.material.SetColor("_Color", Color.red);         
+            renderer_closed.material.SetColor("_Color", Color.red);
         }
     }
-        
+
     //function called to snap object to palm 
     private void snapToHand(GameObject placeable)
     {
-         // might need to change the positions slightly to make it nicer looking
+        // might need to change the positions slightly to make it nicer looking
         placeable.transform.position = gameObject.transform.position;
     }
 
@@ -415,7 +427,7 @@ public class Hand : MonoBehaviour {
         float x = placeable.transform.position.x;
         float z = placeable.transform.position.z;
         placeable.transform.position = new Vector3(x, 0, z);
-        if(placeable.GetComponent<Wall>() == null)
+        if (placeable.GetComponent<Wall>() == null)
         {
             placeable.transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
         }
@@ -448,16 +460,16 @@ public class Hand : MonoBehaviour {
         {
             onBounds.Add(other);
         }
-        else if(gother.layer == 11)
+        else if (gother.layer == 11)
         {
             //slap baddies
             HealthManager healthManager = gother.GetComponent<HealthManager>();
-            if(healthManager != null && velocity.magnitude > 100)
+            if (healthManager != null && velocity.magnitude > 100)
             {
                 int seed = Random.Range(0, hitSounds.Length);
                 audioSource.PlayOneShot(hitSounds[seed], 0.9f);
                 Monster monster = gother.GetComponent<Monster>();
-                if(monster != null)
+                if (monster != null)
                 {
                     monster.stun();
                 }

@@ -115,7 +115,6 @@ public abstract class Building : Grabbable, HealthManager
         {
             Debug.Log("Tablet not found");
         }
-        createHealthBar();
         resourceGainText = createInfoText("ResourceGainTablet");
         boxSize = GetComponent<BoxCollider>().bounds.size / 2;
         boxSize.y = 1f;
@@ -205,20 +204,6 @@ public abstract class Building : Grabbable, HealthManager
         }
         resourceText.SetActive(false);
         GameObject.Destroy(resourceText);
-    }
-
-    public void createHealthBar()
-    {
-        Bounds dims = gameObject.GetComponent<Collider>().bounds;
-        Vector3 actualSize = dims.size;
-        healthBar = GameObject.Instantiate(Resources.Load("HealthBar")) as GameObject;
-        healthBar.transform.position = gameObject.GetComponent<Collider>().transform.position;
-        healthBar.transform.Translate(new Vector3(0, actualSize.y * 1.5f, 0));
-        healthBar.transform.eulerAngles = new Vector3(0.0f, 90.0f, 90.0f);
-        healthBar.transform.SetParent(gameObject.transform);
-        healthBar.GetComponent<HealthBar>().health = this.health;
-        healthBar.GetComponent<HealthBar>().initBar();
-        healthBar.SetActive(false);
     }
 
     public GameObject createInfoText(string prefab)
