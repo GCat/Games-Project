@@ -570,12 +570,13 @@ public abstract class Monster : Character
     private GameObject findClosestBuilding()
     {
         List<GameObject> buildings = new List<GameObject>();
-        string[] tags = new string[] { "Tower", "House", "Wall", "Farm" };
+        string[] tags = new string[] { "Tower", "House", "Wall" };
         GameObject closest = null;
         changeEnemy();
         foreach (string tag in tags)
         {
-            buildings.AddRange((GameObject.FindGameObjectsWithTag(tag)));
+            GameObject [] bs = GameObject.FindGameObjectsWithTag(tag);
+            if(bs.Length > 0) buildings.AddRange(bs);
         }
 
         float distance = Mathf.Infinity;
@@ -584,6 +585,7 @@ public abstract class Monster : Character
         {
             foreach (GameObject badie in buildings)
             {
+                // This could cause a bug should be change for a system to check that building is active and all buildings in cloud should be inactive
                 if (Mathf.Abs(badie.transform.position.y) > 5.0f) continue;
                 Vector3 diff = badie.transform.position - position;
                 float current_distance = diff.sqrMagnitude;

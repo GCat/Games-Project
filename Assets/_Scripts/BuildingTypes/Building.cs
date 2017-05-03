@@ -37,27 +37,12 @@ public abstract class Building : Grabbable, HealthManager
     public abstract void activate();
     public abstract void deactivate();
 
-    public void faceHPBarToFront()
-    {
-        Vector3 barPos = healthBar.transform.position;
-        barPos.x += 1000;
-        healthBar.transform.LookAt(barPos);
-        healthBar.transform.Rotate(new Vector3(0, 0, 90));
-    }
-
     public void decrementHealth(float damage)
     {
         if (!healthBar.activeSelf) healthBar.SetActive(true);
-        faceHPBarToFront();
         StartCoroutine(lockBuilding(5));
+        healthBar.GetComponent<HealthBar>().decrementHealth(damage);
         health -= damage;
-        if (health > 0)
-        {
-            float scale = (health / totalHealth);
-            float buildingScale = gameObject.transform.localScale.x;
-            healthBar.transform.localScale = new Vector3(1.0f / buildingScale, 10.0f * scale / buildingScale, 1.0f / buildingScale);
-            healthBar.GetComponent<Renderer>().material.SetColor("_Color", new Color(1.0f - scale, scale, 0));
-        }
         if (health <= 0)
         {
             GameObject explosion = GameObject.Instantiate(ExplosionEffect);
@@ -231,6 +216,8 @@ public abstract class Building : Grabbable, HealthManager
         healthBar.transform.Translate(new Vector3(0, actualSize.y * 1.5f, 0));
         healthBar.transform.eulerAngles = new Vector3(0.0f, 90.0f, 90.0f);
         healthBar.transform.SetParent(gameObject.transform);
+        healthBar.GetComponent<HealthBar>().health = this.health;
+        healthBar.GetComponent<HealthBar>().initBar();
         healthBar.SetActive(false);
     }
 

@@ -11,8 +11,20 @@ public class HealthBar : MonoBehaviour {
 
     void Start()
     {
+        initBar();
+    }
+
+    public void initBar()
+    {
         originalHealth = health;
         originalSize = transform.localScale;
+    }
+
+    void Update()
+    {
+        Vector3 myLoc = transform.position;
+        transform.LookAt(new Vector3(myLoc.x, myLoc.y, myLoc.z-10.0f));
+        transform.Rotate(new Vector3(90, 0, 0));
     }
 
 
