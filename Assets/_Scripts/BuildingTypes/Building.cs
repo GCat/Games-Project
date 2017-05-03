@@ -165,7 +165,7 @@ public abstract class Building : Grabbable, HealthManager
 
     public virtual void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Hand")
+        if (other.gameObject.tag == "Hand" && other.gameObject.GetComponent<Hand>().getSpeed() < 95)
         {
 
             if ((resourceCounter.hasGameStarted() && ((faithCost <= resourceCounter.getFaith()) || (bought))) || gameObject.tag == "Temple")

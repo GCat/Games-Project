@@ -452,6 +452,11 @@ public class Hand : MonoBehaviour
         }
     }
 
+    public float getSpeed()
+    {
+        return velocity.magnitude;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other == null) return;
@@ -464,7 +469,7 @@ public class Hand : MonoBehaviour
         {
             //slap baddies
             HealthManager healthManager = gother.GetComponent<HealthManager>();
-            if (healthManager != null && velocity.magnitude > 100)
+            if (healthManager != null && velocity.magnitude > 95)
             {
                 int seed = Random.Range(0, hitSounds.Length);
                 audioSource.PlayOneShot(hitSounds[seed], 0.9f);
@@ -476,7 +481,7 @@ public class Hand : MonoBehaviour
                 healthManager.decrementHealth(1);
                 if (gother.GetComponent<Bee>() != null)
                 {
-                    gother.GetComponent<Rigidbody>().AddForce(velocity.normalized * 2f, ForceMode.Impulse);
+                    gother.GetComponent<Rigidbody>().AddForce(velocity.normalized * 4f, ForceMode.Impulse);
 
                 }
             }

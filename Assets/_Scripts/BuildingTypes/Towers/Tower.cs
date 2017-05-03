@@ -154,7 +154,7 @@ public abstract class Tower : Building {
     new void OnTriggerEnter(Collider other)
     {
         base.OnTriggerEnter(other);
-        if (other.gameObject.tag == "Hand" && bought)
+        if (other.gameObject.tag == "Hand" && bought  && other.gameObject.GetComponent<Hand>().getSpeed() < 95)
         {
             showRange();
         }

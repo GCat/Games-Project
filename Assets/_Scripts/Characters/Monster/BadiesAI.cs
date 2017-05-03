@@ -323,9 +323,9 @@ public abstract class Monster : Character
     public void stun()
     {
         stunEffect.Clear();
+        stunEffect.Play();
         if (!resistStunning)
         {
-            stunEffect.Play();
             try
             {
                 StartCoroutine(stunLock(2));

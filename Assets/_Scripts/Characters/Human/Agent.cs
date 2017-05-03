@@ -469,7 +469,7 @@ public class Agent : Character
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Hand")
+        if (other.gameObject.tag == "Hand" && other.gameObject.GetComponent<Hand>().getSpeed() < 95)
         {
             setOutline();
         }
