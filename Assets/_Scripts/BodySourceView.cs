@@ -25,6 +25,7 @@ public class BodySourceView : MonoBehaviour
     public GameObject left_foot;
     public GameObject right_foot;
     public GameObject colorScreen;
+    public GameObject eyeMarker;
     public Text countdown;
     public int tracking_frames = 8;
     public bool rightHandClosed = false;
@@ -447,6 +448,7 @@ public class BodySourceView : MonoBehaviour
         c.cullingMask = oldMask;
         countdown.text = "";
         colorScreen.GetComponent<ColorSourceView>().pause(true);
+        eyeMarker.SetActive(false);
         InputTracking.Recenter();
         //VRSettings.showDeviceView = false;
     }
