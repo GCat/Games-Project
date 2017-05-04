@@ -355,7 +355,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000064598565702}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -15.289871, y: -0.0036621094, z: -18.784958}
+  m_LocalPosition: {x: -31.862392, y: 0.04090953, z: 32.939037}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 4775093912679974}
@@ -1705,11 +1705,9 @@ MonoBehaviour:
   buildClip: {fileID: 8300000, guid: 0f6a9c7d024f3144690add1c060e8ed0, type: 3}
   destroy: {fileID: 0}
   description: Arrow Tower - Medium Range Damage
-  totalHealth: 100
-  health: 100
   resourceCounter: {fileID: 0}
   tablet: {fileID: 0}
-  healthBar: {fileID: 0}
+  healthBar: {fileID: 114363666273413540}
   bought: 0
   faithCost: 15
   highlight_template: {fileID: 1496738986511838, guid: fb5396ac9d23c6645bf227ad14e3d692,

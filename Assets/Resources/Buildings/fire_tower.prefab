@@ -992,7 +992,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1079506678861314}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -14.082214, y: -0.0036621094, z: -18.101604}
+  m_LocalPosition: {x: -38.208797, y: 0.04090953, z: 9.594793}
   m_LocalScale: {x: 108.667595, y: 108.667656, z: 108.667656}
   m_Children:
   - {fileID: 4755208081583724}
@@ -2415,11 +2415,9 @@ MonoBehaviour:
   buildClip: {fileID: 8300000, guid: 0f6a9c7d024f3144690add1c060e8ed0, type: 3}
   destroy: {fileID: 0}
   description: Fire Tower - Short Range Damage
-  totalHealth: 100
-  health: 100
   resourceCounter: {fileID: 0}
   tablet: {fileID: 0}
-  healthBar: {fileID: 0}
+  healthBar: {fileID: 114133445245682460}
   bought: 0
   faithCost: 35
   highlight_template: {fileID: 1198705378565068, guid: df7a3fa71a5afc2439e55f03b47b96a0,
