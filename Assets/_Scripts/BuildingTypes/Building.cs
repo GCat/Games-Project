@@ -45,7 +45,6 @@ public abstract class Building : Grabbable, HealthManager
 
     public void decrementHealth(float damage)
     {
-        if (!healthBar.gameObject.activeSelf) healthBar.gameObject.SetActive(true);
         faceHPBarToFront();
         StartCoroutine(lockBuilding(5));
         healthBar.decrementHealth(damage);
