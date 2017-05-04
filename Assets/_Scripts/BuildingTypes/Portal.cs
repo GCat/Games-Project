@@ -182,6 +182,7 @@ public class Portal : MonoBehaviour
             {
                 spawnNewBuilding(wave.newBuilding);
             }
+            resourceCounter.faith += wave.faithReward;
             //coundown animation
             animSpeed = animLength / wave.waveTime;
             anim["Countdown"].speed = animSpeed;
