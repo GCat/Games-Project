@@ -6068,8 +6068,8 @@ TrailRenderer:
         outSlope: 0
         tangentMode: 0
       - serializedVersion: 2
-        time: 0.79734033
-        value: 0.3733376
+        time: 0.995552
+        value: 0.44000325
         inSlope: -1.5520761
         outSlope: -1.5520761
         tangentMode: 0
@@ -6078,25 +6078,25 @@ TrailRenderer:
       m_RotationOrder: 0
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 1, b: 1, a: 1}
-      key1: {r: 1, g: 1, b: 1, a: 1}
-      key2: {r: 0, g: 0, b: 0, a: 0}
-      key3: {r: 0, g: 0, b: 0, a: 0}
+      key0: {r: 0.7647059, g: 0.7647059, b: 0.7647059, a: 0.48235294}
+      key1: {r: 0.74264705, g: 0.74264705, b: 0.74264705, a: 0}
+      key2: {r: 1, g: 1, b: 1, a: 0.53333336}
+      key3: {r: 1, g: 1, b: 1, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
       key5: {r: 0, g: 0, b: 0, a: 0}
       key6: {r: 0, g: 0, b: 0, a: 0}
       key7: {r: 0, g: 0, b: 0, a: 0}
       ctime0: 0
       ctime1: 65535
-      ctime2: 0
-      ctime3: 0
+      ctime2: 65535
+      ctime3: 65535
       ctime4: 0
       ctime5: 0
       ctime6: 0
       ctime7: 0
       atime0: 0
       atime1: 65535
-      atime2: 0
+      atime2: 65535
       atime3: 0
       atime4: 0
       atime5: 0
@@ -6109,8 +6109,8 @@ TrailRenderer:
     numCapVertices: 0
     alignment: 0
     textureMode: 0
-  m_MinVertexDistance: 0.1
-  m_Autodestruct: 1
+  m_MinVertexDistance: 0.05
+  m_Autodestruct: 0
 --- !u!1 &806997432
 GameObject:
   m_ObjectHideFlags: 0
@@ -8810,7 +8810,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4434251442131386, guid: f8944127a1ee7404ca8ab160846ee099, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 28.4
+      value: 21.8
       objectReference: {fileID: 0}
     - target: {fileID: 4434251442131386, guid: f8944127a1ee7404ca8ab160846ee099, type: 2}
       propertyPath: m_LocalRotation.x
@@ -8840,7 +8840,7 @@ Prefab:
     - target: {fileID: 224013035415923994, guid: f8944127a1ee7404ca8ab160846ee099,
         type: 2}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224178321780368488, guid: f8944127a1ee7404ca8ab160846ee099,
         type: 2}
@@ -12399,8 +12399,8 @@ TrailRenderer:
         outSlope: 0
         tangentMode: 0
       - serializedVersion: 2
-        time: 0.79734033
-        value: 0.3733376
+        time: 0.995552
+        value: 0.44000325
         inSlope: -1.5520761
         outSlope: -1.5520761
         tangentMode: 0
@@ -12409,25 +12409,25 @@ TrailRenderer:
       m_RotationOrder: 0
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 1, b: 1, a: 1}
-      key1: {r: 1, g: 1, b: 1, a: 1}
-      key2: {r: 0, g: 0, b: 0, a: 0}
-      key3: {r: 0, g: 0, b: 0, a: 0}
+      key0: {r: 0.7647059, g: 0.7647059, b: 0.7647059, a: 0.48235294}
+      key1: {r: 0.74264705, g: 0.74264705, b: 0.74264705, a: 0}
+      key2: {r: 1, g: 1, b: 1, a: 0.53333336}
+      key3: {r: 1, g: 1, b: 1, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
       key5: {r: 0, g: 0, b: 0, a: 0}
       key6: {r: 0, g: 0, b: 0, a: 0}
       key7: {r: 0, g: 0, b: 0, a: 0}
       ctime0: 0
       ctime1: 65535
-      ctime2: 0
-      ctime3: 0
+      ctime2: 65535
+      ctime3: 65535
       ctime4: 0
       ctime5: 0
       ctime6: 0
       ctime7: 0
       atime0: 0
       atime1: 65535
-      atime2: 0
+      atime2: 65535
       atime3: 0
       atime4: 0
       atime5: 0
@@ -12440,8 +12440,8 @@ TrailRenderer:
     numCapVertices: 0
     alignment: 0
     textureMode: 0
-  m_MinVertexDistance: 0.1
-  m_Autodestruct: 1
+  m_MinVertexDistance: 0.05
+  m_Autodestruct: 0
 --- !u!4 &1902198882
 Transform:
   m_ObjectHideFlags: 0
