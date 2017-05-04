@@ -39,6 +39,7 @@ public class WorldStarter : MonoBehaviour
         {
             portal.gameOver(false);
         }
+        colorScreen.GetComponent<ColorSourceView>().pause(false);
         StartCoroutine(mugShotCountdown());
     }
 

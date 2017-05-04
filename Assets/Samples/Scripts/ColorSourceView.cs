@@ -31,5 +31,10 @@ public class ColorSourceView : MonoBehaviour
         thisRenderer.material.mainTexture = _ColorManager.GetColorTexture();
     }
 
+    public void pause(bool stop)
+    {
+        _ColorManager.pause(stop);
+    }
+
 
 }

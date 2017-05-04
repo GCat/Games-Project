@@ -3,7 +3,7 @@ using System.Collections;
 using Windows.Kinect;
 using System.Threading;
 
-public class ColorSourceManager : MonoBehaviour 
+public class ColorSourceManager : MonoBehaviour
 {
     public int ColorWidth { get; private set; }
     public int ColorHeight { get; private set; }
@@ -14,24 +14,37 @@ public class ColorSourceManager : MonoBehaviour
     private byte[] _Data;
     private byte[] keptFrame;
     private Thread thread = null;
-    
+
     public Texture2D GetColorTexture()
     {
         return _Texture;
     }
-    
+
+    public void pause(bool stop)
+    {
+        if (stop)
+        {
+            thread.Abort();
+        }
+        else
+        {
+            thread = new Thread(new ThreadStart(updateImage));
+            thread.Start();
+        }
+
+    }
     void Start()
     {
         _Sensor = KinectSensor.GetDefault();
-        
-        if (_Sensor != null) 
+
+        if (_Sensor != null)
         {
             _Reader = _Sensor.ColorFrameSource.OpenReader();
-            
+
             var frameDesc = _Sensor.ColorFrameSource.CreateFrameDescription(ColorImageFormat.Rgba);
             ColorWidth = frameDesc.Width;
             ColorHeight = frameDesc.Height;
-            
+
             _Texture = new Texture2D(frameDesc.Width, frameDesc.Height, TextureFormat.RGBA32, false);
             _Data = new byte[frameDesc.BytesPerPixel * frameDesc.LengthInPixels];
             keptFrame = new byte[frameDesc.BytesPerPixel * frameDesc.LengthInPixels];
@@ -53,7 +66,7 @@ public class ColorSourceManager : MonoBehaviour
             yield return new WaitForSeconds(0.05f);
             _Texture.LoadRawTextureData(_Data);
             _Texture.Apply();
-        } 
+        }
     }
     void Update()
     {
@@ -62,7 +75,7 @@ public class ColorSourceManager : MonoBehaviour
 
     }
 
-    void updateImage () 
+    void updateImage()
     {
         while (true)
         {
@@ -98,19 +111,19 @@ public class ColorSourceManager : MonoBehaviour
     void OnApplicationQuit()
     {
         thread.Abort();
-        if (_Reader != null) 
+        if (_Reader != null)
         {
             _Reader.Dispose();
             _Reader = null;
         }
-        
-        if (_Sensor != null) 
+
+        if (_Sensor != null)
         {
             if (_Sensor.IsOpen)
             {
                 _Sensor.Close();
             }
-            
+
             _Sensor = null;
         }
     }

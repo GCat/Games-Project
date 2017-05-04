@@ -24,6 +24,7 @@ public class BodySourceView : MonoBehaviour
     public GameObject kinectLocation;
     public GameObject left_foot;
     public GameObject right_foot;
+    public GameObject colorScreen;
     public Text countdown;
     public int tracking_frames = 8;
     public bool rightHandClosed = false;
@@ -429,8 +430,12 @@ public class BodySourceView : MonoBehaviour
 
     IEnumerator alignCountDown()
     {
+        Camera c = eyes.GetComponent<Camera>();
+        int oldMask = c.cullingMask;
+        c.cullingMask = (1 << LayerMask.NameToLayer("TV") | 1 << LayerMask.NameToLayer("UI"));
         //for debugging purposes
-        string alignText = "Please look at the camera! ";
+        string alignText = "Please look directly ahead! \n";
+        colorScreen.SetActive(true);
         for (int i = 5; i >= 0; i--)
         {
             string newText = alignText;
@@ -438,7 +443,10 @@ public class BodySourceView : MonoBehaviour
             countdown.text = newText;
             yield return new WaitForSeconds(1);
         }
+        colorScreen.SetActive(false);
+        c.cullingMask = oldMask;
         countdown.text = "";
+        colorScreen.GetComponent<ColorSourceView>().pause(true);
         InputTracking.Recenter();
         //VRSettings.showDeviceView = false;
     }
