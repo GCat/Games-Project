@@ -435,7 +435,7 @@ public class BodySourceView : MonoBehaviour
         int oldMask = c.cullingMask;
         c.cullingMask = (1 << LayerMask.NameToLayer("TV") | 1 << LayerMask.NameToLayer("UI"));
         //for debugging purposes
-        string alignText = "Please look directly ahead! \n";
+        string alignText = "Line up the red dots! \n";
         colorScreen.SetActive(true);
         for (int i = 5; i >= 0; i--)
         {
