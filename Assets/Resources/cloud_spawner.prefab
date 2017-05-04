@@ -146,7 +146,7 @@ GameObject:
   - component: {fileID: 95245430997396996}
   m_Layer: 0
   m_Name: arrow
-  m_TagString: Untagged
+  m_TagString: Iron
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -866,9 +866,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccb641815cd45cb4db73b0879b89a682, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationHandle: 0
-  frontHandle: 0
-  bSpawner: {fileID: 0}
   godRay: {fileID: 1446173176992694}
 --- !u!114 &114278805764595264
 MonoBehaviour:

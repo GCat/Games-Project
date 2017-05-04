@@ -30,6 +30,13 @@ public abstract class Grabbable : MonoBehaviour
         {
             child_materials.Remove(p);
         }
+        foreach (Renderer r in child_materials)
+        {
+            if (r.gameObject.tag == "Iron")
+            {
+                child_materials.Remove(r);
+            }
+        }
 
 
         original_materials = new Shader[child_materials.Count];
