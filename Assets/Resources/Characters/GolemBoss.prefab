@@ -718,6 +718,7 @@ MonoBehaviour:
   active: 0
   rotationSpeed: 4
   alive: 0
+  speedModifier: 0.5
   animator: {fileID: 95529519495343212}
   monsterType: 0
   defaultState: 0

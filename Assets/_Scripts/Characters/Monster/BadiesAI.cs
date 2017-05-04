@@ -27,7 +27,7 @@ public abstract class Monster : Character
     public bool alive = false;
     Vector3 cameraPos;
     private bool combatEngaged = false;
-
+    public float speedModifier = 1;
     // Components
     public Animator animator;
 
@@ -97,6 +97,7 @@ public abstract class Monster : Character
         stun.transform.SetParent(transform);
         stunEffect = stun.GetComponent<ParticleSystem>();
         stunEffect.Stop();
+        animator.speed = speedModifier;
     }
 
     void Update()
