@@ -85,6 +85,7 @@ public class Agent : Character
         tR = resources.getTopRight() - new Vector3(10,0,10);
         bL = resources.getBottomLeft() + new Vector3(10, 0, 10);
         StartCoroutine(acquireTargets());
+        StartCoroutine(unStick());
     }
 
     // Update is called once per frame
@@ -162,6 +163,19 @@ public class Agent : Character
                         walkTo(rallyZoneCentre);
                     }
                     break;
+            }
+        }
+    }
+
+    IEnumerator unStick()
+    {
+        while (alive)
+        {
+            Vector3 lastPos = transform.position;
+            yield return new WaitForSeconds(3f);
+            if (transform.position == lastPos && currentState != HumanState.Fighting)
+            {
+                wanderPoint = findNewTarget();
             }
         }
     }
