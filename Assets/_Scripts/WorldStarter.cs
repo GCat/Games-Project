@@ -6,8 +6,8 @@ using UnityEngine.UI;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
-using Emgu.CV.UI;
 using System.Drawing;
+using System.Drawing.Text;
 
 public class WorldStarter : MonoBehaviour
 {
@@ -72,14 +72,16 @@ public class WorldStarter : MonoBehaviour
 
     private void takeMugShot()
     {
+        var foo = new PrivateFontCollection();
         Texture2D mugshot = colorManager.GetColorTexture();
         Image<Bgr, byte> img = UnityTextureToOpenCVImage(mugshot);
+        img = img.Rotate(90.0, new Bgr(0, 0, 0), false);
         int pointx = img.Mat.Cols/2;
         int pointy = img.Mat.Rows / 2;
-
-        string score = string.Format("Score: {}",timeText);
-        img.Draw(score, new System.Drawing.Point(pointx, pointy),
-            FontFace.HersheyComplex, 2.0, new Bgr(255, 255, 255));
+        timeText = addtimeScore();
+        string score = timeText;
+        img.Draw(score, new System.Drawing.Point(300, 100),
+            FontFace.HersheyComplex, 3.0, new Bgr(242, 25, 236),3);
         string id = System.Guid.NewGuid().ToString("N");
         img.Save("images/" + id + ".png");
        
@@ -120,17 +122,8 @@ public class WorldStarter : MonoBehaviour
         float now = Time.time - startTime;
         float min = Mathf.Floor(now / 60);
         float sec = now % 60;
-        string text = "Lasted " + min + " min" + sec + " s!";
+        int secint = (int)sec;
+        string text = "Lasted " + min + " min " + secint + " s!";
         return text;
-    }
-
-    void OnGUI()
-    {
-        if (recordTime)
-        {
-            timeText = addtimeScore();
-            timeText = GUI.TextField(new Rect(100, 100, 1000, 600), timeText, 75);
-            recordTime = false;
-        }
     }
 }

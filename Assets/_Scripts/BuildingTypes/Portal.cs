@@ -187,9 +187,10 @@ public class Portal : MonoBehaviour
             animSpeed = animLength / wave.waveTime;
             anim["Countdown"].speed = animSpeed;
             anim.Play("Countdown");
+            worldstarter.stopGame();
             yield return new WaitForSeconds(wave.waveTime);
         }
-        //worldstarter.stopGame();
+        //
     }
 
     void transitionMusic(bool toBattle)
