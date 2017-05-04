@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using System.Collections;
 using System.IO;
 using UnityEngine.UI;
+using Emgu.CV;
+using Emgu.CV.CvEnum;
+using Emgu.CV.Structure;
+using Emgu.CV.UI;
+using System.Drawing;
 
 public class WorldStarter : MonoBehaviour
 {
@@ -68,16 +73,47 @@ public class WorldStarter : MonoBehaviour
     private void takeMugShot()
     {
         Texture2D mugshot = colorManager.GetColorTexture();
-        byte[] pixels = mugshot.EncodeToPNG();
-        byte[] score = System.Text.Encoding.ASCII.GetBytes(timeText);
-        byte[] final = new byte[pixels.Length + score.Length];
-        System.Buffer.BlockCopy(pixels, 0, final, 0, pixels.Length);
-        System.Buffer.BlockCopy(score, 0, final, pixels.Length, score.Length);
+        Image<Bgr, byte> img = UnityTextureToOpenCVImage(mugshot);
+        int pointx = img.Mat.Cols/2;
+        int pointy = img.Mat.Rows / 2;
+
+        string score = string.Format("Score: {}",timeText);
+        img.Draw(score, new System.Drawing.Point(pointx, pointy),
+            FontFace.HersheyComplex, 2.0, new Bgr(255, 255, 255));
         string id = System.Guid.NewGuid().ToString("N");
-        File.WriteAllBytes("images/" + id + ".png", final);
+        img.Save("images/" + id + ".png");
+       
     }
 
 
+    public  Image<Bgr, byte> UnityTextureToOpenCVImage(Texture2D tex)
+    {
+        return UnityTextureToOpenCVImage(tex.GetPixels32(), tex.width, tex.height);
+    }
+
+    public  Image<Bgr, byte> UnityTextureToOpenCVImage(Color32[] data, int width, int height)
+    {
+
+        byte[,,] imageData = new byte[width, height, 3];
+
+
+        int index = 0;
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                imageData[x, y, 0] = data[index].b;
+                imageData[x, y, 1] = data[index].g;
+                imageData[x, y, 2] = data[index].r;
+
+                index++;
+            }
+        }
+
+        Image<Bgr, byte> image = new Image<Bgr, byte>(imageData);
+
+        return image;
+    }
 
     private string addtimeScore()
     {
