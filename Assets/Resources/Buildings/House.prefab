@@ -2238,7 +2238,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000011474536254}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -14.350258, y: -0.0036621094, z: -19.04905}
+  m_LocalPosition: {x: -11.921991, y: 0.04090953, z: 23.423956}
   m_LocalScale: {x: 8, y: 8, z: 8}
   m_Children:
   - {fileID: 4197553146329756}
@@ -6519,11 +6519,9 @@ MonoBehaviour:
   buildClip: {fileID: 8300000, guid: 0f6a9c7d024f3144690add1c060e8ed0, type: 3}
   destroy: {fileID: 8300000, guid: 903652cac7f2f744ab1f18d72f2461ba, type: 3}
   description: House - Provides Soldiers
-  totalHealth: 100
-  health: 100
   resourceCounter: {fileID: 0}
   tablet: {fileID: 0}
-  healthBar: {fileID: 0}
+  healthBar: {fileID: 114321897829566050}
   bought: 0
   faithCost: 15
   highlight_template: {fileID: 1000011474536254, guid: a46bfc19ba9886f46a82c3e3dc31cd7d,
