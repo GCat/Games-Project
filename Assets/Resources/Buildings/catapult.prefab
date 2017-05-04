@@ -4309,14 +4309,13 @@ MonoBehaviour:
   buildClip: {fileID: 8300000, guid: 0f6a9c7d024f3144690add1c060e8ed0, type: 3}
   destroy: {fileID: 0}
   description: Fires rocks, duh
-  totalHealth: 100
-  health: 100
   resourceCounter: {fileID: 0}
   tablet: {fileID: 0}
   healthBar: {fileID: 114325669755925368}
   bought: 0
   faithCost: 30
-  highlight_template: {fileID: 0}
+  highlight_template: {fileID: 1293041283922382, guid: cb18734fa1e039546b30a0334d6593a8,
+    type: 2}
   canBeGrabbed: 1
   spawnedFrom: {fileID: 0}
   initialRotation: {x: 0, y: 0, z: 0, w: 0}

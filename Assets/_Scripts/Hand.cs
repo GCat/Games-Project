@@ -40,7 +40,7 @@ public class Hand : MonoBehaviour
 
     private Vector3[] held_object_positions;
     private float[] held_object_times;
-
+    private TrailRenderer trail;
 
     public enum PropType { Building, Human, Tool, Handle, Food, Prop, None };
     float rotationTimer;
@@ -68,12 +68,22 @@ public class Hand : MonoBehaviour
         if (kinect_view == null) useMouse = true;
         defaultColor = renderer_open.material.GetColor("_Color");
         lastPosition = transform.position;
+        trail = GetComponent<TrailRenderer>();
+        trail.enabled = false;
     }
 
     // Update is called once per frame
     void Update()
     {
         velocity = (transform.position - lastPosition) / Time.deltaTime;
+        if (velocity.magnitude > 95)
+        {
+            trail.enabled = true;
+        }
+        else
+        {
+            trail.enabled = false;
+        }
         lastPosition = transform.position;
         // MOUSE TESTING
         if (useMouse)
@@ -480,19 +490,27 @@ public class Hand : MonoBehaviour
         {
             //slap baddies
             HealthManager healthManager = gother.GetComponent<HealthManager>();
+            GameObject enemy = gother;
+            if (healthManager == null)
+            {
+                healthManager = gother.transform.root.gameObject.GetComponent<HealthManager>();
+                enemy = gother.transform.root.gameObject;
+                
+            }
             if (healthManager != null && velocity.magnitude > 95)
             {
                 int seed = Random.Range(0, hitSounds.Length);
                 audioSource.PlayOneShot(hitSounds[seed], 0.9f);
-                Monster monster = gother.GetComponent<Monster>();
+                Monster monster = enemy.GetComponent<Monster>();
+                
                 if (monster != null)
                 {
                     monster.stun();
                 }
                 healthManager.decrementHealth(1);
-                if (gother.GetComponent<Bee>() != null)
+                if (enemy.GetComponent<Bee>() != null)
                 {
-                    gother.GetComponent<Rigidbody>().AddForce(velocity.normalized * 4f, ForceMode.Impulse);
+                    enemy.GetComponent<Rigidbody>().AddForce(velocity.normalized * 4f, ForceMode.Impulse);
 
                 }
             }

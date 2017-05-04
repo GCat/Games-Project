@@ -93,7 +93,7 @@ public abstract class Monster : Character
         resources = GameObject.FindGameObjectWithTag("Tablet").GetComponent<ResourceCounter>();
         resources.addBaddie(monsterType);
         currentState = defaultState;
-        GameObject stun = Instantiate(Resources.Load("Particles/Seeing_Stars") as GameObject, transform.position + Vector3.up * height, Quaternion.identity);
+        GameObject stun = Instantiate(Resources.Load("Particles/Seeing_Stars") as GameObject, healthBar.transform.position + Vector3.down * 1, Quaternion.identity);
         stun.transform.SetParent(transform);
         stunEffect = stun.GetComponent<ParticleSystem>();
         stunEffect.Stop();
