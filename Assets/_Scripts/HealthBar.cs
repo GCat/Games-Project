@@ -15,6 +15,17 @@ public class HealthBar : MonoBehaviour {
         originalSize = transform.localScale;
     }
 
+    void faceForward()
+    {
+        Vector3 myLoc = transform.position;
+        transform.LookAt(new Vector3(myLoc.x+10.0f, myLoc.y, myLoc.z));
+        transform.Rotate(0, 0, 90.0f);
+    }
+
+    void Update()
+    {
+        faceForward();
+    }
 
     public void decrementHealth(float damage)
     {
