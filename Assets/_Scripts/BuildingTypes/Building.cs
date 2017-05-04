@@ -35,17 +35,9 @@ public abstract class Building : Grabbable, HealthManager
     public abstract void activate();
     public abstract void deactivate();
 
-    public void faceHPBarToFront()
-    {
-        Vector3 barPos = healthBar.transform.position;
-        barPos.x += 1000;
-        healthBar.transform.LookAt(barPos);
-        healthBar.transform.Rotate(new Vector3(0, 0, 90));
-    }
 
     public void decrementHealth(float damage)
     {
-        faceHPBarToFront();
         StartCoroutine(lockBuilding(5));
         healthBar.decrementHealth(damage);
         if (healthBar.health <= 0)
