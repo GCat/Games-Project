@@ -18,7 +18,7 @@ public class Projectile : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        StartCoroutine(fadeOut(10));
+        StartCoroutine(fadeOut(5f));
         if (GetComponent<ParticleSystem>() != null && explode)
         {
             explosion = GetComponent<ParticleSystem>();
@@ -52,7 +52,8 @@ public class Projectile : MonoBehaviour
         {
             if (!bounce)
             {
-                GetComponent<Rigidbody>().isKinematic = true;
+                GetComponent<Rigidbody>().isKinematic = false;
+                GetComponent<Collider>().enabled = false;
             }
             Destroy(gameObject, destroyDelay);
             if (explosion != null)

@@ -8529,7 +8529,7 @@ Prefab:
     - target: {fileID: 114350785072023630, guid: f8944127a1ee7404ca8ab160846ee099,
         type: 2}
       propertyPath: faith
-      value: 40
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 114622791649807006, guid: f8944127a1ee7404ca8ab160846ee099,
         type: 2}
@@ -10852,8 +10852,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.10000002, y: 0.0013913143, z: 0.10000002}
-  m_Center: {x: 0, y: -0.00066884595, z: 0}
+  m_Size: {x: 0.10000002, y: 0.004776928, z: 0.10000002}
+  m_Center: {x: 0, y: -0.002361653, z: 0}
 --- !u!114 &1653642127
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -10,9 +10,9 @@ public class WatchTower : Tower
     float arrowSpeed = 30;
     public string buildingName;
     public GameObject target;
-   
+
     GameObject pre;
-   
+
 
 
     void Start()
@@ -54,20 +54,24 @@ public class WatchTower : Tower
         {
             Vector3 pos = transform.TransformPoint(GetComponent<BoxCollider>().center);
             pos.y += 5f;
-            Vector3 direction = Vector3.Normalize((victim.transform.position + Vector3.up*2) - pos) * arrowSpeed;
-            GameObject arrow = GameObject.Instantiate(pre, pos, Quaternion.LookRotation(direction)) as GameObject;
-            arrow.GetComponent<Projectile>().parent = gameObject;
-            arrow.GetComponent<Rigidbody>().velocity = direction;
-            Physics.IgnoreCollision(GetComponent<Collider>(), arrow.GetComponent<Collider>());
-           
+            Vector3 direction = Vector3.Normalize((victim.transform.position + Vector3.up * 2) - pos) * arrowSpeed;
+             GameObject arrow = GameObject.Instantiate(pre, pos, Quaternion.LookRotation(direction)) as GameObject;
+             arrow.GetComponent<Projectile>().parent = gameObject;
+             arrow.GetComponent<Rigidbody>().velocity = direction;
+             Physics.IgnoreCollision(GetComponent<Collider>(), arrow.GetComponent<Collider>());
+            // 
             float travelTime = Vector3.Distance(victim.transform.position, pos) / arrowSpeed;
+             if (travelTime == null || travelTime > 10f || travelTime < 0.2f)
+             {
+                 Destroy(arrow);
+             }
             StartCoroutine(WaitToDamage(travelTime, arrowDamage, currentTarget));
             audioSource.PlayOneShot(attackClip[UnityEngine.Random.Range(0, attackClip.Length)], 0.5f);
         }
     }
 
 
-    IEnumerator WaitToDamage(float waitTime,float damage, GameObject victim)
+    IEnumerator WaitToDamage(float waitTime, float damage, GameObject victim)
     {
         yield return new WaitForSeconds(waitTime);
         if (victim != null)
@@ -87,7 +91,7 @@ public class WatchTower : Tower
 
     public override void activate()
     {
-        
+
         base.activate();
     }
 }
