@@ -45,6 +45,7 @@ public class Portal : MonoBehaviour
     public AudioClip teleport;
     public AudioClip party;
     AudioSource asource;
+    List<GameObject> spawnedMonsters;
 
     void Start()
     {
@@ -147,7 +148,7 @@ public class Portal : MonoBehaviour
         yield return new WaitForSeconds(delayStart);
         foreach (Wave wave in Waves)
         {
-            List<GameObject> spawnedMonsters = new List<GameObject>();
+            spawnedMonsters = new List<GameObject>();
             if (wave.waveEvent != null)
             {
                 wave.waveEvent.startEvent();

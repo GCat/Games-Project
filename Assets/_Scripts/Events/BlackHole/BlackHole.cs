@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class BlackHole : MonoBehaviour {
 
-
+    private GameObject portal;
+    public BlackHolePull pullArea; 
     public float damage;
     public float lifetime;
 	// Use this for initialization
 	void Start () {
+        StartCoroutine(WaitToMove());
         StartCoroutine(WaitToDie());
+        portal = GameObject.FindGameObjectWithTag("Portal");
     }
 	
 	// Update is called once per frame
@@ -41,9 +44,16 @@ public class BlackHole : MonoBehaviour {
         }
     }
 
-    IEnumerator WaitToDie()
+    IEnumerator WaitToMove()
     {
         yield return new WaitForSeconds(lifetime);
+        pullArea.pullForce = 0.0f;
+        GetComponent<Rigidbody>().velocity = Vector3.up * 1000f;
+    }
+
+    IEnumerator WaitToDie()
+    {
+        yield return new WaitForSeconds(lifetime +2f);
         Destroy(gameObject);
     }
 }
