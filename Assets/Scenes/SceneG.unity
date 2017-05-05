@@ -8529,7 +8529,7 @@ Prefab:
     - target: {fileID: 114350785072023630, guid: f8944127a1ee7404ca8ab160846ee099,
         type: 2}
       propertyPath: faith
-      value: 250
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 114622791649807006, guid: f8944127a1ee7404ca8ab160846ee099,
         type: 2}
