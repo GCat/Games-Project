@@ -25,7 +25,7 @@ class Minotaur : Monster
             
             return;
         }
-        damageInRadius(5f + transform.localScale.z);
+        damageInRadius(5f + transform.lossyScale.z);
         //smokeEffect.Clear();
         //smokeEffect.Play();
     }
@@ -34,16 +34,15 @@ class Minotaur : Monster
     {
         return Vector3.Distance(target, transform.position) < (agent.stoppingDistance + 5);
     }
-
     private void damageInRadius(float radius)
     {
         int layerMask = 1 << 9;
         layerMask |= 1 << 10;
-        Collider[] hitColliders = Physics.OverlapBox(transform.position, new Vector3(radius, 1, radius), Quaternion.identity, layerMask);
+        Collider[] hitColliders = Physics.OverlapSphere(new Vector3(transform.position.x, 0.0f, transform.position.z),radius, layerMask);
         foreach(Collider collider in hitColliders)
         {
-            HealthManager health = collider.GetComponent<HealthManager>();
-            if(health != null && collider.GetComponent<Monster>() == null)
+            HealthManager health = collider.gameObject.GetComponent<HealthManager>();
+            if(health != null && collider.gameObject.GetComponent<Monster>() == null)
             {
                 health.decrementHealth(strength);
             }

@@ -12,7 +12,7 @@ public class Handle : Grabbable {
 
     void Start()
     {
-
+        StartCoroutine(WaitToDestroyRay(30.0f));
        
     }
 
@@ -58,5 +58,10 @@ public class Handle : Grabbable {
         {
             removeOutline();
         }
+    }
+    IEnumerator WaitToDestroyRay(float waitime)
+    {
+        yield return new WaitForSeconds(waitime);
+        godRay.SetActive(false);
     }
 }

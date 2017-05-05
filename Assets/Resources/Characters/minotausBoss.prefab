@@ -2176,8 +2176,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1916321228436156}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -41.108837, y: 0.040910244, z: -14.486654}
-  m_LocalScale: {x: 10.496347, y: 10.496343, z: 10.496343}
+  m_LocalPosition: {x: 20.721035, y: 0.04090953, z: 29.994707}
+  m_LocalScale: {x: 10.704609, y: 10.704602, z: 10.704602}
   m_Children:
   - {fileID: 4005730895525246}
   - {fileID: 4168191937077902}
@@ -2742,7 +2742,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85c1a0f337ebf7f49af2dd5452a7e6e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 750
+  health: 300
 --- !u!114 &114971249494862740
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2756,7 +2756,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthBar: {fileID: 0}
   agent: {fileID: 0}
-  strength: 80
+  strength: 50
   faithValue: 30
   active: 0
   rotationSpeed: 1
@@ -2774,10 +2774,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.25
-  m_Height: 2
+  m_Radius: 0.74611527
+  m_Height: 1.9999999
   m_Direction: 1
-  m_Center: {x: 0, y: 1.1, z: 0}
+  m_Center: {x: -0.082225524, y: 0.98, z: -0.05}
 --- !u!137 &137605614312460578
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
@@ -2849,12 +2849,12 @@ NavMeshAgent:
   m_GameObject: {fileID: 1916321228436156}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 0.01
+  m_Radius: 0.4
+  m_Speed: 1
   m_Acceleration: 0.1
   avoidancePriority: 50
   m_AngularSpeed: 2
-  m_StoppingDistance: 5
+  m_StoppingDistance: 15
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1

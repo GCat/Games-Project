@@ -334,7 +334,7 @@ public class Agent : Character
             anim.Play("walk");
             return;
         }
-        if (atDestination(closestEnemy.transform.position))
+        if (atDestination(closestEnemy.GetComponent<Collider>().ClosestPointOnBounds(transform.position)))
         {
             if (!attack(closestEnemy))
             {
