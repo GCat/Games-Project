@@ -308,11 +308,11 @@ public abstract class Monster : Character
     IEnumerator stunLock(float time)
     {
         isStunned = true;
-        agent.isStopped = true;
+        if(agent != null) agent.isStopped = true;
         yield return new WaitForSeconds(time);
 
         isStunned = false;
-        agent.isStopped = false;
+        if (agent != null && agent.isOnNavMesh) agent.isStopped = false;
         preventLock(2);
 
     }
