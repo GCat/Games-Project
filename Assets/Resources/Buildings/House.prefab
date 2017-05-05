@@ -6515,8 +6515,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a25bbba434e2794e8bd5c0264fbe8fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 0}
-  buildClip: {fileID: 8300000, guid: 0f6a9c7d024f3144690add1c060e8ed0, type: 3}
+  buildClip: {fileID: 8300000, guid: 046cdf3acbe331946873348cdfcb9f8c, type: 3}
   destroy: {fileID: 8300000, guid: 903652cac7f2f744ab1f18d72f2461ba, type: 3}
   description: House - Provides Soldiers
   resourceCounter: {fileID: 0}

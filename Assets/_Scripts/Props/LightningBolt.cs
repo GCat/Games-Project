@@ -48,6 +48,10 @@ public class LightningBolt : Tool {
         {
             transform.LookAt(shoulder.transform);
         }
+        else if (held)
+        {
+            Debug.Log("Can't find shoulder :(");
+        }
 
     }
     void OnCollisionEnter(Collision col)

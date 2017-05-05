@@ -5438,10 +5438,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb20c619b9dd02e4e88c97540c7b7e02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 0}
   buildClip: {fileID: 8300000, guid: 10e93d3736069b4498987c2c956fbfd3, type: 3}
   destroy: {fileID: 0}
-  description: 
+  description: Wall - Slows Enemies
   resourceCounter: {fileID: 0}
   tablet: {fileID: 0}
   healthBar: {fileID: 114098883170341936}
@@ -5483,7 +5482,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1848f75a57f23e45b10d083fc910964, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 0}
   buildClip: {fileID: 8300000, guid: 0f6a9c7d024f3144690add1c060e8ed0, type: 3}
   destroy: {fileID: 0}
   description: 
@@ -5536,7 +5534,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1848f75a57f23e45b10d083fc910964, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 0}
   buildClip: {fileID: 8300000, guid: 0f6a9c7d024f3144690add1c060e8ed0, type: 3}
   destroy: {fileID: 0}
   description: 
