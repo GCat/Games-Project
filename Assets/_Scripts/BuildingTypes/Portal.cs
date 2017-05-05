@@ -1,10 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Audio;
 
-public class Portal : MonoBehaviour
+public class Portal : Grabbable
 {
 
 
@@ -15,6 +16,8 @@ public class Portal : MonoBehaviour
     public Wave[] Waves;
     public GameObject spawnPos;
     public GameObject[] monsterTypes;
+    public Tutorial[] introSequence;
+    public Tutorial[] tutorialSequence;
 
     public GameObject spawnerLocationsParent;
     private List<Transform> spawnerLocations;
@@ -49,6 +52,7 @@ public class Portal : MonoBehaviour
 
     void Start()
     {
+        //setGrabbable(false);
         spawner = Resources.Load("cloud_spawner") as GameObject;
         temple = GameObject.FindGameObjectWithTag("Temple");
         resourceCounter = GameObject.FindGameObjectWithTag("Tablet").GetComponent<ResourceCounter>();
@@ -61,6 +65,7 @@ public class Portal : MonoBehaviour
             spawnerLocations.Add(child);
         }
         asource.Play();
+        StartCoroutine(playIntroSequence());
     }
 
     void Update()
@@ -75,7 +80,6 @@ public class Portal : MonoBehaviour
             try
             {
                 StartCoroutine(spawnWaves());
-                StartCoroutine(tutorial());
             }
             catch (System.Exception e)
             {
@@ -84,14 +88,6 @@ public class Portal : MonoBehaviour
         }
 
     }
-
-
-    IEnumerator tutorial()
-    {
-        yield return new WaitForSeconds(10f);
-
-    }
-
     //creates a new spawner with a new tool/ building for the player
     void spawnNewBuilding(GameObject newBuilding)
     {
@@ -139,8 +135,49 @@ public class Portal : MonoBehaviour
 
     }
 
+    IEnumerator playIntroSequence()
+    {
+        foreach (Tutorial tutorial in introSequence)
+        {
+            if (!started)
+            {
+                voiceOverSource.clip = tutorial.voiceClip;
+                voiceOverSource.Play();
+                if (tutorial.highlightedObject != null)
+                {
+                    tutorial.highlightedObject.isFlashing = true;
+                    StartCoroutine(tutorial.highlightedObject.flash());
+                }
+                yield return new WaitForSeconds(tutorial.voiceTime);
+                if (tutorial.highlightedObject != null)
+                {
+                    tutorial.highlightedObject.stopFlashing();
+                }
+            }
+        }
+
+    }
+
     IEnumerator spawnWaves()
     {
+        //Tutorial sequence
+
+        foreach (Tutorial tutorial in tutorialSequence)
+        {
+            voiceOverSource.clip = tutorial.voiceClip;
+            voiceOverSource.Play();
+            if (tutorial.highlightedObject != null)
+            {
+                tutorial.highlightedObject.isFlashing = true;
+                StartCoroutine(tutorial.highlightedObject.flash());
+            }
+            yield return new WaitForSeconds(tutorial.voiceTime);
+            if (tutorial.highlightedObject != null)
+            {
+                tutorial.highlightedObject.stopFlashing();
+            }
+        }
+
         //coundown animation
         animSpeed = animLength / delayStart;
         anim["Countdown"].speed = animSpeed;
@@ -222,7 +259,7 @@ public class Portal : MonoBehaviour
                 asource.Play();
                 break;
             case AudioTransition.VoiceOver:
-                
+
                 break;
 
         }
@@ -246,7 +283,7 @@ public class Portal : MonoBehaviour
         if (movepoints.Length > 0)
         {
             GameObject p = Resources.Load("Particles/teleport1") as GameObject;
-            int index = Random.Range(0, movepoints.Length - 1);
+            int index = UnityEngine.Random.Range(0, movepoints.Length - 1);
             NavMeshHit hit;
             if (NavMesh.SamplePosition(movepoints[index].transform.position, out hit, 80f, NavMesh.AllAreas))
             {
@@ -269,4 +306,11 @@ public class Portal : MonoBehaviour
 
     }
 
+    public override void grab()
+    {
+    }
+
+    public override void release(Vector3 vel)
+    {
+    }
 }

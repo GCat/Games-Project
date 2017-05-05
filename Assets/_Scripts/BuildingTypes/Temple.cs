@@ -19,8 +19,6 @@ public class Temple : Building
         StartCoroutine(spawnHumans());
         InvokeRepeating("incrementResource", 10.0f, 10.0f); // after 10 sec call every 5
         canBeGrabbed = false;
-        CancelInvoke("showStartOutline");
-        CancelInvoke("removeOutline");
         resourceCounter.gameStart();
     }
 
@@ -35,12 +33,6 @@ public class Temple : Building
         }
     }
 
-    private void Start()
-    {
-        showStartOutline();
-        InvokeRepeating("showStartOutline", 1, 1.0f);
-        InvokeRepeating("removeOutline", 1.5f, 1.0f); 
-    }
 
     public bool isPlaced()
     {

@@ -22,12 +22,11 @@ GameObject:
   - component: {fileID: 33827947114852604}
   - component: {fileID: 23133430183217552}
   - component: {fileID: 95168340610757470}
-  - component: {fileID: 114735007817176126}
   - component: {fileID: 96428682151922488}
   - component: {fileID: 114376109916531328}
   - component: {fileID: 54006693192419610}
   - component: {fileID: 65679489640318624}
-  m_Layer: 0
+  m_Layer: 25
   m_Name: Arrow_Regular
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -233,15 +232,3 @@ MonoBehaviour:
   damage: 8
   explode: 0
   fireBall: 0
---- !u!114 &114735007817176126
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1041092105588908}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b795735af80b8e84297f4b561992b539, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startMarker: {fileID: 0}
