@@ -187,6 +187,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe8bcb1945d54f5499e43dff95d6ce85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pullArea: {fileID: 114244513561085204}
   damage: 10
   lifetime: 15
 --- !u!114 &114244513561085204
