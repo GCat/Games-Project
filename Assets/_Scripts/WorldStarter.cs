@@ -14,11 +14,10 @@ public class WorldStarter : MonoBehaviour
     public GameObject colorScreen;
     private ColorSourceManager colorManager;
     private float startTime;
-    private Rect TextAreaRect = new Rect(25, 25, 250, 100);
     public Text gameOverText;
     public Portal portal;
     string timeText;
-    bool recordTime = false;
+
     void Start()
     {
         colorManager = colorScreen.GetComponent<ColorSourceManager>();
@@ -53,7 +52,6 @@ public class WorldStarter : MonoBehaviour
     IEnumerator mugShotCountdown()
     {
         string text = gameOverText.text;
-        recordTime = true;
         for (int i = 5; i >= 0; i--)
         {
             yield return new WaitForSeconds(1);

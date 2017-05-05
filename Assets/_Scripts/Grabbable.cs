@@ -67,7 +67,7 @@ public abstract class Grabbable : MonoBehaviour
             }
             catch (Exception e)
             {
-
+                Debug.LogError(e);
             }
         }
     }

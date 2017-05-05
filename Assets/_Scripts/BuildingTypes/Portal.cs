@@ -7,7 +7,7 @@ using UnityEngine.Audio;
 public class Portal : MonoBehaviour
 {
 
-    bool active = false;
+
     [System.Serializable]
     public enum MonsterType { Monster, Minataur, Harpy, BossMinataur, BossGolem };
 
@@ -23,19 +23,15 @@ public class Portal : MonoBehaviour
     private float animLength = 0.833f;
     private float animSpeed = 1f;
     public float delayStart;
-    Vector3 pos;
 
     Animation anim;
-    GameObject playerHead;
 
-    Vector3 originalPos;
 
     GameObject temple;
     ResourceCounter resourceCounter;
 
-    private float startTime;
     bool started = false;
-    MonsterType currentType = 0;
+
     GameObject spawner;
 
     enum AudioTransition { Battle, Peace, VoiceOver };
@@ -55,13 +51,9 @@ public class Portal : MonoBehaviour
         spawner = Resources.Load("cloud_spawner") as GameObject;
         temple = GameObject.FindGameObjectWithTag("Temple");
         resourceCounter = GameObject.FindGameObjectWithTag("Tablet").GetComponent<ResourceCounter>();
-        pos = spawnPos.transform.position;
         asource = GetComponent<AudioSource>();
         asource.clip = peaceMusic;
-        startTime = Time.time;
         anim = GetComponentInChildren<Animation>();
-        playerHead = GameObject.FindGameObjectWithTag("MainCamera");
-        originalPos = transform.position;
         spawnerLocations = new List<Transform>();
         foreach (Transform child in spawnerLocationsParent.transform)
         {
@@ -193,11 +185,13 @@ public class Portal : MonoBehaviour
                 Building b = wave.newBuilding.GetComponent<Building>();
                 if (b != null && b.buildClip != null)
                 {
-                    voiceOverSource.PlayOneShot(b.buildClip, 1.2f);
+                    voiceOverSource.clip = b.buildClip;
+                    voiceOverSource.Play();
                 }
                 else if (wave.newBuilding.GetComponent<LightningBolt>())
                 {
-                    voiceOverSource.PlayOneShot(wave.newBuilding.GetComponent<LightningBolt>().buildClip, 1.2f);
+                    voiceOverSource.clip = wave.newBuilding.GetComponent<LightningBolt>().buildClip;
+                    voiceOverSource.Play();
                 }
             }
             transitionMusic(AudioTransition.Peace, 10f);

@@ -136,19 +136,13 @@ public class WallTurret : Building
     public override void die()
     {
         Destroy(highlight);
-        try
-        {
-            if (gameObject != null)
-            {
 
-                Destroy(gameObject);
-            }
-
-        }
-        catch (Exception e)
+        if (gameObject != null)
         {
 
+            Destroy(gameObject);
         }
+
     }
 
     private IEnumerator clearOutline()

@@ -46,8 +46,8 @@ public class Agent : Character
 
     //Killer
     private GameObject closestEnemy;
-    private int maxCell;
-    private float dis2Enemy = 0;
+
+
     public bool active = true;
     //public CharacterController controller;
     private HumanState currentState = HumanState.Wandering;
@@ -59,7 +59,7 @@ public class Agent : Character
 
     private Vector3 bL;
     private Vector3 tR;
-    private float rallyZoneRadius = 10;
+
     
     //determines if this chap is in a fight 
     private bool combatEngaged = false;
@@ -73,7 +73,7 @@ public class Agent : Character
         rb = GetComponent<Rigidbody>();
         rb.interpolation = RigidbodyInterpolation.Interpolate;
         temple = GameObject.FindGameObjectWithTag("Temple");
-        maxCell = 5000;
+
         closestEnemy = null;
         fighterType = (int)Fighter.Killer;
         resources = GameObject.FindGameObjectWithTag("Tablet").GetComponent<ResourceCounter>();
@@ -490,7 +490,6 @@ public class Agent : Character
         if (other.gameObject.tag == "RallyPoint" && currentState == HumanState.Falling)
         {
             SphereCollider rallyZone = other as SphereCollider;
-            rallyZoneRadius = rallyZone.radius;
             droppedOnZone = true;
             rallyZoneCentre = other.gameObject.transform.position;
 

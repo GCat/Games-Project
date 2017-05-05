@@ -45,8 +45,6 @@ public abstract class Monster : Character
 
     //the nearest position on the navmesh to the desired target point
     private Vector3 nextBestTarget;
-    private LineRenderer lineRenderer;
-    private Renderer[] renderers;
 
     private Collider[] ragdoll;
 
@@ -75,7 +73,6 @@ public abstract class Monster : Character
         {
             agent = GetComponent<NavMeshAgent>();
         }
-        lineRenderer = GetComponent<LineRenderer>();
         ragdoll = GetComponentsInChildren<Collider>();
         foreach (Collider collider in ragdoll)
         {
@@ -88,7 +85,6 @@ public abstract class Monster : Character
         closestEnemy = null;
         temple = GameObject.FindGameObjectWithTag("Temple");
         alive = true;
-        renderers = GetComponentsInChildren<Renderer>();
         templeAttackPoint = temple.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
         resources = GameObject.FindGameObjectWithTag("Tablet").GetComponent<ResourceCounter>();
         resources.addBaddie(monsterType);
@@ -312,11 +308,11 @@ public abstract class Monster : Character
     IEnumerator stunLock(float time)
     {
         isStunned = true;
-        agent.Stop();
+        agent.isStopped = true;
         yield return new WaitForSeconds(time);
 
         isStunned = false;
-        agent.Resume();
+        agent.isStopped = false;
         preventLock(2);
 
     }
@@ -419,7 +415,8 @@ public abstract class Monster : Character
             }
             catch (TargetNotFoundException exception)
             {
-                throw;
+                Debug.LogError(exception);
+                return;
             }
             target = nextBestTarget;
         }
@@ -532,8 +529,11 @@ public abstract class Monster : Character
             {
                 collider.enabled = false;
             }
-            GameObject ghost = Instantiate(Resources.Load("Particles/Spooky_Explosion") as GameObject, transform.position, Quaternion.identity);
-            Destroy(ghost, 3f);
+            if (GetComponent<Bee>() != null)
+            {
+                GameObject ghost = Instantiate(Resources.Load("Particles/Spooky_Explosion") as GameObject, transform.position, Quaternion.identity);
+                Destroy(ghost, 3f);
+            }
             gameObject.tag = "Untagged";
             //StartCoroutine(WaitToDestroy(0.1f));
             resources.removeBaddie(monsterType);

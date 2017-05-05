@@ -6,7 +6,6 @@ using UnityEngine;
 public class Handle : Grabbable {
 
 
-    private bool grabbed = false;
     public GameObject godRay;
     private bool grabbedOnce = false;
     Quaternion rotation;

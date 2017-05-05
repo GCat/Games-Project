@@ -17,7 +17,6 @@ public class ResourceCounter : Grabbable
     private Temple temple;
     private Portal portal;
 
-    private int timeToNextWave = 30;
     public int faith = 0;
     private int population = 0;
     private int iron = 0;

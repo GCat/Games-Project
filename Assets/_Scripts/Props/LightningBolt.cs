@@ -17,6 +17,7 @@ public class LightningBolt : Tool {
         base.grab();
         GetComponent<Collider>().enabled = true;
         GetComponent<Rigidbody>().isKinematic = false;
+        held = true;
         
     }
 

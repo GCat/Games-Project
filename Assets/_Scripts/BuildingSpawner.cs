@@ -101,7 +101,7 @@ public class BuildingSpawner : MonoBehaviour
 
                     if (usedOnce) godRay.SetActive(false);
                     Debug.Log("Instantiating");
-                    if (transform.position != null && transform.rotation != null && buildingToSpawn != null)
+                    if (buildingToSpawn != null)
                     {
                         building = Instantiate(buildingToSpawn, transform.position + Vector3.up, transform.rotation, transform);
                     }

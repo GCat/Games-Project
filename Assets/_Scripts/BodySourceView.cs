@@ -40,7 +40,6 @@ public class BodySourceView : MonoBehaviour
     private int l_hand_open_frames = 0;
     private ulong player_id = 99;
     bool runningThread = true;
-    private Renderer renderer;
     public GameObject Temple;
     private bool started = true;
     private TrackingContext leftHandContext = TrackingContext.Medium;
@@ -59,7 +58,6 @@ public class BodySourceView : MonoBehaviour
 
     private Kinect.Body trackedBody;
     private GameObject trackedBodyObject;
-
     private Dictionary<Kinect.JointType, Transform> bodyTransforms = new Dictionary<Kinect.JointType, Transform>();
     private Dictionary<Kinect.JointType, Vector3> bodyPositions = new Dictionary<Kinect.JointType, Vector3>();
 
@@ -98,7 +96,6 @@ public class BodySourceView : MonoBehaviour
 
     private void Start()
     {
-        renderer = GetComponent<Renderer>();
         Temple = GameObject.FindGameObjectWithTag("Temple");
     }
 
@@ -236,9 +233,6 @@ public class BodySourceView : MonoBehaviour
         right_hand.transform.position = Vector3.Slerp(right_hand.transform.position, player_objects[Kinect.JointType.HandRight].transform.position, Time.deltaTime * 10.0f);
         left_hand.transform.position = Vector3.Slerp(left_hand.transform.position, player_objects[Kinect.JointType.HandLeft].transform.position, Time.deltaTime * 10.0f);
 
-        Vector3 right_foot_direction = player_objects[Kinect.JointType.FootRight].transform.position - player_objects[Kinect.JointType.AnkleRight].transform.position;
-        Vector3 left_foot_direction = player_objects[Kinect.JointType.FootLeft].transform.position - player_objects[Kinect.JointType.AnkleLeft].transform.position;
-
         //right_foot.transform.rotation = Quaternion.Slerp(right_foot.transform.rotation, Quaternion.LookRotation(right_foot_direction), Time.deltaTime * 10.0f);
         //left_foot.transform.rotation = Quaternion.Slerp(left_foot.transform.rotation, Quaternion.LookRotation(left_foot_direction), Time.deltaTime * 10.0f);
         right_foot.transform.position = Vector3.Slerp(right_foot.transform.position, player_objects[Kinect.JointType.FootRight].transform.position, Time.deltaTime * 10.0f);
@@ -253,7 +247,6 @@ public class BodySourceView : MonoBehaviour
         player_body.transform.rotation = Quaternion.Slerp(player_body.transform.rotation, Quaternion.LookRotation(spine_forward, spine), Time.deltaTime * 10.0f);
 
         //Adjust head rotation
-        Vector3 head_up = player_objects[Kinect.JointType.Head].transform.position - player_objects[Kinect.JointType.Neck].transform.position;
         head_model.transform.position = player_objects[Kinect.JointType.Head].transform.position;
         head_model.transform.rotation = Quaternion.Slerp(head_model.transform.rotation, eyes.transform.rotation, Time.deltaTime * 10.0f);
 
@@ -466,11 +459,6 @@ public class BodySourceView : MonoBehaviour
         {
             GameObject jointObj = new GameObject();
             //jointObj.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
-            LineRenderer lr = jointObj.AddComponent<LineRenderer>();
-            lr.SetVertexCount(2);
-            lr.material = BoneMaterial;
-            lr.SetWidth(0.05f, 0.05f);
-
             jointObj.transform.localScale = new Vector3(5f, 5f, 5f);
             jointObj.name = jt.ToString();
             jointObj.transform.parent = body.transform;
