@@ -9,5 +9,7 @@ public class Tutorial
     public Grabbable highlightedObject;
     public AudioClip voiceClip;
     public float voiceTime;
+    public string highlightTag = null;
+
 }
 

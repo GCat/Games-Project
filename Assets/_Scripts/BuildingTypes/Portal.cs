@@ -145,7 +145,6 @@ public class Portal : Grabbable
                 voiceOverSource.Play();
                 if (tutorial.highlightedObject != null)
                 {
-                    tutorial.highlightedObject.isFlashing = true;
                     StartCoroutine(tutorial.highlightedObject.flash());
                 }
                 yield return new WaitForSeconds(tutorial.voiceTime);
@@ -168,13 +167,20 @@ public class Portal : Grabbable
             voiceOverSource.Play();
             if (tutorial.highlightedObject != null)
             {
-                tutorial.highlightedObject.isFlashing = true;
                 StartCoroutine(tutorial.highlightedObject.flash());
+            }
+            else if (tutorial.highlightTag != null)
+            {
+                highlightTag(tutorial.highlightTag, true);
             }
             yield return new WaitForSeconds(tutorial.voiceTime);
             if (tutorial.highlightedObject != null)
             {
                 tutorial.highlightedObject.stopFlashing();
+            }
+            else if (tutorial.highlightTag != null)
+            {
+                highlightTag(tutorial.highlightTag, false);
             }
         }
 
@@ -232,6 +238,10 @@ public class Portal : Grabbable
                     voiceOverSource.Play();
                 }
             }
+            if (wave.voiceClip != null)
+            {
+                StartCoroutine(playInSequence(voiceOverSource, wave.voiceClip));
+            }
             transitionMusic(AudioTransition.Peace, 10f);
             resourceCounter.faith += wave.faithReward;
             //coundown animation
@@ -242,6 +252,29 @@ public class Portal : Grabbable
         }
         worldstarter.stopGame();
     }
+
+    IEnumerator playInSequence(AudioSource source, AudioClip clip) {
+        yield return new WaitForSeconds(source.clip.length);
+        source.clip = clip;
+        source.Play();
+    }
+
+    public void highlightTag(string tag, bool on)
+    {
+        foreach (GameObject human in GameObject.FindGameObjectsWithTag(tag))
+        {
+            Grabbable a = human.GetComponent<Grabbable>();
+            if (on)
+            {
+                StartCoroutine(a.flash());
+            }
+            else
+            {
+                a.stopFlashing();
+            }
+        }
+    }
+
 
     void transitionMusic(AudioTransition transition, float transitionTime)
     {

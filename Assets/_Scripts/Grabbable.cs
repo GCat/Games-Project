@@ -10,8 +10,7 @@ public abstract class Grabbable : MonoBehaviour
     protected Shader[] original_materials;
     protected bool allowOutline = true;
     private Shader outlineShader;
-    public bool isFlashing = false;
-    private bool flashed = false;
+    private bool isFlashing = false;
     //function to be called when grabbed by hand
     public abstract void grab();
 
@@ -57,6 +56,8 @@ public abstract class Grabbable : MonoBehaviour
 
     public IEnumerator flash()
     {
+
+        isFlashing = true;
         while (isFlashing)
         {
             setOutline();

@@ -10208,12 +10208,14 @@ MonoBehaviour:
     waveEvent: {fileID: 0}
     newBuilding: {fileID: 1000010810685680, guid: fe9f788ae3115b343a21720d55615ef0,
       type: 2}
+    voiceClip: {fileID: 8300000, guid: 4f9a26fc3ab021a479fd6e3c4126f51e, type: 3}
   - monsters: 0000000000000000000000000000000001000000
     waveTime: 30
     faithReward: 5
     waveEvent: {fileID: 0}
     newBuilding: {fileID: 1000011474536254, guid: 86e7e9ca316409341936a51aa4c4a194,
       type: 2}
+    voiceClip: {fileID: 8300000, guid: 98c90e094fdd63a429c11e03c4b6666b, type: 3}
   - monsters: 00000000000000000000000000000000000000000100000001000000
     waveTime: 30
     faithReward: 10
@@ -10221,12 +10223,14 @@ MonoBehaviour:
       type: 2}
     newBuilding: {fileID: 1079506678861314, guid: 310caef1c0665e74e891d1f72c253479,
       type: 2}
+    voiceClip: {fileID: 0}
   - monsters: 0000000002000000000000000200000000000000000000000000000001000000
     waveTime: 30
     faithReward: 10
     waveEvent: {fileID: 0}
     newBuilding: {fileID: 1801555696720252, guid: 10ce0b7e17a2ab547adc092fc6fc7ee3,
       type: 2}
+    voiceClip: {fileID: 0}
   - monsters: 00000000010000000200000000000000010000000200000000000000010000000200000000000000
     waveTime: 20
     faithReward: 15
@@ -10234,39 +10238,46 @@ MonoBehaviour:
       type: 2}
     newBuilding: {fileID: 1800203989559666, guid: be19340edba1cb34ca731aa769354cb5,
       type: 2}
+    voiceClip: {fileID: 0}
   - monsters: 0000000004000000000000000000000000000000
     waveTime: 20
     faithReward: 15
     waveEvent: {fileID: 0}
     newBuilding: {fileID: 0}
+    voiceClip: {fileID: 8300000, guid: f1a9916578bc86e419b1419d3947b1df, type: 3}
   - monsters: 000000000100000002000000000000000100000002000000000000000100000002000000000000000000000000000000
     waveTime: 20
     faithReward: 20
     waveEvent: {fileID: 114947349970735228, guid: 4eb7c76834d01cb4f91089e1bba51f17,
       type: 2}
     newBuilding: {fileID: 0}
+    voiceClip: {fileID: 0}
   - monsters: 000000000100000002000000000000000100000002000000000000000100000002000000000000000000000000000000
     waveTime: 20
     faithReward: 20
     waveEvent: {fileID: 0}
     newBuilding: {fileID: 0}
+    voiceClip: {fileID: 0}
   - monsters: 0300000001000000010000000100000001000000010000000000000000000000
     waveTime: 20
     faithReward: 20
     waveEvent: {fileID: 0}
     newBuilding: {fileID: 0}
+    voiceClip: {fileID: 0}
   - monsters: 040000000100000002000000040000000100000002000000030000000100000002000000040000000000000003000000
     waveTime: 45
     faithReward: 20
     waveEvent: {fileID: 114183266969626938, guid: 23852ee6ddaf3834089adcc385a32968,
       type: 2}
     newBuilding: {fileID: 0}
+    voiceClip: {fileID: 0}
   - monsters: 030000000300000000000000040000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000
     waveTime: 45
     faithReward: 5
     waveEvent: {fileID: 114090796778803748, guid: 3f549204c52d82e44b390fd2b641bb2e,
       type: 2}
     newBuilding: {fileID: 0}
+    voiceClip: {fileID: 0}
   spawnPos: {fileID: 2120414065}
   monsterTypes:
   - {fileID: 1830059517110030, guid: d27d199e890e0f44ba28c100c8b40d55, type: 2}
@@ -10278,22 +10289,31 @@ MonoBehaviour:
   - highlightedObject: {fileID: 0}
     voiceClip: {fileID: 8300000, guid: ff4c39433259c644bb7282c24921082a, type: 3}
     voiceTime: 10
+    highlightTag: 
   - highlightedObject: {fileID: 1320831505}
     voiceClip: {fileID: 8300000, guid: 1cd3c0b08d4b95147831fcdbe9eb3682, type: 3}
     voiceTime: 8
+    highlightTag: 
   - highlightedObject: {fileID: 0}
     voiceClip: {fileID: 8300000, guid: e9771d8836974c448a949dd937bd4a4a, type: 3}
     voiceTime: 12
+    highlightTag: 
   tutorialSequence:
   - highlightedObject: {fileID: 862747844}
     voiceClip: {fileID: 8300000, guid: a37bd64c63ee1fa4d82eca6623b7de6a, type: 3}
     voiceTime: 15
+    highlightTag: 
   - highlightedObject: {fileID: 1556799371}
     voiceClip: {fileID: 8300000, guid: d953973397e80784b8c686293dc07d19, type: 3}
     voiceTime: 8
+    highlightTag: 
+  - highlightedObject: {fileID: 0}
+    voiceClip: {fileID: 8300000, guid: 7310f69cb0eee864fbe3b84861f18d07, type: 3}
+    voiceTime: 13
+    highlightTag: Human
   spawnerLocationsParent: {fileID: 236129894}
   worldstarter: {fileID: 1323351488}
-  delayStart: 15
+  delayStart: 10
   voiceOverSource: {fileID: 2019446570}
   outOfCombat: {fileID: 24500006, guid: 868ddb31a81c53847a979bc796046669, type: 2}
   inCombat: {fileID: 245161387107951486, guid: 868ddb31a81c53847a979bc796046669, type: 2}

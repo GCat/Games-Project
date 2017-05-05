@@ -14,4 +14,5 @@ public class Wave {
     public WaveEvent waveEvent = null;
 
     public GameObject newBuilding = null;
+    public AudioClip voiceClip;
 }
