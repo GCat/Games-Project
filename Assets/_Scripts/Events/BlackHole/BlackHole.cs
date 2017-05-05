@@ -48,6 +48,7 @@ public class BlackHole : MonoBehaviour {
     {
         yield return new WaitForSeconds(lifetime);
         pullArea.pullForce = 0.0f;
+        GetComponent<Renderer>().enabled = false;
         GetComponent<Rigidbody>().velocity = Vector3.up * 1000f;
     }
 
