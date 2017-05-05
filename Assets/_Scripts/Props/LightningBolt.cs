@@ -7,7 +7,7 @@ public class LightningBolt : Tool {
 
     GameObject flash;
     public GameObject shoulder;
-
+    public AudioClip buildClip;
     void Start()
     {
     }

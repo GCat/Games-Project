@@ -1702,7 +1702,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioSource: {fileID: 0}
-  buildClip: {fileID: 8300000, guid: 0f6a9c7d024f3144690add1c060e8ed0, type: 3}
+  buildClip: {fileID: 8300000, guid: d953973397e80784b8c686293dc07d19, type: 3}
   destroy: {fileID: 0}
   description: Arrow Tower - Medium Range Damage
   resourceCounter: {fileID: 0}

@@ -38,12 +38,14 @@ public class Portal : MonoBehaviour
     MonsterType currentType = 0;
     GameObject spawner;
 
+    enum AudioTransition { Battle, Peace, VoiceOver };
 
+    public AudioSource voiceOverSource;
     public AudioMixerSnapshot outOfCombat;
     public AudioMixerSnapshot inCombat;
+    public AudioMixerSnapshot voiceOver;
     public AudioClip battleMusic;
     public AudioClip peaceMusic;
-    public AudioClip transition;
     public AudioClip teleport;
     public AudioClip party;
     AudioSource asource;
@@ -80,6 +82,7 @@ public class Portal : MonoBehaviour
             try
             {
                 StartCoroutine(spawnWaves());
+                StartCoroutine(tutorial());
             }
             catch (System.Exception e)
             {
@@ -89,6 +92,12 @@ public class Portal : MonoBehaviour
 
     }
 
+
+    IEnumerator tutorial()
+    {
+        yield return new WaitForSeconds(10f);
+
+    }
 
     //creates a new spawner with a new tool/ building for the player
     void spawnNewBuilding(GameObject newBuilding)
@@ -151,7 +160,7 @@ public class Portal : MonoBehaviour
             {
                 wave.waveEvent.startEvent();
             }
-            transitionMusic(true);
+            transitionMusic(AudioTransition.Battle, 2f);
             //spawn each monster with a 1 second delay
             foreach (MonsterType monsterType in wave.monsters)
             {
@@ -177,46 +186,63 @@ public class Portal : MonoBehaviour
             {
                 yield return new WaitForSeconds(1);
             }
-            transitionMusic(false);
+            //transitionMusic(AudioTransition.VoiceOver, 10f);
             if (wave.newBuilding != null)
             {
                 spawnNewBuilding(wave.newBuilding);
+                Building b = wave.newBuilding.GetComponent<Building>();
+                if (b != null && b.buildClip != null)
+                {
+                    voiceOverSource.PlayOneShot(b.buildClip, 1.2f);
+                }
+                else if (wave.newBuilding.GetComponent<LightningBolt>())
+                {
+                    voiceOverSource.PlayOneShot(wave.newBuilding.GetComponent<LightningBolt>().buildClip, 1.2f);
+                }
             }
+            transitionMusic(AudioTransition.Peace, 10f);
             resourceCounter.faith += wave.faithReward;
             //coundown animation
             animSpeed = animLength / wave.waveTime;
             anim["Countdown"].speed = animSpeed;
             anim.Play("Countdown");
-            worldstarter.stopGame();
             yield return new WaitForSeconds(wave.waveTime);
         }
-        //
+        worldstarter.stopGame();
     }
 
-    void transitionMusic(bool toBattle)
+    void transitionMusic(AudioTransition transition, float transitionTime)
     {
-        if (toBattle)
+
+        switch (transition)
         {
-            StartCoroutine(playBattleMusic());
+            case AudioTransition.Battle:
+                inCombat.TransitionTo(5f);
+                asource.clip = battleMusic;
+                asource.Play();
+                break;
+            case AudioTransition.Peace:
+                outOfCombat.TransitionTo(transitionTime);
+                asource.clip = peaceMusic;
+                asource.Play();
+                break;
+            case AudioTransition.VoiceOver:
+                
+                break;
 
         }
-        else
-        {
-            inCombat.TransitionTo(6f);
-            asource.clip = peaceMusic;
-            asource.Play();
-        }
+
 
     }
 
-    IEnumerator playBattleMusic()
+    IEnumerator playMusicClip(float waitTime, AudioClip clip)
     {
-        asource.PlayOneShot(transition);
-        yield return new WaitForSeconds(4f);
-        outOfCombat.TransitionTo(1f);
-        asource.clip = battleMusic;
+        yield return new WaitForSeconds(waitTime);
+        asource.clip = clip;
         asource.Play();
+
     }
+
 
 
     public void movePortal()

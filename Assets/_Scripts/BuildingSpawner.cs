@@ -103,7 +103,7 @@ public class BuildingSpawner : MonoBehaviour
                     Debug.Log("Instantiating");
                     if (transform.position != null && transform.rotation != null && buildingToSpawn != null)
                     {
-                        building = Instantiate(buildingToSpawn, transform.position + Vector3.up * 2, transform.rotation, transform);
+                        building = Instantiate(buildingToSpawn, transform.position + Vector3.up, transform.rotation, transform);
                     }
                     else
                     {

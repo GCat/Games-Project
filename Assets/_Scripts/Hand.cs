@@ -26,6 +26,7 @@ public class Hand : MonoBehaviour
     public GameObject grab_position;
     public BodySourceView kinect_view;
     public Renderer renderer_open;
+    public AudioClip blackSmith;
     public Renderer renderer_closed;
     private ResourceCounter resources;
     public Color defaultColor;
@@ -376,7 +377,8 @@ public class Hand : MonoBehaviour
                 {
                     //this is why the building had a grabbable interface :p - this should be there ;)
                     snapToGrid(heldObject);
-                    audioSource.PlayOneShot(building.buildClip, 0.6f);
+                    audioSource.PlayOneShot(blackSmith, 0.6f);
+                    //audioSource.PlayOneShot(building.buildClip, 0.6f);
                     building.activate();
                     building.removeOutline();
                 }

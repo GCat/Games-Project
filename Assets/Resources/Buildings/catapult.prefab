@@ -4306,7 +4306,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioSource: {fileID: 0}
-  buildClip: {fileID: 8300000, guid: 0f6a9c7d024f3144690add1c060e8ed0, type: 3}
+  buildClip: {fileID: 8300000, guid: 92df48855e153a14084b6910cb4a4e9c, type: 3}
   destroy: {fileID: 0}
   description: Fires rocks, duh
   resourceCounter: {fileID: 0}

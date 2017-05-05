@@ -17,6 +17,7 @@ public class FinalBoss : WaveEvent
     public override void startEvent()
     {
         hades = GameObject.FindGameObjectWithTag("Hades").GetComponent<Hades>();
+        hades.enabled = true;
         hades.comeAlive();
     }
 }

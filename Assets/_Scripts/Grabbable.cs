@@ -30,13 +30,15 @@ public abstract class Grabbable : MonoBehaviour
         {
             child_materials.Remove(p);
         }
+        List<Renderer> newChildMaterials = new List<Renderer>();
         foreach (Renderer r in child_materials)
         {
-            if (r.gameObject.tag == "Iron")
+            if (r.gameObject.tag != "Iron")
             {
-                child_materials.Remove(r);
+                newChildMaterials.Add(r);
             }
         }
+        child_materials = newChildMaterials;
 
 
         original_materials = new Shader[child_materials.Count];
@@ -78,7 +80,7 @@ public abstract class Grabbable : MonoBehaviour
         }
         for (int i = 0; i < child_materials.Count; i++)
         {
-            if (child_materials[i] != null && original_materials[i] != null)
+            if (child_materials != null && child_materials[i] != null && original_materials[i] != null)
             {
                 child_materials[i].material.shader = original_materials[i];
             }

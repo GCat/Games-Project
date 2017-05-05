@@ -28,7 +28,10 @@ public class WallTurret : Building
         wall.GetComponent<Collider>().enabled = true;
         GetComponent<Collider>().enabled = true;
         otherEnd.showWallLengthHighlight(false);
-        StartCoroutine(fixOutline());
+        if (gameObject.activeInHierarchy)
+        {
+            StartCoroutine(fixOutline());
+        }
 
     }
     public void Start()
@@ -117,7 +120,17 @@ public class WallTurret : Building
             }
         }
         reveal();
-        StartCoroutine(fixOutline());
+        try
+        {
+            if (gameObject.activeInHierarchy)
+            {
+                StartCoroutine(fixOutline());
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e);
+        }
     }
 
     public override void die()
