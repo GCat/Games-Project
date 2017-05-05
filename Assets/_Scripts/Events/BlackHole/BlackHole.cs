@@ -5,6 +5,7 @@ using UnityEngine;
 public class BlackHole : MonoBehaviour {
 
     private GameObject portal;
+    public GameObject parent;
     public BlackHolePull pullArea; 
     public float damage;
     public float lifetime;
@@ -48,13 +49,13 @@ public class BlackHole : MonoBehaviour {
     {
         yield return new WaitForSeconds(lifetime);
         pullArea.pullForce = 0.0f;
-        GetComponent<Renderer>().enabled = false;
-        GetComponent<Rigidbody>().velocity = Vector3.up * 1000f;
+        parent.GetComponent<Renderer>().enabled = false;
+        parent.GetComponent<Rigidbody>().velocity = Vector3.up * 1000f;
     }
 
     IEnumerator WaitToDie()
     {
         yield return new WaitForSeconds(lifetime +2f);
-        Destroy(gameObject);
+        Destroy(parent);
     }
 }
