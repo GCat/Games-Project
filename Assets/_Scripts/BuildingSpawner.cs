@@ -113,6 +113,7 @@ public class BuildingSpawner : MonoBehaviour
                     Debug.Log("Instantiated");
                     Building myScript = building.GetComponent<Building>();
                     if (myScript) myScript.spawnedFrom = this;
+                    if (myScript) myScript.disableShadows();
                     //building.GetComponent<Rigidbody>().useGravity = false;
                     usedOnce = true;
                 }

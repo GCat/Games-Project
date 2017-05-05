@@ -283,7 +283,7 @@ public class Hand : MonoBehaviour
                     snapToHand(grabTarget);
                     heldObject.transform.SetParent(transform);
                     kinect_view.setTrackingContext(BodySourceView.TrackingContext.Slow, right_hand);
-
+                    building.enableShadows();
                 }
                 break;
             case PropType.Tool:

@@ -82,6 +82,23 @@ public abstract class Building : Grabbable, HealthManager
         }
     }
 
+    public void disableShadows()
+    {
+        foreach (Renderer renderer in GetComponentsInChildren<Renderer>())
+        {
+            renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+        }
+
+    }
+    public void enableShadows()
+    {
+        foreach (Renderer renderer in GetComponentsInChildren<Renderer>())
+        {
+            renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+        }
+
+    }
+
 
     IEnumerator lockBuilding(float waitTime)
     {
