@@ -2757,9 +2757,9 @@ MonoBehaviour:
   healthBar: {fileID: 0}
   agent: {fileID: 0}
   strength: 80
-  faithValue: 8
+  faithValue: 30
   active: 0
-  rotationSpeed: 8
+  rotationSpeed: 1
   alive: 0
   speedModifier: 0.6
   animator: {fileID: 95870870809169790}
@@ -2850,10 +2850,10 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 1
+  m_Speed: 0.01
   m_Acceleration: 0.1
   avoidancePriority: 50
-  m_AngularSpeed: 20
+  m_AngularSpeed: 2
   m_StoppingDistance: 1.5
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1

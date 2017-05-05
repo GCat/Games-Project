@@ -99,8 +99,8 @@ public class Bee : MonoBehaviour, HealthManager {
             GetComponent<Rigidbody>().useGravity = true;
             GetComponent<Rigidbody>().isKinematic = false;
 
-            GameObject ghost = Instantiate(Resources.Load("Particles/Spooky_Explosion") as GameObject, transform.position, Quaternion.identity);
-            Destroy(ghost, 3f);
+            //GameObject ghost = Instantiate(Resources.Load("Particles/Spooky_Explosion") as GameObject, transform.position, Quaternion.identity);
+            //Destroy(ghost, 3f);
             gameObject.tag = "Untagged";
             StartCoroutine(WaitToDestroy(5f));
             active = false;
