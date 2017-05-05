@@ -50,7 +50,7 @@ public class BlackHole : MonoBehaviour {
         yield return new WaitForSeconds(lifetime);
         pullArea.pullForce = 0.0f;
         parent.GetComponent<Renderer>().enabled = false;
-        parent.GetComponent<Rigidbody>().velocity = Vector3.up * 1000f;
+        parent.GetComponent<Rigidbody>().velocity = Vector3.up * 10000f;
     }
 
     IEnumerator WaitToDie()

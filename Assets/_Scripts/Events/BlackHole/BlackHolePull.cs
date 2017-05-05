@@ -83,12 +83,17 @@ public class BlackHolePull : MonoBehaviour {
     private void OnTriggerExit(Collider other)
     {
         GameObject gameO = other.gameObject;
+
         if (gameO.GetComponent<Rigidbody>() != null)
         {
             if (gameO.GetComponent<Building>() != null)
             {
                 gameO.GetComponent<Rigidbody>().isKinematic = true;
                 gameO.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                
+                float x = gameO.transform.position.x;
+                float z = gameO.transform.position.z;
+                gameO.transform.position = new Vector3(x, 0, z);
             }
             else if (gameO.GetComponent<Agent>() != null)
             {
@@ -96,6 +101,11 @@ public class BlackHolePull : MonoBehaviour {
                 gameO.GetComponent<Character>().agent.enabled = true;
                 gameO.GetComponent<Rigidbody>().isKinematic = true;
                 gameO.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                float x = gameO.transform.position.x;
+                float z = gameO.transform.position.z;
+                gameO.transform.position = new Vector3(x, 0, z);
+                gameO.transform.rotation = Quaternion.identity;
+                gameO.GetComponent<Rigidbody>().useGravity = true;
 
             }
             else if (gameO.GetComponent<Monster>() != null)
@@ -104,6 +114,11 @@ public class BlackHolePull : MonoBehaviour {
                 gameO.GetComponent<Character>().agent.enabled = true;
                 gameO.GetComponent<Rigidbody>().isKinematic = true;
                 gameO.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                float x = gameO.transform.position.x;
+                float z = gameO.transform.position.z;
+                gameO.transform.position = new Vector3(x, 0, z);
+                gameO.transform.rotation = Quaternion.identity;
+
             }
         }
     }
