@@ -45,9 +45,9 @@ public abstract class Building : Grabbable, HealthManager
             explosion.transform.position = transform.position;
             if (destroyedBuilding != null)
             {
-                destroyedBuilding.SetActive(true);
-                destroyedBuilding.transform.SetParent(null);
-                Destroy(destroyedBuilding, 5f);
+                //destroyedBuilding.SetActive(true);
+                //destroyedBuilding.transform.SetParent(null);
+                //Destroy(destroyedBuilding, 5f);
             }
             Destroy(explosion, 3.0f);
             if (fireEffect != null)

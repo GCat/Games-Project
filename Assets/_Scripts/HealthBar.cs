@@ -35,7 +35,10 @@ public class HealthBar : MonoBehaviour {
             Vector3 newScale = originalSize;
             float scale = (health / originalHealth);
             newScale.y = scale * originalSize.y;
-            transform.localScale = newScale;
+            if (newScale.magnitude > 0)
+            {
+                transform.localScale = newScale;
+            }
             GetComponent<Renderer>().material.SetColor("_Color", new Color(1.0f - scale, scale, 0));
         }
     }

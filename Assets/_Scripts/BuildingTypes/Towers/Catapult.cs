@@ -27,7 +27,6 @@ public class Catapult : Tower
         List<Collider> hitColliders = new List<Collider>(Physics.OverlapSphere(floor, attackRange, attackMask));
         if (hitColliders.Count > 0)
         {
-            Debug.Log("Acquired target");
             currentTarget = hitColliders[0].gameObject;
             return true;
         }
@@ -52,7 +51,6 @@ public class Catapult : Tower
     {
         if (victim != null)
         {
-            Debug.Log("Throwing rock");
             animator.SetTrigger("Fire");
         }
     }
