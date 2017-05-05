@@ -10,6 +10,8 @@ public class Temple : Building
     public WorldStarter world;
     public bool placed = false;
     public int startingHumans = 5;
+    public AudioClip warningClip;
+    private bool warningDelay = false;
 
     public override void create_building()
     {
@@ -33,7 +35,22 @@ public class Temple : Building
         }
     }
 
+    public new void decrementHealth(float damage)
+    {
+        base.decrementHealth(damage);
+        StartCoroutine(warnPlayer());
+    }
 
+    IEnumerator warnPlayer()
+    {
+        if (!warningDelay)
+        {
+            world.portal.voiceOverSource.PlayOneShot(warningClip, 1.2f);
+            warningDelay = true;
+            yield return new WaitForSeconds(20f);
+        }
+
+    }
     public bool isPlaced()
     {
         return placed;
