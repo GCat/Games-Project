@@ -283,17 +283,7 @@ public class Hand : MonoBehaviour
                     snapToHand(grabTarget);
                     heldObject.transform.SetParent(transform);
                     kinect_view.setTrackingContext(BodySourceView.TrackingContext.Slow, right_hand);
-                    if (heldObject.GetComponent<LightningBolt>() != null)
-                    {
-                        if (right_hand)
-                        {
-                            heldObject.GetComponent<LightningBolt>().shoulder = kinect_view.getBodyPart(Windows.Kinect.JointType.ShoulderRight);
-                        }
-                        else
-                        {
-                            heldObject.GetComponent<LightningBolt>().shoulder = kinect_view.getBodyPart(Windows.Kinect.JointType.ShoulderLeft);
-                        }
-                    }
+
                 }
                 break;
             case PropType.Tool:
@@ -305,6 +295,17 @@ public class Hand : MonoBehaviour
                     grabTarget.transform.SetParent(transform);
                     holding = true;
                     tool.grab();
+                    if (heldObject.GetComponent<LightningBolt>() != null)
+                    {
+                        if (right_hand)
+                        {
+                            heldObject.GetComponent<LightningBolt>().shoulder = kinect_view.getBodyPart(Windows.Kinect.JointType.ShoulderRight);
+                        }
+                        else
+                        {
+                            heldObject.GetComponent<LightningBolt>().shoulder = kinect_view.getBodyPart(Windows.Kinect.JointType.ShoulderLeft);
+                        }
+                    }
                 }
                 else
                 {
