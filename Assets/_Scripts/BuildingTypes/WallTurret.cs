@@ -135,12 +135,11 @@ public class WallTurret : Building
 
     public override void die()
     {
-        Destroy(highlight);
 
         if (gameObject != null)
         {
-
             Destroy(gameObject);
+            Destroy(highlight);
         }
 
     }

@@ -133,7 +133,7 @@ public class Wall : Building
     public override void highlightDestroy()
     {
         highlight.SetActive(false);
-        
+
         turretA.highlightDestroy();
         turretB.highlightDestroy();
     }
@@ -145,8 +145,14 @@ public class Wall : Building
 
     public override void die()
     {
-        turretA.die();
-        turretB.die();
+        if (turretA != null)
+        {
+            turretA.die();
+        }
+        if (turretB != null)
+        {
+            turretB.die();
+        }
         spawnedFrom.amountSpawned--;
         Destroy(gameObject);
     }
@@ -161,7 +167,7 @@ public class Wall : Building
     {
         if (highlight != null) highlightDestroy();
         held = false;
-       
+
         turretA.activate();
         turretB.activate();
 

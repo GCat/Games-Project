@@ -62,8 +62,11 @@ public abstract class Grabbable : MonoBehaviour
         {
             try
             {
-                child_materials[i].material.shader = outlineShader;
-                child_materials[i].material.SetColor("_OutlineColor", Color.green);
+                if (child_materials[i] != null && child_materials[i].material.shader != null)
+                {
+                    child_materials[i].material.shader = outlineShader;
+                    child_materials[i].material.SetColor("_OutlineColor", Color.green);
+                }
             }
             catch (Exception e)
             {

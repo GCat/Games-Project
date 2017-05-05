@@ -484,7 +484,7 @@ public class Hand : MonoBehaviour
     {
         if (other == null) return;
         GameObject gother = other.gameObject;
-        if (gother.layer == 9 || gother.layer == 10 || gother.layer == 14 && !holding)
+        if (gother.layer == 9 || gother.layer == 10 || gother.layer == 14 && !holding && onBounds != null)
         {
             onBounds.Add(other);
         }
@@ -529,7 +529,7 @@ public class Hand : MonoBehaviour
     {
         if (other == null) return;
         GameObject gother = other.gameObject;
-        if (gother.layer == 9 || gother.layer == 10 || gother.layer == 14 && !holding)
+        if (gother.layer == 9 || gother.layer == 10 || gother.layer == 14 && !holding && onBounds != null)
         {
             onBounds.Add(other);
         }
@@ -538,7 +538,7 @@ public class Hand : MonoBehaviour
     {
         if (other == null) return;
         GameObject gother = other.gameObject;
-        if (gother.layer == 9 || gother.layer == 10 || gother.layer == 14)
+        if (gother.layer == 9 || gother.layer == 10 || gother.layer == 14 && onBounds != null)
         {
             onBounds.Remove(other);
         }

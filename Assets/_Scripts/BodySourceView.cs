@@ -189,7 +189,10 @@ public class BodySourceView : MonoBehaviour
     }
 
     void OnApplicationQuit() {
-        bodyThread.Abort();
+        if (bodyThread != null)
+        {
+            bodyThread.Abort();
+        }
     }
     void OnDestroyed()
     {
