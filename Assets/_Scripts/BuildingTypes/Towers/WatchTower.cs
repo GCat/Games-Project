@@ -59,12 +59,11 @@ public class WatchTower : Tower
              arrow.GetComponent<Projectile>().parent = gameObject;
              arrow.GetComponent<Rigidbody>().velocity = direction;
              Physics.IgnoreCollision(GetComponent<Collider>(), arrow.GetComponent<Collider>());
-            // 
             float travelTime = Vector3.Distance(victim.transform.position, pos) / arrowSpeed;
-             if (travelTime == null || travelTime > 10f || travelTime < 0.2f)
-             {
-                 Destroy(arrow);
-             }
+            if (travelTime > 10f || travelTime < 0.2f)
+            {
+                Destroy(arrow);
+            }
             StartCoroutine(WaitToDamage(travelTime, arrowDamage, currentTarget));
             audioSource.PlayOneShot(attackClip[UnityEngine.Random.Range(0, attackClip.Length)], 0.5f);
         }
