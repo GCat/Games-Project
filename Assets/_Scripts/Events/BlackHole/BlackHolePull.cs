@@ -100,7 +100,7 @@ public class BlackHolePull : MonoBehaviour {
             }
             else if (gameO.GetComponent<Monster>() != null)
             {
-                gameO.GetComponent<Monster>().active = false;
+                gameO.GetComponent<Monster>().active = true;
                 gameO.GetComponent<Character>().agent.enabled = true;
                 gameO.GetComponent<Rigidbody>().isKinematic = true;
                 gameO.GetComponent<Rigidbody>().velocity = Vector3.zero;
