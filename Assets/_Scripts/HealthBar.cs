@@ -9,7 +9,7 @@ public class HealthBar : MonoBehaviour {
     Vector3 originalSize;
 
 
-    void Start()
+    void Awake()
     {
         originalHealth = health;
         originalSize = transform.localScale;
