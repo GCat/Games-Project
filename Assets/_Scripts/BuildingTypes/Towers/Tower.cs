@@ -17,10 +17,11 @@ public abstract class Tower : Building {
 
     public override void Awake()
     {
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.volume = 0.5f;
         base.Awake();
         //audioSource.PlayOneShot(attackClip);
         createRangeHighlight();
-        audioSource = gameObject.AddComponent<AudioSource>();
     }
 
     protected void createRangeHighlight()
