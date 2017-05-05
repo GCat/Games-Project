@@ -1333,7 +1333,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1727865752867396
 GameObject:
   m_ObjectHideFlags: 1
@@ -4147,13 +4147,11 @@ MonoBehaviour:
   playerHead: {fileID: 0}
   projectile: {fileID: 1734383128804124, guid: 5f40ad91274072c4c81e4cdd4981f5d2, type: 2}
   r_hand: {fileID: 1329900979711438}
-  l_hand: {fileID: 1639398686851050}
-  head: {fileID: 1330591193312712}
-  chest: {fileID: 1499416393644208}
-  r_leg: {fileID: 1163883854514762}
-  l_leg: {fileID: 1477115706312020}
+  r_arm: {fileID: 1536988220174664}
   healthBar: {fileID: 0}
   meleePos: {fileID: 1837429315364974}
+  world: {fileID: 0}
+  maxRangedAttacks: 5
 --- !u!114 &114192513625570314
 MonoBehaviour:
   m_ObjectHideFlags: 1
