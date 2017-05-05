@@ -8033,22 +8033,7 @@ Prefab:
     - target: {fileID: 224013035415923994, guid: f8944127a1ee7404ca8ab160846ee099,
         type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224263768353213972, guid: f8944127a1ee7404ca8ab160846ee099,
-        type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 224263768353213972, guid: f8944127a1ee7404ca8ab160846ee099,
-        type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 0.70710677
-      objectReference: {fileID: 0}
-    - target: {fileID: 224263768353213972, guid: f8944127a1ee7404ca8ab160846ee099,
-        type: 2}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 90.00001
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f8944127a1ee7404ca8ab160846ee099, type: 2}
