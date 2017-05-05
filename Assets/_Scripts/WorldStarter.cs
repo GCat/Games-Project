@@ -6,7 +6,6 @@ using UnityEngine.UI;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
-using System.Drawing;
 using System.Drawing.Text;
 
 public class WorldStarter : MonoBehaviour
