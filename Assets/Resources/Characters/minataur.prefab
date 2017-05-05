@@ -2965,11 +2965,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthBar: {fileID: 0}
   agent: {fileID: 0}
-  strength: 25
-  faithValue: 8
+  strength: 20
+  faithValue: 10
   active: 0
   rotationSpeed: 8
   alive: 0
+  speedModifier: 1
   animator: {fileID: 95543238732232444}
   monsterType: 1
   defaultState: 1

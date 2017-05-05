@@ -104,6 +104,7 @@ public class BuildingSpawner : MonoBehaviour
                     if (buildingToSpawn != null)
                     {
                         building = Instantiate(buildingToSpawn, transform.position + Vector3.up, transform.rotation, transform);
+                        usedOnce = true;
                     }
                     else
                     {

@@ -1725,7 +1725,7 @@ MonoBehaviour:
   radius: 40
   active: 0
   attackMask: 2048
-  arrowDamage: 10
+  arrowDamage: 15
   buildingName: 
   target: {fileID: 0}
 --- !u!114 &114363666273413540
