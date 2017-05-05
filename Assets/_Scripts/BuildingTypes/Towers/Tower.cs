@@ -7,6 +7,7 @@ public abstract class Tower : Building {
     public GameObject rangeHighlight;
     public GameObject currentTarget;
     protected Vector3 floor;
+    public AudioSource audioSource;
 
     public float radius;
     public bool active = false;
@@ -19,6 +20,7 @@ public abstract class Tower : Building {
         base.Awake();
         //audioSource.PlayOneShot(attackClip);
         createRangeHighlight();
+        audioSource = gameObject.AddComponent<AudioSource>();
     }
 
     protected void createRangeHighlight()

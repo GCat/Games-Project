@@ -5,7 +5,6 @@ using System.Collections.Generic;
 
 public abstract class Building : Grabbable, HealthManager
 { // this should also be placeable hence the grab and release will be written once
-    public AudioSource audioSource;
     public AudioClip buildClip;
     public AudioClip destroy;
     public string description = "";
@@ -102,7 +101,6 @@ public abstract class Building : Grabbable, HealthManager
 
     public virtual void Awake()
     {
-        audioSource = gameObject.AddComponent<AudioSource>();
         tablet = GameObject.FindGameObjectWithTag("Tablet");
         if (tablet != null)
         {

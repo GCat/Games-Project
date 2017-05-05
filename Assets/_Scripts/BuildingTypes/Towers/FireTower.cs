@@ -9,7 +9,6 @@ public class FireTower : Tower
     public string buildingName;
     public GameObject target;
     public GameObject fireStream;
-
     void Start()
     {
         Vector3 pos = transform.position;
