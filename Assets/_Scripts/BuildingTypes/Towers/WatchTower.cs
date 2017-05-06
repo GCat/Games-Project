@@ -85,7 +85,7 @@ public class WatchTower : Tower
 
     public override string getName()
     {
-        return buildingName;
+        return "WatchTower";
     }
 
     public override void activate()

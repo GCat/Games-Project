@@ -50,8 +50,11 @@ public class Portal : Grabbable
     AudioSource asource;
     List<GameObject> spawnedMonsters;
 
+    Dictionary<string, string> buildingDescriptions = new Dictionary<string, string>();
+
     void Start()
     {
+        buildDict();
         //setGrabbable(false);
         spawner = Resources.Load("cloud_spawner") as GameObject;
         temple = GameObject.FindGameObjectWithTag("Temple");
@@ -66,6 +69,16 @@ public class Portal : Grabbable
         }
         asource.Play();
         StartCoroutine(playIntroSequence());
+    }
+
+    void buildDict()
+    {
+        buildingDescriptions.Add("Wall", "Block Enemies");
+        buildingDescriptions.Add("WatchTower", "Medium Range\nMedium Damage");
+        buildingDescriptions.Add("Bolt", "Throw For\nHigh Damage");
+        buildingDescriptions.Add("Catapult", "Incredible Range");
+        buildingDescriptions.Add("FireTower", "Low Range\nHigh Damage");
+        buildingDescriptions.Add("house", "Spawns Soldiers\nOver Time");
     }
 
     void Update()
@@ -102,6 +115,9 @@ public class Portal : Grabbable
                 newSpawner.GetComponentInChildren<BuildingSpawner>().buildingToSpawn = newBuilding;
                 newSpawner.GetComponentInChildren<BuildingSpawner>().newBuilding();
                 newSpawner.GetComponentInChildren<BuildingSpawner>().rayDisappear(30f);
+                string buildingName = getBuildingName(newBuilding);
+                Debug.Log(buildingName);
+                newSpawner.GetComponentInChildren<TextMesh>().text = buildingDescriptions[buildingName];
                 return;
             }
 
@@ -113,6 +129,24 @@ public class Portal : Grabbable
         //{
         //    newSpawner.GetComponentInChildren<TextMesh>().text = newBuilding.GetComponent<Building>().description;
         //}
+    }
+
+    string getBuildingName(GameObject newBuilding)
+    {
+        Building script = newBuilding.GetComponent<Building>();
+        if (script)
+        {
+            return script.getName();
+        }
+        else
+        {
+            Tool tScript = newBuilding.GetComponent<Tool>();
+            if (tScript)
+            {
+                return tScript.getName();
+            }
+            else return "ERROR";
+        }
     }
 
     bool allDead(List<GameObject> monsters)

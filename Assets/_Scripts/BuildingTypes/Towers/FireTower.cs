@@ -89,7 +89,7 @@ public class FireTower : Tower
 
     public override string getName()
     {
-        return buildingName;
+        return "FireTower";
     }
 
     public override void activate()
