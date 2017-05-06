@@ -14,6 +14,11 @@ public class LightningBolt : Tool
         disableShadows();
     }
 
+    public override string getName()
+    {
+        return "Bolt";
+    }
+
     public override void grab()
     {
         base.grab();

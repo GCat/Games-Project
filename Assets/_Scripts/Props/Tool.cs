@@ -8,6 +8,7 @@ public abstract class Tool : Grabbable
     public int faithCost = 10;
     public float damage = 50f;
     public float damageRadius = 30f;
+    public abstract string getName();
 
     public AudioSource audioSource;
     public AudioClip powerClip;

@@ -36,6 +36,7 @@ TagManager:
   - TV
   - Hades
   - PlayerBody
+  - HighlightIgnore
   layers:
   - Default
   - TransparentFX

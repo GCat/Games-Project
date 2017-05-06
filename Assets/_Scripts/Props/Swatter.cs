@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,9 +16,14 @@ public class Swatter : Tool {
             Debug.Log("Effect loaded");
         }
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    public override string getName()
+    {
+        return "Swatter";
+    }
+
+    // Update is called once per frame
+    void Update () {
 
     }
 
