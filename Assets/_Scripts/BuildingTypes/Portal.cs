@@ -74,7 +74,7 @@ public class Portal : Grabbable
     void buildDict()
     {
         buildingDescriptions.Add("Wall", "Block Enemies");
-        buildingDescriptions.Add("WatchTower", "Medium Range\nMedium Damage");
+        buildingDescriptions.Add("WatchTower", "Arrow Tower\n- Ranged damage");
         buildingDescriptions.Add("Bolt", "Throw For\nHigh Damage");
         buildingDescriptions.Add("Catapult", "Incredible Range");
         buildingDescriptions.Add("FireTower", "Low Range\nHigh Damage");
