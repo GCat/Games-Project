@@ -166,7 +166,7 @@ public class Portal : Grabbable
     {
         asource.clip = party;
         asource.Play();
-
+        
     }
 
     IEnumerator playIntroSequence()

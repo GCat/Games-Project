@@ -108,8 +108,6 @@ public class Agent : Character
                         currentState = HumanState.Fighting;
                         infoText.SetActive(true);
                     }
-                    else
-                        wander();
                     break;
 
                 case HumanState.Fighting:
@@ -362,6 +360,10 @@ public class Agent : Character
             {
                 closestEnemy = findClosestEnemy();
                 walkTo(closestEnemy.transform.position);
+            }
+            else if (currentState == HumanState.Wandering)
+            {
+                wander();
             }
             yield return new WaitForSeconds(1);
         }

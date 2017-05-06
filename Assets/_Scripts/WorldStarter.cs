@@ -7,6 +7,8 @@ using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using System.Drawing.Text;
+using Microsoft.Win32;
+using System;
 
 public class WorldStarter : MonoBehaviour
 {
@@ -16,6 +18,7 @@ public class WorldStarter : MonoBehaviour
     public Text gameOverText;
     public Portal portal;
     string timeText;
+    bool quit = false;
 
     void Start()
     {
@@ -25,6 +28,10 @@ public class WorldStarter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (quit)
+        {
+            Application.Quit();
+        }
 
     }
 
@@ -43,7 +50,14 @@ public class WorldStarter : MonoBehaviour
             portal.gameOver(false);
         }
         colorScreen.GetComponent<ColorSourceView>().pause(false);
-        StartCoroutine(mugShotCountdown());
+        try
+        {
+            StartCoroutine(mugShotCountdown());
+        }
+        catch (Exception e)
+        {
+
+        }
     }
 
 
@@ -63,7 +77,7 @@ public class WorldStarter : MonoBehaviour
             takeMugShot();
         }
         yield return new WaitForSeconds(2);
-        Application.Quit();
+        quit = true;
     }
 
 
@@ -80,8 +94,7 @@ public class WorldStarter : MonoBehaviour
         img.Draw(score, new System.Drawing.Point(300, 100),
             FontFace.HersheyComplex, 3.0, new Bgr(242, 25, 236),3);
         string id = System.Guid.NewGuid().ToString("N");
-        img.Save("images/" + id + ".png");
-       
+        img.Save("C:/Users/gp14958/OneDrive/images/" + id + ".png");
     }
 
 

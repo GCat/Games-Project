@@ -22,14 +22,14 @@ public abstract class Tower : Building {
         base.Awake();
         //audioSource.PlayOneShot(attackClip);
         createRangeHighlight();
-        rangeMat = Resources.Load("Materials/range") as Material;
+        //rangeMat = Resources.Load("Materials/range") as Material;
     }
 
     protected void createRangeHighlight()
     {
         rangeHighlight = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         rangeHighlight.GetComponent<Renderer>().material.SetColor("_Color", Color.yellow);
-        rangeHighlight.GetComponent<Renderer>().material = rangeMat;
+        //rangeHighlight.GetComponent<Renderer>().material = rangeMat;
         rangeHighlight.transform.localScale = new Vector3(radius, 0.1f, radius);
         rangeHighlight.transform.position = new Vector3(gameObject.transform.position.x, 0.1f, gameObject.transform.position.z);
         rangeHighlight.transform.rotation = Quaternion.LookRotation(Vector3.forward);
