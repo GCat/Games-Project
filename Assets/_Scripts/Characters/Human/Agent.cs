@@ -413,7 +413,6 @@ public class Agent : Character
             alive = false;
             anim.Play("diehard");
             StartCoroutine(WaitToDestroy(2f));
-
         }
     }
 

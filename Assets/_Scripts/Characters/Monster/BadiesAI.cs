@@ -509,16 +509,18 @@ public abstract class Monster : Character
             alive = false;
             //die animation here
             animator.enabled = false;
-            if (GetComponent<Bee>() != null)
+            if (GetComponent<Bee>() == null)
             {
                 GameObject ghost = Instantiate(Resources.Load("Particles/Spooky_Explosion") as GameObject, transform.position, Quaternion.identity);
                 ghost.transform.SetParent(null);
+               //ghost.GetComponent<ParticleSystem>().Clear();
+               //ghost.GetComponent<ParticleSystem>().Play();
                 Destroy(ghost, 3f);
             }
             gameObject.tag = "Untagged";
             //StartCoroutine(WaitToDestroy(0.1f));
             resources.removeBaddie(monsterType);
-            Destroy(gameObject);
+            Destroy(gameObject, 0.2f);
         }
     }
 
