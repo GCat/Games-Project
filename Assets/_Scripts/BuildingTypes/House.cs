@@ -60,7 +60,6 @@ public class House : Building
                     GameObject thisHuman = Instantiate(Resources.Load("Characters/Human"), hit.position, Quaternion.identity) as GameObject;
                     thisHuman.GetComponent<Agent>().myHome = this;
                     Instantiate(heartEffect, transform.position + 5 * Vector3.up, Quaternion.identity);
-                    StartCoroutine(ResourceGainText(1, "Chap")); 
                     spawnedPopulation++;
                 }
                 else Debug.Log("Could not spawn human");

@@ -14,7 +14,6 @@ public abstract class Building : Grabbable, HealthManager
     public ResourceCounter resourceCounter;
     public GameObject tablet;
     public HealthBar healthBar;
-    GameObject resourceGainText;
     public bool bought = false;
     public int faithCost;
     protected Vector3 boxSize;
@@ -130,7 +129,6 @@ public abstract class Building : Grabbable, HealthManager
         {
             Debug.Log("Tablet not found");
         }
-        resourceGainText = createInfoText("ResourceGainTablet");
         boxSize = GetComponent<BoxCollider>().bounds.size / 2;
         boxSize.y = 1f;
         ExplosionEffect = Resources.Load("Particles/Explosion") as GameObject;
@@ -202,23 +200,6 @@ public abstract class Building : Grabbable, HealthManager
         }
     }
 
-    public IEnumerator ResourceGainText(int value, string resource)
-    {
-        GameObject resourceText = GameObject.Instantiate(resourceGainText, resourceGainText.transform) as GameObject;
-        resourceText.transform.SetParent(gameObject.transform);
-        Vector2 randPos = UnityEngine.Random.insideUnitCircle * 5.0f;
-        resourceText.transform.Translate(new Vector3(randPos.x, -2.0f, randPos.y * 2.0f));
-        Vector3 startLocation = resourceText.transform.position;
-        resourceText.GetComponent<ResourceGainTablet>().setText("+" + value.ToString());
-        resourceText.GetComponent<ResourceGainTablet>().activateThis();
-        for (float f = 1f; f >= 0; f -= 0.01f)
-        {
-            resourceText.transform.Translate(new Vector3(0, 0.1f, 0));
-            yield return null;
-        }
-        resourceText.SetActive(false);
-        GameObject.Destroy(resourceText);
-    }
 
     public GameObject createInfoText(string prefab)
     {
