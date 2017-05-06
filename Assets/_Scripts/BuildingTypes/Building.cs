@@ -35,7 +35,7 @@ public abstract class Building : Grabbable, HealthManager
     public abstract void deactivate();
 
 
-    public void decrementHealth(float damage)
+    public virtual void decrementHealth(float damage)
     {
         StartCoroutine(lockBuilding(5));
         healthBar.decrementHealth(damage);

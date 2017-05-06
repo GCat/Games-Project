@@ -1163,6 +1163,11 @@ Prefab:
       propertyPath: kinect_view
       value: 
       objectReference: {fileID: 1682645727}
+    - target: {fileID: 114471517625051702, guid: bc03c5fa11c4f56459e3e3291a813aec,
+        type: 2}
+      propertyPath: destructionSound
+      value: 
+      objectReference: {fileID: 8300000, guid: f2570ab9989eca8489fb53fefb7dbae8, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bc03c5fa11c4f56459e3e3291a813aec, type: 2}
   m_IsPrefabParent: 0
@@ -12846,6 +12851,11 @@ Prefab:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -90
       objectReference: {fileID: 0}
+    - target: {fileID: 114687539696213070, guid: f8944127a1ee7404ca8ab160846ee099,
+        type: 2}
+      propertyPath: destructionSound
+      value: 
+      objectReference: {fileID: 8300000, guid: f2570ab9989eca8489fb53fefb7dbae8, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f8944127a1ee7404ca8ab160846ee099, type: 2}
   m_IsPrefabParent: 0
@@ -15575,7 +15585,7 @@ Prefab:
         type: 2}
       propertyPath: buildingToSpawn
       value: 
-      objectReference: {fileID: 1000064598565702, guid: 9ac0a4ee9e45c50479888cadeab078d7,
+      objectReference: {fileID: 1801555696720252, guid: 10ce0b7e17a2ab547adc092fc6fc7ee3,
         type: 2}
     - target: {fileID: 1446173176992694, guid: 2bbfe0dda38a4a94eb9d05f6cb4429db, type: 2}
       propertyPath: m_IsActive
