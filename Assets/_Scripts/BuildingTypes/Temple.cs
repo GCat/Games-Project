@@ -35,7 +35,7 @@ public class Temple : Building
         }
     }
 
-    public new void decrementHealth(float damage)
+    public override void decrementHealth(float damage)
     {
         base.decrementHealth(damage);
         StartCoroutine(warnPlayer());

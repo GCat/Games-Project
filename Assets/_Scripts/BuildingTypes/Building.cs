@@ -35,7 +35,7 @@ public abstract class Building : Grabbable, HealthManager
     public abstract void deactivate();
 
 
-    public void decrementHealth(float damage)
+    public virtual void decrementHealth(float damage)
     {
         StartCoroutine(lockBuilding(5));
         healthBar.decrementHealth(damage);
@@ -131,7 +131,6 @@ public abstract class Building : Grabbable, HealthManager
         boxSize = GetComponent<BoxCollider>().bounds.size / 2;
         boxSize.y = 1f;
         ExplosionEffect = Resources.Load("Particles/Explosion") as GameObject;
-
     }
 
 

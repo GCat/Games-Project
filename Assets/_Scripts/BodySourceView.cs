@@ -6,6 +6,9 @@ using System.IO;
 using UnityEngine.VR;
 using UnityEngine.UI;
 using System.Threading;
+using System;
+using System.Linq;
+
 
 public class BodySourceView : MonoBehaviour
 {
@@ -44,10 +47,7 @@ public class BodySourceView : MonoBehaviour
     private bool started = true;
     private TrackingContext leftHandContext = TrackingContext.Medium;
     private TrackingContext rightHandContext = TrackingContext.Medium;
-    private Filter rightHandFilter = new KalmanFilter();
-    private Filter leftHandFilter = new KalmanFilter();
     private Thread bodyThread = null;
-    private Bounds playerBounds;
     public enum TrackingContext { Slow, Medium, Fast };
 
     //holds all the hand joint objects - palm, wrist, thumb, tip
@@ -59,9 +59,11 @@ public class BodySourceView : MonoBehaviour
     private Kinect.Body trackedBody;
     private GameObject trackedBodyObject;
     private Dictionary<Kinect.JointType, Transform> bodyTransforms = new Dictionary<Kinect.JointType, Transform>();
+    private Dictionary<Kinect.JointType, KalmanFilter> bodyFilters = new Dictionary<Kinect.JointType, KalmanFilter>();
     private Dictionary<Kinect.JointType, Vector3> bodyPositions = new Dictionary<Kinect.JointType, Vector3>();
 
-
+    public Kinect.JointType[] essentialJoints;
+    private Kinect.JointType[] unessentialJoints;
     private Dictionary<Kinect.JointType, Kinect.JointType> _BoneMap = new Dictionary<Kinect.JointType, Kinect.JointType>()
     {
         { Kinect.JointType.FootLeft, Kinect.JointType.AnkleLeft },
@@ -97,8 +99,18 @@ public class BodySourceView : MonoBehaviour
     private void Start()
     {
         Temple = GameObject.FindGameObjectWithTag("Temple");
-    }
+        List<Kinect.JointType> importantJoints = essentialJoints.ToList<Kinect.JointType>();
+        List<Kinect.JointType> unimportantJoints = new List<Kinect.JointType>();
 
+        for (Kinect.JointType jt = Kinect.JointType.SpineBase; jt <= Kinect.JointType.ThumbRight; jt++)
+        {
+            if (!importantJoints.Contains(jt))
+            {
+                unimportantJoints.Add(jt);
+            }
+        }
+        unessentialJoints = unimportantJoints.ToArray<Kinect.JointType>();
+    }
     void Update()
     {
         if (BodySourceManager == null)
@@ -188,10 +200,11 @@ public class BodySourceView : MonoBehaviour
         }
     }
 
-    void OnApplicationQuit() {
+    void OnApplicationQuit()
+    {
         if (bodyThread != null)
         {
-            bodyThread.Abort();
+            bodyThread.Join();
         }
     }
     void OnDestroyed()
@@ -264,13 +277,6 @@ public class BodySourceView : MonoBehaviour
 
         Vector3 r_handUp = Vector3.Cross(r_handRotation, r_handVector);
         Vector3 l_handUp = Vector3.Cross(l_handVector, l_handRotation);
-
-        rightHandFilter.record(r_handUp);
-        leftHandFilter.record(l_handUp);
-
-        Vector3 r_handDist = player_objects[Kinect.JointType.HandRight].transform.position - kinectLocation.transform.position;
-        Vector3 l_handDist = player_objects[Kinect.JointType.HandLeft].transform.position - kinectLocation.transform.position;
-
 
 
         if (body.HandRightConfidence == Windows.Kinect.TrackingConfidence.Low)
@@ -345,7 +351,7 @@ public class BodySourceView : MonoBehaviour
         }
         else
         {
-            Quaternion target = Quaternion.LookRotation(r_handVector, rightHandFilter.predict());
+            Quaternion target = Quaternion.LookRotation(r_handVector, r_handUp);
             float diff = Mathf.Abs(target.eulerAngles.z - right_hand.transform.rotation.eulerAngles.z);
             right_hand.transform.rotation = Quaternion.Slerp(right_hand.transform.rotation, target, Time.deltaTime * 10.0f);
         }
@@ -356,7 +362,7 @@ public class BodySourceView : MonoBehaviour
         }
         else
         {
-            Quaternion target = Quaternion.LookRotation(l_handVector, leftHandFilter.predict());
+            Quaternion target = Quaternion.LookRotation(l_handVector, l_handUp);
             left_hand.transform.rotation = Quaternion.Slerp(left_hand.transform.rotation, target, Time.deltaTime * 10.0f);
         }
 
@@ -467,12 +473,7 @@ public class BodySourceView : MonoBehaviour
             jointObj.transform.parent = body.transform;
             bodyTransforms.Add(jt, jointObj.transform);
             bodyPositions.Add(jt, GetVector3FromJoint(kinectBody.Joints[jt]));
-            if (playerBounds == null)
-            {
-                Vector3 pos = GetVector3FromJoint(kinectBody.Joints[jt]);
-                playerBounds = new Bounds(pos, new Vector3(1, 1, 1));
-
-            }
+            bodyFilters.Add(jt, new KalmanFilter());
             player_objects.Add(jt, jointObj);
         }
 
@@ -482,38 +483,29 @@ public class BodySourceView : MonoBehaviour
 
     private void UpdateBodyObject(Kinect.Body body, GameObject bodyObject)
     {
-        playerBounds.size = new Vector3(0,0,0);
         for (Kinect.JointType jt = Kinect.JointType.SpineBase; jt <= Kinect.JointType.ThumbRight; jt++)
         {
             try
             {
-
                 Transform jointObj = bodyTransforms[jt];
                 jointObj.localPosition = bodyPositions[jt];
-                if (playerBounds.size.magnitude < 1)
-                {
-                    Vector3 pos = bodyPositions[jt];
-                    playerBounds = new Bounds(pos, new Vector3(1, 1, 1));
-
-                }
-                playerBounds.max = Vector3.Max(playerBounds.max, jointObj.position);
-                playerBounds.min = Vector3.Min(playerBounds.min, jointObj.position);
             }
             catch
             {
             }
         }
 
+
     }
     private void RefreshBodyObject(Kinect.Body body)
     {
 
-        for (Kinect.JointType jt = Kinect.JointType.SpineBase; jt <= Kinect.JointType.ThumbRight; jt++)
+        foreach (Kinect.JointType jt in essentialJoints)
         {
             Kinect.Joint sourceJoint = body.Joints[jt];
             Kinect.Joint? targetJoint = null;
 
-            
+
             if (_BoneMap.ContainsKey(jt))
             {
                 targetJoint = body.Joints[_BoneMap[jt]];
@@ -521,28 +513,26 @@ public class BodySourceView : MonoBehaviour
 
             Transform jointObj = bodyTransforms[jt];
             Vector3 pos = GetVector3FromJoint(sourceJoint);
-            bodyPositions[jt] = pos;
+            bodyFilters[jt].record(pos);
 
-            //jointObj.localPosition = 
+            bodyPositions[jt] = bodyFilters[jt].predict();
+        }
+        foreach (Kinect.JointType jt in unessentialJoints)
+        {
+            Kinect.Joint sourceJoint = body.Joints[jt];
+            Kinect.Joint? targetJoint = null;
 
-            //LineRenderer lr = jointObj.GetComponent<LineRenderer>();
-            if (targetJoint.HasValue)
+
+            if (_BoneMap.ContainsKey(jt))
             {
-                //lr.SetPosition(0, jointObj.localPosition*10);
-                //lr.SetPosition(1, GetVector3FromJoint(targetJoint.Value)*10);
-                //lr.SetColors(GetColorForState(sourceJoint.TrackingState), GetColorForState(targetJoint.Value.TrackingState));
+                targetJoint = body.Joints[_BoneMap[jt]];
             }
-            else
-            {
-                //lr.enabled = false;
-            }
+
+            Transform jointObj = bodyTransforms[jt];
+            Vector3 pos = GetVector3FromJoint(sourceJoint);
+            bodyPositions[jt] = GetVector3FromJoint(sourceJoint);
         }
 
-    }
-
-    public Bounds getPlayerBounds()
-    {
-        return playerBounds;
     }
 
     private static Color GetColorForState(Kinect.TrackingState state)

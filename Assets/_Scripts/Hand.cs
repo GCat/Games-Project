@@ -29,6 +29,7 @@ public class Hand : MonoBehaviour
     public AudioClip blackSmith;
     public Renderer renderer_closed;
     private ResourceCounter resources;
+    private GameObject CantPlaceEffect;
     public Color defaultColor;
 
     private HashSet<Collider> onBounds;
@@ -53,6 +54,7 @@ public class Hand : MonoBehaviour
     private void Awake()
     {
         onBounds = new HashSet<Collider>();
+        CantPlaceEffect = Resources.Load("Particles/CantPlace") as GameObject;
     }
 
     // Use this for initialization
@@ -399,8 +401,10 @@ public class Hand : MonoBehaviour
 
                         building.refund();
                         audioSource.PlayOneShot(destructionSound, 0.5f);
+                        GameObject cantplace_explosion = GameObject.Instantiate(CantPlaceEffect);
+                        cantplace_explosion.transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+                        Destroy(cantplace_explosion, 3.0f);
                         building.delete();
-
                     }
                     else
                     {
