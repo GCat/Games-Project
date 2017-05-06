@@ -22,7 +22,7 @@ public abstract class Grabbable : MonoBehaviour
         allowOutline = grabbable;
     }
 
-    private void init()
+    public void init()
     {
         outlineShader = Shader.Find("Toon/Basic Outline");
         child_materials = new List<Renderer>(GetComponentsInChildren<Renderer>(false));
@@ -36,7 +36,11 @@ public abstract class Grabbable : MonoBehaviour
         {
             if (r.gameObject.tag != "Iron")
             {
-                newChildMaterials.Add(r);
+                if (r.gameObject.tag != "HighlightIgnore")
+                {
+                    newChildMaterials.Add(r);
+                }
+                
             }
         }
         child_materials = newChildMaterials;
