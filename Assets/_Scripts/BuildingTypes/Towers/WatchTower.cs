@@ -24,14 +24,14 @@ public class WatchTower : Tower
     public override bool acquireTarget()
     {
 
-        List<Collider> hitColliders = new List<Collider>(Physics.OverlapSphere(floor, radius, attackMask));
+        List<Collider> hitColliders = new List<Collider>(Physics.OverlapSphere(floor, transform.InverseTransformVector(radius,0,0).magnitude, attackMask));
         if (hitColliders.Count > 0)
         {
             Debug.Log("Acquired target");
             currentTarget = hitColliders[0].gameObject;
             return true;
         }
-
+        currentTarget = null;
         return false;
     }
 
@@ -47,6 +47,7 @@ public class WatchTower : Tower
             yield return new WaitForSeconds(2);
         }
     }
+
 
     void throwArrow(GameObject victim)
     {

@@ -59,7 +59,7 @@ public class FireTower : Tower
     //find a new nearby monster to attack
     public override bool acquireTarget()
     {
-        List<Collider> hitColliders = new List<Collider>(Physics.OverlapSphere(floor, (radius + 1), attackMask));
+        List<Collider> hitColliders = new List<Collider>(Physics.OverlapSphere(floor, transform.InverseTransformVector(radius, 0, 0).magnitude, attackMask));
         if (hitColliders.Count > 0)
         {
             currentTarget = hitColliders[0].gameObject;
