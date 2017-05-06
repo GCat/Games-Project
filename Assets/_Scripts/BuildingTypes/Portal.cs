@@ -22,6 +22,7 @@ public class Portal : Grabbable
     public GameObject spawnerLocationsParent;
     private List<Transform> spawnerLocations;
 
+    public ParticleSystem[] celebrations; 
     public WorldStarter worldstarter;
     private float animLength = 0.833f;
     private float animSpeed = 1f;
@@ -256,6 +257,7 @@ public class Portal : Grabbable
             {
                 yield return new WaitForSeconds(1);
             }
+            celebrate();
             //transitionMusic(AudioTransition.VoiceOver, 10f);
             if (wave.newBuilding != null)
             {
@@ -309,6 +311,15 @@ public class Portal : Grabbable
         }
     }
 
+
+    void celebrate()
+    {
+        foreach (ParticleSystem celeb in celebrations)
+        {
+            celeb.Clear();
+            celeb.Play();
+        }
+    }
 
     void transitionMusic(AudioTransition transition, float transitionTime)
     {

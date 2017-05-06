@@ -22,7 +22,6 @@ public abstract class Monster : Character
     public int faithValue;
     public bool active;
 
-    GameObject damageText;
     public float rotationSpeed = 6.0f;
     public bool alive = false;
     Vector3 cameraPos;
@@ -49,6 +48,7 @@ public abstract class Monster : Character
     private Collider[] ragdoll;
 
     protected GameObject currentVictim;
+    private ParticleSystem damageEffect;
 
     public enum MonsterState { AttackTemple, AttackHumans, AttackBuildings, Idle, PathBlocked };
 
@@ -81,7 +81,6 @@ public abstract class Monster : Character
 
         GetComponent<Collider>().enabled = true;
         float height = GetComponent<Collider>().bounds.size.y;
-        damageText = Resources.Load("Damage Text") as GameObject;
         closestEnemy = null;
         temple = GameObject.FindGameObjectWithTag("Temple");
         alive = true;
@@ -96,6 +95,13 @@ public abstract class Monster : Character
         stunEffect.Stop();
         animator.speed = speedModifier;
         lastState = defaultState;
+        damageEffect = Instantiate(Resources.Load("Particles/Damage") as GameObject, transform).GetComponent<ParticleSystem>();
+        damageEffect.gameObject.transform.position = transform.position;
+        damageEffect.transform.SetParent(transform);
+        if (healthBar.health > 200)
+        {
+            damageEffect.transform.localScale *= 5;
+        }
     }
 
     void Update()
@@ -142,34 +148,6 @@ public abstract class Monster : Character
                 case MonsterState.Idle:
                     break;
             }
-        }
-    }
-
-    public IEnumerator DamageText(string textString, Color color)
-    {
-        GameObject damageIndicator = Instantiate(damageText, (new Vector3(transform.position.x, transform.position.y + 5, transform.position.z)), Quaternion.LookRotation(transform.position - cameraPos, Vector3.up)) as GameObject;
-        Text text = damageIndicator.GetComponentInChildren<Text>();
-        text.text = textString;
-        text.color = color;
-        Destroy(damageIndicator, 1);
-        for (float f = 1f; f >= 0; f -= 0.01f)
-        {
-            if (damageIndicator != null)
-            {
-                Color c = text.color;
-                c.a = f;
-                text.color = c;
-                if (damageIndicator != null)
-                {
-                    damageIndicator.transform.Translate(new Vector3(0, 0.1f, 0));
-                    damageIndicator.transform.LookAt(cameraPos);
-                }
-                yield return null;
-            }
-        }
-        if (damageIndicator != null)
-        {
-            Destroy(damageIndicator);
         }
     }
 
@@ -512,14 +490,16 @@ public abstract class Monster : Character
     public override void decrementHealth(float damage)
     {
         healthBar.decrementHealth(damage);
-        try
-        {
-            StartCoroutine(DamageText("-" + damage, Color.red));
-        }
-        catch (Exception e)
-        {
-            Debug.LogError(e);
-        }
+        damageEffect.Clear();
+        damageEffect.Play();
+        //try
+        //{
+        //    StartCoroutine(DamageText("-" + damage, Color.red));
+        //}
+        //catch (Exception e)
+        //{
+        //    Debug.LogError(e);
+        //}
         if (healthBar.health <= 0 && alive == true)
         {
             Destroy(healthBar);
@@ -529,19 +509,18 @@ public abstract class Monster : Character
             alive = false;
             //die animation here
             animator.enabled = false;
-            foreach (Collider collider in ragdoll)
-            {
-                collider.enabled = false;
-            }
-            if (GetComponent<Bee>() != null)
+            if (GetComponent<Bee>() == null)
             {
                 GameObject ghost = Instantiate(Resources.Load("Particles/Spooky_Explosion") as GameObject, transform.position, Quaternion.identity);
+                ghost.transform.SetParent(null);
+               //ghost.GetComponent<ParticleSystem>().Clear();
+               //ghost.GetComponent<ParticleSystem>().Play();
                 Destroy(ghost, 3f);
             }
             gameObject.tag = "Untagged";
             //StartCoroutine(WaitToDestroy(0.1f));
             resources.removeBaddie(monsterType);
-            Destroy(gameObject);
+            Destroy(gameObject, 0.2f);
         }
     }
 

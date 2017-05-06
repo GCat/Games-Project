@@ -59,8 +59,9 @@ public class Agent : Character
 
     private Vector3 bL;
     private Vector3 tR;
+    private ParticleSystem damageEffect;
 
-    
+
     //determines if this chap is in a fight 
     private bool combatEngaged = false;
 
@@ -86,6 +87,9 @@ public class Agent : Character
         bL = resources.getBottomLeft() + new Vector3(10, 0, 10);
         StartCoroutine(acquireTargets());
         StartCoroutine(unStick());
+        damageEffect = Instantiate(Resources.Load("Particles/Damage") as GameObject, transform).GetComponent<ParticleSystem>();
+        damageEffect.gameObject.transform.position = transform.position;
+        damageEffect.transform.SetParent(transform);
     }
 
     // Update is called once per frame
@@ -402,12 +406,13 @@ public class Agent : Character
     public override void decrementHealth(float damage)
     {
         healthBar.decrementHealth(damage);
+        damageEffect.Clear();
+        damageEffect.Play();
         if (healthBar.health <= 0 && alive == true)
         {
             alive = false;
             anim.Play("diehard");
             StartCoroutine(WaitToDestroy(2f));
-
         }
     }
 
