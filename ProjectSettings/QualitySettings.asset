@@ -144,7 +144,7 @@ QualitySettings:
     name: Fantastic
     pixelLightCount: 4
     shadows: 1
-    shadowResolution: 2
+    shadowResolution: 3
     shadowProjection: 0
     shadowCascades: 2
     shadowDistance: 150
@@ -154,7 +154,7 @@ QualitySettings:
     blendWeights: 4
     textureQuality: 3
     anisotropicTextures: 0
-    antiAliasing: 2
+    antiAliasing: 8
     softParticles: 1
     softVegetation: 1
     realtimeReflectionProbes: 0

@@ -713,14 +713,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthBar: {fileID: 0}
   agent: {fileID: 0}
-  strength: 20
+  strength: 40
   faithValue: 20
   active: 0
   rotationSpeed: 4
   alive: 0
   speedModifier: 0.5
   animator: {fileID: 95529519495343212}
-  monsterType: 4
+  monsterType: 0
   defaultState: 0
 --- !u!114 &114889836305666596
 MonoBehaviour:

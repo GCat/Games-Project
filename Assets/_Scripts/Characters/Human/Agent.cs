@@ -311,6 +311,9 @@ public class Agent : Character
     IEnumerator WaitToDestroy(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
+        GameObject ghost = Instantiate(Resources.Load("Particles/Spooky_Explosion") as GameObject, transform.position, Quaternion.identity);
+        ghost.transform.SetParent(null);
+        Destroy(ghost, 1f);
         resources.removePop();
         if (myHome) myHome.spawnedPopulation--;
         GameObject.Destroy(gameObject);
@@ -401,9 +404,8 @@ public class Agent : Character
         {
             alive = false;
             anim.Play("diehard");
-            StartCoroutine(WaitToDestroy(2.0f));
-            GameObject ghost = Instantiate(Resources.Load("Particles/Spooky_Explosion") as GameObject, transform.position, Quaternion.identity);
-            Destroy(ghost, 1f);
+            StartCoroutine(WaitToDestroy(2f));
+
         }
     }
 
