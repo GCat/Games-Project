@@ -290,11 +290,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   held: 0
-  faithCost: 10
+  faithCost: 20
   damage: 50
   damageRadius: 30
   audioSource: {fileID: 0}
-  powerClip: {fileID: 0}
+  powerClip: {fileID: 8300000, guid: 596012a0ded98b648a8be05f9a7dee4c, type: 3}
   resourceCounter: {fileID: 0}
   shoulder: {fileID: 0}
   buildClip: {fileID: 8300000, guid: 67445fd9b5afcce4aad3c876a3819a02, type: 3}

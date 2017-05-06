@@ -49,7 +49,7 @@ public class Catapult : Tower
             {
                 throwRock(currentTarget);
             }
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(3);
         }
     }
 

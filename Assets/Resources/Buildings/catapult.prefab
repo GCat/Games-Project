@@ -4312,7 +4312,7 @@ MonoBehaviour:
   tablet: {fileID: 0}
   healthBar: {fileID: 114325669755925368}
   bought: 0
-  faithCost: 30
+  faithCost: 35
   highlight_template: {fileID: 1293041283922382, guid: cb18734fa1e039546b30a0334d6593a8,
     type: 2}
   canBeGrabbed: 1
