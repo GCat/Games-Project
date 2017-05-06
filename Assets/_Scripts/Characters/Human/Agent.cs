@@ -378,15 +378,16 @@ public class Agent : Character
             foreach (GameObject badie in badies)
             {
 
+                if (badie.GetComponent<Collider>().ClosestPointOnBounds(transform.position).y > 5.0f) continue;
+                Vector3 diff = badie.transform.position - position;
+                    
+                float current_distance = diff.sqrMagnitude;
+                if (current_distance < distance)
                 {
-                    Vector3 diff = badie.transform.position - position;
-                    float current_distance = diff.sqrMagnitude;
-                    if (current_distance < distance)
-                    {
-                        distance = current_distance;
-                        closest = badie;
-                    }
+                    distance = current_distance;
+                    closest = badie;
                 }
+
             }
         }
 

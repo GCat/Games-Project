@@ -29,7 +29,7 @@ public class Catapult : Tower
         {
             foreach (Collider c in hitColliders)
             {
-                if (c.transform.position.y <= 5.0f)
+                if (c.ClosestPointOnBounds(transform.position).y <= 4.0f)
                 {
                     currentTarget = c.gameObject;
                     return true;
