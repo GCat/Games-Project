@@ -37,9 +37,6 @@ public class Hades : MonoBehaviour, HealthManager
             rb.isKinematic = true;
         }
         animator.enabled = false;
-
-        healthBar = GetComponentInChildren<HealthBar>();
-        healthBar.gameObject.SetActive(false);
         playerBody = GameObject.FindGameObjectWithTag("PlayerBody");
     }
 
