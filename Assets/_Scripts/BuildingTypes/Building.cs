@@ -131,7 +131,6 @@ public abstract class Building : Grabbable, HealthManager
         boxSize = GetComponent<BoxCollider>().bounds.size / 2;
         boxSize.y = 1f;
         ExplosionEffect = Resources.Load("Particles/Explosion") as GameObject;
-
     }
 
 

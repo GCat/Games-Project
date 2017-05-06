@@ -1,10 +1,20 @@
 fileFormatVersion: 2
 guid: 0cec684d0bd72d84cbc831d5c50628ff
-timeCreated: 1476974243
+timeCreated: 1494068013
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - buildClip: {instanceID: 0}
+  - destroy: {instanceID: 0}
+  - resourceCounter: {instanceID: 0}
+  - tablet: {instanceID: 0}
+  - healthBar: {instanceID: 0}
+  - highlight_template: {instanceID: 0}
+  - spawnedFrom: {instanceID: 0}
+  - CantPlaceEffect: {fileID: 1410670585646408, guid: a077fe9318e5f8843b2c9d337d530088,
+      type: 2}
+  - destroyedBuilding: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
