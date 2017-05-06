@@ -31,7 +31,7 @@ public class FireTower : Tower
             }
             else
             {
-                if (Vector3.Distance(currentTarget.transform.position, floor) < transform.InverseTransformVector(radius, 0, 0).magnitude)
+                if (Vector3.Distance(currentTarget.GetComponent<Collider>().ClosestPointOnBounds(floor), floor) < transform.InverseTransformVector(radius, 0, 0).magnitude)
                 {
                     if (!audioSource.isPlaying)
                     {
@@ -75,7 +75,7 @@ public class FireTower : Tower
 
         while (true)
         {
-            if (currentTarget != null && Vector3.Distance(currentTarget.transform.position, floor) < transform.InverseTransformVector(radius, 0, 0).magnitude)
+            if (currentTarget != null && Vector3.Distance(currentTarget.GetComponent<Collider>().ClosestPointOnBounds(floor), floor) < transform.InverseTransformVector(radius, 0, 0).magnitude)
             {
                 HealthManager targetHealth = currentTarget.GetComponent<HealthManager>();
                 if (targetHealth != null)
