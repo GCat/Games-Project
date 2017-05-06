@@ -40,7 +40,7 @@ public class WatchTower : Tower
 
         while (true)
         {
-            if (currentTarget != null && Vector3.Distance(floor, currentTarget.transform.position) < transform.InverseTransformVector(radius, 0, 0).magnitude)
+            if (currentTarget != null && Vector3.Distance(floor, currentTarget.GetComponent<Collider>().ClosestPointOnBounds(floor)) < transform.InverseTransformVector(radius, 0, 0).magnitude)
             {
                 throwArrow(currentTarget);
             }
