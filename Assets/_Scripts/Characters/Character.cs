@@ -19,8 +19,9 @@ public abstract class Character : Grabbable, HealthManager
     //checks whether agent has reached a point -- takes stopping distance into account
     protected virtual bool atDestination(Vector3 target)
     {
-        return Vector3.Distance(target, transform.position) < (agent.stoppingDistance + transform.lossyScale.z + 2f);
+        return Vector3.Distance(target, transform.position) < (agent.stoppingDistance + transform.lossyScale.z);
     }
+
 
     protected void createInfoText()
     {
