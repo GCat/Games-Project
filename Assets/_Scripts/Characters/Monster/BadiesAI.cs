@@ -91,6 +91,7 @@ public abstract class Monster : Character
         currentState = defaultState;
         GameObject stun = Instantiate(Resources.Load("Particles/Seeing_Stars") as GameObject, healthBar.transform.position + Vector3.down * 1, Quaternion.identity);
         stun.transform.SetParent(transform);
+        stun.transform.localScale *= healthBar.gameObject.transform.localScale.y;
         stunEffect = stun.GetComponent<ParticleSystem>();
         stunEffect.Stop();
         animator.speed = speedModifier;

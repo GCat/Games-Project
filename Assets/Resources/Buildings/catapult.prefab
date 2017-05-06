@@ -2206,7 +2206,7 @@ MeshRenderer:
   m_GameObject: {fileID: 1321009454391050}
   m_Enabled: 1
   m_CastShadows: 0
-  m_ReceiveShadows: 1
+  m_ReceiveShadows: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -4305,7 +4305,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0efa472c306e0f24a83e46e7285b78fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 0}
   buildClip: {fileID: 8300000, guid: 92df48855e153a14084b6910cb4a4e9c, type: 3}
   destroy: {fileID: 0}
   description: Fires rocks, duh
@@ -4324,6 +4323,7 @@ MonoBehaviour:
   attackClip: []
   rangeHighlight: {fileID: 0}
   currentTarget: {fileID: 0}
+  audioSource: {fileID: 0}
   radius: 1
   active: 0
   attackMask: 2048
