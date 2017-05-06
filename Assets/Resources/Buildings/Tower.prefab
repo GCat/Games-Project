@@ -1722,7 +1722,7 @@ MonoBehaviour:
   rangeHighlight: {fileID: 0}
   currentTarget: {fileID: 0}
   audioSource: {fileID: 0}
-  radius: 40
+  radius: 55
   active: 0
   attackMask: 2048
   arrowDamage: 15
