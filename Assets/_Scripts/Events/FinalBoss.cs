@@ -13,11 +13,14 @@ public class FinalBoss : WaveEvent
     /// It will be a simplified version of the badie AI but flying and with no need of the agent hopefully.
     /// </summary>
     /// 
-    Hades hades;
+    public Hades hades;
     public override void startEvent()
     {
         hades = GameObject.FindGameObjectWithTag("Hades").GetComponent<Hades>();
-        hades.enabled = true;
+        foreach (Transform child in transform)
+        {
+            child.gameObject.SetActive(true);
+        }
         hades.comeAlive();
     }
 }
