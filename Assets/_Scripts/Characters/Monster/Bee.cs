@@ -20,13 +20,15 @@ public class Bee : MonoBehaviour, HealthManager {
     protected Quaternion infoTextOri;
     Vector3 cameraPos;
     GameObject damageText;
-
+    private ParticleSystem damageEffect;
 
     // Use this for initialization
     void Start () {
         rb = GetComponent<Rigidbody>();
         healthBar = GetComponentInChildren<HealthBar>();
         damageText = Resources.Load("Damage Text") as GameObject;
+        damageEffect = Instantiate(Resources.Load("Particles/Damage") as GameObject, transform).GetComponent<ParticleSystem>();
+
     }
 
     // Update is called once per frame
@@ -92,6 +94,8 @@ public class Bee : MonoBehaviour, HealthManager {
     public void decrementHealth(float damage)
     {
         healthBar.decrementHealth(damage);
+        damageEffect.Clear();
+        damageEffect.Play();
         StartCoroutine(DamageText("-" + damage, Color.red));
         if (healthBar.health <= 0)
         {
