@@ -720,7 +720,7 @@ MonoBehaviour:
   alive: 0
   speedModifier: 0.5
   animator: {fileID: 95529519495343212}
-  monsterType: 0
+  monsterType: 4
   defaultState: 0
 --- !u!114 &114889836305666596
 MonoBehaviour:

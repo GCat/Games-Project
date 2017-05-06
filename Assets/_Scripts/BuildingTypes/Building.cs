@@ -94,7 +94,10 @@ public abstract class Building : Grabbable, HealthManager
     {
         foreach (Renderer renderer in GetComponentsInChildren<Renderer>())
         {
-            renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+            if (renderer.gameObject.GetComponent<HealthBar>() == null)
+            {
+                renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+            }
         }
 
     }

@@ -2795,7 +2795,7 @@ MonoBehaviour:
   alive: 1
   speedModifier: 0.6
   animator: {fileID: 95870870809169790}
-  monsterType: 1
+  monsterType: 3
   defaultState: 1
 --- !u!136 &136840802979872374
 CapsuleCollider:

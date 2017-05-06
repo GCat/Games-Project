@@ -3,13 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LightningBolt : Tool {
+public class LightningBolt : Tool
+{
 
     GameObject flash;
     public GameObject shoulder;
     public AudioClip buildClip;
     void Start()
     {
+        disableShadows();
     }
 
     public override void grab()
@@ -18,7 +20,7 @@ public class LightningBolt : Tool {
         GetComponent<Collider>().enabled = true;
         GetComponent<Rigidbody>().isKinematic = false;
         held = true;
-        
+
     }
 
     public override void release(Vector3 vel)
@@ -54,10 +56,30 @@ public class LightningBolt : Tool {
         }
 
     }
+
+    public void disableShadows()
+    {
+        foreach (Renderer renderer in GetComponentsInChildren<Renderer>())
+        {
+            renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+        }
+
+    }
+    public void enableShadows()
+    {
+        foreach (Renderer renderer in GetComponentsInChildren<Renderer>())
+        {
+
+            renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+
+        }
+    }
+
     void OnCollisionEnter(Collision col)
     {
         Debug.Log(col.gameObject);
-        if (col.gameObject.tag == "Ground") {
+        if (col.gameObject.tag == "Ground")
+        {
             int layerMask = 1 << 11;
             ContactPoint hit = col.contacts[0];
             GetComponent<Collider>().enabled = false;
@@ -67,7 +89,7 @@ public class LightningBolt : Tool {
             audioSource.PlayOneShot(powerClip, 0.8f);
 
             //Remove Health from monsters in damageZone
-            for (int i=0; i < damageZone.Length; i++)
+            for (int i = 0; i < damageZone.Length; i++)
             {
                 HealthManager victimHealth = damageZone[i].gameObject.GetComponent<HealthManager>();
                 //we can probably do something cleaner than comparing name - maybe some enums for different character types
@@ -79,8 +101,9 @@ public class LightningBolt : Tool {
             }
             Physics.IgnoreCollision(GetComponent<Collider>(), col.collider);
 
-            Destroy(gameObject, 0.3f);      
-        }else if(col.gameObject.layer == 10)
+            Destroy(gameObject, 0.3f);
+        }
+        else if (col.gameObject.layer == 10)
         {
             Physics.IgnoreCollision(GetComponent<Collider>(), col.collider);
         }
