@@ -27,8 +27,14 @@ public class Catapult : Tower
         List<Collider> hitColliders = new List<Collider>(Physics.OverlapSphere(floor, attackRange, attackMask));
         if (hitColliders.Count > 0)
         {
-            currentTarget = hitColliders[0].gameObject;
-            return true;
+            foreach (Collider c in hitColliders)
+            {
+                if (c.ClosestPointOnBounds(transform.position).y <= 4.0f)
+                {
+                    currentTarget = c.gameObject;
+                    return true;
+                }
+            }
         }
 
         return false;
