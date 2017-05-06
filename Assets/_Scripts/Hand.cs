@@ -299,6 +299,7 @@ public class Hand : MonoBehaviour
                     tool.grab();
                     if (heldObject.GetComponent<LightningBolt>() != null)
                     {
+                        heldObject.GetComponent<LightningBolt>().enableShadows();
                         if (right_hand)
                         {
                             heldObject.GetComponent<LightningBolt>().shoulder = kinect_view.getBodyPart(Windows.Kinect.JointType.ShoulderRight);

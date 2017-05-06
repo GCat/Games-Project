@@ -230,8 +230,9 @@ MonoBehaviour:
   explosion: {fileID: 198885757975264080}
   bounce: 1
   explosionRadius: 10
-  damage: 15
+  damage: 10
   explode: 1
+  fireBall: 0
 --- !u!135 &135393854685177478
 SphereCollider:
   m_ObjectHideFlags: 1

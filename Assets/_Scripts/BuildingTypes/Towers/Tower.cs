@@ -129,7 +129,7 @@ public abstract class Tower : Building {
             yield return new WaitForSeconds(1);
             if (resourceCounter.getBaddies() > 0)
             {
-                if (currentTarget == null || Vector3.Distance(floor, currentTarget.transform.position) > radius)
+                if (currentTarget == null || Vector3.Distance(floor, currentTarget.transform.position) >= radius)
                 {
                     acquireTarget();
                 }

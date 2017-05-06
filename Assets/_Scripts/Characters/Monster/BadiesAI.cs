@@ -55,7 +55,7 @@ public abstract class Monster : Character
     MonsterState currentState = MonsterState.AttackTemple;
     MonsterState prevState;
     public MonsterState defaultState;
-
+    private MonsterState lastState;
 
     // surround target position, used to decide where in teh perimeter of the building to attack
     private Vector3 sT;
@@ -91,9 +91,11 @@ public abstract class Monster : Character
         currentState = defaultState;
         GameObject stun = Instantiate(Resources.Load("Particles/Seeing_Stars") as GameObject, healthBar.transform.position + Vector3.down * 1, Quaternion.identity);
         stun.transform.SetParent(transform);
+        stun.transform.localScale *= healthBar.gameObject.transform.localScale.y;
         stunEffect = stun.GetComponent<ParticleSystem>();
         stunEffect.Stop();
         animator.speed = speedModifier;
+        lastState = defaultState;
     }
 
     void Update()
@@ -176,6 +178,7 @@ public abstract class Monster : Character
     {
         if (attacker.GetComponent<Agent>() != null && !combatEngaged)
         {
+            lastState = currentState;
             currentState = MonsterState.AttackHumans;
             closestEnemy = attacker;
             StartCoroutine(CombatLock(3));
@@ -403,6 +406,7 @@ public abstract class Monster : Character
         combatEngaged = true;
         yield return new WaitForSeconds(time);
         combatEngaged = false;
+        currentState = lastState;
     }
     private void walkTowards(Vector3 target)
     {
