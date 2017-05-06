@@ -23,7 +23,7 @@ RenderSettings:
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
-  m_AmbientIntensity: 0.47
+  m_AmbientIntensity: 1.03
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
@@ -35,10 +35,10 @@ RenderSettings:
   m_DefaultReflectionMode: 0
   m_DefaultReflectionResolution: 128
   m_ReflectionBounces: 1
-  m_ReflectionIntensity: 0.993
+  m_ReflectionIntensity: 0.569
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 320122520}
-  m_IndirectSpecularColor: {r: 0.44511247, g: 0.49480063, b: 0.57297623, a: 0.993}
+  m_IndirectSpecularColor: {r: 0.341554, g: 0.38095316, b: 0.44294086, a: 0.569}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -86,7 +86,7 @@ LightmapSettings:
     m_PVRFilteringAtrousColorSigma: 1
     m_PVRFilteringAtrousNormalSigma: 1
     m_PVRFilteringAtrousPositionSigma: 1
-  m_LightingDataAsset: {fileID: 112000002, guid: baa514fedd0432549837ac01fad96bfd,
+  m_LightingDataAsset: {fileID: 112000316, guid: baa514fedd0432549837ac01fad96bfd,
     type: 2}
   m_ShadowMaskMode: 0
 --- !u!196 &4
@@ -9939,7 +9939,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967286
+  m_StaticEditorFlags: 4294967287
   m_IsActive: 1
 --- !u!4 &833630932
 Transform:
@@ -14123,6 +14123,76 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 1469447322}
   m_Script: {fileID: 11500000, guid: cae691dc466f50c4385325995a556ddb, type: 3}
+--- !u!1 &1328811454
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1328811456}
+  - component: {fileID: 1328811455}
+  m_Layer: 0
+  m_Name: Light Probe Group
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!220 &1328811455
+LightProbeGroup:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1328811454}
+  m_Enabled: 1
+  m_SourcePositions:
+  - {x: 1, y: 1, z: 1}
+  - {x: 1, y: 1, z: -1}
+  - {x: 1, y: -1, z: 1}
+  - {x: 1, y: -1, z: -1}
+  - {x: -1, y: 1, z: 1}
+  - {x: -1, y: 1, z: -1}
+  - {x: -1, y: -1, z: 1}
+  - {x: -1, y: -1, z: -1}
+  - {x: -1.2924036, y: 0, z: 1.0610367}
+  - {x: 0.2590323, y: 0, z: -1.0600988}
+  - {x: 0.80458504, y: 0, z: -1.0152881}
+  - {x: 0.80458504, y: 0, z: -0.43002436}
+  - {x: 0.24948163, y: 0, z: -0.4710891}
+  - {x: 0.24948163, y: 0, z: -0.026627278}
+  - {x: 0.24948163, y: 0, z: 0.39394188}
+  - {x: 0.24948163, y: 0, z: 0.86932266}
+  - {x: 0.7900297, y: 0, z: 0.86932266}
+  - {x: 0.7768451, y: 0, z: 0.4142351}
+  - {x: 0.7793633, y: 0, z: 0.021508982}
+  - {x: -0.25301558, y: 0, z: -1.1440948}
+  - {x: -0.26526716, y: 0, z: -0.55414027}
+  - {x: -0.25296202, y: 0, z: -0.05290138}
+  - {x: -0.2718669, y: 0, z: 0.37589526}
+  - {x: -0.26531985, y: 0, z: 0.919503}
+  - {x: -0.7709617, y: 0, z: 0.92868197}
+  - {x: -0.7718178, y: 0, z: 0.44842023}
+  - {x: -0.791151, y: 0, z: -0.051754966}
+  - {x: -0.791151, y: 0, z: -0.57402897}
+  - {x: -0.791151, y: 0, z: -1.2191447}
+  - {x: -1.4107573, y: 0, z: -1.2217697}
+  - {x: -1.2924036, y: 0, z: -0.64910907}
+  - {x: -1.2924036, y: 0, z: -0.06631528}
+  - {x: -1.2924036, y: 0, z: 0.38857445}
+--- !u!4 &1328811456
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1328811454}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -15.9, y: 0, z: 0}
+  m_LocalScale: {x: 61.3823, y: 61.382286, z: 61.382286}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 40
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1336096033
 GameObject:
   m_ObjectHideFlags: 0
@@ -16647,7 +16717,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 5c9a3a71b39f83b46a2727d461b3105d, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 9
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5c9a3a71b39f83b46a2727d461b3105d, type: 3}
@@ -16679,6 +16749,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7949c1a5dedae424196bff62facc1622, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!220 &1653642128
+LightProbeGroup:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1653642125}
+  m_Enabled: 1
+  m_SourcePositions:
+  - {x: 1, y: 1, z: 1}
+  - {x: 1, y: 1, z: -1}
+  - {x: 1, y: -1, z: 1}
+  - {x: 1, y: -1, z: -1}
+  - {x: -1, y: 1, z: 1}
+  - {x: -1, y: 1, z: -1}
+  - {x: -1, y: -1, z: 1}
+  - {x: -1, y: -1, z: -1}
 --- !u!1 &1656787633
 GameObject:
   m_ObjectHideFlags: 0
