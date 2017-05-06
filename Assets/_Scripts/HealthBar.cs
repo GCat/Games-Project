@@ -7,12 +7,14 @@ public class HealthBar : MonoBehaviour {
     public float health;
     float originalHealth;
     Vector3 originalSize;
+    Quaternion forwardFace;
 
 
     void Awake()
     {
         originalHealth = health;
         originalSize = transform.localScale;
+        faceForward();
     }
 
     void faceForward()
@@ -20,11 +22,12 @@ public class HealthBar : MonoBehaviour {
         Vector3 myLoc = transform.position;
         transform.LookAt(new Vector3(myLoc.x+10.0f, myLoc.y, myLoc.z));
         transform.Rotate(0, 0, 90.0f);
+        forwardFace = transform.rotation;
     }
 
     void Update()
     {
-        faceForward();
+        transform.rotation = forwardFace;
     }
 
     public void decrementHealth(float damage)
