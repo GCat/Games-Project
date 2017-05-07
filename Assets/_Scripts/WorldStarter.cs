@@ -102,15 +102,18 @@ public class WorldStarter : MonoBehaviour
         int x = 0;
         int y = 0;
         Image<Bgra, Byte> logoIm = new Image<Bgra, Byte>("C:/Users/gp14958/OneDrive/images/logo.png");
-        for (int i = image.Mat.Cols -200; i < image.Mat.Cols; i++)
+        for (int i =0; i < 200; i++)
         {
-            for(int j = image.Mat.Rows -200; j<image.Mat.Rows; j++)
+            for(int j = 0; j<200; j++)
             {
-                Bgra logoVal = logoIm[x, y];
+
+                Bgra logoVal = logoIm[i, j];
+                x = image.Mat.Rows - 210 + i;
+                y = image.Mat.Cols - 210 + j;
                 if(logoVal.Alpha != 0)
                 {
                     Bgr v = new Bgr(logoVal.Blue, logoVal.Green, logoVal.Red);
-                    image[i, j]= v;
+                    image[x, y]= v;
                 }
                 y++;
             }

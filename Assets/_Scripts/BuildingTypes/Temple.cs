@@ -38,10 +38,9 @@ public class Temple : Building
     public override void decrementHealth(float damage)
     {
         base.decrementHealth(damage);
-        StartCoroutine(warnPlayer());
     }
 
-    IEnumerator warnPlayer()
+    public IEnumerator warnPlayer()
     {
         if (!warningDelay)
         {

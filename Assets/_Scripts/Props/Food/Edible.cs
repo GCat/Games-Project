@@ -10,6 +10,13 @@ public abstract class Edible : Grabbable
 
     protected GameObject mouth;
     protected bool held = false;
+    public ParticleSystem crumbEffect;
+
+    public void Awake()
+    {
+        crumbEffect.Stop();
+        crumbEffect.Clear();
+    }
 
     public override void grab()
     {
@@ -31,10 +38,7 @@ public abstract class Edible : Grabbable
 
     protected void hide()
     {
-        foreach (Renderer r in GetComponentsInChildren<Renderer>())
-        {
-            r.enabled = false;
-        }
+
     }
 
     public void OnTriggerEnter(Collider other)

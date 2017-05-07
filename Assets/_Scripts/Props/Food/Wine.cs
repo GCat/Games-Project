@@ -30,6 +30,8 @@ class Wine : Edible
     {
         if (canGlug)
         {
+            crumbEffect.Clear();
+            crumbEffect.Play();
             audioSource.PlayOneShot(glug, 0.8f);
             StartCoroutine(glugDelay(0.5f));
         }
@@ -40,7 +42,7 @@ class Wine : Edible
         if (held && mouth != null)
         {
             transform.LookAt(mouth.transform);
-            transform.Rotate(-90, 0, 0);
+            transform.Rotate(90, 0, 0);
         }
 
     }
@@ -66,7 +68,7 @@ class Wine : Edible
         Destroy(explosion, 3.0f);
         hide();
         GetComponent<Collider>().enabled = false;
-        StartCoroutine(WaitToDestroy(2f));
+        Destroy(gameObject, 0.2f);
     }
 }
 

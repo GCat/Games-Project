@@ -28,7 +28,8 @@ public class Bee : MonoBehaviour, HealthManager {
         healthBar = GetComponentInChildren<HealthBar>();
         damageText = Resources.Load("Damage Text") as GameObject;
         damageEffect = Instantiate(Resources.Load("Particles/Damage") as GameObject, transform).GetComponent<ParticleSystem>();
-
+        damageEffect.gameObject.transform.position = transform.position;
+        damageEffect.transform.SetParent(transform);
     }
 
     // Update is called once per frame
