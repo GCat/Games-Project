@@ -74,7 +74,7 @@ public class WorldStarter : MonoBehaviour
 
         if (colorManager != null)
         {
-            takeMugShot();
+              takeMugShot();
         }
         yield return new WaitForSeconds(2);
         quit = true;
@@ -86,15 +86,39 @@ public class WorldStarter : MonoBehaviour
         var foo = new PrivateFontCollection();
         Texture2D mugshot = colorManager.GetColorTexture();
         Image<Bgr, byte> img = UnityTextureToOpenCVImage(mugshot);
+        
         img = img.Rotate(90.0, new Bgr(0, 0, 0), false);
-        int pointx = img.Mat.Cols/2;
-        int pointy = img.Mat.Rows / 2;
         timeText = addtimeScore();
         string score = timeText;
         img.Draw(score, new System.Drawing.Point(300, 100),
             FontFace.HersheyComplex, 3.0, new Bgr(242, 25, 236),3);
+
+        AddLogo(img);
+        
+    }
+
+    private void AddLogo(Image<Bgr,Byte> image)
+    {
+        int x = 0;
+        int y = 0;
+        Image<Bgra, Byte> logoIm = new Image<Bgra, Byte>("C:/Users/gp14958/OneDrive/images/logo.png");
+        for (int i = image.Mat.Cols -200; i < image.Mat.Cols; i++)
+        {
+            for(int j = image.Mat.Rows -200; j<image.Mat.Rows; j++)
+            {
+                Bgra logoVal = logoIm[x, y];
+                if(logoVal.Alpha != 0)
+                {
+                    Bgr v = new Bgr(logoVal.Blue, logoVal.Green, logoVal.Red);
+                    image[i, j]= v;
+                }
+                y++;
+            }
+            x++;
+        }
+
         string id = System.Guid.NewGuid().ToString("N");
-        img.Save("C:/Users/gp14958/OneDrive/images/" + id + ".png");
+        image.Save("C:/Users/gp14958/OneDrive/images/" + id + ".png");
     }
 
 
