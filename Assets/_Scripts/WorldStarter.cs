@@ -101,7 +101,7 @@ public class WorldStarter : MonoBehaviour
     {
         int x = 0;
         int y = 0;
-        Image<Bgra, Byte> logoIm = new Image<Bgra, Byte>("C:/Users/gp14958/OneDrive/images/logo.png");
+        Image<Bgra, Byte> logoIm = new Image<Bgra, Byte>("C:/Users/gavin/OneDrive/images/logo.png");
         for (int i =0; i < 200; i++)
         {
             for(int j = 0; j<200; j++)
@@ -121,7 +121,7 @@ public class WorldStarter : MonoBehaviour
         }
 
         string id = System.Guid.NewGuid().ToString("N");
-        image.Save("C:/Users/gp14958/OneDrive/images/" + id + ".png");
+        image.Save("C:/Users/gavin/OneDrive/images/" + id + ".png");
     }
 
 

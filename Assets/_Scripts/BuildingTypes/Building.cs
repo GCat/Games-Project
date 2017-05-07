@@ -40,7 +40,7 @@ public abstract class Building : Grabbable, HealthManager
         StartCoroutine(lockBuilding(5));
         if (gameObject.tag == "Temple")
         {
-            StartCoroutine(GetComponent<Temple>().warnPlayer());
+            GetComponent<Temple>().warnPlayer();
         }
         healthBar.decrementHealth(damage);
         if (healthBar.health <= 0)
