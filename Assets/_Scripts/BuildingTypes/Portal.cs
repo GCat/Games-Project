@@ -116,6 +116,11 @@ public class Portal : Grabbable
                 newSpawner.GetComponentInChildren<BuildingSpawner>().buildingToSpawn = newBuilding;
                 newSpawner.GetComponentInChildren<BuildingSpawner>().newBuilding();
                 newSpawner.GetComponentInChildren<BuildingSpawner>().rayDisappear(30f);
+                Building b = newBuilding.GetComponent<Building>();
+                if (b != null)
+                {
+                    newSpawner.GetComponentInChildren<BuildingSpawner>().maxBuildings = b.maxAllowed;
+                }
                 string buildingName = getBuildingName(newBuilding);
                 Debug.Log(buildingName);
                 newSpawner.GetComponentInChildren<TextMesh>().text = buildingDescriptions[buildingName];
@@ -172,6 +177,7 @@ public class Portal : Grabbable
 
     IEnumerator playIntroSequence()
     {
+        yield return new WaitForSeconds(7f);
         foreach (Tutorial tutorial in introSequence)
         {
             if (!started)
@@ -265,6 +271,7 @@ public class Portal : Grabbable
                 Building b = wave.newBuilding.GetComponent<Building>();
                 if (b != null && b.buildClip != null)
                 {
+            
                     voiceOverSource.clip = b.buildClip;
                     voiceOverSource.Play();
                 }
@@ -286,7 +293,7 @@ public class Portal : Grabbable
             anim.Play("Countdown");
             yield return new WaitForSeconds(wave.waveTime);
         }
-        worldstarter.stopGame();
+        //worldstarter.stopGame();
     }
 
     IEnumerator playInSequence(AudioSource source, AudioClip clip) {

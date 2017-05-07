@@ -70,8 +70,9 @@ public abstract class Tower : Building {
     }
 
     // different towers can aquire targets differently
-    public virtual bool acquireTarget()
+    virtual public bool acquireTarget()
     {
+       
         List<Collider> hitColliders = new List<Collider>(Physics.OverlapSphere(floor, transform.InverseTransformVector(radius, 0, 0).magnitude, attackMask));
         if (hitColliders.Count > 0)
         {

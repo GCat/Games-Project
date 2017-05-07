@@ -202,15 +202,35 @@ public class BodySourceView : MonoBehaviour
 
     void OnApplicationQuit()
     {
+        runningThread = false;
         if (bodyThread != null)
         {
-            bodyThread.Join();
+            try
+            {
+                bodyThread.Join();
+            }
+            catch (Exception e)
+            {
+                bodyThread.Abort();
+
+            }
         }
     }
     void OnDestroyed()
     {
         runningThread = false;
-        bodyThread.Join();
+        if (bodyThread != null)
+        {
+            try
+            {
+                bodyThread.Join();
+            }
+            catch (Exception e)
+            {
+                bodyThread.Abort();
+
+            }
+        }
     }
 
     private void testThread()

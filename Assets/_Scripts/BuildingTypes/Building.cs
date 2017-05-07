@@ -14,6 +14,7 @@ public abstract class Building : Grabbable, HealthManager
     public ResourceCounter resourceCounter;
     public GameObject tablet;
     public HealthBar healthBar;
+    public int maxAllowed = 5;
     public bool bought = false;
     public int faithCost;
     protected Vector3 boxSize;

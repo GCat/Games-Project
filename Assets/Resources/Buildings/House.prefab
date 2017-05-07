@@ -6521,6 +6521,7 @@ MonoBehaviour:
   resourceCounter: {fileID: 0}
   tablet: {fileID: 0}
   healthBar: {fileID: 114321897829566050}
+  maxAllowed: 3
   bought: 0
   faithCost: 15
   highlight_template: {fileID: 1000011474536254, guid: a46bfc19ba9886f46a82c3e3dc31cd7d,
