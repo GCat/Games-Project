@@ -29,6 +29,7 @@ public class BodySourceView : MonoBehaviour
     public GameObject right_foot;
     public GameObject colorScreen;
     public GameObject eyeMarker;
+    public GameObject kinectView;
     public Text countdown;
     public int tracking_frames = 8;
     public bool rightHandClosed = false;
@@ -116,6 +117,18 @@ public class BodySourceView : MonoBehaviour
         if (BodySourceManager == null)
         {
             return;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Return)) {
+            VRSettings.showDeviceView = !VRSettings.showDeviceView;
+            if (!VRSettings.showDeviceView)
+            {
+                kinectView.SetActive(true);
+            }
+            else
+            {
+                kinectView.SetActive(false);
+            }
         }
 
         _BodyManager = BodySourceManager.GetComponent<BodySourceManager>();
@@ -472,7 +485,6 @@ public class BodySourceView : MonoBehaviour
         colorScreen.GetComponent<ColorSourceView>().pause(true);
         eyeMarker.SetActive(false);
         InputTracking.Recenter();
-        //VRSettings.showDeviceView = false;
     }
 
     public GameObject getBodyPart(Kinect.JointType jt)

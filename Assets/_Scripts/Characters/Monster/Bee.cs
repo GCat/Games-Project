@@ -98,6 +98,7 @@ public class Bee : MonoBehaviour, HealthManager {
         if (healthBar.health <= 0)
         {
             Destroy(healthBar);
+            healthBar.gameObject.SetActive(false);
             GetComponent<Rigidbody>().useGravity = true;
             GetComponent<Rigidbody>().isKinematic = false;
 

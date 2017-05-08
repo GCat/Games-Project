@@ -45,7 +45,7 @@ class Food : Edible
         audioSource.PlayOneShot(munch, 0.8f);
         held = false;
         hide();
-        Destroy(gameObject, 2f);
+        Destroy(gameObject, 0.8f);
         GetComponent<Collider>().enabled = false;
     }
 
