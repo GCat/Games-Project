@@ -21,53 +21,52 @@ public class FireTower : Tower
 
     public override void activeTower()
     {
-
-        if (resourceCounter.getBaddies() > 0)
+        if (currentTarget != null)
         {
-            if (currentTarget == null)
-            {
-                audioSource.Stop();
-                fireStream.SetActive(false);
-            }
-            else
-            {
-                if (Vector3.Distance(currentTarget.GetComponent<Collider>().ClosestPointOnBounds(floor), floor) < transform.InverseTransformVector(radius, 0, 0).magnitude)
-                {
-                    if (!audioSource.isPlaying)
-                    {
-                        audioSource.Play();
-                    }
-                    fireStream.SetActive(true);
-                    fireStream.transform.LookAt(currentTarget.transform.position);
-                }
-                else
-                {
-                    currentTarget = null;
-                    fireStream.SetActive(false);
-                    audioSource.Stop();
-                }
-            }
-
+            fireStream.transform.LookAt(currentTarget.transform.position);
         }
         else
         {
-            fireStream.SetActive(false);
             audioSource.Stop();
+            fireStream.SetActive(false);
+            fireStream.GetComponent<ParticleSystem>().Stop();
         }
     }
 
     //find a new nearby monster to attack
     public override bool acquireTarget()
     {
-        List<Collider> hitColliders = new List<Collider>(Physics.OverlapSphere(floor, transform.InverseTransformVector(radius, 0, 0).magnitude, attackMask));
+        Debug.Log("acquiring target");
+
+        List<Collider> hitColliders = new List<Collider>(Physics.OverlapSphere(floor, radius, attackMask));
         if (hitColliders.Count > 0)
         {
+            Debug.Log("activate stream");
+            fireStream.SetActive(true);
+            fireStream.GetComponent<ParticleSystem>().Play();
+
             currentTarget = hitColliders[0].gameObject;
-            audioSource.Play();
+            fireStream.transform.LookAt(currentTarget.transform.position);
+            if (!audioSource.isPlaying)
+            {
+                audioSource.Play();
+            }
             return true;
+        }
+        else
+        {
+            audioSource.Stop();
+            fireStream.SetActive(false);
+            fireStream.GetComponent<ParticleSystem>().Stop();
         }
 
         return false;
+    }
+
+    void OnDrawGizmos()
+    {
+        //Gizmos.DrawSphere(floor, radius);
+
     }
 
     protected override IEnumerator attack()
@@ -75,7 +74,8 @@ public class FireTower : Tower
 
         while (true)
         {
-            if (currentTarget != null && Vector3.Distance(currentTarget.GetComponent<Collider>().ClosestPointOnBounds(floor), floor) < transform.InverseTransformVector(radius, 0, 0).magnitude)
+            Debug.Log("attacking");
+            if (currentTarget != null && Vector3.Distance(currentTarget.GetComponent<Collider>().ClosestPointOnBounds(floor), floor) < radius)
             {
                 HealthManager targetHealth = currentTarget.GetComponent<HealthManager>();
                 if (targetHealth != null)

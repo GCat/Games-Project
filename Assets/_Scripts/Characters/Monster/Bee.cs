@@ -19,16 +19,15 @@ public class Bee : MonoBehaviour, HealthManager {
     protected GameObject infoText;
     protected Quaternion infoTextOri;
     Vector3 cameraPos;
-    GameObject damageText;
     private ParticleSystem damageEffect;
 
     // Use this for initialization
     void Start () {
         rb = GetComponent<Rigidbody>();
         healthBar = GetComponentInChildren<HealthBar>();
-        damageText = Resources.Load("Damage Text") as GameObject;
         damageEffect = Instantiate(Resources.Load("Particles/Damage") as GameObject, transform).GetComponent<ParticleSystem>();
-
+        damageEffect.gameObject.transform.position = transform.position;
+        damageEffect.transform.SetParent(transform);
     }
 
     // Update is called once per frame
@@ -96,10 +95,10 @@ public class Bee : MonoBehaviour, HealthManager {
         healthBar.decrementHealth(damage);
         damageEffect.Clear();
         damageEffect.Play();
-        StartCoroutine(DamageText("-" + damage, Color.red));
         if (healthBar.health <= 0)
         {
             Destroy(healthBar);
+            healthBar.gameObject.SetActive(false);
             GetComponent<Rigidbody>().useGravity = true;
             GetComponent<Rigidbody>().isKinematic = false;
 
@@ -118,26 +117,6 @@ public class Bee : MonoBehaviour, HealthManager {
         GameObject.Destroy(gameObject);
     }
 
-    public IEnumerator DamageText(string textString, Color color)
-    {
-        GameObject damageIndicator = Instantiate(damageText, (new Vector3(transform.position.x, transform.position.y + 5, transform.position.z)), Quaternion.LookRotation(transform.position - cameraPos, Vector3.up)) as GameObject;
-        Text text = damageIndicator.GetComponentInChildren<Text>();
-        text.text = textString;
-        text.color = color;
-        Destroy(damageIndicator, 1);
-        for (float f = 1f; f >= 0; f -= 0.01f)
-        {
-            if (damageIndicator != null)
-            {
-                Color c = text.color;
-                c.a = f;
-                text.color = c;
-                damageIndicator.transform.Translate(new Vector3(0, 0.1f, 0));
-                damageIndicator.transform.LookAt(cameraPos);
-                yield return null;
-            }
-        }
-    }
     protected void createInfoText()
     {
         Bounds dims = gameObject.GetComponent<Collider>().bounds;

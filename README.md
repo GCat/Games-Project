@@ -9,7 +9,7 @@ Please work on your own Unity scenes as we cannot merge them. Any improvements y
 
 <h3><a href="https://www.youtube.com/watch?v=MNdE5gYu_yQ">Demo 1</a></h3>
 <h3><a href="https://www.youtube.com/watch?v=9AKVMEL5uZs">Demo 2</a></h3>
-
+<h3><a href="https://youtu.be/wD1zFM2-D3Q">Final Demo</a></h3>
 
 <h3>Setting up the game</h3>
 Make sure you install the oculus & Kinect v2 drivers.

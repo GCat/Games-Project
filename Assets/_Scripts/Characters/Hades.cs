@@ -13,7 +13,7 @@ public class Hades : MonoBehaviour, HealthManager
     public GameObject projectile;
     public GameObject r_hand;
     public GameObject r_arm;
-
+    public GameObject firePoint;
     public HealthBar healthBar;
     public GameObject meleePos;
     public WorldStarter world;
@@ -107,9 +107,8 @@ public class Hades : MonoBehaviour, HealthManager
 
     public void fire()
     {
-        Vector3 direction = Vector3.Normalize(playerHead.transform.position - r_hand.transform.position) * 50;
-        GameObject fireBall = Instantiate(projectile, r_hand.transform.position, Quaternion.identity);
-        Physics.IgnoreCollision(r_arm.GetComponent<Collider>(), fireBall.GetComponent<Collider>());
+        Vector3 direction = Vector3.Normalize(playerHead.transform.position - firePoint.transform.position) * 50;
+        GameObject fireBall = Instantiate(projectile, firePoint.transform.position, Quaternion.identity);
         fireBall.GetComponent<Rigidbody>().AddForce(direction, ForceMode.VelocityChange);
         fireBall.GetComponent<ParticleSystem>().Clear();
         fireBall.GetComponent<ParticleSystem>().Play();

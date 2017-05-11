@@ -28,6 +28,7 @@ public class Hand : MonoBehaviour
     public Renderer renderer_open;
     public AudioClip blackSmith;
     public Renderer renderer_closed;
+    private ParticleSystem damageEffect;
     private ResourceCounter resources;
     private GameObject CantPlaceEffect;
     public Color defaultColor;
@@ -73,6 +74,9 @@ public class Hand : MonoBehaviour
         lastPosition = transform.position;
         trail = GetComponent<TrailRenderer>();
         trail.enabled = false;
+        damageEffect = Instantiate(Resources.Load("Particles/Damage") as GameObject, transform).GetComponent<ParticleSystem>();
+        damageEffect.gameObject.transform.position = transform.position;
+        damageEffect.transform.SetParent(transform);
     }
 
     // Update is called once per frame
@@ -525,9 +529,10 @@ public class Hand : MonoBehaviour
             if (gother.transform.root.tag == "Hades" && velocity.magnitude > 100)
             {
                 Hades hades = gother.transform.root.GetComponent<Hades>();
-                hades.decrementHealth(2);
+                hades.decrementHealth(1);
                 audioSource.PlayOneShot(hitSounds[hitSounds.Length - 1], 0.9f);
-
+                damageEffect.Clear();
+                damageEffect.Play();
             }
         }
     }

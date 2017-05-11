@@ -363,7 +363,7 @@ public class Agent : Character
             if (!combatEngaged && resources.getGroundBaddies() > 0)
             {
                 closestEnemy = findClosestEnemy();
-                walkTo(closestEnemy.transform.position);
+                if (closestEnemy) walkTo(closestEnemy.transform.position);
             }
             else if (currentState == HumanState.Wandering)
             {

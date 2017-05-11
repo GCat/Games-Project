@@ -83,7 +83,7 @@ public class LightningBolt : Tool
     void OnCollisionEnter(Collision col)
     {
         Debug.Log(col.gameObject);
-        if (col.gameObject.tag == "Ground" || col.gameObject.layer == LayerMask.NameToLayer("Baddies"))
+        if (col.gameObject.tag == "Ground" || col.gameObject.layer == LayerMask.NameToLayer("Badies"))
         {
             int layerMask = 1 << 11;
             ContactPoint hit = col.contacts[0];

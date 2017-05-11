@@ -100,7 +100,7 @@ public abstract class Monster : Character
         damageEffect.transform.SetParent(transform);
         if (healthBar.health > 200)
         {
-            damageEffect.transform.localScale *= 5;
+            damageEffect.transform.localScale *= 2;
         }
     }
 

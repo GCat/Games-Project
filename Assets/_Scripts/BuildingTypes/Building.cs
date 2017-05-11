@@ -14,6 +14,7 @@ public abstract class Building : Grabbable, HealthManager
     public ResourceCounter resourceCounter;
     public GameObject tablet;
     public HealthBar healthBar;
+    public int maxAllowed = 5;
     public bool bought = false;
     public int faithCost;
     protected Vector3 boxSize;
@@ -37,6 +38,10 @@ public abstract class Building : Grabbable, HealthManager
     public virtual void decrementHealth(float damage)
     {
         StartCoroutine(lockBuilding(5));
+        if (gameObject.tag == "Temple")
+        {
+            GetComponent<Temple>().warnPlayer();
+        }
         healthBar.decrementHealth(damage);
         if (healthBar.health <= 0)
         {

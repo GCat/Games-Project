@@ -8,23 +8,12 @@ using UnityEngine;
 class Food : Edible
 {
     private AudioSource audioSource;
-    private GameObject crumbs;
-    private ParticleSystem crumbEffect;
     public AudioClip squish;
     public AudioClip munch;
-    public Color crumbColour;
 
     void Start()
     {
         audioSource = gameObject.AddComponent<AudioSource>();
-        crumbs = Instantiate(Resources.Load("Particles/Crumbs") as GameObject, transform.position, Quaternion.identity);
-        crumbs.transform.parent = transform;
-        crumbs.transform.localScale = new Vector3(1, 1, 1);
-        crumbEffect = crumbs.GetComponent<ParticleSystem>();
-        crumbEffect.Stop();
-        crumbEffect.Clear();
-        ParticleSystem.MainModule main = crumbEffect.main;
-        main.startColor = crumbColour;
         mouth = GameObject.FindGameObjectWithTag("MainCamera");
     }
 
@@ -49,12 +38,14 @@ class Food : Edible
     }
     protected override void eat()
     {
+
+        //crumbEffect.transform.SetParent(null);
         crumbEffect.Clear();
         crumbEffect.Play();
         audioSource.PlayOneShot(munch, 0.8f);
         held = false;
         hide();
-        StartCoroutine(WaitToDestroy(1f));
+        Destroy(gameObject, 0.8f);
         GetComponent<Collider>().enabled = false;
     }
 

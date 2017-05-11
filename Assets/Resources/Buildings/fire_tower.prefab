@@ -2417,8 +2417,9 @@ MonoBehaviour:
   resourceCounter: {fileID: 0}
   tablet: {fileID: 0}
   healthBar: {fileID: 114133445245682460}
+  maxAllowed: 5
   bought: 0
-  faithCost: 25
+  faithCost: 20
   highlight_template: {fileID: 1198705378565068, guid: df7a3fa71a5afc2439e55f03b47b96a0,
     type: 2}
   canBeGrabbed: 1
@@ -2431,7 +2432,7 @@ MonoBehaviour:
   rangeHighlight: {fileID: 0}
   currentTarget: {fileID: 0}
   audioSource: {fileID: 0}
-  radius: 25
+  radius: 35
   active: 0
   attackMask: 2048
   fireDamagePerSecond: 10

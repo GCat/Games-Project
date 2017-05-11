@@ -16,8 +16,8 @@ public class FinalBoss : WaveEvent
     public Hades hades;
     public override void startEvent()
     {
-        hades = GameObject.FindGameObjectWithTag("Hades").GetComponent<Hades>();
-        foreach (Transform child in transform)
+        hades = GameObject.FindGameObjectWithTag("Hades").transform.root.gameObject.GetComponent<Hades>();
+        foreach (Transform child in hades.transform)
         {
             child.gameObject.SetActive(true);
         }

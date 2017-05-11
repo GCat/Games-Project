@@ -12,6 +12,7 @@ public class Temple : Building
     public int startingHumans = 5;
     public AudioClip warningClip;
     private bool warningDelay = false;
+    float lastWarning;
 
     public override void create_building()
     {
@@ -22,6 +23,7 @@ public class Temple : Building
         InvokeRepeating("incrementResource", 10.0f, 10.0f); // after 10 sec call every 5
         canBeGrabbed = false;
         resourceCounter.gameStart();
+        lastWarning = Time.time;
     }
 
     void Update()
@@ -38,16 +40,14 @@ public class Temple : Building
     public override void decrementHealth(float damage)
     {
         base.decrementHealth(damage);
-        StartCoroutine(warnPlayer());
     }
 
-    IEnumerator warnPlayer()
+    public void warnPlayer()
     {
-        if (!warningDelay)
+        if (Time.time - lastWarning > 30f)
         {
-            world.portal.voiceOverSource.PlayOneShot(warningClip, 1.2f);
-            warningDelay = true;
-            yield return new WaitForSeconds(20f);
+            world.portal.voiceOverSource.PlayOneShot(warningClip, 1.0f);
+            lastWarning = Time.time;
         }
 
     }

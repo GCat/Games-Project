@@ -43,16 +43,6 @@ public class FireBall : Grabbable
 
     void OnCollisionEnter(Collision other)
     {
-    
-        if (other.transform.root.tag == "Hades" && repelled)
-        {
-            if (hades != null)
-            {
-                hades.decrementHealth(damage);
-            }
-            explode();
-            Physics.IgnoreCollision(GetComponent<Collider>(), other.collider);
-        }
 
     }
 
